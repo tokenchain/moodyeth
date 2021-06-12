@@ -24,7 +24,7 @@ increment_version() {
     exit
   fi
 }
-clean_repo() {
+pub_ver() {
   VERSION=$(cat version)
   increment_version $VERSION >version
   VERSION=$(cat version)
@@ -62,5 +62,7 @@ git_update() {
   #git remote add origin https://gitee.com/jjhoc/b-explorer-settings.git
   git push
 }
-clean_repo
+
+#pub_ver
+
 git_update
