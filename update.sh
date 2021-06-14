@@ -31,9 +31,9 @@ pub_ver() {
   VERSION=$(cat version)
 
   sudo rm -rf dist
-  rm -rf html
-  rm -rf doc
+  rm -rf docs
   python3 -m pdoc --html moody
+  mkdir -p docs
   mv html/moody docs/moody
   rm html
 
