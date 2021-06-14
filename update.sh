@@ -24,6 +24,7 @@ increment_version() {
     exit
   fi
 }
+
 pub_ver() {
   VERSION=$(cat version)
   increment_version $VERSION >version
@@ -41,17 +42,17 @@ pub_ver() {
   python3 -m readme_renderer README.rst -o /html/README.html
   sudo python3 setup.py clean sdist bdist_wheel
 
-  python3 -m twine upload dist/* --verbose
+  #python3 -m twine upload dist/* --verbose
 
   echo "please update the package by using this command"
   echo "pip3 install moodyeth==$VERSION"
   echo "pi moodyeth==$VERSION"
   echo "pc moodyeth==$VERSION"
   echo "wait 30 seconds until it gets uploaded online..."
-
   # echo "ready and install it again.."
   # sudo pip3 install --proxy 127.0.0.1:1087 moodyeth==$VERSION
 }
+
 git_update() {
   git add .
   #git remote add origin https://gitee.com/jjhoc/moodyeth.git
@@ -61,5 +62,4 @@ git_update() {
 }
 
 pub_ver
-
 git_update

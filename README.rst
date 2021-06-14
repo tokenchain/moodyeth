@@ -49,7 +49,6 @@ Deploy Smart Contract
 
 .. code-block:: python
 
-
     import os
 
     from moody.libeb import MiliDoS
