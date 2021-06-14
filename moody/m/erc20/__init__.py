@@ -19,8 +19,8 @@ from web3.contract import ContractFunction
 from web3.datastructures import AttributeDict
 from web3.providers.base import BaseProvider
 
-from zero_ex.contract_wrappers.bases import ContractMethod, Validator
-from zero_ex.contract_wrappers.tx_params import TxParams
+from ..bases import ContractMethod, Validator
+from ..tx_params import TxParams
 
 
 # Try to import a custom validator class definition; if there isn't one,
