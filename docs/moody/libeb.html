@@ -43,6 +43,8 @@ from web3.logs import DISCARD
 from web3.middleware import geth_poa_middleware
 from web3.types import BlockData
 
+from moody.buildercompile.remotecompile import BuildRemoteLinuxCommand
+from moody.buildercompile.transpile import BuildLang
 from moody.conf import Config
 from moody.paths import Paths
 
@@ -287,7 +289,22 @@ class MiliDoS:
         self.pathfinder = Paths(path).setDefaultPath().Network(self.network_cfg.network_name)
         return self
 
+    def remoteCompile(self, to_compile_contract_list: list, ver: str) -&gt; &#34;MiliDoS&#34;:
+        self.pathfinder.setSolVersion(ver)
+        BuildRemoteLinuxCommand(self.pathfinder, to_compile_contract_list)
+        return self
+
+    def localTranspile(self, to_compile_contract_list: list, ver: str) -&gt; &#34;MiliDoS&#34;:
+        BuildLang(self.pathfinder, to_compile_contract_list)
+        return self
+
     def get_block(self, block_identifier, full_transactions: bool = False):
+        &#34;&#34;&#34;
+        to see the block information
+        :param block_identifier:
+        :param full_transactions:
+        :return:
+        &#34;&#34;&#34;
         with w3_lock:
             res = self.w3.eth.getBlock(block_identifier, full_transactions)
         return res
@@ -373,7 +390,10 @@ class MiliDoS:
                params: list = [],
                fee: int = 10 ** 9,
                percent: int = 1) -&gt; None:
-        &#34;&#34;&#34;This is using the faster way to deploy files by using the specific abi and bin files&#34;&#34;&#34;
+        &#34;&#34;&#34;
+        This is using the faster way to deploy files by using the specific abi and bin files
+
+        &#34;&#34;&#34;
 
         solc_artifact = SolWeb3Tool()
         solc_artifact.setBasePath(self.base_path)
@@ -889,7 +909,22 @@ implement default like this::</p>
         self.pathfinder = Paths(path).setDefaultPath().Network(self.network_cfg.network_name)
         return self
 
+    def remoteCompile(self, to_compile_contract_list: list, ver: str) -&gt; &#34;MiliDoS&#34;:
+        self.pathfinder.setSolVersion(ver)
+        BuildRemoteLinuxCommand(self.pathfinder, to_compile_contract_list)
+        return self
+
+    def localTranspile(self, to_compile_contract_list: list, ver: str) -&gt; &#34;MiliDoS&#34;:
+        BuildLang(self.pathfinder, to_compile_contract_list)
+        return self
+
     def get_block(self, block_identifier, full_transactions: bool = False):
+        &#34;&#34;&#34;
+        to see the block information
+        :param block_identifier:
+        :param full_transactions:
+        :return:
+        &#34;&#34;&#34;
         with w3_lock:
             res = self.w3.eth.getBlock(block_identifier, full_transactions)
         return res
@@ -975,7 +1010,10 @@ implement default like this::</p>
                params: list = [],
                fee: int = 10 ** 9,
                percent: int = 1) -&gt; None:
-        &#34;&#34;&#34;This is using the faster way to deploy files by using the specific abi and bin files&#34;&#34;&#34;
+        &#34;&#34;&#34;
+        This is using the faster way to deploy files by using the specific abi and bin files
+
+        &#34;&#34;&#34;
 
         solc_artifact = SolWeb3Tool()
         solc_artifact.setBasePath(self.base_path)
@@ -1328,7 +1366,10 @@ Note: Be cautions with the range provided, as the logic creates query for each b
            params: list = [],
            fee: int = 10 ** 9,
            percent: int = 1) -&gt; None:
-    &#34;&#34;&#34;This is using the faster way to deploy files by using the specific abi and bin files&#34;&#34;&#34;
+    &#34;&#34;&#34;
+    This is using the faster way to deploy files by using the specific abi and bin files
+
+    &#34;&#34;&#34;
 
     solc_artifact = SolWeb3Tool()
     solc_artifact.setBasePath(self.base_path)
@@ -1507,12 +1548,21 @@ Note: Be cautions with the range provided, as the logic creates query for each b
 <span>def <span class="ident">get_block</span></span>(<span>self, block_identifier, full_transactions: bool = False)</span>
 </code></dt>
 <dd>
-<div class="desc"></div>
+<div class="desc"><p>to see the block information
+:param block_identifier:
+:param full_transactions:
+:return:</p></div>
 <details class="source">
 <summary>
 <span>Expand source code</span>
 </summary>
 <pre><code class="python">def get_block(self, block_identifier, full_transactions: bool = False):
+    &#34;&#34;&#34;
+    to see the block information
+    :param block_identifier:
+    :param full_transactions:
+    :return:
+    &#34;&#34;&#34;
     with w3_lock:
         res = self.w3.eth.getBlock(block_identifier, full_transactions)
     return res</code></pre>
@@ -1599,6 +1649,20 @@ Note: Be cautions with the range provided, as the logic creates query for each b
     return iter(self._contract_dict[self.__list_key_label])</code></pre>
 </details>
 </dd>
+<dt id="moody.libeb.MiliDoS.localTranspile"><code class="name flex">
+<span>def <span class="ident">localTranspile</span></span>(<span>self, to_compile_contract_list: list, ver: str) ‑> <a title="moody.libeb.MiliDoS" href="#moody.libeb.MiliDoS">MiliDoS</a></span>
+</code></dt>
+<dd>
+<div class="desc"></div>
+<details class="source">
+<summary>
+<span>Expand source code</span>
+</summary>
+<pre><code class="python">def localTranspile(self, to_compile_contract_list: list, ver: str) -&gt; &#34;MiliDoS&#34;:
+    BuildLang(self.pathfinder, to_compile_contract_list)
+    return self</code></pre>
+</details>
+</dd>
 <dt id="moody.libeb.MiliDoS.preview_all_addresses"><code class="name flex">
 <span>def <span class="ident">preview_all_addresses</span></span>(<span>self) ‑> NoneType</span>
 </code></dt>
@@ -1660,6 +1724,21 @@ Note: Be cautions with the range provided, as the logic creates query for each b
         pass
     except TypeError as e:
         print(e)</code></pre>
+</details>
+</dd>
+<dt id="moody.libeb.MiliDoS.remoteCompile"><code class="name flex">
+<span>def <span class="ident">remoteCompile</span></span>(<span>self, to_compile_contract_list: list, ver: str) ‑> <a title="moody.libeb.MiliDoS" href="#moody.libeb.MiliDoS">MiliDoS</a></span>
+</code></dt>
+<dd>
+<div class="desc"></div>
+<details class="source">
+<summary>
+<span>Expand source code</span>
+</summary>
+<pre><code class="python">def remoteCompile(self, to_compile_contract_list: list, ver: str) -&gt; &#34;MiliDoS&#34;:
+    self.pathfinder.setSolVersion(ver)
+    BuildRemoteLinuxCommand(self.pathfinder, to_compile_contract_list)
+    return self</code></pre>
 </details>
 </dd>
 <dt id="moody.libeb.MiliDoS.removeAddress"><code class="name flex">
@@ -2165,9 +2244,11 @@ all works will be done with the remote server or using the docker</p></div>
 <li><code><a title="moody.libeb.MiliDoS.hasList" href="#moody.libeb.MiliDoS.hasList">hasList</a></code></li>
 <li><code><a title="moody.libeb.MiliDoS.is_deployment" href="#moody.libeb.MiliDoS.is_deployment">is_deployment</a></code></li>
 <li><code><a title="moody.libeb.MiliDoS.iterList" href="#moody.libeb.MiliDoS.iterList">iterList</a></code></li>
+<li><code><a title="moody.libeb.MiliDoS.localTranspile" href="#moody.libeb.MiliDoS.localTranspile">localTranspile</a></code></li>
 <li><code><a title="moody.libeb.MiliDoS.preview_all_addresses" href="#moody.libeb.MiliDoS.preview_all_addresses">preview_all_addresses</a></code></li>
 <li><code><a title="moody.libeb.MiliDoS.pushAddress" href="#moody.libeb.MiliDoS.pushAddress">pushAddress</a></code></li>
 <li><code><a title="moody.libeb.MiliDoS.ready_io" href="#moody.libeb.MiliDoS.ready_io">ready_io</a></code></li>
+<li><code><a title="moody.libeb.MiliDoS.remoteCompile" href="#moody.libeb.MiliDoS.remoteCompile">remoteCompile</a></code></li>
 <li><code><a title="moody.libeb.MiliDoS.removeAddress" href="#moody.libeb.MiliDoS.removeAddress">removeAddress</a></code></li>
 <li><code><a title="moody.libeb.MiliDoS.send_contract_tx" href="#moody.libeb.MiliDoS.send_contract_tx">send_contract_tx</a></code></li>
 <li><code><a title="moody.libeb.MiliDoS.setKV" href="#moody.libeb.MiliDoS.setKV">setKV</a></code></li>

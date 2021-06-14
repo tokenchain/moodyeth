@@ -4,7 +4,7 @@
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1, minimum-scale=1" />
 <meta name="generator" content="pdoc 0.9.1" />
-<title>moody API documentation</title>
+<title>moody.buildercompile.remotecompile API documentation</title>
 <meta name="description" content="" />
 <link rel="preload stylesheet" as="style" href="https://cdnjs.cloudflare.com/ajax/libs/10up-sanitize.css/11.0.1/sanitize.min.css" integrity="sha256-PK9q560IAAa6WVRRh76LtCaI8pjTJ2z11v0miyNNjrs=" crossorigin>
 <link rel="preload stylesheet" as="style" href="https://cdnjs.cloudflare.com/ajax/libs/10up-sanitize.css/11.0.1/typography.min.css" integrity="sha256-7l/o7C8jubJiy74VsKTidCy1yBkRtiUGbVkYBylBqUg=" crossorigin>
@@ -19,152 +19,155 @@
 <main>
 <article id="content">
 <header>
-<h1 class="title">Package <code>moody</code></h1>
+<h1 class="title">Module <code>moody.buildercompile.remotecompile</code></h1>
 </header>
 <section id="section-intro">
 <details class="source">
 <summary>
 <span>Expand source code</span>
 </summary>
-<pre><code class="python"># Token = namedtuple(&#39;Token&#39;, [&#39;address&#39;, &#39;name&#39;, &#39;code_hash&#39;], defaults=(None,) * 3)
-from dataclasses import dataclass
+<pre><code class="python">from moody.paths import Paths
+from . import REC, ITEM
 
 
-@dataclass
-class Token:
-    address: str = None
-    name: str = None
-    code_hash: str = None
-    token_contract: str = None
+def listItemContent(tar: Paths, k0: str) -&gt; str:
+    &#34;&#34;&#34;
+    list the item content
+    :param tar:
+    :param k0:
+    :return:
+    &#34;&#34;&#34;
+    return ITEM.format(
+        SOLCPATH=tar.SOLCPATH,
+        COMPILE_COIN=k0,
+        SOLVER=tar.SOLC_VER,
+    )
 
 
-@dataclass
-class Config:
-    network_name: str
-    rpc_url: str
-    chain_id: int
-    symbol: str
-    block_explorer: str</code></pre>
+def wrapContent(tar: Paths, compile_list: list) -&gt; str:
+    &#34;&#34;&#34;
+    wrap content
+    :param tar:
+    :param compile_list:
+    :return:
+    &#34;&#34;&#34;
+    return REC.format(
+        LISTP=&#34;\n&#34;.join(compile_list),
+        TARGET_LOC=tar.TARGET_LOC,
+        COMPRESSED_NAME=tar.COMPRESSED_NAME,
+        SOLVER=tar.SOLC_VER,
+    )
+
+
+def BuildRemoteLinuxCommand(p: Paths, list_files: list) -&gt; None:
+    &#34;&#34;&#34;
+    building the remote linux command line
+    :param p:
+    :param list_files:
+    :return:
+    &#34;&#34;&#34;
+    k = list()
+    # ==================================================
+    for v in list_files:
+        k.append(listItemContent(p, v))
+    # ==================================================
+    with open(p.workspaceFilename(&#34;remotesolc&#34;), &#39;w&#39;) as f:
+        f.write(wrapContent(p, k))
+        f.close()</code></pre>
 </details>
 </section>
 <section>
-<h2 class="section-title" id="header-submodules">Sub-modules</h2>
+</section>
+<section>
+</section>
+<section>
+<h2 class="section-title" id="header-functions">Functions</h2>
 <dl>
-<dt><code class="name"><a title="moody.bridge" href="bridge/index.html">moody.bridge</a></code></dt>
-<dd>
-<div class="desc"></div>
-</dd>
-<dt><code class="name"><a title="moody.buildercompile" href="buildercompile/index.html">moody.buildercompile</a></code></dt>
-<dd>
-<div class="desc"></div>
-</dd>
-<dt><code class="name"><a title="moody.conf" href="conf.html">moody.conf</a></code></dt>
-<dd>
-<div class="desc"></div>
-</dd>
-<dt><code class="name"><a title="moody.erc20" href="erc20.html">moody.erc20</a></code></dt>
-<dd>
-<div class="desc"></div>
-</dd>
-<dt><code class="name"><a title="moody.libeb" href="libeb.html">moody.libeb</a></code></dt>
-<dd>
-<div class="desc"></div>
-</dd>
-<dt><code class="name"><a title="moody.m" href="m/index.html">moody.m</a></code></dt>
-<dd>
-<div class="desc"></div>
-</dd>
-<dt><code class="name"><a title="moody.paths" href="paths.html">moody.paths</a></code></dt>
-<dd>
-<div class="desc"><p>Base wrapper class for accessing ethereum smart contracts.</p></div>
-</dd>
-</dl>
-</section>
-<section>
-</section>
-<section>
-</section>
-<section>
-<h2 class="section-title" id="header-classes">Classes</h2>
-<dl>
-<dt id="moody.Config"><code class="flex name class">
-<span>class <span class="ident">Config</span></span>
-<span>(</span><span>network_name: str, rpc_url: str, chain_id: int, symbol: str, block_explorer: str)</span>
+<dt id="moody.buildercompile.remotecompile.BuildRemoteLinuxCommand"><code class="name flex">
+<span>def <span class="ident">BuildRemoteLinuxCommand</span></span>(<span>p: <a title="moody.paths.Paths" href="../paths.html#moody.paths.Paths">Paths</a>, list_files: list) ‑> NoneType</span>
 </code></dt>
 <dd>
-<div class="desc"><p>Config(network_name: str, rpc_url: str, chain_id: int, symbol: str, block_explorer: str)</p></div>
+<div class="desc"><p>building the remote linux command line
+:param p:
+:param list_files:
+:return:</p></div>
 <details class="source">
 <summary>
 <span>Expand source code</span>
 </summary>
-<pre><code class="python">class Config:
-    network_name: str
-    rpc_url: str
-    chain_id: int
-    symbol: str
-    block_explorer: str</code></pre>
+<pre><code class="python">def BuildRemoteLinuxCommand(p: Paths, list_files: list) -&gt; None:
+    &#34;&#34;&#34;
+    building the remote linux command line
+    :param p:
+    :param list_files:
+    :return:
+    &#34;&#34;&#34;
+    k = list()
+    # ==================================================
+    for v in list_files:
+        k.append(listItemContent(p, v))
+    # ==================================================
+    with open(p.workspaceFilename(&#34;remotesolc&#34;), &#39;w&#39;) as f:
+        f.write(wrapContent(p, k))
+        f.close()</code></pre>
 </details>
-<h3>Class variables</h3>
-<dl>
-<dt id="moody.Config.block_explorer"><code class="name">var <span class="ident">block_explorer</span> : str</code></dt>
-<dd>
-<div class="desc"></div>
 </dd>
-<dt id="moody.Config.chain_id"><code class="name">var <span class="ident">chain_id</span> : int</code></dt>
-<dd>
-<div class="desc"></div>
-</dd>
-<dt id="moody.Config.network_name"><code class="name">var <span class="ident">network_name</span> : str</code></dt>
-<dd>
-<div class="desc"></div>
-</dd>
-<dt id="moody.Config.rpc_url"><code class="name">var <span class="ident">rpc_url</span> : str</code></dt>
-<dd>
-<div class="desc"></div>
-</dd>
-<dt id="moody.Config.symbol"><code class="name">var <span class="ident">symbol</span> : str</code></dt>
-<dd>
-<div class="desc"></div>
-</dd>
-</dl>
-</dd>
-<dt id="moody.Token"><code class="flex name class">
-<span>class <span class="ident">Token</span></span>
-<span>(</span><span>address: str = None, name: str = None, code_hash: str = None, token_contract: str = None)</span>
+<dt id="moody.buildercompile.remotecompile.listItemContent"><code class="name flex">
+<span>def <span class="ident">listItemContent</span></span>(<span>tar: <a title="moody.paths.Paths" href="../paths.html#moody.paths.Paths">Paths</a>, k0: str) ‑> str</span>
 </code></dt>
 <dd>
-<div class="desc"><p>Token(address: str = None, name: str = None, code_hash: str = None, token_contract: str = None)</p></div>
+<div class="desc"><p>list the item content
+:param tar:
+:param k0:
+:return:</p></div>
 <details class="source">
 <summary>
 <span>Expand source code</span>
 </summary>
-<pre><code class="python">class Token:
-    address: str = None
-    name: str = None
-    code_hash: str = None
-    token_contract: str = None</code></pre>
+<pre><code class="python">def listItemContent(tar: Paths, k0: str) -&gt; str:
+    &#34;&#34;&#34;
+    list the item content
+    :param tar:
+    :param k0:
+    :return:
+    &#34;&#34;&#34;
+    return ITEM.format(
+        SOLCPATH=tar.SOLCPATH,
+        COMPILE_COIN=k0,
+        SOLVER=tar.SOLC_VER,
+    )</code></pre>
 </details>
-<h3>Class variables</h3>
-<dl>
-<dt id="moody.Token.address"><code class="name">var <span class="ident">address</span> : str</code></dt>
-<dd>
-<div class="desc"></div>
 </dd>
-<dt id="moody.Token.code_hash"><code class="name">var <span class="ident">code_hash</span> : str</code></dt>
+<dt id="moody.buildercompile.remotecompile.wrapContent"><code class="name flex">
+<span>def <span class="ident">wrapContent</span></span>(<span>tar: <a title="moody.paths.Paths" href="../paths.html#moody.paths.Paths">Paths</a>, compile_list: list) ‑> str</span>
+</code></dt>
 <dd>
-<div class="desc"></div>
-</dd>
-<dt id="moody.Token.name"><code class="name">var <span class="ident">name</span> : str</code></dt>
-<dd>
-<div class="desc"></div>
-</dd>
-<dt id="moody.Token.token_contract"><code class="name">var <span class="ident">token_contract</span> : str</code></dt>
-<dd>
-<div class="desc"></div>
+<div class="desc"><p>wrap content
+:param tar:
+:param compile_list:
+:return:</p></div>
+<details class="source">
+<summary>
+<span>Expand source code</span>
+</summary>
+<pre><code class="python">def wrapContent(tar: Paths, compile_list: list) -&gt; str:
+    &#34;&#34;&#34;
+    wrap content
+    :param tar:
+    :param compile_list:
+    :return:
+    &#34;&#34;&#34;
+    return REC.format(
+        LISTP=&#34;\n&#34;.join(compile_list),
+        TARGET_LOC=tar.TARGET_LOC,
+        COMPRESSED_NAME=tar.COMPRESSED_NAME,
+        SOLVER=tar.SOLC_VER,
+    )</code></pre>
+</details>
 </dd>
 </dl>
-</dd>
-</dl>
+</section>
+<section>
 </section>
 </article>
 <nav id="sidebar">
@@ -173,38 +176,16 @@ class Config:
 <ul></ul>
 </div>
 <ul id="index">
-<li><h3><a href="#header-submodules">Sub-modules</a></h3>
+<li><h3>Super-module</h3>
 <ul>
-<li><code><a title="moody.bridge" href="bridge/index.html">moody.bridge</a></code></li>
-<li><code><a title="moody.buildercompile" href="buildercompile/index.html">moody.buildercompile</a></code></li>
-<li><code><a title="moody.conf" href="conf.html">moody.conf</a></code></li>
-<li><code><a title="moody.erc20" href="erc20.html">moody.erc20</a></code></li>
-<li><code><a title="moody.libeb" href="libeb.html">moody.libeb</a></code></li>
-<li><code><a title="moody.m" href="m/index.html">moody.m</a></code></li>
-<li><code><a title="moody.paths" href="paths.html">moody.paths</a></code></li>
+<li><code><a title="moody.buildercompile" href="index.html">moody.buildercompile</a></code></li>
 </ul>
 </li>
-<li><h3><a href="#header-classes">Classes</a></h3>
-<ul>
-<li>
-<h4><code><a title="moody.Config" href="#moody.Config">Config</a></code></h4>
+<li><h3><a href="#header-functions">Functions</a></h3>
 <ul class="">
-<li><code><a title="moody.Config.block_explorer" href="#moody.Config.block_explorer">block_explorer</a></code></li>
-<li><code><a title="moody.Config.chain_id" href="#moody.Config.chain_id">chain_id</a></code></li>
-<li><code><a title="moody.Config.network_name" href="#moody.Config.network_name">network_name</a></code></li>
-<li><code><a title="moody.Config.rpc_url" href="#moody.Config.rpc_url">rpc_url</a></code></li>
-<li><code><a title="moody.Config.symbol" href="#moody.Config.symbol">symbol</a></code></li>
-</ul>
-</li>
-<li>
-<h4><code><a title="moody.Token" href="#moody.Token">Token</a></code></h4>
-<ul class="">
-<li><code><a title="moody.Token.address" href="#moody.Token.address">address</a></code></li>
-<li><code><a title="moody.Token.code_hash" href="#moody.Token.code_hash">code_hash</a></code></li>
-<li><code><a title="moody.Token.name" href="#moody.Token.name">name</a></code></li>
-<li><code><a title="moody.Token.token_contract" href="#moody.Token.token_contract">token_contract</a></code></li>
-</ul>
-</li>
+<li><code><a title="moody.buildercompile.remotecompile.BuildRemoteLinuxCommand" href="#moody.buildercompile.remotecompile.BuildRemoteLinuxCommand">BuildRemoteLinuxCommand</a></code></li>
+<li><code><a title="moody.buildercompile.remotecompile.listItemContent" href="#moody.buildercompile.remotecompile.listItemContent">listItemContent</a></code></li>
+<li><code><a title="moody.buildercompile.remotecompile.wrapContent" href="#moody.buildercompile.remotecompile.wrapContent">wrapContent</a></code></li>
 </ul>
 </li>
 </ul>

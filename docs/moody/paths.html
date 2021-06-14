@@ -39,7 +39,10 @@ import os
 
 
 class Paths:
-    &#34;&#34;&#34;manage the workspace paths&#34;&#34;&#34;
+    &#34;&#34;&#34;
+    Manage the workspace paths
+
+    &#34;&#34;&#34;
     statement = &#39;End : {}, IO File {}&#39;
     _contract_dict: dict
     _network: str
@@ -51,11 +54,19 @@ class Paths:
     VERSION_NAME = &#34;v{}&#34;
     NAME_FILE_EXX = &#34;{}/{}.json&#34;
 
+    TARGET_LOC = &#34;/root/contracts&#34;
+    COMPRESSED_NAME = &#34;solc-build.tar.gz&#34;
+    SOLC_VER = &#34;0.5.15&#34;
+    SOLCPATH = &#34;/root/contracts/vault&#34;
+    BUILDPATH = &#34;&#34;
+    WEB_DAPP_SRC = &#34;app&#34;
+
     def __init__(self, root_path_as_workspace):
         self.___workspace = root_path_as_workspace
         self.___current_deployment_path = os.path.join(self.___workspace, self.ACTION_FOLDER)
         self.SUB_FIX = &#34;&#34;
         self.___network_name = &#34;mainnet&#34;
+        self.BUILDPATH = root_path_as_workspace
 
     @property
     def subFix(self) -&gt; str:
@@ -72,9 +83,16 @@ class Paths:
     def showCurrentDeployedClass(cls, class_name: str) -&gt; str:
         return cls.NAME_FILE_EXX.format(cls.ACTION_FOLDER, class_name)
 
+    def setSolVersion(self, version: str) -&gt; &#34;Paths&#34;:
+        self.SOLC_VER = version
+        return self
+
     def setDefaultPath(self) -&gt; &#34;Paths&#34;:
         self.___current_deployment_path = os.path.join(self.___workspace, self.ACTION_FOLDER)
         return self
+
+    def workspaceFilename(self, name) -&gt; str:
+        return os.path.join(self.___workspace, name)
 
     def classObject(self, className: str) -&gt; str:
         return os.path.join(self.___current_deployment_path, &#34;{}.json&#34;.format(className))
@@ -133,13 +151,16 @@ class Paths:
 <span>(</span><span>root_path_as_workspace)</span>
 </code></dt>
 <dd>
-<div class="desc"><p>manage the workspace paths</p></div>
+<div class="desc"><p>Manage the workspace paths</p></div>
 <details class="source">
 <summary>
 <span>Expand source code</span>
 </summary>
 <pre><code class="python">class Paths:
-    &#34;&#34;&#34;manage the workspace paths&#34;&#34;&#34;
+    &#34;&#34;&#34;
+    Manage the workspace paths
+
+    &#34;&#34;&#34;
     statement = &#39;End : {}, IO File {}&#39;
     _contract_dict: dict
     _network: str
@@ -151,11 +172,19 @@ class Paths:
     VERSION_NAME = &#34;v{}&#34;
     NAME_FILE_EXX = &#34;{}/{}.json&#34;
 
+    TARGET_LOC = &#34;/root/contracts&#34;
+    COMPRESSED_NAME = &#34;solc-build.tar.gz&#34;
+    SOLC_VER = &#34;0.5.15&#34;
+    SOLCPATH = &#34;/root/contracts/vault&#34;
+    BUILDPATH = &#34;&#34;
+    WEB_DAPP_SRC = &#34;app&#34;
+
     def __init__(self, root_path_as_workspace):
         self.___workspace = root_path_as_workspace
         self.___current_deployment_path = os.path.join(self.___workspace, self.ACTION_FOLDER)
         self.SUB_FIX = &#34;&#34;
         self.___network_name = &#34;mainnet&#34;
+        self.BUILDPATH = root_path_as_workspace
 
     @property
     def subFix(self) -&gt; str:
@@ -172,9 +201,16 @@ class Paths:
     def showCurrentDeployedClass(cls, class_name: str) -&gt; str:
         return cls.NAME_FILE_EXX.format(cls.ACTION_FOLDER, class_name)
 
+    def setSolVersion(self, version: str) -&gt; &#34;Paths&#34;:
+        self.SOLC_VER = version
+        return self
+
     def setDefaultPath(self) -&gt; &#34;Paths&#34;:
         self.___current_deployment_path = os.path.join(self.___workspace, self.ACTION_FOLDER)
         return self
+
+    def workspaceFilename(self, name) -&gt; str:
+        return os.path.join(self.___workspace, name)
 
     def classObject(self, className: str) -&gt; str:
         return os.path.join(self.___current_deployment_path, &#34;{}.json&#34;.format(className))
@@ -224,7 +260,15 @@ class Paths:
 <dd>
 <div class="desc"></div>
 </dd>
+<dt id="moody.paths.Paths.BUILDPATH"><code class="name">var <span class="ident">BUILDPATH</span></code></dt>
+<dd>
+<div class="desc"></div>
+</dd>
 <dt id="moody.paths.Paths.COLLECTION_CONTRACTS"><code class="name">var <span class="ident">COLLECTION_CONTRACTS</span></code></dt>
+<dd>
+<div class="desc"></div>
+</dd>
+<dt id="moody.paths.Paths.COMPRESSED_NAME"><code class="name">var <span class="ident">COMPRESSED_NAME</span></code></dt>
 <dd>
 <div class="desc"></div>
 </dd>
@@ -244,7 +288,23 @@ class Paths:
 <dd>
 <div class="desc"></div>
 </dd>
+<dt id="moody.paths.Paths.SOLCPATH"><code class="name">var <span class="ident">SOLCPATH</span></code></dt>
+<dd>
+<div class="desc"></div>
+</dd>
+<dt id="moody.paths.Paths.SOLC_VER"><code class="name">var <span class="ident">SOLC_VER</span></code></dt>
+<dd>
+<div class="desc"></div>
+</dd>
+<dt id="moody.paths.Paths.TARGET_LOC"><code class="name">var <span class="ident">TARGET_LOC</span></code></dt>
+<dd>
+<div class="desc"></div>
+</dd>
 <dt id="moody.paths.Paths.VERSION_NAME"><code class="name">var <span class="ident">VERSION_NAME</span></code></dt>
+<dd>
+<div class="desc"></div>
+</dd>
+<dt id="moody.paths.Paths.WEB_DAPP_SRC"><code class="name">var <span class="ident">WEB_DAPP_SRC</span></code></dt>
 <dd>
 <div class="desc"></div>
 </dd>
@@ -408,6 +468,33 @@ def subFix(self) -&gt; str:
     return self</code></pre>
 </details>
 </dd>
+<dt id="moody.paths.Paths.setSolVersion"><code class="name flex">
+<span>def <span class="ident">setSolVersion</span></span>(<span>self, version: str) ‑> <a title="moody.paths.Paths" href="#moody.paths.Paths">Paths</a></span>
+</code></dt>
+<dd>
+<div class="desc"></div>
+<details class="source">
+<summary>
+<span>Expand source code</span>
+</summary>
+<pre><code class="python">def setSolVersion(self, version: str) -&gt; &#34;Paths&#34;:
+    self.SOLC_VER = version
+    return self</code></pre>
+</details>
+</dd>
+<dt id="moody.paths.Paths.workspaceFilename"><code class="name flex">
+<span>def <span class="ident">workspaceFilename</span></span>(<span>self, name) ‑> str</span>
+</code></dt>
+<dd>
+<div class="desc"></div>
+<details class="source">
+<summary>
+<span>Expand source code</span>
+</summary>
+<pre><code class="python">def workspaceFilename(self, name) -&gt; str:
+    return os.path.join(self.___workspace, name)</code></pre>
+</details>
+</dd>
 </dl>
 </dd>
 </dl>
@@ -430,7 +517,9 @@ def subFix(self) -&gt; str:
 <h4><code><a title="moody.paths.Paths" href="#moody.paths.Paths">Paths</a></code></h4>
 <ul class="">
 <li><code><a title="moody.paths.Paths.ACTION_FOLDER" href="#moody.paths.Paths.ACTION_FOLDER">ACTION_FOLDER</a></code></li>
+<li><code><a title="moody.paths.Paths.BUILDPATH" href="#moody.paths.Paths.BUILDPATH">BUILDPATH</a></code></li>
 <li><code><a title="moody.paths.Paths.COLLECTION_CONTRACTS" href="#moody.paths.Paths.COLLECTION_CONTRACTS">COLLECTION_CONTRACTS</a></code></li>
+<li><code><a title="moody.paths.Paths.COMPRESSED_NAME" href="#moody.paths.Paths.COMPRESSED_NAME">COMPRESSED_NAME</a></code></li>
 <li><code><a title="moody.paths.Paths.DEPLOYMENT_FILE_NAME" href="#moody.paths.Paths.DEPLOYMENT_FILE_NAME">DEPLOYMENT_FILE_NAME</a></code></li>
 <li><code><a title="moody.paths.Paths.FILE_CONTRACT" href="#moody.paths.Paths.FILE_CONTRACT">FILE_CONTRACT</a></code></li>
 <li><code><a title="moody.paths.Paths.HISTORY_FOLDER" href="#moody.paths.Paths.HISTORY_FOLDER">HISTORY_FOLDER</a></code></li>
@@ -438,16 +527,22 @@ def subFix(self) -&gt; str:
 <li><code><a title="moody.paths.Paths.LoadPlayerFile" href="#moody.paths.Paths.LoadPlayerFile">LoadPlayerFile</a></code></li>
 <li><code><a title="moody.paths.Paths.NAME_FILE_EXX" href="#moody.paths.Paths.NAME_FILE_EXX">NAME_FILE_EXX</a></code></li>
 <li><code><a title="moody.paths.Paths.Network" href="#moody.paths.Paths.Network">Network</a></code></li>
+<li><code><a title="moody.paths.Paths.SOLCPATH" href="#moody.paths.Paths.SOLCPATH">SOLCPATH</a></code></li>
+<li><code><a title="moody.paths.Paths.SOLC_VER" href="#moody.paths.Paths.SOLC_VER">SOLC_VER</a></code></li>
 <li><code><a title="moody.paths.Paths.SaveDeployConfig" href="#moody.paths.Paths.SaveDeployConfig">SaveDeployConfig</a></code></li>
 <li><code><a title="moody.paths.Paths.SavePlayersList" href="#moody.paths.Paths.SavePlayersList">SavePlayersList</a></code></li>
 <li><code><a title="moody.paths.Paths.SetUseHistory" href="#moody.paths.Paths.SetUseHistory">SetUseHistory</a></code></li>
 <li><code><a title="moody.paths.Paths.SetUseVersion" href="#moody.paths.Paths.SetUseVersion">SetUseVersion</a></code></li>
+<li><code><a title="moody.paths.Paths.TARGET_LOC" href="#moody.paths.Paths.TARGET_LOC">TARGET_LOC</a></code></li>
 <li><code><a title="moody.paths.Paths.VERSION_NAME" href="#moody.paths.Paths.VERSION_NAME">VERSION_NAME</a></code></li>
+<li><code><a title="moody.paths.Paths.WEB_DAPP_SRC" href="#moody.paths.Paths.WEB_DAPP_SRC">WEB_DAPP_SRC</a></code></li>
 <li><code><a title="moody.paths.Paths.classObject" href="#moody.paths.Paths.classObject">classObject</a></code></li>
 <li><code><a title="moody.paths.Paths.setDefaultPath" href="#moody.paths.Paths.setDefaultPath">setDefaultPath</a></code></li>
+<li><code><a title="moody.paths.Paths.setSolVersion" href="#moody.paths.Paths.setSolVersion">setSolVersion</a></code></li>
 <li><code><a title="moody.paths.Paths.showCurrentDeployedClass" href="#moody.paths.Paths.showCurrentDeployedClass">showCurrentDeployedClass</a></code></li>
 <li><code><a title="moody.paths.Paths.statement" href="#moody.paths.Paths.statement">statement</a></code></li>
 <li><code><a title="moody.paths.Paths.subFix" href="#moody.paths.Paths.subFix">subFix</a></code></li>
+<li><code><a title="moody.paths.Paths.workspaceFilename" href="#moody.paths.Paths.workspaceFilename">workspaceFilename</a></code></li>
 </ul>
 </li>
 </ul>

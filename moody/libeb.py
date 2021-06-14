@@ -15,6 +15,8 @@ from web3.logs import DISCARD
 from web3.middleware import geth_poa_middleware
 from web3.types import BlockData
 
+from moody.buildercompile.remotecompile import BuildRemoteLinuxCommand
+from moody.buildercompile.transpile import BuildLang
 from moody.conf import Config
 from moody.paths import Paths
 
@@ -259,7 +261,22 @@ class MiliDoS:
         self.pathfinder = Paths(path).setDefaultPath().Network(self.network_cfg.network_name)
         return self
 
+    def remoteCompile(self, to_compile_contract_list: list, ver: str) -> "MiliDoS":
+        self.pathfinder.setSolVersion(ver)
+        BuildRemoteLinuxCommand(self.pathfinder, to_compile_contract_list)
+        return self
+
+    def localTranspile(self, to_compile_contract_list: list, ver: str) -> "MiliDoS":
+        BuildLang(self.pathfinder, to_compile_contract_list)
+        return self
+
     def get_block(self, block_identifier, full_transactions: bool = False):
+        """
+        to see the block information
+        :param block_identifier:
+        :param full_transactions:
+        :return:
+        """
         with w3_lock:
             res = self.w3.eth.getBlock(block_identifier, full_transactions)
         return res
@@ -345,7 +362,10 @@ class MiliDoS:
                params: list = [],
                fee: int = 10 ** 9,
                percent: int = 1) -> None:
-        """This is using the faster way to deploy files by using the specific abi and bin files"""
+        """
+        This is using the faster way to deploy files by using the specific abi and bin files
+
+        """
 
         solc_artifact = SolWeb3Tool()
         solc_artifact.setBasePath(self.base_path)

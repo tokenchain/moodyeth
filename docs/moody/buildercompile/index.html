@@ -4,7 +4,7 @@
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1, minimum-scale=1" />
 <meta name="generator" content="pdoc 0.9.1" />
-<title>moody API documentation</title>
+<title>moody.buildercompile API documentation</title>
 <meta name="description" content="" />
 <link rel="preload stylesheet" as="style" href="https://cdnjs.cloudflare.com/ajax/libs/10up-sanitize.css/11.0.1/sanitize.min.css" integrity="sha256-PK9q560IAAa6WVRRh76LtCaI8pjTJ2z11v0miyNNjrs=" crossorigin>
 <link rel="preload stylesheet" as="style" href="https://cdnjs.cloudflare.com/ajax/libs/10up-sanitize.css/11.0.1/typography.min.css" integrity="sha256-7l/o7C8jubJiy74VsKTidCy1yBkRtiUGbVkYBylBqUg=" crossorigin>
@@ -19,64 +19,70 @@
 <main>
 <article id="content">
 <header>
-<h1 class="title">Package <code>moody</code></h1>
+<h1 class="title">Module <code>moody.buildercompile</code></h1>
 </header>
 <section id="section-intro">
 <details class="source">
 <summary>
 <span>Expand source code</span>
 </summary>
-<pre><code class="python"># Token = namedtuple(&#39;Token&#39;, [&#39;address&#39;, &#39;name&#39;, &#39;code_hash&#39;], defaults=(None,) * 3)
-from dataclasses import dataclass
+<pre><code class="python">REC = &#34;&#34;&#34;#!/bin/bash
+if [[ ! -f {TARGET_LOC} ]]; then
+    mkdir -p {TARGET_LOC}/vault
+fi
+if [[ ! -f {TARGET_LOC}/build ]]; then
+    mkdir -p {TARGET_LOC}/build
+fi
+#chown -R www {TARGET_LOC}/vault
+cd {TARGET_LOC}
+echo &#34;🍜 changed permission to root&#34;
+SOLC_VERSION={SOLVER} solc --version
 
 
-@dataclass
-class Token:
-    address: str = None
-    name: str = None
-    code_hash: str = None
-    token_contract: str = None
+echo &#34;and then the compiler version should be... &#34;
 
 
-@dataclass
-class Config:
-    network_name: str
-    rpc_url: str
-    chain_id: int
-    symbol: str
-    block_explorer: str</code></pre>
+{LISTP}
+
+cd {TARGET_LOC}/build &amp;&amp; tar -czf {COMPRESSED_NAME} *.*
+mv {COMPRESSED_NAME} {TARGET_LOC}
+rm -rf {TARGET_LOC}/vault
+rm -rf {TARGET_LOC}/build
+
+exit
+
+&#34;&#34;&#34;
+
+
+TRANS_LOCAL = &#34;&#34;&#34;#!/bin/bash
+
+{LISTP}
+
+
+
+&#34;&#34;&#34;
+ITEM = &#34;&#34;&#34;
+echo &#34;🍯 make compile of the contract from {COMPILE_COIN}&#34;
+SOLC_VERSION={SOLVER} solc --allow-paths {SOLCPATH} -o build --bin --bin-runtime --abi --optimize --metadata --overwrite {COMPILE_COIN}
+echo &#34;=&gt; 🍺🍺🍺 {COMPILE_COIN}&#34;
+
+&#34;&#34;&#34;
+
+ITEM_CP_LOCAL = &#34;&#34;&#34;
+cp &#34;{fromlocation}&#34; &#34;{tolocation}&#34;
+&#34;&#34;&#34;</code></pre>
 </details>
 </section>
 <section>
 <h2 class="section-title" id="header-submodules">Sub-modules</h2>
 <dl>
-<dt><code class="name"><a title="moody.bridge" href="bridge/index.html">moody.bridge</a></code></dt>
+<dt><code class="name"><a title="moody.buildercompile.remotecompile" href="remotecompile.html">moody.buildercompile.remotecompile</a></code></dt>
 <dd>
 <div class="desc"></div>
 </dd>
-<dt><code class="name"><a title="moody.buildercompile" href="buildercompile/index.html">moody.buildercompile</a></code></dt>
+<dt><code class="name"><a title="moody.buildercompile.transpile" href="transpile.html">moody.buildercompile.transpile</a></code></dt>
 <dd>
 <div class="desc"></div>
-</dd>
-<dt><code class="name"><a title="moody.conf" href="conf.html">moody.conf</a></code></dt>
-<dd>
-<div class="desc"></div>
-</dd>
-<dt><code class="name"><a title="moody.erc20" href="erc20.html">moody.erc20</a></code></dt>
-<dd>
-<div class="desc"></div>
-</dd>
-<dt><code class="name"><a title="moody.libeb" href="libeb.html">moody.libeb</a></code></dt>
-<dd>
-<div class="desc"></div>
-</dd>
-<dt><code class="name"><a title="moody.m" href="m/index.html">moody.m</a></code></dt>
-<dd>
-<div class="desc"></div>
-</dd>
-<dt><code class="name"><a title="moody.paths" href="paths.html">moody.paths</a></code></dt>
-<dd>
-<div class="desc"><p>Base wrapper class for accessing ethereum smart contracts.</p></div>
 </dd>
 </dl>
 </section>
@@ -85,86 +91,6 @@ class Config:
 <section>
 </section>
 <section>
-<h2 class="section-title" id="header-classes">Classes</h2>
-<dl>
-<dt id="moody.Config"><code class="flex name class">
-<span>class <span class="ident">Config</span></span>
-<span>(</span><span>network_name: str, rpc_url: str, chain_id: int, symbol: str, block_explorer: str)</span>
-</code></dt>
-<dd>
-<div class="desc"><p>Config(network_name: str, rpc_url: str, chain_id: int, symbol: str, block_explorer: str)</p></div>
-<details class="source">
-<summary>
-<span>Expand source code</span>
-</summary>
-<pre><code class="python">class Config:
-    network_name: str
-    rpc_url: str
-    chain_id: int
-    symbol: str
-    block_explorer: str</code></pre>
-</details>
-<h3>Class variables</h3>
-<dl>
-<dt id="moody.Config.block_explorer"><code class="name">var <span class="ident">block_explorer</span> : str</code></dt>
-<dd>
-<div class="desc"></div>
-</dd>
-<dt id="moody.Config.chain_id"><code class="name">var <span class="ident">chain_id</span> : int</code></dt>
-<dd>
-<div class="desc"></div>
-</dd>
-<dt id="moody.Config.network_name"><code class="name">var <span class="ident">network_name</span> : str</code></dt>
-<dd>
-<div class="desc"></div>
-</dd>
-<dt id="moody.Config.rpc_url"><code class="name">var <span class="ident">rpc_url</span> : str</code></dt>
-<dd>
-<div class="desc"></div>
-</dd>
-<dt id="moody.Config.symbol"><code class="name">var <span class="ident">symbol</span> : str</code></dt>
-<dd>
-<div class="desc"></div>
-</dd>
-</dl>
-</dd>
-<dt id="moody.Token"><code class="flex name class">
-<span>class <span class="ident">Token</span></span>
-<span>(</span><span>address: str = None, name: str = None, code_hash: str = None, token_contract: str = None)</span>
-</code></dt>
-<dd>
-<div class="desc"><p>Token(address: str = None, name: str = None, code_hash: str = None, token_contract: str = None)</p></div>
-<details class="source">
-<summary>
-<span>Expand source code</span>
-</summary>
-<pre><code class="python">class Token:
-    address: str = None
-    name: str = None
-    code_hash: str = None
-    token_contract: str = None</code></pre>
-</details>
-<h3>Class variables</h3>
-<dl>
-<dt id="moody.Token.address"><code class="name">var <span class="ident">address</span> : str</code></dt>
-<dd>
-<div class="desc"></div>
-</dd>
-<dt id="moody.Token.code_hash"><code class="name">var <span class="ident">code_hash</span> : str</code></dt>
-<dd>
-<div class="desc"></div>
-</dd>
-<dt id="moody.Token.name"><code class="name">var <span class="ident">name</span> : str</code></dt>
-<dd>
-<div class="desc"></div>
-</dd>
-<dt id="moody.Token.token_contract"><code class="name">var <span class="ident">token_contract</span> : str</code></dt>
-<dd>
-<div class="desc"></div>
-</dd>
-</dl>
-</dd>
-</dl>
 </section>
 </article>
 <nav id="sidebar">
@@ -173,38 +99,15 @@ class Config:
 <ul></ul>
 </div>
 <ul id="index">
+<li><h3>Super-module</h3>
+<ul>
+<li><code><a title="moody" href="../index.html">moody</a></code></li>
+</ul>
+</li>
 <li><h3><a href="#header-submodules">Sub-modules</a></h3>
 <ul>
-<li><code><a title="moody.bridge" href="bridge/index.html">moody.bridge</a></code></li>
-<li><code><a title="moody.buildercompile" href="buildercompile/index.html">moody.buildercompile</a></code></li>
-<li><code><a title="moody.conf" href="conf.html">moody.conf</a></code></li>
-<li><code><a title="moody.erc20" href="erc20.html">moody.erc20</a></code></li>
-<li><code><a title="moody.libeb" href="libeb.html">moody.libeb</a></code></li>
-<li><code><a title="moody.m" href="m/index.html">moody.m</a></code></li>
-<li><code><a title="moody.paths" href="paths.html">moody.paths</a></code></li>
-</ul>
-</li>
-<li><h3><a href="#header-classes">Classes</a></h3>
-<ul>
-<li>
-<h4><code><a title="moody.Config" href="#moody.Config">Config</a></code></h4>
-<ul class="">
-<li><code><a title="moody.Config.block_explorer" href="#moody.Config.block_explorer">block_explorer</a></code></li>
-<li><code><a title="moody.Config.chain_id" href="#moody.Config.chain_id">chain_id</a></code></li>
-<li><code><a title="moody.Config.network_name" href="#moody.Config.network_name">network_name</a></code></li>
-<li><code><a title="moody.Config.rpc_url" href="#moody.Config.rpc_url">rpc_url</a></code></li>
-<li><code><a title="moody.Config.symbol" href="#moody.Config.symbol">symbol</a></code></li>
-</ul>
-</li>
-<li>
-<h4><code><a title="moody.Token" href="#moody.Token">Token</a></code></h4>
-<ul class="">
-<li><code><a title="moody.Token.address" href="#moody.Token.address">address</a></code></li>
-<li><code><a title="moody.Token.code_hash" href="#moody.Token.code_hash">code_hash</a></code></li>
-<li><code><a title="moody.Token.name" href="#moody.Token.name">name</a></code></li>
-<li><code><a title="moody.Token.token_contract" href="#moody.Token.token_contract">token_contract</a></code></li>
-</ul>
-</li>
+<li><code><a title="moody.buildercompile.remotecompile" href="remotecompile.html">moody.buildercompile.remotecompile</a></code></li>
+<li><code><a title="moody.buildercompile.transpile" href="transpile.html">moody.buildercompile.transpile</a></code></li>
 </ul>
 </li>
 </ul>

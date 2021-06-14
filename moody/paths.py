@@ -10,7 +10,10 @@ import os
 
 
 class Paths:
-    """manage the workspace paths"""
+    """
+    Manage the workspace paths
+
+    """
     statement = 'End : {}, IO File {}'
     _contract_dict: dict
     _network: str
@@ -22,11 +25,19 @@ class Paths:
     VERSION_NAME = "v{}"
     NAME_FILE_EXX = "{}/{}.json"
 
+    TARGET_LOC = "/root/contracts"
+    COMPRESSED_NAME = "solc-build.tar.gz"
+    SOLC_VER = "0.5.15"
+    SOLCPATH = "/root/contracts/vault"
+    BUILDPATH = ""
+    WEB_DAPP_SRC = "app"
+
     def __init__(self, root_path_as_workspace):
         self.___workspace = root_path_as_workspace
         self.___current_deployment_path = os.path.join(self.___workspace, self.ACTION_FOLDER)
         self.SUB_FIX = ""
         self.___network_name = "mainnet"
+        self.BUILDPATH = root_path_as_workspace
 
     @property
     def subFix(self) -> str:
@@ -43,9 +54,16 @@ class Paths:
     def showCurrentDeployedClass(cls, class_name: str) -> str:
         return cls.NAME_FILE_EXX.format(cls.ACTION_FOLDER, class_name)
 
+    def setSolVersion(self, version: str) -> "Paths":
+        self.SOLC_VER = version
+        return self
+
     def setDefaultPath(self) -> "Paths":
         self.___current_deployment_path = os.path.join(self.___workspace, self.ACTION_FOLDER)
         return self
+
+    def workspaceFilename(self, name) -> str:
+        return os.path.join(self.___workspace, name)
 
     def classObject(self, className: str) -> str:
         return os.path.join(self.___current_deployment_path, "{}.json".format(className))
