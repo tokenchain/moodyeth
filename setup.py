@@ -117,8 +117,7 @@ setup(
         'Natural Language :: English',
         'Programming Language :: Python :: 3',
         'Programming Language :: Python :: 3.8',
-        'Programming Language :: Python :: 3.9',
-        'Programming Language :: Python :: 4.0',
+        'Programming Language :: Python :: 3.9'
     ],
     packages=find_packages(exclude=['examples','lab','test']),
     include_package_data=True,
