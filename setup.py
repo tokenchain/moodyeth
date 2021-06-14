@@ -92,6 +92,7 @@ EXTRAS_REQUIRE['dev'] = (
 )
 
 install_requires = [
+    "mypy-extensions==0.4.3",
     "web3>=5.20.0",
     "eth-utils==1.10.0"
 ]

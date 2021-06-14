@@ -25,10 +25,20 @@ increment_version() {
   fi
 }
 
+
+swap_src(){
+  local DEV_SRC=$HOME/Documents/b95/dao/moody
+  local DEPLOY_SRC=$HOME/Documents/piplines/moodyeth/
+  rm -rf moody
+  cp $DEV_SRC $DEPLOY_SRC
+}
+
 pub_ver() {
   VERSION=$(cat version)
   increment_version $VERSION >version
   VERSION=$(cat version)
+  
+  swap_src
 
   sudo rm -rf dist
   rm -rf docs
@@ -41,9 +51,10 @@ pub_ver() {
   # python3 -m pip install --upgrade setuptools wheel
   python3 -m readme_renderer README.rst -o ./html/README.html
   sudo python3 setup.py clean sdist bdist_wheel
+
   echo "========================================================="
   echo "now uploading the content to pypi"
-  python3 -m twine upload dist/* --verbose
+  #python3 -m twine upload dist/* --verbose
 
   echo "please update the package by using this command"
   echo "pip3 install moodyeth==$VERSION"
