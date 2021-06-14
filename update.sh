@@ -41,6 +41,7 @@ pub_ver() {
   # python3 -m pip install --upgrade setuptools wheel
   python3 -m readme_renderer README.rst -o ./html/README.html
   sudo python3 setup.py clean sdist bdist_wheel
+  echo "========================================================="
   echo "now uploading the content to pypi"
   python3 -m twine upload dist/* --verbose
 
