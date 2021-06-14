@@ -28,7 +28,7 @@ increment_version() {
 
 swap_src(){
   local DEV_SRC=$HOME/Documents/b95/dao/moody
-  local DEPLOY_SRC=$HOME/Documents/piplines/moodyeth/
+  local DEPLOY_SRC=$HOME/Documents/piplines/moodyeth/moody
   rm -rf moody
   cp $DEV_SRC $DEPLOY_SRC
 }
