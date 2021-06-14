@@ -19,10 +19,6 @@ A Python API for interacting with the Ether (ETH)
 .. image:: https://img.shields.io/github/issues-pr/tokenchain/moodyeth.svg
     :target: https://github.com/tokenchain/moodyeth/pulls
 
-.. image:: https://api.codacy.com/project/badge/Grade/8a5ae1e1cc834869b1094ea3b0d24f78
-   :alt: Codacy Badge
-   :target: https://app.codacy.com/app/serderovsh/moodyeth?utm_source=github.com&utm_medium=referral&utm_content=tokenchain/moodyeth&utm_campaign=Badge_Grade_Dashboard
-    
 
 ------------
 
@@ -78,4 +74,4 @@ Documentation is available at `docs <https://moodyeth.readthedocs.io/en/latest/>
 
 Donations
 =============
-
+Welcome for donation for the good works!
