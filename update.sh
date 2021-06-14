@@ -63,6 +63,6 @@ git_update() {
   git push
 }
 
-#pub_ver
+pub_ver
 
 git_update
