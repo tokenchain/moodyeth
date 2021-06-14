@@ -45,7 +45,7 @@ Usage
 Specify the API endpoints:
 
 Deploy Smart Contract
---------------
+---------------------
 
 .. code-block:: python
 
