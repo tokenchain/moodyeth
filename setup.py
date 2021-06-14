@@ -23,7 +23,7 @@ from setuptools import (
     find_packages,
     setup,
 )
-
+_dir = os.path.dirname(__file__)
 py_version = platform.python_version()
 
 
@@ -33,9 +33,14 @@ def find_version():
     f.close()
     return line
 
+def finedescription():
+    line = ''
+    with open(os.path.join(_dir, 'README.rst')) as f:
+        line = f.read()
+    return line
 
 PACKAGE_VERSION = str(find_version())
-
+PACKAGE_LONG_DESCRIPTION = str(finedescription())
 EXTRAS_REQUIRE = {
     "tester": [
         "coverage",
@@ -91,11 +96,6 @@ install_requires = [
     "eth-utils==1.10.0"
 ]
 
-this_dir = os.path.dirname(__file__)
-readme_filename = os.path.join(this_dir, 'README.rst')
-
-with open(readme_filename) as f:
-    PACKAGE_LONG_DESCRIPTION = f.read()
 
 setup(
     name='moodyeth',
