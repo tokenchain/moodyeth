@@ -61,15 +61,14 @@ Deploy Smart Contract
     c.deploy("ERC20")
 
 
-..
-
 
 Documentation
 =============
-Read the library manual by the `manual <docs/moodyeth/index.html>`__
+Read the library manual by the `manual <docs/moody/index.html>`__
 Documentation is available at `docs <https://moodyeth.readthedocs.io/en/latest/>`__.
 
 
 Donations
 =============
+
 Welcome for donation for the good works!
