@@ -50,17 +50,16 @@ Deploy Smart Contract
 .. code-block:: python
 
 
-# from web3.auto import w3
-import os
+    import os
 
-from moody.libeb import MiliDoS
-from moody import conf
-from key import pri
+    from moody.libeb import MiliDoS
+    from moody import conf
+    from key import pri
 
-ROOT = os.path.join(os.path.dirname(__file__))
-meta = MiliDoS(conf.MoonBeamTestnet())
-meta.setWorkspace(ROOT).Auth(pri).withPOA()
-meta.deploy("ERC20")
+    ROOT = os.path.join(os.path.dirname(__file__))
+    meta = MiliDoS(conf.MoonBeamTestnet())
+    meta.setWorkspace(ROOT).Auth(pri).withPOA()
+    meta.deploy("ERC20")
 
 
 ..
