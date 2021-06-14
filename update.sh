@@ -54,7 +54,7 @@ pub_ver() {
 
   echo "========================================================="
   echo "now uploading the content to pypi"
-  #python3 -m twine upload dist/* --verbose
+  python3 -m twine upload dist/* --verbose
 
   echo "please update the package by using this command"
   echo "pip3 install moodyeth==$VERSION"
