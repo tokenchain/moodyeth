@@ -38,7 +38,7 @@ pub_ver() {
 
   python3 -m pip install --user --upgrade setuptools wheel
   # python3 -m pip install --upgrade setuptools wheel
-
+  python3 -m readme_renderer README.rst -o /html/README.html
   sudo python3 setup.py clean sdist bdist_wheel
 
   # python3 -m pip install --user --upgrade twine
