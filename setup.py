@@ -1,6 +1,6 @@
 #!/usr/bin/env python
 # --------------------------------------------------------------------
-# Copyright (c) iEXBase. All rights reserved.
+# Copyright (c) tokenchain. All rights reserved.
 # Licensed under the MIT License.
 # See License.txt in the project root for license information.
 # --------------------------------------------------------------------
@@ -11,7 +11,7 @@
 
     Tron: A Python API for interacting with Tron (TRX)
 
-    :copyright: © 2018 by the iex-Base.
+    :copyright: © 2021 by the tokenchain.
     :license: MIT License
 """
 
@@ -74,6 +74,7 @@ EXTRAS_REQUIRE = {
         "tox>=1.8.0",
         "twine >= 1.11.0",
         "tqdm",
+        "pyinstall",
         "when-changed"
     ]
 
@@ -86,19 +87,8 @@ EXTRAS_REQUIRE['dev'] = (
 )
 
 install_requires = [
-    "cytoolz>=0.9.0,<1.0.0;implementation_name=='cpython'",
-    "eth-abi>=2.1.1,<3.0.0",
-    "ecdsa>=0.15,<0.16",
-    "eth-utils>=1.3.0,<2.0.0",
-    "eth-hash[pycryptodome]>=0.2.0,<1.0.0",
-    "trx-utils",
-    # "eth-account<1.0.0"
-    "eth-account>=0.5.3,<0.6.0",
-    "requests>=2.25.1",
-    "hexbytes>=0.1.0",
-    "six",
-    "bs4",
-    "base58>=2.0.0,<3.0.0"
+    "web3>=5.20.0",
+    "eth-utils==1.10.0"
 ]
 
 this_dir = os.path.dirname(__file__)
@@ -108,15 +98,15 @@ with open(readme_filename) as f:
     PACKAGE_LONG_DESCRIPTION = f.read()
 
 setup(
-    name='tronpytool',
+    name='moodyeth',
     version=PACKAGE_VERSION,
-    description='A Python API for interacting with Tron networks',
+    description='A Python API for interacting with Ethereum based networks',
     long_description=PACKAGE_LONG_DESCRIPTION,
     long_description_content_type='text/x-rst',
-    keywords='tron tron-api tron-api-python iex-base cli sdk pentest lovestories sexmachine',
-    url='https://github.com/iexbase/tron-api-python',
-    author='Sederov & Heskemo',
-    author_email='steein.shamsudin@gmail.com',
+    keywords='ethereum eth-api eth-api-python eth-base cli sdk pentest',
+    url='https://github.com/tokenchain/moodyeth',
+    author='Heskemo',
+    author_email='jobhesk@gmail.com',
     license='MIT License',
     zip_safe=False,
     python_requires='>=3.6,<4',
@@ -126,11 +116,11 @@ setup(
         'License :: OSI Approved :: MIT License',
         'Natural Language :: English',
         'Programming Language :: Python :: 3',
-        'Programming Language :: Python :: 3.6',
-        'Programming Language :: Python :: 3.7',
         'Programming Language :: Python :: 3.8',
+        'Programming Language :: Python :: 3.9',
+        'Programming Language :: Python :: 4.0',
     ],
-    packages=find_packages(exclude=['examples']),
+    packages=find_packages(exclude=['examples','lab','test']),
     include_package_data=True,
     install_requires=install_requires,
     tests_require=EXTRAS_REQUIRE['tester'],

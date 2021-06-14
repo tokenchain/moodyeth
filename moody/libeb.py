@@ -15,7 +15,7 @@ from web3.logs import DISCARD
 from web3.middleware import geth_poa_middleware
 from web3.types import BlockData
 
-from conf import Config
+from moody.conf import Config
 from moody.paths import Paths
 
 
@@ -226,6 +226,34 @@ class MiliDoS:
         self.w3.middleware_onion.inject(geth_poa_middleware, layer=0)
         return self
 
+    def connect(self, workspace: str, history: any) -> None:
+        """
+        connect the existing deployed contract
+        :param workspace: the workspace directory
+        :param history: the deployed history folder under the deploy_history
+        :return:
+        """
+        self.is_deploy = False
+        self.artifact_manager = SolWeb3Tool()
+        if history is False:
+            self.pathfinder = Paths(workspace).setDefaultPath().Network(self.network_cfg.network_name)
+        else:
+            self.pathfinder = Paths(workspace).SetUseHistory(history).Network(self.network_cfg.network_name)
+
+        self.ready_io(True)
+
+    def SetupContract(self):
+        pass
+
+    def after_deployment_initialize_settings(self):
+        """
+        setup contract starting params
+        setup the starting time using bang
+        setup the first member
+        :return:
+        """
+        pass
+
     def setWorkspace(self, path: str) -> "MiliDoS":
         self.base_path = path
         self.pathfinder = Paths(path).setDefaultPath().Network(self.network_cfg.network_name)
@@ -347,6 +375,7 @@ class MiliDoS:
             owner="",
         )
         print("======== address saved to ✅ {} -> {}".format(tx_receipt.contractAddress, class_name))
+        print("You can check with the explorer for more detail: {}".format(self.network_cfg.block_explorer))
         self.artifact_manager = solc_artifact
         solc_artifact.StoreTxResult(tx_receipt, self.pathfinder.classObject(class_name))
         self.complete_deployment()
