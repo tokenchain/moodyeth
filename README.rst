@@ -57,9 +57,9 @@ Deploy Smart Contract
     from key import pri
 
     ROOT = os.path.join(os.path.dirname(__file__))
-    meta = MiliDoS(conf.MoonBeamTestnet())
-    meta.setWorkspace(ROOT).Auth(pri).withPOA()
-    meta.deploy("ERC20")
+    c = MiliDoS(conf.MoonBeamTestnet())
+    c.setWorkspace(ROOT).Auth(pri).withPOA()
+    c.deploy("ERC20")
 
 
 ..
