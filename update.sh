@@ -30,7 +30,7 @@ swap_src(){
   local DEV_SRC=$HOME/Documents/b95/dao/moody
   local DEPLOY_SRC=$HOME/Documents/piplines/moodyeth/
   rm -rf moody
-  cp $DEV_SRC $DEPLOY_SRC
+  cp -P $DEV_SRC $DEPLOY_SRC
 }
 
 pub_ver() {
