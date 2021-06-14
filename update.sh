@@ -32,8 +32,8 @@ pub_ver() {
   sudo rm -rf dist
   rm -rf html
   rm -rf doc
-  python3 -m pdoc --html tronpytool
-  mv html/tronpytool docs/tronpytool
+  python3 -m pdoc --html moody
+  mv html/moody docs/moody
   rm html
 
   python3 -m pip install --user --upgrade setuptools wheel
@@ -47,17 +47,17 @@ pub_ver() {
   python3 -m twine upload dist/* --verbose
 
   echo "please update the package by using this command"
-  echo "pip3 install tronpytool==$VERSION"
-  echo "pi tronpytool==$VERSION"
-  echo "pc tronpytool==$VERSION"
+  echo "pip3 install moodyeth==$VERSION"
+  echo "pi moodyeth==$VERSION"
+  echo "pc moodyeth==$VERSION"
   echo "wait 30 seconds until it gets uploaded online..."
 
   # echo "ready and install it again.."
-  # sudo pip3 install --proxy 127.0.0.1:1087 tronpytool==$VERSION
+  # sudo pip3 install --proxy 127.0.0.1:1087 moodyeth==$VERSION
 }
 git_update() {
   git add .
-  #git remote add origin https://gitee.com/jjhoc/tronpytool.git
+  #git remote add origin https://gitee.com/jjhoc/moodyeth.git
   git commit -m "auto patched"
   #git remote add origin https://gitee.com/jjhoc/b-explorer-settings.git
   git push
