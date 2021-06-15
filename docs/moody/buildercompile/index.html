@@ -53,12 +53,15 @@ exit
 
 &#34;&#34;&#34;
 
-
 TRANS_LOCAL = &#34;&#34;&#34;#!/bin/bash
 
+# -----------------------------------------------
+if ! command -v abi-gen-uni &amp;&gt;/dev/null; then
+    echo &#34;abi-gen-uni could not be found. please check the official source from: https://www.npmjs.com/package/easy-abi-gen&#34;
+    cnpm i -g easy-abi-gen
+fi
+
 {LISTP}
-
-
 
 &#34;&#34;&#34;
 ITEM = &#34;&#34;&#34;
@@ -70,6 +73,46 @@ echo &#34;=&gt; 🍺🍺🍺 {COMPILE_COIN}&#34;
 
 ITEM_CP_LOCAL = &#34;&#34;&#34;
 cp &#34;{fromlocation}&#34; &#34;{tolocation}&#34;
+&#34;&#34;&#34;
+
+ITEM_TRANSPILE_PYTHON = &#34;&#34;&#34;
+if [[ ! -f {outputfolder} ]]; then
+    mkdir -p {outputfolder}
+fi
+echo &#34;==&gt; 🚸 compile abi to python: {target_abi} / {outputfolder}&#34;
+abi-gen-uni --abibins {target_abi} --out &#34;{outputfolder}&#34; \
+    --partials &#34;{BUILDPATH}/factoryabi/PythonEthernum/partials/*.handlebars&#34; \
+    --template &#34;{BUILDPATH}/factoryabi/PythonEthernum/contract.handlebars&#34; \
+    --language &#34;Python&#34;
+echo &#34;==&gt; compile abi to python 🚸✅&#34;
+&#34;&#34;&#34;
+
+ITEM_TRANSPILE_TS = &#34;&#34;&#34;
+echo &#34;==&gt; 🚸 compile abi to typescript&#34;
+if [[ ! -f {outputfolder} ]]; then
+    mkdir -p {outputfolder}
+fi
+
+abi-gen-uni --abibins &#34;{target_abi}&#34; --out &#34;{outputfolder}&#34; \
+    --partials &#34;{BUILDPATH}/factoryabi/TypeScriptEthernum/partials/*.handlebars&#34; \
+    --template &#34;{BUILDPATH}/factoryabi/TypeScriptEthernum/contract.handlebars&#34; \
+    --backend &#34;web3&#34; \
+    --language &#34;TypeScript&#34;
+
+echo &#34;==&gt; compile abi to typescript 🚸✅&#34;
+&#34;&#34;&#34;
+ITEM_TRANSPILE_GO=&#34;&#34;&#34;
+echo &#34;==&gt; 🚸 compile abi to golang&#34;
+local SOL=$1
+local CLASSNAME=$2
+local GO_CONTRACT_SRC_PATH=$3
+if [[ ! -f $GO_CONTRACT_SRC_PATH/$CLASSNAME ]]; then
+    mkdir -p &#34;$GO_CONTRACT_SRC_PATH/$CLASSNAME&#34;
+fi
+
+abigen --abi &#34;$BUILDPATH/build/$CLASSNAME.abi&#34; --pkg $CLASSNAME --out &#34;$GO_CONTRACT_SRC_PATH/$CLASSNAME/init.go&#34;
+
+echo &#34;==&gt; compile abi to golang 🚸✅&#34;
 &#34;&#34;&#34;</code></pre>
 </details>
 </section>

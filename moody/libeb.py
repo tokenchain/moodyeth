@@ -217,6 +217,7 @@ class MiliDoS:
         self.last_class = ""
         self.list_type = "list_address"
         self._contract_dict = dict()
+        self._sol_list = list()
         self.network_cfg = netconfig
         self.w3 = web3_provider(netconfig.rpc_url)
         result = self.w3.isConnected()
@@ -261,13 +262,17 @@ class MiliDoS:
         self.pathfinder = Paths(path).setDefaultPath().Network(self.network_cfg.network_name)
         return self
 
-    def remoteCompile(self, to_compile_contract_list: list, ver: str) -> "MiliDoS":
-        self.pathfinder.setSolVersion(ver)
-        BuildRemoteLinuxCommand(self.pathfinder, to_compile_contract_list)
+    def setClassSolNames(self, to_compile_contract_list: list) -> "MiliDoS":
+        self._sol_list = to_compile_contract_list
         return self
 
-    def localTranspile(self, to_compile_contract_list: list, ver: str) -> "MiliDoS":
-        BuildLang(self.pathfinder, to_compile_contract_list)
+    def remoteCompile(self, ver: str) -> "MiliDoS":
+        self.pathfinder.setSolVersion(ver)
+        BuildRemoteLinuxCommand(self.pathfinder, self._sol_list)
+        return self
+
+    def localTranspile(self) -> "MiliDoS":
+        BuildLang(self.pathfinder, self._sol_list)
         return self
 
     def get_block(self, block_identifier, full_transactions: bool = False):

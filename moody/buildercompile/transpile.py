@@ -2,7 +2,7 @@ import os
 import re
 
 from moody.paths import Paths
-from . import ITEM_CP_LOCAL, TRANS_LOCAL
+from . import ITEM_CP_LOCAL, TRANS_LOCAL, ITEM_TRANSPILE_PYTHON, ITEM_TRANSPILE_TS
 
 REG = r"(.+?)([A-Z])"
 
@@ -23,15 +23,29 @@ def filter_file_name(y: str) -> str:
     return classNameNew
 
 
-# ITEM_CP_LOCAL
-
 def buildCmdTsUpdate(p: Paths, pathName: str) -> str:
-    nameClass = filter_file_name(os.path.basename(pathName))
+    nameClass = filter_file_name(os.path.basename(pathName)).replace('.sol', '')
     fromp = "{}/codec/gen_ts/{}.ts".format(p.BUILDPATH, nameClass)
     top = "{}/{}/src/api/abi/{}.ts".format(p.BUILDPATH, p.WEB_DAPP_SRC, nameClass)
     return ITEM_CP_LOCAL.format(
         fromlocation=fromp,
         tolocation=top
+    )
+
+
+def buildCmdPy(p: Paths, pathName: str) -> str:
+    return ITEM_TRANSPILE_PYTHON.format(
+        outputfolder=f"{p.BUILDPATH}/codec/gen_py",
+        target_abi=f"{p.BUILDPATH}/build/{os.path.basename(pathName).replace('.sol', '')}.abi",
+        BUILDPATH=p.BUILDPATH
+    )
+
+
+def buildCmdTs(p: Paths, pathName: str) -> str:
+    return ITEM_TRANSPILE_TS.format(
+        outputfolder=f"{p.BUILDPATH}/codec/gen_ts",
+        target_abi=f"{p.BUILDPATH}/build/{os.path.basename(pathName).replace('.sol', '')}.abi",
+        BUILDPATH=p.BUILDPATH
     )
 
 
@@ -60,8 +74,10 @@ def BuildLang(p: Paths, list_class_names: list) -> None:
     k = list()
     # ==================================================
     for v in list_class_names:
+        k.append(buildCmdPy(p, v))
+        k.append(buildCmdTs(p, v))
         k.append(buildCmdTsUpdate(p, v))
     # ==================================================
-    with open(p.workspaceFilename("localCompile"), 'w') as f:
+    with open(p.workspaceFilename("localpile"), 'w') as f:
         f.write(wrapContent(p, k))
         f.close()

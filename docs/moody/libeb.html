@@ -245,6 +245,7 @@ class MiliDoS:
         self.last_class = &#34;&#34;
         self.list_type = &#34;list_address&#34;
         self._contract_dict = dict()
+        self._sol_list = list()
         self.network_cfg = netconfig
         self.w3 = web3_provider(netconfig.rpc_url)
         result = self.w3.isConnected()
@@ -289,13 +290,17 @@ class MiliDoS:
         self.pathfinder = Paths(path).setDefaultPath().Network(self.network_cfg.network_name)
         return self
 
-    def remoteCompile(self, to_compile_contract_list: list, ver: str) -&gt; &#34;MiliDoS&#34;:
-        self.pathfinder.setSolVersion(ver)
-        BuildRemoteLinuxCommand(self.pathfinder, to_compile_contract_list)
+    def setClassSolNames(self, to_compile_contract_list: list) -&gt; &#34;MiliDoS&#34;:
+        self._sol_list = to_compile_contract_list
         return self
 
-    def localTranspile(self, to_compile_contract_list: list, ver: str) -&gt; &#34;MiliDoS&#34;:
-        BuildLang(self.pathfinder, to_compile_contract_list)
+    def remoteCompile(self, ver: str) -&gt; &#34;MiliDoS&#34;:
+        self.pathfinder.setSolVersion(ver)
+        BuildRemoteLinuxCommand(self.pathfinder, self._sol_list)
+        return self
+
+    def localTranspile(self) -&gt; &#34;MiliDoS&#34;:
+        BuildLang(self.pathfinder, self._sol_list)
         return self
 
     def get_block(self, block_identifier, full_transactions: bool = False):
@@ -865,6 +870,7 @@ implement default like this::</p>
         self.last_class = &#34;&#34;
         self.list_type = &#34;list_address&#34;
         self._contract_dict = dict()
+        self._sol_list = list()
         self.network_cfg = netconfig
         self.w3 = web3_provider(netconfig.rpc_url)
         result = self.w3.isConnected()
@@ -909,13 +915,17 @@ implement default like this::</p>
         self.pathfinder = Paths(path).setDefaultPath().Network(self.network_cfg.network_name)
         return self
 
-    def remoteCompile(self, to_compile_contract_list: list, ver: str) -&gt; &#34;MiliDoS&#34;:
-        self.pathfinder.setSolVersion(ver)
-        BuildRemoteLinuxCommand(self.pathfinder, to_compile_contract_list)
+    def setClassSolNames(self, to_compile_contract_list: list) -&gt; &#34;MiliDoS&#34;:
+        self._sol_list = to_compile_contract_list
         return self
 
-    def localTranspile(self, to_compile_contract_list: list, ver: str) -&gt; &#34;MiliDoS&#34;:
-        BuildLang(self.pathfinder, to_compile_contract_list)
+    def remoteCompile(self, ver: str) -&gt; &#34;MiliDoS&#34;:
+        self.pathfinder.setSolVersion(ver)
+        BuildRemoteLinuxCommand(self.pathfinder, self._sol_list)
+        return self
+
+    def localTranspile(self) -&gt; &#34;MiliDoS&#34;:
+        BuildLang(self.pathfinder, self._sol_list)
         return self
 
     def get_block(self, block_identifier, full_transactions: bool = False):
@@ -1650,7 +1660,7 @@ Note: Be cautions with the range provided, as the logic creates query for each b
 </details>
 </dd>
 <dt id="moody.libeb.MiliDoS.localTranspile"><code class="name flex">
-<span>def <span class="ident">localTranspile</span></span>(<span>self, to_compile_contract_list: list, ver: str) ‑> <a title="moody.libeb.MiliDoS" href="#moody.libeb.MiliDoS">MiliDoS</a></span>
+<span>def <span class="ident">localTranspile</span></span>(<span>self) ‑> <a title="moody.libeb.MiliDoS" href="#moody.libeb.MiliDoS">MiliDoS</a></span>
 </code></dt>
 <dd>
 <div class="desc"></div>
@@ -1658,8 +1668,8 @@ Note: Be cautions with the range provided, as the logic creates query for each b
 <summary>
 <span>Expand source code</span>
 </summary>
-<pre><code class="python">def localTranspile(self, to_compile_contract_list: list, ver: str) -&gt; &#34;MiliDoS&#34;:
-    BuildLang(self.pathfinder, to_compile_contract_list)
+<pre><code class="python">def localTranspile(self) -&gt; &#34;MiliDoS&#34;:
+    BuildLang(self.pathfinder, self._sol_list)
     return self</code></pre>
 </details>
 </dd>
@@ -1727,7 +1737,7 @@ Note: Be cautions with the range provided, as the logic creates query for each b
 </details>
 </dd>
 <dt id="moody.libeb.MiliDoS.remoteCompile"><code class="name flex">
-<span>def <span class="ident">remoteCompile</span></span>(<span>self, to_compile_contract_list: list, ver: str) ‑> <a title="moody.libeb.MiliDoS" href="#moody.libeb.MiliDoS">MiliDoS</a></span>
+<span>def <span class="ident">remoteCompile</span></span>(<span>self, ver: str) ‑> <a title="moody.libeb.MiliDoS" href="#moody.libeb.MiliDoS">MiliDoS</a></span>
 </code></dt>
 <dd>
 <div class="desc"></div>
@@ -1735,9 +1745,9 @@ Note: Be cautions with the range provided, as the logic creates query for each b
 <summary>
 <span>Expand source code</span>
 </summary>
-<pre><code class="python">def remoteCompile(self, to_compile_contract_list: list, ver: str) -&gt; &#34;MiliDoS&#34;:
+<pre><code class="python">def remoteCompile(self, ver: str) -&gt; &#34;MiliDoS&#34;:
     self.pathfinder.setSolVersion(ver)
-    BuildRemoteLinuxCommand(self.pathfinder, to_compile_contract_list)
+    BuildRemoteLinuxCommand(self.pathfinder, self._sol_list)
     return self</code></pre>
 </details>
 </dd>
@@ -1785,6 +1795,20 @@ Note: Be cautions with the range provided, as the logic creates query for each b
         })
     signed_txn = self.w3.eth.account.sign_transaction(tx, private_key)
     return self.w3.eth.sendRawTransaction(signed_txn.rawTransaction)</code></pre>
+</details>
+</dd>
+<dt id="moody.libeb.MiliDoS.setClassSolNames"><code class="name flex">
+<span>def <span class="ident">setClassSolNames</span></span>(<span>self, to_compile_contract_list: list) ‑> <a title="moody.libeb.MiliDoS" href="#moody.libeb.MiliDoS">MiliDoS</a></span>
+</code></dt>
+<dd>
+<div class="desc"></div>
+<details class="source">
+<summary>
+<span>Expand source code</span>
+</summary>
+<pre><code class="python">def setClassSolNames(self, to_compile_contract_list: list) -&gt; &#34;MiliDoS&#34;:
+    self._sol_list = to_compile_contract_list
+    return self</code></pre>
 </details>
 </dd>
 <dt id="moody.libeb.MiliDoS.setKV"><code class="name flex">
@@ -2251,6 +2275,7 @@ all works will be done with the remote server or using the docker</p></div>
 <li><code><a title="moody.libeb.MiliDoS.remoteCompile" href="#moody.libeb.MiliDoS.remoteCompile">remoteCompile</a></code></li>
 <li><code><a title="moody.libeb.MiliDoS.removeAddress" href="#moody.libeb.MiliDoS.removeAddress">removeAddress</a></code></li>
 <li><code><a title="moody.libeb.MiliDoS.send_contract_tx" href="#moody.libeb.MiliDoS.send_contract_tx">send_contract_tx</a></code></li>
+<li><code><a title="moody.libeb.MiliDoS.setClassSolNames" href="#moody.libeb.MiliDoS.setClassSolNames">setClassSolNames</a></code></li>
 <li><code><a title="moody.libeb.MiliDoS.setKV" href="#moody.libeb.MiliDoS.setKV">setKV</a></code></li>
 <li><code><a title="moody.libeb.MiliDoS.setTargetClass" href="#moody.libeb.MiliDoS.setTargetClass">setTargetClass</a></code></li>
 <li><code><a title="moody.libeb.MiliDoS.setTargetListName" href="#moody.libeb.MiliDoS.setTargetListName">setTargetListName</a></code></li>
