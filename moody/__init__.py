@@ -1,5 +1,17 @@
 # Token = namedtuple('Token', ['address', 'name', 'code_hash'], defaults=(None,) * 3)
+import sys
 from dataclasses import dataclass
+
+import pkg_resources
+
+if sys.version_info < (3, 5):
+    raise EnvironmentError("Python 3.5 or above is required")
+
+# __version__ = pkg_resources.get_distribution("moodyeth").version
+
+#__all__ = [
+#    '__version__',
+#]
 
 
 @dataclass

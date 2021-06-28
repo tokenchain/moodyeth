@@ -70,3 +70,14 @@ def HuobiChainTestnet() -> Config:
         symbol="HT",
         block_explorer="https://testnet.hecoinfo.com/"
     )
+
+
+def XDaiMainnet() -> Config:
+    return Config(
+        network_name="EthereumPOAxDai",
+        rpc_url="https://rpc.xdaichain.com",
+        chain_id=100,
+        symbol="xDai",
+        block_explorer="https://explorer.anyblock.tools/ethereum/poa/xdai/"
+    )
+

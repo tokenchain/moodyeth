@@ -44,6 +44,7 @@ echo "=> 🍺🍺🍺 {COMPILE_COIN}"
 """
 
 ITEM_CP_LOCAL = """
+rm "{tolocation}"
 cp "{fromlocation}" "{tolocation}"
 """
 

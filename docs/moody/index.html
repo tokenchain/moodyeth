@@ -27,7 +27,19 @@
 <span>Expand source code</span>
 </summary>
 <pre><code class="python"># Token = namedtuple(&#39;Token&#39;, [&#39;address&#39;, &#39;name&#39;, &#39;code_hash&#39;], defaults=(None,) * 3)
+import sys
 from dataclasses import dataclass
+
+import pkg_resources
+
+if sys.version_info &lt; (3, 5):
+    raise EnvironmentError(&#34;Python 3.5 or above is required&#34;)
+
+# __version__ = pkg_resources.get_distribution(&#34;moodyeth&#34;).version
+
+#__all__ = [
+#    &#39;__version__&#39;,
+#]
 
 
 @dataclass

@@ -97,6 +97,16 @@ def HuobiChainTestnet() -&gt; Config:
         chain_id=256,
         symbol=&#34;HT&#34;,
         block_explorer=&#34;https://testnet.hecoinfo.com/&#34;
+    )
+
+
+def XDaiMainnet() -&gt; Config:
+    return Config(
+        network_name=&#34;EthereumPOAxDai&#34;,
+        rpc_url=&#34;https://rpc.xdaichain.com&#34;,
+        chain_id=100,
+        symbol=&#34;xDai&#34;,
+        block_explorer=&#34;https://explorer.anyblock.tools/ethereum/poa/xdai/&#34;
     )</code></pre>
 </details>
 </section>
@@ -241,6 +251,25 @@ def HuobiChainTestnet() -&gt; Config:
     )</code></pre>
 </details>
 </dd>
+<dt id="moody.conf.XDaiMainnet"><code class="name flex">
+<span>def <span class="ident">XDaiMainnet</span></span>(<span>) ‑> <a title="moody.Config" href="index.html#moody.Config">Config</a></span>
+</code></dt>
+<dd>
+<div class="desc"></div>
+<details class="source">
+<summary>
+<span>Expand source code</span>
+</summary>
+<pre><code class="python">def XDaiMainnet() -&gt; Config:
+    return Config(
+        network_name=&#34;EthereumPOAxDai&#34;,
+        rpc_url=&#34;https://rpc.xdaichain.com&#34;,
+        chain_id=100,
+        symbol=&#34;xDai&#34;,
+        block_explorer=&#34;https://explorer.anyblock.tools/ethereum/poa/xdai/&#34;
+    )</code></pre>
+</details>
+</dd>
 </dl>
 </section>
 <section>
@@ -266,6 +295,7 @@ def HuobiChainTestnet() -&gt; Config:
 <li><code><a title="moody.conf.Kovan" href="#moody.conf.Kovan">Kovan</a></code></li>
 <li><code><a title="moody.conf.MoonBeamTestnet" href="#moody.conf.MoonBeamTestnet">MoonBeamTestnet</a></code></li>
 <li><code><a title="moody.conf.Ropsten" href="#moody.conf.Ropsten">Ropsten</a></code></li>
+<li><code><a title="moody.conf.XDaiMainnet" href="#moody.conf.XDaiMainnet">XDaiMainnet</a></code></li>
 </ul>
 </li>
 </ul>
