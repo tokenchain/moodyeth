@@ -226,6 +226,8 @@ class MiliDoS:
             print(f"try to connect {self.network_cfg.network_name} {self.network_cfg.rpc_url}: {result}")
             exit(0)
             return
+        else:
+            print(f"You are now connected to {self.network_cfg.network_name} {self.network_cfg.rpc_url}")
 
     def withPOA(self) -> "MiliDoS":
         self.w3.middleware_onion.inject(geth_poa_middleware, layer=0)
@@ -359,11 +361,19 @@ class MiliDoS:
 
     def Auth(self, private_key_line: str) -> "MiliDoS":
         # f"0x{private_key_line}"
-        keyoo = self.w3.eth.account.from_key(f"0x{private_key_line}")
+        keyLo = self.w3.eth.account.from_key(f"0x{private_key_line}")
         # self.w3.eth.defaultAccount = keyoo.address
-        self.w3.eth.account = keyoo
-        self.accountAddr = keyoo.address
-        print(keyoo.address)
+        self.w3.eth.account = keyLo
+        #self.w3.eth.get_transaction_count
+        # self.w3.eth.accounts[0] = keyLo.address
+        # self.w3.eth.defaultAccount(f"0x{keyLo.key}")
+        is_address = self.w3.isAddress(keyLo.address)
+        #self.w3.isChecksumAddress(keyLo.address)
+        #keyLo.
+        self.accountAddr = keyLo.address
+        print(f"You are now using {keyLo.address} and it is a {'valid key' if is_address else 'invalid key'}")
+
+
         return self
 
     def deploy(self, class_name: str,

@@ -5,8 +5,8 @@ from typing import Any, Union
 
 from eth_utils import is_address, to_checksum_address
 from web3 import Web3
-from web3.providers.base import BaseProvider
-
+# from web3.providers.base import BaseProvider
+from ..libeb import MiliDoS
 from .tx_params import TxParams
 
 
@@ -15,7 +15,7 @@ class Validator:
 
     def __init__(
         self,
-        web3_or_provider: Union[Web3, BaseProvider],
+        web3_or_provider: Web3,
         contract_address: str,
     ):
         """Initialize the instance."""
@@ -37,7 +37,7 @@ class ContractMethod:
 
     def __init__(
         self,
-        web3_or_provider: Union[Web3, BaseProvider],
+        elib: MiliDoS,
         contract_address: str,
         validator: Validator = None,
     ):
@@ -47,21 +47,12 @@ class ContractMethod:
         :param contract_address: Where the contract has been deployed to.
         :param validator: Used to validate method inputs.
         """
-        web3 = None
-        if isinstance(web3_or_provider, BaseProvider):
-            web3 = Web3(web3_or_provider)
-        elif isinstance(web3_or_provider, Web3):
-            web3 = web3_or_provider
-        if web3 is None:
-            raise TypeError(
-                "Expected parameter 'web3_or_provider' to be an instance of either"
-                + " Web3 or BaseProvider"
-            )
 
-        self._web3_eth = web3.eth  # pylint: disable=no-member
+        self._web3_eth = elib.w3.eth  # pylint: disable=no-member
         if validator is None:
-            validator = Validator(web3_or_provider, contract_address)
+            validator = Validator(self._web3_eth, contract_address)
         self.validator = validator
+        self._operate = elib.accountAddr
 
     @staticmethod
     def validate_and_checksum_address(address: str):
@@ -75,7 +66,7 @@ class ContractMethod:
         if not tx_params:
             tx_params = TxParams()
         if not tx_params.from_:
-            tx_params.from_ = self._web3_eth.defaultAccount or (
+            tx_params.from_ = self._web3_eth.coinbase or (
                 self._web3_eth.accounts[0]
                 if len(self._web3_eth.accounts) > 0
                 else None
