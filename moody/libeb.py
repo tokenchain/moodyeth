@@ -220,16 +220,19 @@ class MiliDoS:
         self._sol_list = list()
         self.network_cfg = netconfig
         self.w3 = web3_provider(netconfig.rpc_url)
+
         result = self.w3.isConnected()
-        print(f"is now connected to {netconfig.network_name}: {result}")
         if not result:
+            print(f"try to connect {self.network_cfg.network_name} {self.network_cfg.rpc_url}: {result}")
             exit(0)
+            return
 
     def withPOA(self) -> "MiliDoS":
         self.w3.middleware_onion.inject(geth_poa_middleware, layer=0)
         return self
 
     def connect(self, workspace: str, history: any) -> None:
+
         """
         connect the existing deployed contract
         :param workspace: the workspace directory

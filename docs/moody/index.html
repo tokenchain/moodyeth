@@ -30,16 +30,15 @@
 import sys
 from dataclasses import dataclass
 
-import pkg_resources
-
 if sys.version_info &lt; (3, 5):
     raise EnvironmentError(&#34;Python 3.5 or above is required&#34;)
 
+
 # __version__ = pkg_resources.get_distribution(&#34;moodyeth&#34;).version
 
-#__all__ = [
+# __all__ = [
 #    &#39;__version__&#39;,
-#]
+# ]
 
 
 @dataclass
@@ -56,7 +55,10 @@ class Config:
     rpc_url: str
     chain_id: int
     symbol: str
-    block_explorer: str</code></pre>
+    block_explorer: str
+    bridge: str = &#34;&#34;,
+    gas: int = 500000,
+    gasPrice: int = 1000000000</code></pre>
 </details>
 </section>
 <section>
@@ -101,10 +103,10 @@ class Config:
 <dl>
 <dt id="moody.Config"><code class="flex name class">
 <span>class <span class="ident">Config</span></span>
-<span>(</span><span>network_name: str, rpc_url: str, chain_id: int, symbol: str, block_explorer: str)</span>
+<span>(</span><span>network_name: str, rpc_url: str, chain_id: int, symbol: str, block_explorer: str, bridge: str = ('',), gas: int = (500000,), gasPrice: int = 1000000000)</span>
 </code></dt>
 <dd>
-<div class="desc"><p>Config(network_name: str, rpc_url: str, chain_id: int, symbol: str, block_explorer: str)</p></div>
+<div class="desc"><p>Config(network_name: str, rpc_url: str, chain_id: int, symbol: str, block_explorer: str, bridge: str = ('',), gas: int = (500000,), gasPrice: int = 1000000000)</p></div>
 <details class="source">
 <summary>
 <span>Expand source code</span>
@@ -114,7 +116,10 @@ class Config:
     rpc_url: str
     chain_id: int
     symbol: str
-    block_explorer: str</code></pre>
+    block_explorer: str
+    bridge: str = &#34;&#34;,
+    gas: int = 500000,
+    gasPrice: int = 1000000000</code></pre>
 </details>
 <h3>Class variables</h3>
 <dl>
@@ -122,7 +127,19 @@ class Config:
 <dd>
 <div class="desc"></div>
 </dd>
+<dt id="moody.Config.bridge"><code class="name">var <span class="ident">bridge</span> : str</code></dt>
+<dd>
+<div class="desc"></div>
+</dd>
 <dt id="moody.Config.chain_id"><code class="name">var <span class="ident">chain_id</span> : int</code></dt>
+<dd>
+<div class="desc"></div>
+</dd>
+<dt id="moody.Config.gas"><code class="name">var <span class="ident">gas</span> : int</code></dt>
+<dd>
+<div class="desc"></div>
+</dd>
+<dt id="moody.Config.gasPrice"><code class="name">var <span class="ident">gasPrice</span> : int</code></dt>
 <dd>
 <div class="desc"></div>
 </dd>
@@ -200,9 +217,12 @@ class Config:
 <ul>
 <li>
 <h4><code><a title="moody.Config" href="#moody.Config">Config</a></code></h4>
-<ul class="">
+<ul class="two-column">
 <li><code><a title="moody.Config.block_explorer" href="#moody.Config.block_explorer">block_explorer</a></code></li>
+<li><code><a title="moody.Config.bridge" href="#moody.Config.bridge">bridge</a></code></li>
 <li><code><a title="moody.Config.chain_id" href="#moody.Config.chain_id">chain_id</a></code></li>
+<li><code><a title="moody.Config.gas" href="#moody.Config.gas">gas</a></code></li>
+<li><code><a title="moody.Config.gasPrice" href="#moody.Config.gasPrice">gasPrice</a></code></li>
 <li><code><a title="moody.Config.network_name" href="#moody.Config.network_name">network_name</a></code></li>
 <li><code><a title="moody.Config.rpc_url" href="#moody.Config.rpc_url">rpc_url</a></code></li>
 <li><code><a title="moody.Config.symbol" href="#moody.Config.symbol">symbol</a></code></li>

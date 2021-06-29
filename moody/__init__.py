@@ -2,16 +2,15 @@
 import sys
 from dataclasses import dataclass
 
-import pkg_resources
-
 if sys.version_info < (3, 5):
     raise EnvironmentError("Python 3.5 or above is required")
 
+
 # __version__ = pkg_resources.get_distribution("moodyeth").version
 
-#__all__ = [
+# __all__ = [
 #    '__version__',
-#]
+# ]
 
 
 @dataclass
@@ -29,3 +28,6 @@ class Config:
     chain_id: int
     symbol: str
     block_explorer: str
+    bridge: str = "",
+    gas: int = 500000,
+    gasPrice: int = 1000000000

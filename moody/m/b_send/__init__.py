@@ -48,6 +48,58 @@ except ImportError:
 
 
 
+class AddWhitelistAdminMethod(ContractMethod): # pylint: disable=invalid-name
+    """Various interfaces to the addWhitelistAdmin method."""
+
+    def __init__(self, web3_or_provider: Union[Web3, BaseProvider], contract_address: str, contract_function: ContractFunction, validator: Validator=None):
+        """Persist instance data."""
+        super().__init__(web3_or_provider, contract_address, validator)
+        self._underlying_method = contract_function
+
+    def validate_and_normalize_inputs(self, account: str):
+        """Validate the inputs to the addWhitelistAdmin method."""
+        self.validator.assert_valid(
+            method_name='addWhitelistAdmin',
+            parameter_name='account',
+            argument_value=account,
+        )
+        account = self.validate_and_checksum_address(account)
+        return (account)
+
+
+    def block_call(self, account: str, val: int = 0, fee: int = 1000000, debug: bool = False) -> None:
+        """Execute underlying contract method via eth_call.
+
+        :param tx_params: transaction parameters
+        :returns: the return value of the underlying method.
+        """
+        (account) = self.validate_and_normalize_inputs(account)
+
+        tx_params: Optional[TxParams] = None
+        tx_params = super().normalize_tx_params(tx_params)
+        self._underlying_method(account).call(tx_params.as_dict())
+
+    def send_transaction(self, account: str, tx_params: Optional[TxParams] = None) -> Union[HexBytes, bytes]:
+        """Execute underlying contract method via eth_sendTransaction.
+
+        :param tx_params: transaction parameters
+        """
+        (account) = self.validate_and_normalize_inputs(account)
+        tx_params = super().normalize_tx_params(tx_params)
+        return self._underlying_method(account).transact(tx_params.as_dict())
+
+    def build_transaction(self, account: str, tx_params: Optional[TxParams] = None) -> dict:
+        """Construct calldata to be used as input to the method."""
+        (account) = self.validate_and_normalize_inputs(account)
+        tx_params = super().normalize_tx_params(tx_params)
+        return self._underlying_method(account).buildTransaction(tx_params.as_dict())
+
+    def estimate_gas(self, account: str, tx_params: Optional[TxParams] = None) -> int:
+        """Estimate gas consumption of method call."""
+        (account) = self.validate_and_normalize_inputs(account)
+        tx_params = super().normalize_tx_params(tx_params)
+        return self._underlying_method(account).estimateGas(tx_params.as_dict())
+
 class BulkSendTokenMethod(ContractMethod): # pylint: disable=invalid-name
     """Various interfaces to the bulkSendToken method."""
 
@@ -233,6 +285,57 @@ class EthSendFeeMethod(ContractMethod): # pylint: disable=invalid-name
         tx_params = super().normalize_tx_params(tx_params)
         return self._underlying_method().estimateGas(tx_params.as_dict())
 
+class ExecuteBusMethod(ContractMethod): # pylint: disable=invalid-name
+    """Various interfaces to the executeBus method."""
+
+    def __init__(self, web3_or_provider: Union[Web3, BaseProvider], contract_address: str, contract_function: ContractFunction, validator: Validator=None):
+        """Persist instance data."""
+        super().__init__(web3_or_provider, contract_address, validator)
+        self._underlying_method = contract_function
+
+    def validate_and_normalize_inputs(self, data: List[Union[bytes, str]]):
+        """Validate the inputs to the executeBus method."""
+        self.validator.assert_valid(
+            method_name='executeBus',
+            parameter_name='_data',
+            argument_value=data,
+        )
+        return (data)
+
+
+    def block_call(self, data: List[Union[bytes, str]], val: int = 0, fee: int = 1000000, debug: bool = False) -> None:
+        """Execute underlying contract method via eth_call.
+
+        :param tx_params: transaction parameters
+        :returns: the return value of the underlying method.
+        """
+        (data) = self.validate_and_normalize_inputs(data)
+
+        tx_params: Optional[TxParams] = None
+        tx_params = super().normalize_tx_params(tx_params)
+        self._underlying_method(data).call(tx_params.as_dict())
+
+    def send_transaction(self, data: List[Union[bytes, str]], tx_params: Optional[TxParams] = None) -> Union[HexBytes, bytes]:
+        """Execute underlying contract method via eth_sendTransaction.
+
+        :param tx_params: transaction parameters
+        """
+        (data) = self.validate_and_normalize_inputs(data)
+        tx_params = super().normalize_tx_params(tx_params)
+        return self._underlying_method(data).transact(tx_params.as_dict())
+
+    def build_transaction(self, data: List[Union[bytes, str]], tx_params: Optional[TxParams] = None) -> dict:
+        """Construct calldata to be used as input to the method."""
+        (data) = self.validate_and_normalize_inputs(data)
+        tx_params = super().normalize_tx_params(tx_params)
+        return self._underlying_method(data).buildTransaction(tx_params.as_dict())
+
+    def estimate_gas(self, data: List[Union[bytes, str]], tx_params: Optional[TxParams] = None) -> int:
+        """Estimate gas consumption of method call."""
+        (data) = self.validate_and_normalize_inputs(data)
+        tx_params = super().normalize_tx_params(tx_params)
+        return self._underlying_method(data).estimateGas(tx_params.as_dict())
+
 class GetbalanceMethod(ContractMethod): # pylint: disable=invalid-name
     """Various interfaces to the getbalance method."""
 
@@ -271,6 +374,32 @@ class GetbalanceMethod(ContractMethod): # pylint: disable=invalid-name
         tx_params = super().normalize_tx_params(tx_params)
         return self._underlying_method(addr).estimateGas(tx_params.as_dict())
 
+class IsLockedMethod(ContractMethod): # pylint: disable=invalid-name
+    """Various interfaces to the isLocked method."""
+
+    def __init__(self, web3_or_provider: Union[Web3, BaseProvider], contract_address: str, contract_function: ContractFunction):
+        """Persist instance data."""
+        super().__init__(web3_or_provider, contract_address)
+        self._underlying_method = contract_function
+
+
+    def block_call(self, val: int = 0, fee: int = 1000000, debug: bool = False) -> bool:
+        """Execute underlying contract method via eth_call.
+
+        :param tx_params: transaction parameters
+
+        """
+
+        tx_params: Optional[TxParams] = None
+        tx_params = super().normalize_tx_params(tx_params)
+        returned = self._underlying_method().call(tx_params.as_dict())
+        return bool(returned)
+
+    def estimate_gas(self, tx_params: Optional[TxParams] = None) -> int:
+        """Estimate gas consumption of method call."""
+        tx_params = super().normalize_tx_params(tx_params)
+        return self._underlying_method().estimateGas(tx_params.as_dict())
+
 class IsOwnerMethod(ContractMethod): # pylint: disable=invalid-name
     """Various interfaces to the isOwner method."""
 
@@ -297,6 +426,44 @@ class IsOwnerMethod(ContractMethod): # pylint: disable=invalid-name
         tx_params = super().normalize_tx_params(tx_params)
         return self._underlying_method().estimateGas(tx_params.as_dict())
 
+class IsWhitelistAdminMethod(ContractMethod): # pylint: disable=invalid-name
+    """Various interfaces to the isWhitelistAdmin method."""
+
+    def __init__(self, web3_or_provider: Union[Web3, BaseProvider], contract_address: str, contract_function: ContractFunction, validator: Validator=None):
+        """Persist instance data."""
+        super().__init__(web3_or_provider, contract_address, validator)
+        self._underlying_method = contract_function
+
+    def validate_and_normalize_inputs(self, account: str):
+        """Validate the inputs to the isWhitelistAdmin method."""
+        self.validator.assert_valid(
+            method_name='isWhitelistAdmin',
+            parameter_name='account',
+            argument_value=account,
+        )
+        account = self.validate_and_checksum_address(account)
+        return (account)
+
+
+    def block_call(self, account: str, val: int = 0, fee: int = 1000000, debug: bool = False) -> bool:
+        """Execute underlying contract method via eth_call.
+
+        :param tx_params: transaction parameters
+
+        """
+        (account) = self.validate_and_normalize_inputs(account)
+
+        tx_params: Optional[TxParams] = None
+        tx_params = super().normalize_tx_params(tx_params)
+        returned = self._underlying_method(account).call(tx_params.as_dict())
+        return bool(returned)
+
+    def estimate_gas(self, account: str, tx_params: Optional[TxParams] = None) -> int:
+        """Estimate gas consumption of method call."""
+        (account) = self.validate_and_normalize_inputs(account)
+        tx_params = super().normalize_tx_params(tx_params)
+        return self._underlying_method(account).estimateGas(tx_params.as_dict())
+
 class OwnerMethod(ContractMethod): # pylint: disable=invalid-name
     """Various interfaces to the owner method."""
 
@@ -322,6 +489,96 @@ class OwnerMethod(ContractMethod): # pylint: disable=invalid-name
         """Estimate gas consumption of method call."""
         tx_params = super().normalize_tx_params(tx_params)
         return self._underlying_method().estimateGas(tx_params.as_dict())
+
+class PulllockMethod(ContractMethod): # pylint: disable=invalid-name
+    """Various interfaces to the pulllock method."""
+
+    def __init__(self, web3_or_provider: Union[Web3, BaseProvider], contract_address: str, contract_function: ContractFunction):
+        """Persist instance data."""
+        super().__init__(web3_or_provider, contract_address)
+        self._underlying_method = contract_function
+
+
+    def block_call(self, val: int = 0, fee: int = 1000000, debug: bool = False) -> None:
+        """Execute underlying contract method via eth_call.
+
+        :param tx_params: transaction parameters
+        :returns: the return value of the underlying method.
+        """
+
+        tx_params: Optional[TxParams] = None
+        tx_params = super().normalize_tx_params(tx_params)
+        self._underlying_method().call(tx_params.as_dict())
+
+    def send_transaction(self, tx_params: Optional[TxParams] = None) -> Union[HexBytes, bytes]:
+        """Execute underlying contract method via eth_sendTransaction.
+
+        :param tx_params: transaction parameters
+        """
+        tx_params = super().normalize_tx_params(tx_params)
+        return self._underlying_method().transact(tx_params.as_dict())
+
+    def build_transaction(self, tx_params: Optional[TxParams] = None) -> dict:
+        """Construct calldata to be used as input to the method."""
+        tx_params = super().normalize_tx_params(tx_params)
+        return self._underlying_method().buildTransaction(tx_params.as_dict())
+
+    def estimate_gas(self, tx_params: Optional[TxParams] = None) -> int:
+        """Estimate gas consumption of method call."""
+        tx_params = super().normalize_tx_params(tx_params)
+        return self._underlying_method().estimateGas(tx_params.as_dict())
+
+class RemoveWhitelistAdminMethod(ContractMethod): # pylint: disable=invalid-name
+    """Various interfaces to the removeWhitelistAdmin method."""
+
+    def __init__(self, web3_or_provider: Union[Web3, BaseProvider], contract_address: str, contract_function: ContractFunction, validator: Validator=None):
+        """Persist instance data."""
+        super().__init__(web3_or_provider, contract_address, validator)
+        self._underlying_method = contract_function
+
+    def validate_and_normalize_inputs(self, account: str):
+        """Validate the inputs to the removeWhitelistAdmin method."""
+        self.validator.assert_valid(
+            method_name='removeWhitelistAdmin',
+            parameter_name='account',
+            argument_value=account,
+        )
+        account = self.validate_and_checksum_address(account)
+        return (account)
+
+
+    def block_call(self, account: str, val: int = 0, fee: int = 1000000, debug: bool = False) -> None:
+        """Execute underlying contract method via eth_call.
+
+        :param tx_params: transaction parameters
+        :returns: the return value of the underlying method.
+        """
+        (account) = self.validate_and_normalize_inputs(account)
+
+        tx_params: Optional[TxParams] = None
+        tx_params = super().normalize_tx_params(tx_params)
+        self._underlying_method(account).call(tx_params.as_dict())
+
+    def send_transaction(self, account: str, tx_params: Optional[TxParams] = None) -> Union[HexBytes, bytes]:
+        """Execute underlying contract method via eth_sendTransaction.
+
+        :param tx_params: transaction parameters
+        """
+        (account) = self.validate_and_normalize_inputs(account)
+        tx_params = super().normalize_tx_params(tx_params)
+        return self._underlying_method(account).transact(tx_params.as_dict())
+
+    def build_transaction(self, account: str, tx_params: Optional[TxParams] = None) -> dict:
+        """Construct calldata to be used as input to the method."""
+        (account) = self.validate_and_normalize_inputs(account)
+        tx_params = super().normalize_tx_params(tx_params)
+        return self._underlying_method(account).buildTransaction(tx_params.as_dict())
+
+    def estimate_gas(self, account: str, tx_params: Optional[TxParams] = None) -> int:
+        """Estimate gas consumption of method call."""
+        (account) = self.validate_and_normalize_inputs(account)
+        tx_params = super().normalize_tx_params(tx_params)
+        return self._underlying_method(account).estimateGas(tx_params.as_dict())
 
 class RenounceOwnershipMethod(ContractMethod): # pylint: disable=invalid-name
     """Various interfaces to the renounceOwnership method."""
@@ -547,6 +804,44 @@ class TransferOwnershipMethod(ContractMethod): # pylint: disable=invalid-name
         tx_params = super().normalize_tx_params(tx_params)
         return self._underlying_method(new_owner).estimateGas(tx_params.as_dict())
 
+class UnlockMethod(ContractMethod): # pylint: disable=invalid-name
+    """Various interfaces to the unlock method."""
+
+    def __init__(self, web3_or_provider: Union[Web3, BaseProvider], contract_address: str, contract_function: ContractFunction):
+        """Persist instance data."""
+        super().__init__(web3_or_provider, contract_address)
+        self._underlying_method = contract_function
+
+
+    def block_call(self, val: int = 0, fee: int = 1000000, debug: bool = False) -> None:
+        """Execute underlying contract method via eth_call.
+
+        :param tx_params: transaction parameters
+        :returns: the return value of the underlying method.
+        """
+
+        tx_params: Optional[TxParams] = None
+        tx_params = super().normalize_tx_params(tx_params)
+        self._underlying_method().call(tx_params.as_dict())
+
+    def send_transaction(self, tx_params: Optional[TxParams] = None) -> Union[HexBytes, bytes]:
+        """Execute underlying contract method via eth_sendTransaction.
+
+        :param tx_params: transaction parameters
+        """
+        tx_params = super().normalize_tx_params(tx_params)
+        return self._underlying_method().transact(tx_params.as_dict())
+
+    def build_transaction(self, tx_params: Optional[TxParams] = None) -> dict:
+        """Construct calldata to be used as input to the method."""
+        tx_params = super().normalize_tx_params(tx_params)
+        return self._underlying_method().buildTransaction(tx_params.as_dict())
+
+    def estimate_gas(self, tx_params: Optional[TxParams] = None) -> int:
+        """Estimate gas consumption of method call."""
+        tx_params = super().normalize_tx_params(tx_params)
+        return self._underlying_method().estimateGas(tx_params.as_dict())
+
 class WithdrawEtherMethod(ContractMethod): # pylint: disable=invalid-name
     """Various interfaces to the withdrawEther method."""
 
@@ -676,6 +971,11 @@ class WithdrawTokenMethod(ContractMethod): # pylint: disable=invalid-name
 # pylint: disable=too-many-public-methods,too-many-instance-attributes
 class BSend:
     """Wrapper class for BSend Solidity contract."""
+    _fn_add_whitelist_admin: AddWhitelistAdminMethod
+    """Constructor-initialized instance of
+    :class:`AddWhitelistAdminMethod`.
+    """
+
     _fn_bulk_send_token: BulkSendTokenMethod
     """Constructor-initialized instance of
     :class:`BulkSendTokenMethod`.
@@ -696,9 +996,19 @@ class BSend:
     :class:`EthSendFeeMethod`.
     """
 
+    _fn_execute_bus: ExecuteBusMethod
+    """Constructor-initialized instance of
+    :class:`ExecuteBusMethod`.
+    """
+
     _fn_getbalance: GetbalanceMethod
     """Constructor-initialized instance of
     :class:`GetbalanceMethod`.
+    """
+
+    _fn_is_locked: IsLockedMethod
+    """Constructor-initialized instance of
+    :class:`IsLockedMethod`.
     """
 
     _fn_is_owner: IsOwnerMethod
@@ -706,9 +1016,24 @@ class BSend:
     :class:`IsOwnerMethod`.
     """
 
+    _fn_is_whitelist_admin: IsWhitelistAdminMethod
+    """Constructor-initialized instance of
+    :class:`IsWhitelistAdminMethod`.
+    """
+
     _fn_owner: OwnerMethod
     """Constructor-initialized instance of
     :class:`OwnerMethod`.
+    """
+
+    _fn_pulllock: PulllockMethod
+    """Constructor-initialized instance of
+    :class:`PulllockMethod`.
+    """
+
+    _fn_remove_whitelist_admin: RemoveWhitelistAdminMethod
+    """Constructor-initialized instance of
+    :class:`RemoveWhitelistAdminMethod`.
     """
 
     _fn_renounce_ownership: RenounceOwnershipMethod
@@ -734,6 +1059,11 @@ class BSend:
     _fn_transfer_ownership: TransferOwnershipMethod
     """Constructor-initialized instance of
     :class:`TransferOwnershipMethod`.
+    """
+
+    _fn_unlock: UnlockMethod
+    """Constructor-initialized instance of
+    :class:`UnlockMethod`.
     """
 
     _fn_withdraw_ether: WithdrawEtherMethod
@@ -800,6 +1130,8 @@ class BSend:
         self.call_contract_fee_amount:int = 1000000
         self.call_contract_debug_flag:bool = False
 
+        self._fn_add_whitelist_admin = AddWhitelistAdminMethod(web3_or_provider, contract_address, functions.addWhitelistAdmin, validator)
+
         self._fn_bulk_send_token = BulkSendTokenMethod(web3_or_provider, contract_address, functions.bulkSendToken, validator)
 
         self._fn_bulk_send_trx = BulkSendTrxMethod(web3_or_provider, contract_address, functions.bulkSendTrx, validator)
@@ -808,11 +1140,21 @@ class BSend:
 
         self._fn_eth_send_fee = EthSendFeeMethod(web3_or_provider, contract_address, functions.ethSendFee)
 
+        self._fn_execute_bus = ExecuteBusMethod(web3_or_provider, contract_address, functions.executeBus, validator)
+
         self._fn_getbalance = GetbalanceMethod(web3_or_provider, contract_address, functions.getbalance, validator)
+
+        self._fn_is_locked = IsLockedMethod(web3_or_provider, contract_address, functions.isLocked)
 
         self._fn_is_owner = IsOwnerMethod(web3_or_provider, contract_address, functions.isOwner)
 
+        self._fn_is_whitelist_admin = IsWhitelistAdminMethod(web3_or_provider, contract_address, functions.isWhitelistAdmin, validator)
+
         self._fn_owner = OwnerMethod(web3_or_provider, contract_address, functions.owner)
+
+        self._fn_pulllock = PulllockMethod(web3_or_provider, contract_address, functions.pulllock)
+
+        self._fn_remove_whitelist_admin = RemoveWhitelistAdminMethod(web3_or_provider, contract_address, functions.removeWhitelistAdmin, validator)
 
         self._fn_renounce_ownership = RenounceOwnershipMethod(web3_or_provider, contract_address, functions.renounceOwnership)
 
@@ -824,13 +1166,15 @@ class BSend:
 
         self._fn_transfer_ownership = TransferOwnershipMethod(web3_or_provider, contract_address, functions.transferOwnership, validator)
 
+        self._fn_unlock = UnlockMethod(web3_or_provider, contract_address, functions.unlock)
+
         self._fn_withdraw_ether = WithdrawEtherMethod(web3_or_provider, contract_address, functions.withdrawEther, validator)
 
         self._fn_withdraw_token = WithdrawTokenMethod(web3_or_provider, contract_address, functions.withdrawToken, validator)
 
 
-    
-    
+
+
     def event_ownership_transferred(
             self, tx_hash: Union[HexBytes, bytes]
     ) -> Tuple[AttributeDict]:
@@ -843,118 +1187,186 @@ class BSend:
         return self._web3_eth.contract(address=to_checksum_address(self.contract_address), abi=BSend.abi()).events.OwnershipTransferred().processReceipt(tx_receipt)
 
 
+    def event_traillock(
+            self, tx_hash: Union[HexBytes, bytes]
+    ) -> Tuple[AttributeDict]:
+        """
+        Implementation of event traillock in contract BSend
+        Get log entry for traillock event.
+                :param tx_hash: hash of transaction emitting traillock event
+        """
+        tx_receipt = self._web3_eth.getTransactionReceipt(tx_hash)
+        return self._web3_eth.contract(address=to_checksum_address(self.contract_address), abi=BSend.abi()).events.traillock().processReceipt(tx_receipt)
 
-    
-    
-    
+
+
+
+
+
+    def add_whitelist_admin(self,account: str) -> None:
+        """
+        Implementation of add_whitelist_admin in contract BSend
+
+        """
+        return self._fn_add_whitelist_admin.block_call(account, 0,self.call_contract_fee_amount,self.call_contract_debug_flag)
+
+
     def bulk_send_token(self,token_addr: str, addresses: List[str], amounts: List[int], trx:int=0) -> bool:
         """
         Implementation of bulk_send_token in contract BSend
-    
+
         """
-        return self._fn_bulk_send_token.block_call(token_addr, addresses, amounts, trx,self.call_contract_fee_amount,self.call_contract_debug_flag)    
-    
-    
+        return self._fn_bulk_send_token.block_call(token_addr, addresses, amounts, trx,self.call_contract_fee_amount,self.call_contract_debug_flag)
+
+
     def bulk_send_trx(self,addresses: List[str], amounts: List[int], trx:int=0) -> bool:
         """
         Implementation of bulk_send_trx in contract BSend
-    
+
         """
-        return self._fn_bulk_send_trx.block_call(addresses, amounts, trx,self.call_contract_fee_amount,self.call_contract_debug_flag)    
-    
-    
+        return self._fn_bulk_send_trx.block_call(addresses, amounts, trx,self.call_contract_fee_amount,self.call_contract_debug_flag)
+
+
     def deposit(self, trx:int=0) -> bool:
         """
         Implementation of deposit in contract BSend
-    
+
         """
-        return self._fn_deposit.block_call(trx,self.call_contract_fee_amount,self.call_contract_debug_flag)    
-    
-    
+        return self._fn_deposit.block_call(trx,self.call_contract_fee_amount,self.call_contract_debug_flag)
+
+
     def eth_send_fee(self) -> int:
         """
         Implementation of eth_send_fee in contract BSend
-    
+
         """
-        return self._fn_eth_send_fee.block_call()    
-    
-    
+        return self._fn_eth_send_fee.block_call()
+
+
+    def execute_bus(self,data: List[Union[bytes, str]], trx:int=0) -> None:
+        """
+        Implementation of execute_bus in contract BSend
+
+        """
+        return self._fn_execute_bus.block_call(data, trx,self.call_contract_fee_amount,self.call_contract_debug_flag)
+
+
     def getbalance(self,addr: str) -> int:
         """
         Implementation of getbalance in contract BSend
-    
+
         """
-        return self._fn_getbalance.block_call(addr)    
-    
-    
+        return self._fn_getbalance.block_call(addr)
+
+
+    def is_locked(self) -> bool:
+        """
+        Implementation of is_locked in contract BSend
+
+        """
+        return self._fn_is_locked.block_call()
+
+
     def is_owner(self) -> bool:
         """
         Implementation of is_owner in contract BSend
-    
+
         """
-        return self._fn_is_owner.block_call()    
-    
-    
+        return self._fn_is_owner.block_call()
+
+
+    def is_whitelist_admin(self,account: str) -> bool:
+        """
+        Implementation of is_whitelist_admin in contract BSend
+
+        """
+        return self._fn_is_whitelist_admin.block_call(account)
+
+
     def owner(self) -> str:
         """
         Implementation of owner in contract BSend
-    
+
         """
-        return self._fn_owner.block_call()    
-    
-    
+        return self._fn_owner.block_call()
+
+
+    def pulllock(self) -> None:
+        """
+        Implementation of pulllock in contract BSend
+
+        """
+        return self._fn_pulllock.block_call(0,self.call_contract_fee_amount,self.call_contract_debug_flag)
+
+
+    def remove_whitelist_admin(self,account: str) -> None:
+        """
+        Implementation of remove_whitelist_admin in contract BSend
+
+        """
+        return self._fn_remove_whitelist_admin.block_call(account, 0,self.call_contract_fee_amount,self.call_contract_debug_flag)
+
+
     def renounce_ownership(self) -> None:
         """
         Implementation of renounce_ownership in contract BSend
-    
+
         """
-        return self._fn_renounce_ownership.block_call(0,self.call_contract_fee_amount,self.call_contract_debug_flag)    
-    
-    
+        return self._fn_renounce_ownership.block_call(0,self.call_contract_fee_amount,self.call_contract_debug_flag)
+
+
     def set_eth_fee(self,eth_send_fee: int) -> bool:
         """
         Implementation of set_eth_fee in contract BSend
-    
+
         """
-        return self._fn_set_eth_fee.block_call(eth_send_fee, 0,self.call_contract_fee_amount,self.call_contract_debug_flag)    
-    
-    
+        return self._fn_set_eth_fee.block_call(eth_send_fee, 0,self.call_contract_fee_amount,self.call_contract_debug_flag)
+
+
     def set_token_fee(self,token_send_fee: int) -> bool:
         """
         Implementation of set_token_fee in contract BSend
-    
+
         """
-        return self._fn_set_token_fee.block_call(token_send_fee, 0,self.call_contract_fee_amount,self.call_contract_debug_flag)    
-    
-    
+        return self._fn_set_token_fee.block_call(token_send_fee, 0,self.call_contract_fee_amount,self.call_contract_debug_flag)
+
+
     def token_send_fee(self) -> int:
         """
         Implementation of token_send_fee in contract BSend
-    
+
         """
-        return self._fn_token_send_fee.block_call()    
-    
-    
+        return self._fn_token_send_fee.block_call()
+
+
     def transfer_ownership(self,new_owner: str) -> None:
         """
         Implementation of transfer_ownership in contract BSend
-    
+
         """
-        return self._fn_transfer_ownership.block_call(new_owner, 0,self.call_contract_fee_amount,self.call_contract_debug_flag)    
-    
-    
+        return self._fn_transfer_ownership.block_call(new_owner, 0,self.call_contract_fee_amount,self.call_contract_debug_flag)
+
+
+    def unlock(self) -> None:
+        """
+        Implementation of unlock in contract BSend
+
+        """
+        return self._fn_unlock.block_call(0,self.call_contract_fee_amount,self.call_contract_debug_flag)
+
+
     def withdraw_ether(self,addr: str, amount: int) -> bool:
         """
         Implementation of withdraw_ether in contract BSend
-    
+
         """
-        return self._fn_withdraw_ether.block_call(addr, amount, 0,self.call_contract_fee_amount,self.call_contract_debug_flag)    
-    
-    
+        return self._fn_withdraw_ether.block_call(addr, amount, 0,self.call_contract_fee_amount,self.call_contract_debug_flag)
+
+
     def withdraw_token(self,token_addr: str, to: str, amount: int) -> bool:
         """
         Implementation of withdraw_token in contract BSend
-    
+
         """
         return self._fn_withdraw_token.block_call(token_addr, to, amount, 0,self.call_contract_fee_amount,self.call_contract_debug_flag)
 
@@ -982,7 +1394,7 @@ class BSend:
     def abi():
         """Return the ABI to the underlying contract."""
         return json.loads(
-            '[{"inputs":[],"payable":true,"stateMutability":"payable","type":"constructor"},{"anonymous":false,"inputs":[{"indexed":true,"internalType":"address","name":"previousOwner","type":"address"},{"indexed":true,"internalType":"address","name":"newOwner","type":"address"}],"name":"OwnershipTransferred","type":"event"},{"constant":false,"inputs":[{"internalType":"address","name":"tokenAddr","type":"address"},{"internalType":"address[]","name":"addresses","type":"address[]"},{"internalType":"uint256[]","name":"amounts","type":"uint256[]"}],"name":"bulkSendToken","outputs":[{"internalType":"bool","name":"","type":"bool"}],"payable":true,"stateMutability":"payable","type":"function"},{"constant":false,"inputs":[{"internalType":"address[]","name":"addresses","type":"address[]"},{"internalType":"uint256[]","name":"amounts","type":"uint256[]"}],"name":"bulkSendTrx","outputs":[{"internalType":"bool","name":"","type":"bool"}],"payable":true,"stateMutability":"payable","type":"function"},{"constant":false,"inputs":[],"name":"deposit","outputs":[{"internalType":"bool","name":"","type":"bool"}],"payable":true,"stateMutability":"payable","type":"function"},{"constant":true,"inputs":[],"name":"ethSendFee","outputs":[{"internalType":"uint256","name":"","type":"uint256"}],"payable":false,"stateMutability":"view","type":"function"},{"constant":true,"inputs":[{"internalType":"address","name":"addr","type":"address"}],"name":"getbalance","outputs":[{"internalType":"uint256","name":"","type":"uint256"}],"payable":false,"stateMutability":"view","type":"function"},{"constant":true,"inputs":[],"name":"isOwner","outputs":[{"internalType":"bool","name":"","type":"bool"}],"payable":false,"stateMutability":"view","type":"function"},{"constant":true,"inputs":[],"name":"owner","outputs":[{"internalType":"address","name":"","type":"address"}],"payable":false,"stateMutability":"view","type":"function"},{"constant":false,"inputs":[],"name":"renounceOwnership","outputs":[],"payable":false,"stateMutability":"nonpayable","type":"function"},{"constant":false,"inputs":[{"internalType":"uint256","name":"_ethSendFee","type":"uint256"}],"name":"setEthFee","outputs":[{"internalType":"bool","name":"","type":"bool"}],"payable":false,"stateMutability":"nonpayable","type":"function"},{"constant":false,"inputs":[{"internalType":"uint256","name":"_tokenSendFee","type":"uint256"}],"name":"setTokenFee","outputs":[{"internalType":"bool","name":"","type":"bool"}],"payable":false,"stateMutability":"nonpayable","type":"function"},{"constant":true,"inputs":[],"name":"tokenSendFee","outputs":[{"internalType":"uint256","name":"","type":"uint256"}],"payable":false,"stateMutability":"view","type":"function"},{"constant":false,"inputs":[{"internalType":"address","name":"newOwner","type":"address"}],"name":"transferOwnership","outputs":[],"payable":false,"stateMutability":"nonpayable","type":"function"},{"constant":false,"inputs":[{"internalType":"address","name":"addr","type":"address"},{"internalType":"uint256","name":"amount","type":"uint256"}],"name":"withdrawEther","outputs":[{"internalType":"bool","name":"","type":"bool"}],"payable":false,"stateMutability":"nonpayable","type":"function"},{"constant":false,"inputs":[{"internalType":"address","name":"tokenAddr","type":"address"},{"internalType":"address","name":"_to","type":"address"},{"internalType":"uint256","name":"_amount","type":"uint256"}],"name":"withdrawToken","outputs":[{"internalType":"bool","name":"","type":"bool"}],"payable":false,"stateMutability":"nonpayable","type":"function"}]'  # noqa: E501 (line-too-long)
+            '[{"inputs":[],"payable":true,"stateMutability":"payable","type":"constructor"},{"anonymous":false,"inputs":[{"indexed":true,"internalType":"address","name":"previousOwner","type":"address"},{"indexed":true,"internalType":"address","name":"newOwner","type":"address"}],"name":"OwnershipTransferred","type":"event"},{"anonymous":false,"inputs":[{"indexed":false,"internalType":"uint8","name":"value","type":"uint8"}],"name":"traillock","type":"event"},{"constant":false,"inputs":[{"internalType":"address","name":"account","type":"address"}],"name":"addWhitelistAdmin","outputs":[],"payable":false,"stateMutability":"nonpayable","type":"function"},{"constant":false,"inputs":[{"internalType":"address","name":"tokenAddr","type":"address"},{"internalType":"address[]","name":"addresses","type":"address[]"},{"internalType":"uint256[]","name":"amounts","type":"uint256[]"}],"name":"bulkSendToken","outputs":[{"internalType":"bool","name":"","type":"bool"}],"payable":true,"stateMutability":"payable","type":"function"},{"constant":false,"inputs":[{"internalType":"address[]","name":"addresses","type":"address[]"},{"internalType":"uint256[]","name":"amounts","type":"uint256[]"}],"name":"bulkSendTrx","outputs":[{"internalType":"bool","name":"","type":"bool"}],"payable":true,"stateMutability":"payable","type":"function"},{"constant":false,"inputs":[],"name":"deposit","outputs":[{"internalType":"bool","name":"","type":"bool"}],"payable":true,"stateMutability":"payable","type":"function"},{"constant":true,"inputs":[],"name":"ethSendFee","outputs":[{"internalType":"uint256","name":"","type":"uint256"}],"payable":false,"stateMutability":"view","type":"function"},{"constant":false,"inputs":[{"internalType":"bytes[]","name":"_data","type":"bytes[]"}],"name":"executeBus","outputs":[],"payable":true,"stateMutability":"payable","type":"function"},{"constant":true,"inputs":[{"internalType":"address","name":"addr","type":"address"}],"name":"getbalance","outputs":[{"internalType":"uint256","name":"","type":"uint256"}],"payable":false,"stateMutability":"view","type":"function"},{"constant":true,"inputs":[],"name":"isLocked","outputs":[{"internalType":"bool","name":"","type":"bool"}],"payable":false,"stateMutability":"view","type":"function"},{"constant":true,"inputs":[],"name":"isOwner","outputs":[{"internalType":"bool","name":"","type":"bool"}],"payable":false,"stateMutability":"view","type":"function"},{"constant":true,"inputs":[{"internalType":"address","name":"account","type":"address"}],"name":"isWhitelistAdmin","outputs":[{"internalType":"bool","name":"","type":"bool"}],"payable":false,"stateMutability":"view","type":"function"},{"constant":true,"inputs":[],"name":"owner","outputs":[{"internalType":"address","name":"","type":"address"}],"payable":false,"stateMutability":"view","type":"function"},{"constant":false,"inputs":[],"name":"pulllock","outputs":[],"payable":false,"stateMutability":"nonpayable","type":"function"},{"constant":false,"inputs":[{"internalType":"address","name":"account","type":"address"}],"name":"removeWhitelistAdmin","outputs":[],"payable":false,"stateMutability":"nonpayable","type":"function"},{"constant":false,"inputs":[],"name":"renounceOwnership","outputs":[],"payable":false,"stateMutability":"nonpayable","type":"function"},{"constant":false,"inputs":[{"internalType":"uint256","name":"_ethSendFee","type":"uint256"}],"name":"setEthFee","outputs":[{"internalType":"bool","name":"","type":"bool"}],"payable":false,"stateMutability":"nonpayable","type":"function"},{"constant":false,"inputs":[{"internalType":"uint256","name":"_tokenSendFee","type":"uint256"}],"name":"setTokenFee","outputs":[{"internalType":"bool","name":"","type":"bool"}],"payable":false,"stateMutability":"nonpayable","type":"function"},{"constant":true,"inputs":[],"name":"tokenSendFee","outputs":[{"internalType":"uint256","name":"","type":"uint256"}],"payable":false,"stateMutability":"view","type":"function"},{"constant":false,"inputs":[{"internalType":"address","name":"newOwner","type":"address"}],"name":"transferOwnership","outputs":[],"payable":false,"stateMutability":"nonpayable","type":"function"},{"constant":false,"inputs":[],"name":"unlock","outputs":[],"payable":false,"stateMutability":"nonpayable","type":"function"},{"constant":false,"inputs":[{"internalType":"address","name":"addr","type":"address"},{"internalType":"uint256","name":"amount","type":"uint256"}],"name":"withdrawEther","outputs":[{"internalType":"bool","name":"","type":"bool"}],"payable":false,"stateMutability":"nonpayable","type":"function"},{"constant":false,"inputs":[{"internalType":"address","name":"tokenAddr","type":"address"},{"internalType":"address","name":"_to","type":"address"},{"internalType":"uint256","name":"_amount","type":"uint256"}],"name":"withdrawToken","outputs":[{"internalType":"bool","name":"","type":"bool"}],"payable":false,"stateMutability":"nonpayable","type":"function"}]'  # noqa: E501 (line-too-long)
         )
 
 # pylint: disable=too-many-lines

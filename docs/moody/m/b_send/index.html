@@ -77,6 +77,58 @@ except ImportError:
 
 
 
+class AddWhitelistAdminMethod(ContractMethod): # pylint: disable=invalid-name
+    &#34;&#34;&#34;Various interfaces to the addWhitelistAdmin method.&#34;&#34;&#34;
+
+    def __init__(self, web3_or_provider: Union[Web3, BaseProvider], contract_address: str, contract_function: ContractFunction, validator: Validator=None):
+        &#34;&#34;&#34;Persist instance data.&#34;&#34;&#34;
+        super().__init__(web3_or_provider, contract_address, validator)
+        self._underlying_method = contract_function
+
+    def validate_and_normalize_inputs(self, account: str):
+        &#34;&#34;&#34;Validate the inputs to the addWhitelistAdmin method.&#34;&#34;&#34;
+        self.validator.assert_valid(
+            method_name=&#39;addWhitelistAdmin&#39;,
+            parameter_name=&#39;account&#39;,
+            argument_value=account,
+        )
+        account = self.validate_and_checksum_address(account)
+        return (account)
+
+
+    def block_call(self, account: str, val: int = 0, fee: int = 1000000, debug: bool = False) -&gt; None:
+        &#34;&#34;&#34;Execute underlying contract method via eth_call.
+
+        :param tx_params: transaction parameters
+        :returns: the return value of the underlying method.
+        &#34;&#34;&#34;
+        (account) = self.validate_and_normalize_inputs(account)
+
+        tx_params: Optional[TxParams] = None
+        tx_params = super().normalize_tx_params(tx_params)
+        self._underlying_method(account).call(tx_params.as_dict())
+
+    def send_transaction(self, account: str, tx_params: Optional[TxParams] = None) -&gt; Union[HexBytes, bytes]:
+        &#34;&#34;&#34;Execute underlying contract method via eth_sendTransaction.
+
+        :param tx_params: transaction parameters
+        &#34;&#34;&#34;
+        (account) = self.validate_and_normalize_inputs(account)
+        tx_params = super().normalize_tx_params(tx_params)
+        return self._underlying_method(account).transact(tx_params.as_dict())
+
+    def build_transaction(self, account: str, tx_params: Optional[TxParams] = None) -&gt; dict:
+        &#34;&#34;&#34;Construct calldata to be used as input to the method.&#34;&#34;&#34;
+        (account) = self.validate_and_normalize_inputs(account)
+        tx_params = super().normalize_tx_params(tx_params)
+        return self._underlying_method(account).buildTransaction(tx_params.as_dict())
+
+    def estimate_gas(self, account: str, tx_params: Optional[TxParams] = None) -&gt; int:
+        &#34;&#34;&#34;Estimate gas consumption of method call.&#34;&#34;&#34;
+        (account) = self.validate_and_normalize_inputs(account)
+        tx_params = super().normalize_tx_params(tx_params)
+        return self._underlying_method(account).estimateGas(tx_params.as_dict())
+
 class BulkSendTokenMethod(ContractMethod): # pylint: disable=invalid-name
     &#34;&#34;&#34;Various interfaces to the bulkSendToken method.&#34;&#34;&#34;
 
@@ -262,6 +314,57 @@ class EthSendFeeMethod(ContractMethod): # pylint: disable=invalid-name
         tx_params = super().normalize_tx_params(tx_params)
         return self._underlying_method().estimateGas(tx_params.as_dict())
 
+class ExecuteBusMethod(ContractMethod): # pylint: disable=invalid-name
+    &#34;&#34;&#34;Various interfaces to the executeBus method.&#34;&#34;&#34;
+
+    def __init__(self, web3_or_provider: Union[Web3, BaseProvider], contract_address: str, contract_function: ContractFunction, validator: Validator=None):
+        &#34;&#34;&#34;Persist instance data.&#34;&#34;&#34;
+        super().__init__(web3_or_provider, contract_address, validator)
+        self._underlying_method = contract_function
+
+    def validate_and_normalize_inputs(self, data: List[Union[bytes, str]]):
+        &#34;&#34;&#34;Validate the inputs to the executeBus method.&#34;&#34;&#34;
+        self.validator.assert_valid(
+            method_name=&#39;executeBus&#39;,
+            parameter_name=&#39;_data&#39;,
+            argument_value=data,
+        )
+        return (data)
+
+
+    def block_call(self, data: List[Union[bytes, str]], val: int = 0, fee: int = 1000000, debug: bool = False) -&gt; None:
+        &#34;&#34;&#34;Execute underlying contract method via eth_call.
+
+        :param tx_params: transaction parameters
+        :returns: the return value of the underlying method.
+        &#34;&#34;&#34;
+        (data) = self.validate_and_normalize_inputs(data)
+
+        tx_params: Optional[TxParams] = None
+        tx_params = super().normalize_tx_params(tx_params)
+        self._underlying_method(data).call(tx_params.as_dict())
+
+    def send_transaction(self, data: List[Union[bytes, str]], tx_params: Optional[TxParams] = None) -&gt; Union[HexBytes, bytes]:
+        &#34;&#34;&#34;Execute underlying contract method via eth_sendTransaction.
+
+        :param tx_params: transaction parameters
+        &#34;&#34;&#34;
+        (data) = self.validate_and_normalize_inputs(data)
+        tx_params = super().normalize_tx_params(tx_params)
+        return self._underlying_method(data).transact(tx_params.as_dict())
+
+    def build_transaction(self, data: List[Union[bytes, str]], tx_params: Optional[TxParams] = None) -&gt; dict:
+        &#34;&#34;&#34;Construct calldata to be used as input to the method.&#34;&#34;&#34;
+        (data) = self.validate_and_normalize_inputs(data)
+        tx_params = super().normalize_tx_params(tx_params)
+        return self._underlying_method(data).buildTransaction(tx_params.as_dict())
+
+    def estimate_gas(self, data: List[Union[bytes, str]], tx_params: Optional[TxParams] = None) -&gt; int:
+        &#34;&#34;&#34;Estimate gas consumption of method call.&#34;&#34;&#34;
+        (data) = self.validate_and_normalize_inputs(data)
+        tx_params = super().normalize_tx_params(tx_params)
+        return self._underlying_method(data).estimateGas(tx_params.as_dict())
+
 class GetbalanceMethod(ContractMethod): # pylint: disable=invalid-name
     &#34;&#34;&#34;Various interfaces to the getbalance method.&#34;&#34;&#34;
 
@@ -300,6 +403,32 @@ class GetbalanceMethod(ContractMethod): # pylint: disable=invalid-name
         tx_params = super().normalize_tx_params(tx_params)
         return self._underlying_method(addr).estimateGas(tx_params.as_dict())
 
+class IsLockedMethod(ContractMethod): # pylint: disable=invalid-name
+    &#34;&#34;&#34;Various interfaces to the isLocked method.&#34;&#34;&#34;
+
+    def __init__(self, web3_or_provider: Union[Web3, BaseProvider], contract_address: str, contract_function: ContractFunction):
+        &#34;&#34;&#34;Persist instance data.&#34;&#34;&#34;
+        super().__init__(web3_or_provider, contract_address)
+        self._underlying_method = contract_function
+
+
+    def block_call(self, val: int = 0, fee: int = 1000000, debug: bool = False) -&gt; bool:
+        &#34;&#34;&#34;Execute underlying contract method via eth_call.
+
+        :param tx_params: transaction parameters
+
+        &#34;&#34;&#34;
+
+        tx_params: Optional[TxParams] = None
+        tx_params = super().normalize_tx_params(tx_params)
+        returned = self._underlying_method().call(tx_params.as_dict())
+        return bool(returned)
+
+    def estimate_gas(self, tx_params: Optional[TxParams] = None) -&gt; int:
+        &#34;&#34;&#34;Estimate gas consumption of method call.&#34;&#34;&#34;
+        tx_params = super().normalize_tx_params(tx_params)
+        return self._underlying_method().estimateGas(tx_params.as_dict())
+
 class IsOwnerMethod(ContractMethod): # pylint: disable=invalid-name
     &#34;&#34;&#34;Various interfaces to the isOwner method.&#34;&#34;&#34;
 
@@ -326,6 +455,44 @@ class IsOwnerMethod(ContractMethod): # pylint: disable=invalid-name
         tx_params = super().normalize_tx_params(tx_params)
         return self._underlying_method().estimateGas(tx_params.as_dict())
 
+class IsWhitelistAdminMethod(ContractMethod): # pylint: disable=invalid-name
+    &#34;&#34;&#34;Various interfaces to the isWhitelistAdmin method.&#34;&#34;&#34;
+
+    def __init__(self, web3_or_provider: Union[Web3, BaseProvider], contract_address: str, contract_function: ContractFunction, validator: Validator=None):
+        &#34;&#34;&#34;Persist instance data.&#34;&#34;&#34;
+        super().__init__(web3_or_provider, contract_address, validator)
+        self._underlying_method = contract_function
+
+    def validate_and_normalize_inputs(self, account: str):
+        &#34;&#34;&#34;Validate the inputs to the isWhitelistAdmin method.&#34;&#34;&#34;
+        self.validator.assert_valid(
+            method_name=&#39;isWhitelistAdmin&#39;,
+            parameter_name=&#39;account&#39;,
+            argument_value=account,
+        )
+        account = self.validate_and_checksum_address(account)
+        return (account)
+
+
+    def block_call(self, account: str, val: int = 0, fee: int = 1000000, debug: bool = False) -&gt; bool:
+        &#34;&#34;&#34;Execute underlying contract method via eth_call.
+
+        :param tx_params: transaction parameters
+
+        &#34;&#34;&#34;
+        (account) = self.validate_and_normalize_inputs(account)
+
+        tx_params: Optional[TxParams] = None
+        tx_params = super().normalize_tx_params(tx_params)
+        returned = self._underlying_method(account).call(tx_params.as_dict())
+        return bool(returned)
+
+    def estimate_gas(self, account: str, tx_params: Optional[TxParams] = None) -&gt; int:
+        &#34;&#34;&#34;Estimate gas consumption of method call.&#34;&#34;&#34;
+        (account) = self.validate_and_normalize_inputs(account)
+        tx_params = super().normalize_tx_params(tx_params)
+        return self._underlying_method(account).estimateGas(tx_params.as_dict())
+
 class OwnerMethod(ContractMethod): # pylint: disable=invalid-name
     &#34;&#34;&#34;Various interfaces to the owner method.&#34;&#34;&#34;
 
@@ -351,6 +518,96 @@ class OwnerMethod(ContractMethod): # pylint: disable=invalid-name
         &#34;&#34;&#34;Estimate gas consumption of method call.&#34;&#34;&#34;
         tx_params = super().normalize_tx_params(tx_params)
         return self._underlying_method().estimateGas(tx_params.as_dict())
+
+class PulllockMethod(ContractMethod): # pylint: disable=invalid-name
+    &#34;&#34;&#34;Various interfaces to the pulllock method.&#34;&#34;&#34;
+
+    def __init__(self, web3_or_provider: Union[Web3, BaseProvider], contract_address: str, contract_function: ContractFunction):
+        &#34;&#34;&#34;Persist instance data.&#34;&#34;&#34;
+        super().__init__(web3_or_provider, contract_address)
+        self._underlying_method = contract_function
+
+
+    def block_call(self, val: int = 0, fee: int = 1000000, debug: bool = False) -&gt; None:
+        &#34;&#34;&#34;Execute underlying contract method via eth_call.
+
+        :param tx_params: transaction parameters
+        :returns: the return value of the underlying method.
+        &#34;&#34;&#34;
+
+        tx_params: Optional[TxParams] = None
+        tx_params = super().normalize_tx_params(tx_params)
+        self._underlying_method().call(tx_params.as_dict())
+
+    def send_transaction(self, tx_params: Optional[TxParams] = None) -&gt; Union[HexBytes, bytes]:
+        &#34;&#34;&#34;Execute underlying contract method via eth_sendTransaction.
+
+        :param tx_params: transaction parameters
+        &#34;&#34;&#34;
+        tx_params = super().normalize_tx_params(tx_params)
+        return self._underlying_method().transact(tx_params.as_dict())
+
+    def build_transaction(self, tx_params: Optional[TxParams] = None) -&gt; dict:
+        &#34;&#34;&#34;Construct calldata to be used as input to the method.&#34;&#34;&#34;
+        tx_params = super().normalize_tx_params(tx_params)
+        return self._underlying_method().buildTransaction(tx_params.as_dict())
+
+    def estimate_gas(self, tx_params: Optional[TxParams] = None) -&gt; int:
+        &#34;&#34;&#34;Estimate gas consumption of method call.&#34;&#34;&#34;
+        tx_params = super().normalize_tx_params(tx_params)
+        return self._underlying_method().estimateGas(tx_params.as_dict())
+
+class RemoveWhitelistAdminMethod(ContractMethod): # pylint: disable=invalid-name
+    &#34;&#34;&#34;Various interfaces to the removeWhitelistAdmin method.&#34;&#34;&#34;
+
+    def __init__(self, web3_or_provider: Union[Web3, BaseProvider], contract_address: str, contract_function: ContractFunction, validator: Validator=None):
+        &#34;&#34;&#34;Persist instance data.&#34;&#34;&#34;
+        super().__init__(web3_or_provider, contract_address, validator)
+        self._underlying_method = contract_function
+
+    def validate_and_normalize_inputs(self, account: str):
+        &#34;&#34;&#34;Validate the inputs to the removeWhitelistAdmin method.&#34;&#34;&#34;
+        self.validator.assert_valid(
+            method_name=&#39;removeWhitelistAdmin&#39;,
+            parameter_name=&#39;account&#39;,
+            argument_value=account,
+        )
+        account = self.validate_and_checksum_address(account)
+        return (account)
+
+
+    def block_call(self, account: str, val: int = 0, fee: int = 1000000, debug: bool = False) -&gt; None:
+        &#34;&#34;&#34;Execute underlying contract method via eth_call.
+
+        :param tx_params: transaction parameters
+        :returns: the return value of the underlying method.
+        &#34;&#34;&#34;
+        (account) = self.validate_and_normalize_inputs(account)
+
+        tx_params: Optional[TxParams] = None
+        tx_params = super().normalize_tx_params(tx_params)
+        self._underlying_method(account).call(tx_params.as_dict())
+
+    def send_transaction(self, account: str, tx_params: Optional[TxParams] = None) -&gt; Union[HexBytes, bytes]:
+        &#34;&#34;&#34;Execute underlying contract method via eth_sendTransaction.
+
+        :param tx_params: transaction parameters
+        &#34;&#34;&#34;
+        (account) = self.validate_and_normalize_inputs(account)
+        tx_params = super().normalize_tx_params(tx_params)
+        return self._underlying_method(account).transact(tx_params.as_dict())
+
+    def build_transaction(self, account: str, tx_params: Optional[TxParams] = None) -&gt; dict:
+        &#34;&#34;&#34;Construct calldata to be used as input to the method.&#34;&#34;&#34;
+        (account) = self.validate_and_normalize_inputs(account)
+        tx_params = super().normalize_tx_params(tx_params)
+        return self._underlying_method(account).buildTransaction(tx_params.as_dict())
+
+    def estimate_gas(self, account: str, tx_params: Optional[TxParams] = None) -&gt; int:
+        &#34;&#34;&#34;Estimate gas consumption of method call.&#34;&#34;&#34;
+        (account) = self.validate_and_normalize_inputs(account)
+        tx_params = super().normalize_tx_params(tx_params)
+        return self._underlying_method(account).estimateGas(tx_params.as_dict())
 
 class RenounceOwnershipMethod(ContractMethod): # pylint: disable=invalid-name
     &#34;&#34;&#34;Various interfaces to the renounceOwnership method.&#34;&#34;&#34;
@@ -576,6 +833,44 @@ class TransferOwnershipMethod(ContractMethod): # pylint: disable=invalid-name
         tx_params = super().normalize_tx_params(tx_params)
         return self._underlying_method(new_owner).estimateGas(tx_params.as_dict())
 
+class UnlockMethod(ContractMethod): # pylint: disable=invalid-name
+    &#34;&#34;&#34;Various interfaces to the unlock method.&#34;&#34;&#34;
+
+    def __init__(self, web3_or_provider: Union[Web3, BaseProvider], contract_address: str, contract_function: ContractFunction):
+        &#34;&#34;&#34;Persist instance data.&#34;&#34;&#34;
+        super().__init__(web3_or_provider, contract_address)
+        self._underlying_method = contract_function
+
+
+    def block_call(self, val: int = 0, fee: int = 1000000, debug: bool = False) -&gt; None:
+        &#34;&#34;&#34;Execute underlying contract method via eth_call.
+
+        :param tx_params: transaction parameters
+        :returns: the return value of the underlying method.
+        &#34;&#34;&#34;
+
+        tx_params: Optional[TxParams] = None
+        tx_params = super().normalize_tx_params(tx_params)
+        self._underlying_method().call(tx_params.as_dict())
+
+    def send_transaction(self, tx_params: Optional[TxParams] = None) -&gt; Union[HexBytes, bytes]:
+        &#34;&#34;&#34;Execute underlying contract method via eth_sendTransaction.
+
+        :param tx_params: transaction parameters
+        &#34;&#34;&#34;
+        tx_params = super().normalize_tx_params(tx_params)
+        return self._underlying_method().transact(tx_params.as_dict())
+
+    def build_transaction(self, tx_params: Optional[TxParams] = None) -&gt; dict:
+        &#34;&#34;&#34;Construct calldata to be used as input to the method.&#34;&#34;&#34;
+        tx_params = super().normalize_tx_params(tx_params)
+        return self._underlying_method().buildTransaction(tx_params.as_dict())
+
+    def estimate_gas(self, tx_params: Optional[TxParams] = None) -&gt; int:
+        &#34;&#34;&#34;Estimate gas consumption of method call.&#34;&#34;&#34;
+        tx_params = super().normalize_tx_params(tx_params)
+        return self._underlying_method().estimateGas(tx_params.as_dict())
+
 class WithdrawEtherMethod(ContractMethod): # pylint: disable=invalid-name
     &#34;&#34;&#34;Various interfaces to the withdrawEther method.&#34;&#34;&#34;
 
@@ -705,6 +1000,11 @@ class WithdrawTokenMethod(ContractMethod): # pylint: disable=invalid-name
 # pylint: disable=too-many-public-methods,too-many-instance-attributes
 class BSend:
     &#34;&#34;&#34;Wrapper class for BSend Solidity contract.&#34;&#34;&#34;
+    _fn_add_whitelist_admin: AddWhitelistAdminMethod
+    &#34;&#34;&#34;Constructor-initialized instance of
+    :class:`AddWhitelistAdminMethod`.
+    &#34;&#34;&#34;
+
     _fn_bulk_send_token: BulkSendTokenMethod
     &#34;&#34;&#34;Constructor-initialized instance of
     :class:`BulkSendTokenMethod`.
@@ -725,9 +1025,19 @@ class BSend:
     :class:`EthSendFeeMethod`.
     &#34;&#34;&#34;
 
+    _fn_execute_bus: ExecuteBusMethod
+    &#34;&#34;&#34;Constructor-initialized instance of
+    :class:`ExecuteBusMethod`.
+    &#34;&#34;&#34;
+
     _fn_getbalance: GetbalanceMethod
     &#34;&#34;&#34;Constructor-initialized instance of
     :class:`GetbalanceMethod`.
+    &#34;&#34;&#34;
+
+    _fn_is_locked: IsLockedMethod
+    &#34;&#34;&#34;Constructor-initialized instance of
+    :class:`IsLockedMethod`.
     &#34;&#34;&#34;
 
     _fn_is_owner: IsOwnerMethod
@@ -735,9 +1045,24 @@ class BSend:
     :class:`IsOwnerMethod`.
     &#34;&#34;&#34;
 
+    _fn_is_whitelist_admin: IsWhitelistAdminMethod
+    &#34;&#34;&#34;Constructor-initialized instance of
+    :class:`IsWhitelistAdminMethod`.
+    &#34;&#34;&#34;
+
     _fn_owner: OwnerMethod
     &#34;&#34;&#34;Constructor-initialized instance of
     :class:`OwnerMethod`.
+    &#34;&#34;&#34;
+
+    _fn_pulllock: PulllockMethod
+    &#34;&#34;&#34;Constructor-initialized instance of
+    :class:`PulllockMethod`.
+    &#34;&#34;&#34;
+
+    _fn_remove_whitelist_admin: RemoveWhitelistAdminMethod
+    &#34;&#34;&#34;Constructor-initialized instance of
+    :class:`RemoveWhitelistAdminMethod`.
     &#34;&#34;&#34;
 
     _fn_renounce_ownership: RenounceOwnershipMethod
@@ -763,6 +1088,11 @@ class BSend:
     _fn_transfer_ownership: TransferOwnershipMethod
     &#34;&#34;&#34;Constructor-initialized instance of
     :class:`TransferOwnershipMethod`.
+    &#34;&#34;&#34;
+
+    _fn_unlock: UnlockMethod
+    &#34;&#34;&#34;Constructor-initialized instance of
+    :class:`UnlockMethod`.
     &#34;&#34;&#34;
 
     _fn_withdraw_ether: WithdrawEtherMethod
@@ -829,6 +1159,8 @@ class BSend:
         self.call_contract_fee_amount:int = 1000000
         self.call_contract_debug_flag:bool = False
 
+        self._fn_add_whitelist_admin = AddWhitelistAdminMethod(web3_or_provider, contract_address, functions.addWhitelistAdmin, validator)
+
         self._fn_bulk_send_token = BulkSendTokenMethod(web3_or_provider, contract_address, functions.bulkSendToken, validator)
 
         self._fn_bulk_send_trx = BulkSendTrxMethod(web3_or_provider, contract_address, functions.bulkSendTrx, validator)
@@ -837,11 +1169,21 @@ class BSend:
 
         self._fn_eth_send_fee = EthSendFeeMethod(web3_or_provider, contract_address, functions.ethSendFee)
 
+        self._fn_execute_bus = ExecuteBusMethod(web3_or_provider, contract_address, functions.executeBus, validator)
+
         self._fn_getbalance = GetbalanceMethod(web3_or_provider, contract_address, functions.getbalance, validator)
+
+        self._fn_is_locked = IsLockedMethod(web3_or_provider, contract_address, functions.isLocked)
 
         self._fn_is_owner = IsOwnerMethod(web3_or_provider, contract_address, functions.isOwner)
 
+        self._fn_is_whitelist_admin = IsWhitelistAdminMethod(web3_or_provider, contract_address, functions.isWhitelistAdmin, validator)
+
         self._fn_owner = OwnerMethod(web3_or_provider, contract_address, functions.owner)
+
+        self._fn_pulllock = PulllockMethod(web3_or_provider, contract_address, functions.pulllock)
+
+        self._fn_remove_whitelist_admin = RemoveWhitelistAdminMethod(web3_or_provider, contract_address, functions.removeWhitelistAdmin, validator)
 
         self._fn_renounce_ownership = RenounceOwnershipMethod(web3_or_provider, contract_address, functions.renounceOwnership)
 
@@ -853,13 +1195,15 @@ class BSend:
 
         self._fn_transfer_ownership = TransferOwnershipMethod(web3_or_provider, contract_address, functions.transferOwnership, validator)
 
+        self._fn_unlock = UnlockMethod(web3_or_provider, contract_address, functions.unlock)
+
         self._fn_withdraw_ether = WithdrawEtherMethod(web3_or_provider, contract_address, functions.withdrawEther, validator)
 
         self._fn_withdraw_token = WithdrawTokenMethod(web3_or_provider, contract_address, functions.withdrawToken, validator)
 
 
-    
-    
+
+
     def event_ownership_transferred(
             self, tx_hash: Union[HexBytes, bytes]
     ) -&gt; Tuple[AttributeDict]:
@@ -872,118 +1216,186 @@ class BSend:
         return self._web3_eth.contract(address=to_checksum_address(self.contract_address), abi=BSend.abi()).events.OwnershipTransferred().processReceipt(tx_receipt)
 
 
+    def event_traillock(
+            self, tx_hash: Union[HexBytes, bytes]
+    ) -&gt; Tuple[AttributeDict]:
+        &#34;&#34;&#34;
+        Implementation of event traillock in contract BSend
+        Get log entry for traillock event.
+                :param tx_hash: hash of transaction emitting traillock event
+        &#34;&#34;&#34;
+        tx_receipt = self._web3_eth.getTransactionReceipt(tx_hash)
+        return self._web3_eth.contract(address=to_checksum_address(self.contract_address), abi=BSend.abi()).events.traillock().processReceipt(tx_receipt)
 
-    
-    
-    
+
+
+
+
+
+    def add_whitelist_admin(self,account: str) -&gt; None:
+        &#34;&#34;&#34;
+        Implementation of add_whitelist_admin in contract BSend
+
+        &#34;&#34;&#34;
+        return self._fn_add_whitelist_admin.block_call(account, 0,self.call_contract_fee_amount,self.call_contract_debug_flag)
+
+
     def bulk_send_token(self,token_addr: str, addresses: List[str], amounts: List[int], trx:int=0) -&gt; bool:
         &#34;&#34;&#34;
         Implementation of bulk_send_token in contract BSend
-    
+
         &#34;&#34;&#34;
-        return self._fn_bulk_send_token.block_call(token_addr, addresses, amounts, trx,self.call_contract_fee_amount,self.call_contract_debug_flag)    
-    
-    
+        return self._fn_bulk_send_token.block_call(token_addr, addresses, amounts, trx,self.call_contract_fee_amount,self.call_contract_debug_flag)
+
+
     def bulk_send_trx(self,addresses: List[str], amounts: List[int], trx:int=0) -&gt; bool:
         &#34;&#34;&#34;
         Implementation of bulk_send_trx in contract BSend
-    
+
         &#34;&#34;&#34;
-        return self._fn_bulk_send_trx.block_call(addresses, amounts, trx,self.call_contract_fee_amount,self.call_contract_debug_flag)    
-    
-    
+        return self._fn_bulk_send_trx.block_call(addresses, amounts, trx,self.call_contract_fee_amount,self.call_contract_debug_flag)
+
+
     def deposit(self, trx:int=0) -&gt; bool:
         &#34;&#34;&#34;
         Implementation of deposit in contract BSend
-    
+
         &#34;&#34;&#34;
-        return self._fn_deposit.block_call(trx,self.call_contract_fee_amount,self.call_contract_debug_flag)    
-    
-    
+        return self._fn_deposit.block_call(trx,self.call_contract_fee_amount,self.call_contract_debug_flag)
+
+
     def eth_send_fee(self) -&gt; int:
         &#34;&#34;&#34;
         Implementation of eth_send_fee in contract BSend
-    
+
         &#34;&#34;&#34;
-        return self._fn_eth_send_fee.block_call()    
-    
-    
+        return self._fn_eth_send_fee.block_call()
+
+
+    def execute_bus(self,data: List[Union[bytes, str]], trx:int=0) -&gt; None:
+        &#34;&#34;&#34;
+        Implementation of execute_bus in contract BSend
+
+        &#34;&#34;&#34;
+        return self._fn_execute_bus.block_call(data, trx,self.call_contract_fee_amount,self.call_contract_debug_flag)
+
+
     def getbalance(self,addr: str) -&gt; int:
         &#34;&#34;&#34;
         Implementation of getbalance in contract BSend
-    
+
         &#34;&#34;&#34;
-        return self._fn_getbalance.block_call(addr)    
-    
-    
+        return self._fn_getbalance.block_call(addr)
+
+
+    def is_locked(self) -&gt; bool:
+        &#34;&#34;&#34;
+        Implementation of is_locked in contract BSend
+
+        &#34;&#34;&#34;
+        return self._fn_is_locked.block_call()
+
+
     def is_owner(self) -&gt; bool:
         &#34;&#34;&#34;
         Implementation of is_owner in contract BSend
-    
+
         &#34;&#34;&#34;
-        return self._fn_is_owner.block_call()    
-    
-    
+        return self._fn_is_owner.block_call()
+
+
+    def is_whitelist_admin(self,account: str) -&gt; bool:
+        &#34;&#34;&#34;
+        Implementation of is_whitelist_admin in contract BSend
+
+        &#34;&#34;&#34;
+        return self._fn_is_whitelist_admin.block_call(account)
+
+
     def owner(self) -&gt; str:
         &#34;&#34;&#34;
         Implementation of owner in contract BSend
-    
+
         &#34;&#34;&#34;
-        return self._fn_owner.block_call()    
-    
-    
+        return self._fn_owner.block_call()
+
+
+    def pulllock(self) -&gt; None:
+        &#34;&#34;&#34;
+        Implementation of pulllock in contract BSend
+
+        &#34;&#34;&#34;
+        return self._fn_pulllock.block_call(0,self.call_contract_fee_amount,self.call_contract_debug_flag)
+
+
+    def remove_whitelist_admin(self,account: str) -&gt; None:
+        &#34;&#34;&#34;
+        Implementation of remove_whitelist_admin in contract BSend
+
+        &#34;&#34;&#34;
+        return self._fn_remove_whitelist_admin.block_call(account, 0,self.call_contract_fee_amount,self.call_contract_debug_flag)
+
+
     def renounce_ownership(self) -&gt; None:
         &#34;&#34;&#34;
         Implementation of renounce_ownership in contract BSend
-    
+
         &#34;&#34;&#34;
-        return self._fn_renounce_ownership.block_call(0,self.call_contract_fee_amount,self.call_contract_debug_flag)    
-    
-    
+        return self._fn_renounce_ownership.block_call(0,self.call_contract_fee_amount,self.call_contract_debug_flag)
+
+
     def set_eth_fee(self,eth_send_fee: int) -&gt; bool:
         &#34;&#34;&#34;
         Implementation of set_eth_fee in contract BSend
-    
+
         &#34;&#34;&#34;
-        return self._fn_set_eth_fee.block_call(eth_send_fee, 0,self.call_contract_fee_amount,self.call_contract_debug_flag)    
-    
-    
+        return self._fn_set_eth_fee.block_call(eth_send_fee, 0,self.call_contract_fee_amount,self.call_contract_debug_flag)
+
+
     def set_token_fee(self,token_send_fee: int) -&gt; bool:
         &#34;&#34;&#34;
         Implementation of set_token_fee in contract BSend
-    
+
         &#34;&#34;&#34;
-        return self._fn_set_token_fee.block_call(token_send_fee, 0,self.call_contract_fee_amount,self.call_contract_debug_flag)    
-    
-    
+        return self._fn_set_token_fee.block_call(token_send_fee, 0,self.call_contract_fee_amount,self.call_contract_debug_flag)
+
+
     def token_send_fee(self) -&gt; int:
         &#34;&#34;&#34;
         Implementation of token_send_fee in contract BSend
-    
+
         &#34;&#34;&#34;
-        return self._fn_token_send_fee.block_call()    
-    
-    
+        return self._fn_token_send_fee.block_call()
+
+
     def transfer_ownership(self,new_owner: str) -&gt; None:
         &#34;&#34;&#34;
         Implementation of transfer_ownership in contract BSend
-    
+
         &#34;&#34;&#34;
-        return self._fn_transfer_ownership.block_call(new_owner, 0,self.call_contract_fee_amount,self.call_contract_debug_flag)    
-    
-    
+        return self._fn_transfer_ownership.block_call(new_owner, 0,self.call_contract_fee_amount,self.call_contract_debug_flag)
+
+
+    def unlock(self) -&gt; None:
+        &#34;&#34;&#34;
+        Implementation of unlock in contract BSend
+
+        &#34;&#34;&#34;
+        return self._fn_unlock.block_call(0,self.call_contract_fee_amount,self.call_contract_debug_flag)
+
+
     def withdraw_ether(self,addr: str, amount: int) -&gt; bool:
         &#34;&#34;&#34;
         Implementation of withdraw_ether in contract BSend
-    
+
         &#34;&#34;&#34;
-        return self._fn_withdraw_ether.block_call(addr, amount, 0,self.call_contract_fee_amount,self.call_contract_debug_flag)    
-    
-    
+        return self._fn_withdraw_ether.block_call(addr, amount, 0,self.call_contract_fee_amount,self.call_contract_debug_flag)
+
+
     def withdraw_token(self,token_addr: str, to: str, amount: int) -&gt; bool:
         &#34;&#34;&#34;
         Implementation of withdraw_token in contract BSend
-    
+
         &#34;&#34;&#34;
         return self._fn_withdraw_token.block_call(token_addr, to, amount, 0,self.call_contract_fee_amount,self.call_contract_debug_flag)
 
@@ -1011,7 +1423,7 @@ class BSend:
     def abi():
         &#34;&#34;&#34;Return the ABI to the underlying contract.&#34;&#34;&#34;
         return json.loads(
-            &#39;[{&#34;inputs&#34;:[],&#34;payable&#34;:true,&#34;stateMutability&#34;:&#34;payable&#34;,&#34;type&#34;:&#34;constructor&#34;},{&#34;anonymous&#34;:false,&#34;inputs&#34;:[{&#34;indexed&#34;:true,&#34;internalType&#34;:&#34;address&#34;,&#34;name&#34;:&#34;previousOwner&#34;,&#34;type&#34;:&#34;address&#34;},{&#34;indexed&#34;:true,&#34;internalType&#34;:&#34;address&#34;,&#34;name&#34;:&#34;newOwner&#34;,&#34;type&#34;:&#34;address&#34;}],&#34;name&#34;:&#34;OwnershipTransferred&#34;,&#34;type&#34;:&#34;event&#34;},{&#34;constant&#34;:false,&#34;inputs&#34;:[{&#34;internalType&#34;:&#34;address&#34;,&#34;name&#34;:&#34;tokenAddr&#34;,&#34;type&#34;:&#34;address&#34;},{&#34;internalType&#34;:&#34;address[]&#34;,&#34;name&#34;:&#34;addresses&#34;,&#34;type&#34;:&#34;address[]&#34;},{&#34;internalType&#34;:&#34;uint256[]&#34;,&#34;name&#34;:&#34;amounts&#34;,&#34;type&#34;:&#34;uint256[]&#34;}],&#34;name&#34;:&#34;bulkSendToken&#34;,&#34;outputs&#34;:[{&#34;internalType&#34;:&#34;bool&#34;,&#34;name&#34;:&#34;&#34;,&#34;type&#34;:&#34;bool&#34;}],&#34;payable&#34;:true,&#34;stateMutability&#34;:&#34;payable&#34;,&#34;type&#34;:&#34;function&#34;},{&#34;constant&#34;:false,&#34;inputs&#34;:[{&#34;internalType&#34;:&#34;address[]&#34;,&#34;name&#34;:&#34;addresses&#34;,&#34;type&#34;:&#34;address[]&#34;},{&#34;internalType&#34;:&#34;uint256[]&#34;,&#34;name&#34;:&#34;amounts&#34;,&#34;type&#34;:&#34;uint256[]&#34;}],&#34;name&#34;:&#34;bulkSendTrx&#34;,&#34;outputs&#34;:[{&#34;internalType&#34;:&#34;bool&#34;,&#34;name&#34;:&#34;&#34;,&#34;type&#34;:&#34;bool&#34;}],&#34;payable&#34;:true,&#34;stateMutability&#34;:&#34;payable&#34;,&#34;type&#34;:&#34;function&#34;},{&#34;constant&#34;:false,&#34;inputs&#34;:[],&#34;name&#34;:&#34;deposit&#34;,&#34;outputs&#34;:[{&#34;internalType&#34;:&#34;bool&#34;,&#34;name&#34;:&#34;&#34;,&#34;type&#34;:&#34;bool&#34;}],&#34;payable&#34;:true,&#34;stateMutability&#34;:&#34;payable&#34;,&#34;type&#34;:&#34;function&#34;},{&#34;constant&#34;:true,&#34;inputs&#34;:[],&#34;name&#34;:&#34;ethSendFee&#34;,&#34;outputs&#34;:[{&#34;internalType&#34;:&#34;uint256&#34;,&#34;name&#34;:&#34;&#34;,&#34;type&#34;:&#34;uint256&#34;}],&#34;payable&#34;:false,&#34;stateMutability&#34;:&#34;view&#34;,&#34;type&#34;:&#34;function&#34;},{&#34;constant&#34;:true,&#34;inputs&#34;:[{&#34;internalType&#34;:&#34;address&#34;,&#34;name&#34;:&#34;addr&#34;,&#34;type&#34;:&#34;address&#34;}],&#34;name&#34;:&#34;getbalance&#34;,&#34;outputs&#34;:[{&#34;internalType&#34;:&#34;uint256&#34;,&#34;name&#34;:&#34;&#34;,&#34;type&#34;:&#34;uint256&#34;}],&#34;payable&#34;:false,&#34;stateMutability&#34;:&#34;view&#34;,&#34;type&#34;:&#34;function&#34;},{&#34;constant&#34;:true,&#34;inputs&#34;:[],&#34;name&#34;:&#34;isOwner&#34;,&#34;outputs&#34;:[{&#34;internalType&#34;:&#34;bool&#34;,&#34;name&#34;:&#34;&#34;,&#34;type&#34;:&#34;bool&#34;}],&#34;payable&#34;:false,&#34;stateMutability&#34;:&#34;view&#34;,&#34;type&#34;:&#34;function&#34;},{&#34;constant&#34;:true,&#34;inputs&#34;:[],&#34;name&#34;:&#34;owner&#34;,&#34;outputs&#34;:[{&#34;internalType&#34;:&#34;address&#34;,&#34;name&#34;:&#34;&#34;,&#34;type&#34;:&#34;address&#34;}],&#34;payable&#34;:false,&#34;stateMutability&#34;:&#34;view&#34;,&#34;type&#34;:&#34;function&#34;},{&#34;constant&#34;:false,&#34;inputs&#34;:[],&#34;name&#34;:&#34;renounceOwnership&#34;,&#34;outputs&#34;:[],&#34;payable&#34;:false,&#34;stateMutability&#34;:&#34;nonpayable&#34;,&#34;type&#34;:&#34;function&#34;},{&#34;constant&#34;:false,&#34;inputs&#34;:[{&#34;internalType&#34;:&#34;uint256&#34;,&#34;name&#34;:&#34;_ethSendFee&#34;,&#34;type&#34;:&#34;uint256&#34;}],&#34;name&#34;:&#34;setEthFee&#34;,&#34;outputs&#34;:[{&#34;internalType&#34;:&#34;bool&#34;,&#34;name&#34;:&#34;&#34;,&#34;type&#34;:&#34;bool&#34;}],&#34;payable&#34;:false,&#34;stateMutability&#34;:&#34;nonpayable&#34;,&#34;type&#34;:&#34;function&#34;},{&#34;constant&#34;:false,&#34;inputs&#34;:[{&#34;internalType&#34;:&#34;uint256&#34;,&#34;name&#34;:&#34;_tokenSendFee&#34;,&#34;type&#34;:&#34;uint256&#34;}],&#34;name&#34;:&#34;setTokenFee&#34;,&#34;outputs&#34;:[{&#34;internalType&#34;:&#34;bool&#34;,&#34;name&#34;:&#34;&#34;,&#34;type&#34;:&#34;bool&#34;}],&#34;payable&#34;:false,&#34;stateMutability&#34;:&#34;nonpayable&#34;,&#34;type&#34;:&#34;function&#34;},{&#34;constant&#34;:true,&#34;inputs&#34;:[],&#34;name&#34;:&#34;tokenSendFee&#34;,&#34;outputs&#34;:[{&#34;internalType&#34;:&#34;uint256&#34;,&#34;name&#34;:&#34;&#34;,&#34;type&#34;:&#34;uint256&#34;}],&#34;payable&#34;:false,&#34;stateMutability&#34;:&#34;view&#34;,&#34;type&#34;:&#34;function&#34;},{&#34;constant&#34;:false,&#34;inputs&#34;:[{&#34;internalType&#34;:&#34;address&#34;,&#34;name&#34;:&#34;newOwner&#34;,&#34;type&#34;:&#34;address&#34;}],&#34;name&#34;:&#34;transferOwnership&#34;,&#34;outputs&#34;:[],&#34;payable&#34;:false,&#34;stateMutability&#34;:&#34;nonpayable&#34;,&#34;type&#34;:&#34;function&#34;},{&#34;constant&#34;:false,&#34;inputs&#34;:[{&#34;internalType&#34;:&#34;address&#34;,&#34;name&#34;:&#34;addr&#34;,&#34;type&#34;:&#34;address&#34;},{&#34;internalType&#34;:&#34;uint256&#34;,&#34;name&#34;:&#34;amount&#34;,&#34;type&#34;:&#34;uint256&#34;}],&#34;name&#34;:&#34;withdrawEther&#34;,&#34;outputs&#34;:[{&#34;internalType&#34;:&#34;bool&#34;,&#34;name&#34;:&#34;&#34;,&#34;type&#34;:&#34;bool&#34;}],&#34;payable&#34;:false,&#34;stateMutability&#34;:&#34;nonpayable&#34;,&#34;type&#34;:&#34;function&#34;},{&#34;constant&#34;:false,&#34;inputs&#34;:[{&#34;internalType&#34;:&#34;address&#34;,&#34;name&#34;:&#34;tokenAddr&#34;,&#34;type&#34;:&#34;address&#34;},{&#34;internalType&#34;:&#34;address&#34;,&#34;name&#34;:&#34;_to&#34;,&#34;type&#34;:&#34;address&#34;},{&#34;internalType&#34;:&#34;uint256&#34;,&#34;name&#34;:&#34;_amount&#34;,&#34;type&#34;:&#34;uint256&#34;}],&#34;name&#34;:&#34;withdrawToken&#34;,&#34;outputs&#34;:[{&#34;internalType&#34;:&#34;bool&#34;,&#34;name&#34;:&#34;&#34;,&#34;type&#34;:&#34;bool&#34;}],&#34;payable&#34;:false,&#34;stateMutability&#34;:&#34;nonpayable&#34;,&#34;type&#34;:&#34;function&#34;}]&#39;  # noqa: E501 (line-too-long)
+            &#39;[{&#34;inputs&#34;:[],&#34;payable&#34;:true,&#34;stateMutability&#34;:&#34;payable&#34;,&#34;type&#34;:&#34;constructor&#34;},{&#34;anonymous&#34;:false,&#34;inputs&#34;:[{&#34;indexed&#34;:true,&#34;internalType&#34;:&#34;address&#34;,&#34;name&#34;:&#34;previousOwner&#34;,&#34;type&#34;:&#34;address&#34;},{&#34;indexed&#34;:true,&#34;internalType&#34;:&#34;address&#34;,&#34;name&#34;:&#34;newOwner&#34;,&#34;type&#34;:&#34;address&#34;}],&#34;name&#34;:&#34;OwnershipTransferred&#34;,&#34;type&#34;:&#34;event&#34;},{&#34;anonymous&#34;:false,&#34;inputs&#34;:[{&#34;indexed&#34;:false,&#34;internalType&#34;:&#34;uint8&#34;,&#34;name&#34;:&#34;value&#34;,&#34;type&#34;:&#34;uint8&#34;}],&#34;name&#34;:&#34;traillock&#34;,&#34;type&#34;:&#34;event&#34;},{&#34;constant&#34;:false,&#34;inputs&#34;:[{&#34;internalType&#34;:&#34;address&#34;,&#34;name&#34;:&#34;account&#34;,&#34;type&#34;:&#34;address&#34;}],&#34;name&#34;:&#34;addWhitelistAdmin&#34;,&#34;outputs&#34;:[],&#34;payable&#34;:false,&#34;stateMutability&#34;:&#34;nonpayable&#34;,&#34;type&#34;:&#34;function&#34;},{&#34;constant&#34;:false,&#34;inputs&#34;:[{&#34;internalType&#34;:&#34;address&#34;,&#34;name&#34;:&#34;tokenAddr&#34;,&#34;type&#34;:&#34;address&#34;},{&#34;internalType&#34;:&#34;address[]&#34;,&#34;name&#34;:&#34;addresses&#34;,&#34;type&#34;:&#34;address[]&#34;},{&#34;internalType&#34;:&#34;uint256[]&#34;,&#34;name&#34;:&#34;amounts&#34;,&#34;type&#34;:&#34;uint256[]&#34;}],&#34;name&#34;:&#34;bulkSendToken&#34;,&#34;outputs&#34;:[{&#34;internalType&#34;:&#34;bool&#34;,&#34;name&#34;:&#34;&#34;,&#34;type&#34;:&#34;bool&#34;}],&#34;payable&#34;:true,&#34;stateMutability&#34;:&#34;payable&#34;,&#34;type&#34;:&#34;function&#34;},{&#34;constant&#34;:false,&#34;inputs&#34;:[{&#34;internalType&#34;:&#34;address[]&#34;,&#34;name&#34;:&#34;addresses&#34;,&#34;type&#34;:&#34;address[]&#34;},{&#34;internalType&#34;:&#34;uint256[]&#34;,&#34;name&#34;:&#34;amounts&#34;,&#34;type&#34;:&#34;uint256[]&#34;}],&#34;name&#34;:&#34;bulkSendTrx&#34;,&#34;outputs&#34;:[{&#34;internalType&#34;:&#34;bool&#34;,&#34;name&#34;:&#34;&#34;,&#34;type&#34;:&#34;bool&#34;}],&#34;payable&#34;:true,&#34;stateMutability&#34;:&#34;payable&#34;,&#34;type&#34;:&#34;function&#34;},{&#34;constant&#34;:false,&#34;inputs&#34;:[],&#34;name&#34;:&#34;deposit&#34;,&#34;outputs&#34;:[{&#34;internalType&#34;:&#34;bool&#34;,&#34;name&#34;:&#34;&#34;,&#34;type&#34;:&#34;bool&#34;}],&#34;payable&#34;:true,&#34;stateMutability&#34;:&#34;payable&#34;,&#34;type&#34;:&#34;function&#34;},{&#34;constant&#34;:true,&#34;inputs&#34;:[],&#34;name&#34;:&#34;ethSendFee&#34;,&#34;outputs&#34;:[{&#34;internalType&#34;:&#34;uint256&#34;,&#34;name&#34;:&#34;&#34;,&#34;type&#34;:&#34;uint256&#34;}],&#34;payable&#34;:false,&#34;stateMutability&#34;:&#34;view&#34;,&#34;type&#34;:&#34;function&#34;},{&#34;constant&#34;:false,&#34;inputs&#34;:[{&#34;internalType&#34;:&#34;bytes[]&#34;,&#34;name&#34;:&#34;_data&#34;,&#34;type&#34;:&#34;bytes[]&#34;}],&#34;name&#34;:&#34;executeBus&#34;,&#34;outputs&#34;:[],&#34;payable&#34;:true,&#34;stateMutability&#34;:&#34;payable&#34;,&#34;type&#34;:&#34;function&#34;},{&#34;constant&#34;:true,&#34;inputs&#34;:[{&#34;internalType&#34;:&#34;address&#34;,&#34;name&#34;:&#34;addr&#34;,&#34;type&#34;:&#34;address&#34;}],&#34;name&#34;:&#34;getbalance&#34;,&#34;outputs&#34;:[{&#34;internalType&#34;:&#34;uint256&#34;,&#34;name&#34;:&#34;&#34;,&#34;type&#34;:&#34;uint256&#34;}],&#34;payable&#34;:false,&#34;stateMutability&#34;:&#34;view&#34;,&#34;type&#34;:&#34;function&#34;},{&#34;constant&#34;:true,&#34;inputs&#34;:[],&#34;name&#34;:&#34;isLocked&#34;,&#34;outputs&#34;:[{&#34;internalType&#34;:&#34;bool&#34;,&#34;name&#34;:&#34;&#34;,&#34;type&#34;:&#34;bool&#34;}],&#34;payable&#34;:false,&#34;stateMutability&#34;:&#34;view&#34;,&#34;type&#34;:&#34;function&#34;},{&#34;constant&#34;:true,&#34;inputs&#34;:[],&#34;name&#34;:&#34;isOwner&#34;,&#34;outputs&#34;:[{&#34;internalType&#34;:&#34;bool&#34;,&#34;name&#34;:&#34;&#34;,&#34;type&#34;:&#34;bool&#34;}],&#34;payable&#34;:false,&#34;stateMutability&#34;:&#34;view&#34;,&#34;type&#34;:&#34;function&#34;},{&#34;constant&#34;:true,&#34;inputs&#34;:[{&#34;internalType&#34;:&#34;address&#34;,&#34;name&#34;:&#34;account&#34;,&#34;type&#34;:&#34;address&#34;}],&#34;name&#34;:&#34;isWhitelistAdmin&#34;,&#34;outputs&#34;:[{&#34;internalType&#34;:&#34;bool&#34;,&#34;name&#34;:&#34;&#34;,&#34;type&#34;:&#34;bool&#34;}],&#34;payable&#34;:false,&#34;stateMutability&#34;:&#34;view&#34;,&#34;type&#34;:&#34;function&#34;},{&#34;constant&#34;:true,&#34;inputs&#34;:[],&#34;name&#34;:&#34;owner&#34;,&#34;outputs&#34;:[{&#34;internalType&#34;:&#34;address&#34;,&#34;name&#34;:&#34;&#34;,&#34;type&#34;:&#34;address&#34;}],&#34;payable&#34;:false,&#34;stateMutability&#34;:&#34;view&#34;,&#34;type&#34;:&#34;function&#34;},{&#34;constant&#34;:false,&#34;inputs&#34;:[],&#34;name&#34;:&#34;pulllock&#34;,&#34;outputs&#34;:[],&#34;payable&#34;:false,&#34;stateMutability&#34;:&#34;nonpayable&#34;,&#34;type&#34;:&#34;function&#34;},{&#34;constant&#34;:false,&#34;inputs&#34;:[{&#34;internalType&#34;:&#34;address&#34;,&#34;name&#34;:&#34;account&#34;,&#34;type&#34;:&#34;address&#34;}],&#34;name&#34;:&#34;removeWhitelistAdmin&#34;,&#34;outputs&#34;:[],&#34;payable&#34;:false,&#34;stateMutability&#34;:&#34;nonpayable&#34;,&#34;type&#34;:&#34;function&#34;},{&#34;constant&#34;:false,&#34;inputs&#34;:[],&#34;name&#34;:&#34;renounceOwnership&#34;,&#34;outputs&#34;:[],&#34;payable&#34;:false,&#34;stateMutability&#34;:&#34;nonpayable&#34;,&#34;type&#34;:&#34;function&#34;},{&#34;constant&#34;:false,&#34;inputs&#34;:[{&#34;internalType&#34;:&#34;uint256&#34;,&#34;name&#34;:&#34;_ethSendFee&#34;,&#34;type&#34;:&#34;uint256&#34;}],&#34;name&#34;:&#34;setEthFee&#34;,&#34;outputs&#34;:[{&#34;internalType&#34;:&#34;bool&#34;,&#34;name&#34;:&#34;&#34;,&#34;type&#34;:&#34;bool&#34;}],&#34;payable&#34;:false,&#34;stateMutability&#34;:&#34;nonpayable&#34;,&#34;type&#34;:&#34;function&#34;},{&#34;constant&#34;:false,&#34;inputs&#34;:[{&#34;internalType&#34;:&#34;uint256&#34;,&#34;name&#34;:&#34;_tokenSendFee&#34;,&#34;type&#34;:&#34;uint256&#34;}],&#34;name&#34;:&#34;setTokenFee&#34;,&#34;outputs&#34;:[{&#34;internalType&#34;:&#34;bool&#34;,&#34;name&#34;:&#34;&#34;,&#34;type&#34;:&#34;bool&#34;}],&#34;payable&#34;:false,&#34;stateMutability&#34;:&#34;nonpayable&#34;,&#34;type&#34;:&#34;function&#34;},{&#34;constant&#34;:true,&#34;inputs&#34;:[],&#34;name&#34;:&#34;tokenSendFee&#34;,&#34;outputs&#34;:[{&#34;internalType&#34;:&#34;uint256&#34;,&#34;name&#34;:&#34;&#34;,&#34;type&#34;:&#34;uint256&#34;}],&#34;payable&#34;:false,&#34;stateMutability&#34;:&#34;view&#34;,&#34;type&#34;:&#34;function&#34;},{&#34;constant&#34;:false,&#34;inputs&#34;:[{&#34;internalType&#34;:&#34;address&#34;,&#34;name&#34;:&#34;newOwner&#34;,&#34;type&#34;:&#34;address&#34;}],&#34;name&#34;:&#34;transferOwnership&#34;,&#34;outputs&#34;:[],&#34;payable&#34;:false,&#34;stateMutability&#34;:&#34;nonpayable&#34;,&#34;type&#34;:&#34;function&#34;},{&#34;constant&#34;:false,&#34;inputs&#34;:[],&#34;name&#34;:&#34;unlock&#34;,&#34;outputs&#34;:[],&#34;payable&#34;:false,&#34;stateMutability&#34;:&#34;nonpayable&#34;,&#34;type&#34;:&#34;function&#34;},{&#34;constant&#34;:false,&#34;inputs&#34;:[{&#34;internalType&#34;:&#34;address&#34;,&#34;name&#34;:&#34;addr&#34;,&#34;type&#34;:&#34;address&#34;},{&#34;internalType&#34;:&#34;uint256&#34;,&#34;name&#34;:&#34;amount&#34;,&#34;type&#34;:&#34;uint256&#34;}],&#34;name&#34;:&#34;withdrawEther&#34;,&#34;outputs&#34;:[{&#34;internalType&#34;:&#34;bool&#34;,&#34;name&#34;:&#34;&#34;,&#34;type&#34;:&#34;bool&#34;}],&#34;payable&#34;:false,&#34;stateMutability&#34;:&#34;nonpayable&#34;,&#34;type&#34;:&#34;function&#34;},{&#34;constant&#34;:false,&#34;inputs&#34;:[{&#34;internalType&#34;:&#34;address&#34;,&#34;name&#34;:&#34;tokenAddr&#34;,&#34;type&#34;:&#34;address&#34;},{&#34;internalType&#34;:&#34;address&#34;,&#34;name&#34;:&#34;_to&#34;,&#34;type&#34;:&#34;address&#34;},{&#34;internalType&#34;:&#34;uint256&#34;,&#34;name&#34;:&#34;_amount&#34;,&#34;type&#34;:&#34;uint256&#34;}],&#34;name&#34;:&#34;withdrawToken&#34;,&#34;outputs&#34;:[{&#34;internalType&#34;:&#34;bool&#34;,&#34;name&#34;:&#34;&#34;,&#34;type&#34;:&#34;bool&#34;}],&#34;payable&#34;:false,&#34;stateMutability&#34;:&#34;nonpayable&#34;,&#34;type&#34;:&#34;function&#34;}]&#39;  # noqa: E501 (line-too-long)
         )
 
 # pylint: disable=too-many-lines</code></pre>
@@ -1026,6 +1438,173 @@ class BSend:
 <section>
 <h2 class="section-title" id="header-classes">Classes</h2>
 <dl>
+<dt id="moody.m.b_send.AddWhitelistAdminMethod"><code class="flex name class">
+<span>class <span class="ident">AddWhitelistAdminMethod</span></span>
+<span>(</span><span>web3_or_provider: Union[web3.main.Web3, web3.providers.base.BaseProvider], contract_address: str, contract_function: web3.contract.ContractFunction, validator: zero_ex.contract_wrappers.bases.Validator = None)</span>
+</code></dt>
+<dd>
+<div class="desc"><p>Various interfaces to the addWhitelistAdmin method.</p>
+<p>Persist instance data.</p></div>
+<details class="source">
+<summary>
+<span>Expand source code</span>
+</summary>
+<pre><code class="python">class AddWhitelistAdminMethod(ContractMethod): # pylint: disable=invalid-name
+    &#34;&#34;&#34;Various interfaces to the addWhitelistAdmin method.&#34;&#34;&#34;
+
+    def __init__(self, web3_or_provider: Union[Web3, BaseProvider], contract_address: str, contract_function: ContractFunction, validator: Validator=None):
+        &#34;&#34;&#34;Persist instance data.&#34;&#34;&#34;
+        super().__init__(web3_or_provider, contract_address, validator)
+        self._underlying_method = contract_function
+
+    def validate_and_normalize_inputs(self, account: str):
+        &#34;&#34;&#34;Validate the inputs to the addWhitelistAdmin method.&#34;&#34;&#34;
+        self.validator.assert_valid(
+            method_name=&#39;addWhitelistAdmin&#39;,
+            parameter_name=&#39;account&#39;,
+            argument_value=account,
+        )
+        account = self.validate_and_checksum_address(account)
+        return (account)
+
+
+    def block_call(self, account: str, val: int = 0, fee: int = 1000000, debug: bool = False) -&gt; None:
+        &#34;&#34;&#34;Execute underlying contract method via eth_call.
+
+        :param tx_params: transaction parameters
+        :returns: the return value of the underlying method.
+        &#34;&#34;&#34;
+        (account) = self.validate_and_normalize_inputs(account)
+
+        tx_params: Optional[TxParams] = None
+        tx_params = super().normalize_tx_params(tx_params)
+        self._underlying_method(account).call(tx_params.as_dict())
+
+    def send_transaction(self, account: str, tx_params: Optional[TxParams] = None) -&gt; Union[HexBytes, bytes]:
+        &#34;&#34;&#34;Execute underlying contract method via eth_sendTransaction.
+
+        :param tx_params: transaction parameters
+        &#34;&#34;&#34;
+        (account) = self.validate_and_normalize_inputs(account)
+        tx_params = super().normalize_tx_params(tx_params)
+        return self._underlying_method(account).transact(tx_params.as_dict())
+
+    def build_transaction(self, account: str, tx_params: Optional[TxParams] = None) -&gt; dict:
+        &#34;&#34;&#34;Construct calldata to be used as input to the method.&#34;&#34;&#34;
+        (account) = self.validate_and_normalize_inputs(account)
+        tx_params = super().normalize_tx_params(tx_params)
+        return self._underlying_method(account).buildTransaction(tx_params.as_dict())
+
+    def estimate_gas(self, account: str, tx_params: Optional[TxParams] = None) -&gt; int:
+        &#34;&#34;&#34;Estimate gas consumption of method call.&#34;&#34;&#34;
+        (account) = self.validate_and_normalize_inputs(account)
+        tx_params = super().normalize_tx_params(tx_params)
+        return self._underlying_method(account).estimateGas(tx_params.as_dict())</code></pre>
+</details>
+<h3>Ancestors</h3>
+<ul class="hlist">
+<li>zero_ex.contract_wrappers.bases.ContractMethod</li>
+</ul>
+<h3>Methods</h3>
+<dl>
+<dt id="moody.m.b_send.AddWhitelistAdminMethod.block_call"><code class="name flex">
+<span>def <span class="ident">block_call</span></span>(<span>self, account: str, val: int = 0, fee: int = 1000000, debug: bool = False) ‑> NoneType</span>
+</code></dt>
+<dd>
+<div class="desc"><p>Execute underlying contract method via eth_call.</p>
+<p>:param tx_params: transaction parameters
+:returns: the return value of the underlying method.</p></div>
+<details class="source">
+<summary>
+<span>Expand source code</span>
+</summary>
+<pre><code class="python">def block_call(self, account: str, val: int = 0, fee: int = 1000000, debug: bool = False) -&gt; None:
+    &#34;&#34;&#34;Execute underlying contract method via eth_call.
+
+    :param tx_params: transaction parameters
+    :returns: the return value of the underlying method.
+    &#34;&#34;&#34;
+    (account) = self.validate_and_normalize_inputs(account)
+
+    tx_params: Optional[TxParams] = None
+    tx_params = super().normalize_tx_params(tx_params)
+    self._underlying_method(account).call(tx_params.as_dict())</code></pre>
+</details>
+</dd>
+<dt id="moody.m.b_send.AddWhitelistAdminMethod.build_transaction"><code class="name flex">
+<span>def <span class="ident">build_transaction</span></span>(<span>self, account: str, tx_params: Union[zero_ex.contract_wrappers.tx_params.TxParams, NoneType] = None) ‑> dict</span>
+</code></dt>
+<dd>
+<div class="desc"><p>Construct calldata to be used as input to the method.</p></div>
+<details class="source">
+<summary>
+<span>Expand source code</span>
+</summary>
+<pre><code class="python">def build_transaction(self, account: str, tx_params: Optional[TxParams] = None) -&gt; dict:
+    &#34;&#34;&#34;Construct calldata to be used as input to the method.&#34;&#34;&#34;
+    (account) = self.validate_and_normalize_inputs(account)
+    tx_params = super().normalize_tx_params(tx_params)
+    return self._underlying_method(account).buildTransaction(tx_params.as_dict())</code></pre>
+</details>
+</dd>
+<dt id="moody.m.b_send.AddWhitelistAdminMethod.estimate_gas"><code class="name flex">
+<span>def <span class="ident">estimate_gas</span></span>(<span>self, account: str, tx_params: Union[zero_ex.contract_wrappers.tx_params.TxParams, NoneType] = None) ‑> int</span>
+</code></dt>
+<dd>
+<div class="desc"><p>Estimate gas consumption of method call.</p></div>
+<details class="source">
+<summary>
+<span>Expand source code</span>
+</summary>
+<pre><code class="python">def estimate_gas(self, account: str, tx_params: Optional[TxParams] = None) -&gt; int:
+    &#34;&#34;&#34;Estimate gas consumption of method call.&#34;&#34;&#34;
+    (account) = self.validate_and_normalize_inputs(account)
+    tx_params = super().normalize_tx_params(tx_params)
+    return self._underlying_method(account).estimateGas(tx_params.as_dict())</code></pre>
+</details>
+</dd>
+<dt id="moody.m.b_send.AddWhitelistAdminMethod.send_transaction"><code class="name flex">
+<span>def <span class="ident">send_transaction</span></span>(<span>self, account: str, tx_params: Union[zero_ex.contract_wrappers.tx_params.TxParams, NoneType] = None) ‑> Union[hexbytes.main.HexBytes, bytes]</span>
+</code></dt>
+<dd>
+<div class="desc"><p>Execute underlying contract method via eth_sendTransaction.</p>
+<p>:param tx_params: transaction parameters</p></div>
+<details class="source">
+<summary>
+<span>Expand source code</span>
+</summary>
+<pre><code class="python">def send_transaction(self, account: str, tx_params: Optional[TxParams] = None) -&gt; Union[HexBytes, bytes]:
+    &#34;&#34;&#34;Execute underlying contract method via eth_sendTransaction.
+
+    :param tx_params: transaction parameters
+    &#34;&#34;&#34;
+    (account) = self.validate_and_normalize_inputs(account)
+    tx_params = super().normalize_tx_params(tx_params)
+    return self._underlying_method(account).transact(tx_params.as_dict())</code></pre>
+</details>
+</dd>
+<dt id="moody.m.b_send.AddWhitelistAdminMethod.validate_and_normalize_inputs"><code class="name flex">
+<span>def <span class="ident">validate_and_normalize_inputs</span></span>(<span>self, account: str)</span>
+</code></dt>
+<dd>
+<div class="desc"><p>Validate the inputs to the addWhitelistAdmin method.</p></div>
+<details class="source">
+<summary>
+<span>Expand source code</span>
+</summary>
+<pre><code class="python">def validate_and_normalize_inputs(self, account: str):
+    &#34;&#34;&#34;Validate the inputs to the addWhitelistAdmin method.&#34;&#34;&#34;
+    self.validator.assert_valid(
+        method_name=&#39;addWhitelistAdmin&#39;,
+        parameter_name=&#39;account&#39;,
+        argument_value=account,
+    )
+    account = self.validate_and_checksum_address(account)
+    return (account)</code></pre>
+</details>
+</dd>
+</dl>
+</dd>
 <dt id="moody.m.b_send.BSend"><code class="flex name class">
 <span>class <span class="ident">BSend</span></span>
 <span>(</span><span>web3_or_provider: Union[web3.main.Web3, web3.providers.base.BaseProvider], contract_address: str, validator: <a title="moody.m.b_send.BSendValidator" href="#moody.m.b_send.BSendValidator">BSendValidator</a> = None)</span>
@@ -1043,6 +1622,11 @@ class BSend:
 </summary>
 <pre><code class="python">class BSend:
     &#34;&#34;&#34;Wrapper class for BSend Solidity contract.&#34;&#34;&#34;
+    _fn_add_whitelist_admin: AddWhitelistAdminMethod
+    &#34;&#34;&#34;Constructor-initialized instance of
+    :class:`AddWhitelistAdminMethod`.
+    &#34;&#34;&#34;
+
     _fn_bulk_send_token: BulkSendTokenMethod
     &#34;&#34;&#34;Constructor-initialized instance of
     :class:`BulkSendTokenMethod`.
@@ -1063,9 +1647,19 @@ class BSend:
     :class:`EthSendFeeMethod`.
     &#34;&#34;&#34;
 
+    _fn_execute_bus: ExecuteBusMethod
+    &#34;&#34;&#34;Constructor-initialized instance of
+    :class:`ExecuteBusMethod`.
+    &#34;&#34;&#34;
+
     _fn_getbalance: GetbalanceMethod
     &#34;&#34;&#34;Constructor-initialized instance of
     :class:`GetbalanceMethod`.
+    &#34;&#34;&#34;
+
+    _fn_is_locked: IsLockedMethod
+    &#34;&#34;&#34;Constructor-initialized instance of
+    :class:`IsLockedMethod`.
     &#34;&#34;&#34;
 
     _fn_is_owner: IsOwnerMethod
@@ -1073,9 +1667,24 @@ class BSend:
     :class:`IsOwnerMethod`.
     &#34;&#34;&#34;
 
+    _fn_is_whitelist_admin: IsWhitelistAdminMethod
+    &#34;&#34;&#34;Constructor-initialized instance of
+    :class:`IsWhitelistAdminMethod`.
+    &#34;&#34;&#34;
+
     _fn_owner: OwnerMethod
     &#34;&#34;&#34;Constructor-initialized instance of
     :class:`OwnerMethod`.
+    &#34;&#34;&#34;
+
+    _fn_pulllock: PulllockMethod
+    &#34;&#34;&#34;Constructor-initialized instance of
+    :class:`PulllockMethod`.
+    &#34;&#34;&#34;
+
+    _fn_remove_whitelist_admin: RemoveWhitelistAdminMethod
+    &#34;&#34;&#34;Constructor-initialized instance of
+    :class:`RemoveWhitelistAdminMethod`.
     &#34;&#34;&#34;
 
     _fn_renounce_ownership: RenounceOwnershipMethod
@@ -1101,6 +1710,11 @@ class BSend:
     _fn_transfer_ownership: TransferOwnershipMethod
     &#34;&#34;&#34;Constructor-initialized instance of
     :class:`TransferOwnershipMethod`.
+    &#34;&#34;&#34;
+
+    _fn_unlock: UnlockMethod
+    &#34;&#34;&#34;Constructor-initialized instance of
+    :class:`UnlockMethod`.
     &#34;&#34;&#34;
 
     _fn_withdraw_ether: WithdrawEtherMethod
@@ -1167,6 +1781,8 @@ class BSend:
         self.call_contract_fee_amount:int = 1000000
         self.call_contract_debug_flag:bool = False
 
+        self._fn_add_whitelist_admin = AddWhitelistAdminMethod(web3_or_provider, contract_address, functions.addWhitelistAdmin, validator)
+
         self._fn_bulk_send_token = BulkSendTokenMethod(web3_or_provider, contract_address, functions.bulkSendToken, validator)
 
         self._fn_bulk_send_trx = BulkSendTrxMethod(web3_or_provider, contract_address, functions.bulkSendTrx, validator)
@@ -1175,11 +1791,21 @@ class BSend:
 
         self._fn_eth_send_fee = EthSendFeeMethod(web3_or_provider, contract_address, functions.ethSendFee)
 
+        self._fn_execute_bus = ExecuteBusMethod(web3_or_provider, contract_address, functions.executeBus, validator)
+
         self._fn_getbalance = GetbalanceMethod(web3_or_provider, contract_address, functions.getbalance, validator)
+
+        self._fn_is_locked = IsLockedMethod(web3_or_provider, contract_address, functions.isLocked)
 
         self._fn_is_owner = IsOwnerMethod(web3_or_provider, contract_address, functions.isOwner)
 
+        self._fn_is_whitelist_admin = IsWhitelistAdminMethod(web3_or_provider, contract_address, functions.isWhitelistAdmin, validator)
+
         self._fn_owner = OwnerMethod(web3_or_provider, contract_address, functions.owner)
+
+        self._fn_pulllock = PulllockMethod(web3_or_provider, contract_address, functions.pulllock)
+
+        self._fn_remove_whitelist_admin = RemoveWhitelistAdminMethod(web3_or_provider, contract_address, functions.removeWhitelistAdmin, validator)
 
         self._fn_renounce_ownership = RenounceOwnershipMethod(web3_or_provider, contract_address, functions.renounceOwnership)
 
@@ -1191,13 +1817,15 @@ class BSend:
 
         self._fn_transfer_ownership = TransferOwnershipMethod(web3_or_provider, contract_address, functions.transferOwnership, validator)
 
+        self._fn_unlock = UnlockMethod(web3_or_provider, contract_address, functions.unlock)
+
         self._fn_withdraw_ether = WithdrawEtherMethod(web3_or_provider, contract_address, functions.withdrawEther, validator)
 
         self._fn_withdraw_token = WithdrawTokenMethod(web3_or_provider, contract_address, functions.withdrawToken, validator)
 
 
-    
-    
+
+
     def event_ownership_transferred(
             self, tx_hash: Union[HexBytes, bytes]
     ) -&gt; Tuple[AttributeDict]:
@@ -1210,118 +1838,186 @@ class BSend:
         return self._web3_eth.contract(address=to_checksum_address(self.contract_address), abi=BSend.abi()).events.OwnershipTransferred().processReceipt(tx_receipt)
 
 
+    def event_traillock(
+            self, tx_hash: Union[HexBytes, bytes]
+    ) -&gt; Tuple[AttributeDict]:
+        &#34;&#34;&#34;
+        Implementation of event traillock in contract BSend
+        Get log entry for traillock event.
+                :param tx_hash: hash of transaction emitting traillock event
+        &#34;&#34;&#34;
+        tx_receipt = self._web3_eth.getTransactionReceipt(tx_hash)
+        return self._web3_eth.contract(address=to_checksum_address(self.contract_address), abi=BSend.abi()).events.traillock().processReceipt(tx_receipt)
 
-    
-    
-    
+
+
+
+
+
+    def add_whitelist_admin(self,account: str) -&gt; None:
+        &#34;&#34;&#34;
+        Implementation of add_whitelist_admin in contract BSend
+
+        &#34;&#34;&#34;
+        return self._fn_add_whitelist_admin.block_call(account, 0,self.call_contract_fee_amount,self.call_contract_debug_flag)
+
+
     def bulk_send_token(self,token_addr: str, addresses: List[str], amounts: List[int], trx:int=0) -&gt; bool:
         &#34;&#34;&#34;
         Implementation of bulk_send_token in contract BSend
-    
+
         &#34;&#34;&#34;
-        return self._fn_bulk_send_token.block_call(token_addr, addresses, amounts, trx,self.call_contract_fee_amount,self.call_contract_debug_flag)    
-    
-    
+        return self._fn_bulk_send_token.block_call(token_addr, addresses, amounts, trx,self.call_contract_fee_amount,self.call_contract_debug_flag)
+
+
     def bulk_send_trx(self,addresses: List[str], amounts: List[int], trx:int=0) -&gt; bool:
         &#34;&#34;&#34;
         Implementation of bulk_send_trx in contract BSend
-    
+
         &#34;&#34;&#34;
-        return self._fn_bulk_send_trx.block_call(addresses, amounts, trx,self.call_contract_fee_amount,self.call_contract_debug_flag)    
-    
-    
+        return self._fn_bulk_send_trx.block_call(addresses, amounts, trx,self.call_contract_fee_amount,self.call_contract_debug_flag)
+
+
     def deposit(self, trx:int=0) -&gt; bool:
         &#34;&#34;&#34;
         Implementation of deposit in contract BSend
-    
+
         &#34;&#34;&#34;
-        return self._fn_deposit.block_call(trx,self.call_contract_fee_amount,self.call_contract_debug_flag)    
-    
-    
+        return self._fn_deposit.block_call(trx,self.call_contract_fee_amount,self.call_contract_debug_flag)
+
+
     def eth_send_fee(self) -&gt; int:
         &#34;&#34;&#34;
         Implementation of eth_send_fee in contract BSend
-    
+
         &#34;&#34;&#34;
-        return self._fn_eth_send_fee.block_call()    
-    
-    
+        return self._fn_eth_send_fee.block_call()
+
+
+    def execute_bus(self,data: List[Union[bytes, str]], trx:int=0) -&gt; None:
+        &#34;&#34;&#34;
+        Implementation of execute_bus in contract BSend
+
+        &#34;&#34;&#34;
+        return self._fn_execute_bus.block_call(data, trx,self.call_contract_fee_amount,self.call_contract_debug_flag)
+
+
     def getbalance(self,addr: str) -&gt; int:
         &#34;&#34;&#34;
         Implementation of getbalance in contract BSend
-    
+
         &#34;&#34;&#34;
-        return self._fn_getbalance.block_call(addr)    
-    
-    
+        return self._fn_getbalance.block_call(addr)
+
+
+    def is_locked(self) -&gt; bool:
+        &#34;&#34;&#34;
+        Implementation of is_locked in contract BSend
+
+        &#34;&#34;&#34;
+        return self._fn_is_locked.block_call()
+
+
     def is_owner(self) -&gt; bool:
         &#34;&#34;&#34;
         Implementation of is_owner in contract BSend
-    
+
         &#34;&#34;&#34;
-        return self._fn_is_owner.block_call()    
-    
-    
+        return self._fn_is_owner.block_call()
+
+
+    def is_whitelist_admin(self,account: str) -&gt; bool:
+        &#34;&#34;&#34;
+        Implementation of is_whitelist_admin in contract BSend
+
+        &#34;&#34;&#34;
+        return self._fn_is_whitelist_admin.block_call(account)
+
+
     def owner(self) -&gt; str:
         &#34;&#34;&#34;
         Implementation of owner in contract BSend
-    
+
         &#34;&#34;&#34;
-        return self._fn_owner.block_call()    
-    
-    
+        return self._fn_owner.block_call()
+
+
+    def pulllock(self) -&gt; None:
+        &#34;&#34;&#34;
+        Implementation of pulllock in contract BSend
+
+        &#34;&#34;&#34;
+        return self._fn_pulllock.block_call(0,self.call_contract_fee_amount,self.call_contract_debug_flag)
+
+
+    def remove_whitelist_admin(self,account: str) -&gt; None:
+        &#34;&#34;&#34;
+        Implementation of remove_whitelist_admin in contract BSend
+
+        &#34;&#34;&#34;
+        return self._fn_remove_whitelist_admin.block_call(account, 0,self.call_contract_fee_amount,self.call_contract_debug_flag)
+
+
     def renounce_ownership(self) -&gt; None:
         &#34;&#34;&#34;
         Implementation of renounce_ownership in contract BSend
-    
+
         &#34;&#34;&#34;
-        return self._fn_renounce_ownership.block_call(0,self.call_contract_fee_amount,self.call_contract_debug_flag)    
-    
-    
+        return self._fn_renounce_ownership.block_call(0,self.call_contract_fee_amount,self.call_contract_debug_flag)
+
+
     def set_eth_fee(self,eth_send_fee: int) -&gt; bool:
         &#34;&#34;&#34;
         Implementation of set_eth_fee in contract BSend
-    
+
         &#34;&#34;&#34;
-        return self._fn_set_eth_fee.block_call(eth_send_fee, 0,self.call_contract_fee_amount,self.call_contract_debug_flag)    
-    
-    
+        return self._fn_set_eth_fee.block_call(eth_send_fee, 0,self.call_contract_fee_amount,self.call_contract_debug_flag)
+
+
     def set_token_fee(self,token_send_fee: int) -&gt; bool:
         &#34;&#34;&#34;
         Implementation of set_token_fee in contract BSend
-    
+
         &#34;&#34;&#34;
-        return self._fn_set_token_fee.block_call(token_send_fee, 0,self.call_contract_fee_amount,self.call_contract_debug_flag)    
-    
-    
+        return self._fn_set_token_fee.block_call(token_send_fee, 0,self.call_contract_fee_amount,self.call_contract_debug_flag)
+
+
     def token_send_fee(self) -&gt; int:
         &#34;&#34;&#34;
         Implementation of token_send_fee in contract BSend
-    
+
         &#34;&#34;&#34;
-        return self._fn_token_send_fee.block_call()    
-    
-    
+        return self._fn_token_send_fee.block_call()
+
+
     def transfer_ownership(self,new_owner: str) -&gt; None:
         &#34;&#34;&#34;
         Implementation of transfer_ownership in contract BSend
-    
+
         &#34;&#34;&#34;
-        return self._fn_transfer_ownership.block_call(new_owner, 0,self.call_contract_fee_amount,self.call_contract_debug_flag)    
-    
-    
+        return self._fn_transfer_ownership.block_call(new_owner, 0,self.call_contract_fee_amount,self.call_contract_debug_flag)
+
+
+    def unlock(self) -&gt; None:
+        &#34;&#34;&#34;
+        Implementation of unlock in contract BSend
+
+        &#34;&#34;&#34;
+        return self._fn_unlock.block_call(0,self.call_contract_fee_amount,self.call_contract_debug_flag)
+
+
     def withdraw_ether(self,addr: str, amount: int) -&gt; bool:
         &#34;&#34;&#34;
         Implementation of withdraw_ether in contract BSend
-    
+
         &#34;&#34;&#34;
-        return self._fn_withdraw_ether.block_call(addr, amount, 0,self.call_contract_fee_amount,self.call_contract_debug_flag)    
-    
-    
+        return self._fn_withdraw_ether.block_call(addr, amount, 0,self.call_contract_fee_amount,self.call_contract_debug_flag)
+
+
     def withdraw_token(self,token_addr: str, to: str, amount: int) -&gt; bool:
         &#34;&#34;&#34;
         Implementation of withdraw_token in contract BSend
-    
+
         &#34;&#34;&#34;
         return self._fn_withdraw_token.block_call(token_addr, to, amount, 0,self.call_contract_fee_amount,self.call_contract_debug_flag)
 
@@ -1349,7 +2045,7 @@ class BSend:
     def abi():
         &#34;&#34;&#34;Return the ABI to the underlying contract.&#34;&#34;&#34;
         return json.loads(
-            &#39;[{&#34;inputs&#34;:[],&#34;payable&#34;:true,&#34;stateMutability&#34;:&#34;payable&#34;,&#34;type&#34;:&#34;constructor&#34;},{&#34;anonymous&#34;:false,&#34;inputs&#34;:[{&#34;indexed&#34;:true,&#34;internalType&#34;:&#34;address&#34;,&#34;name&#34;:&#34;previousOwner&#34;,&#34;type&#34;:&#34;address&#34;},{&#34;indexed&#34;:true,&#34;internalType&#34;:&#34;address&#34;,&#34;name&#34;:&#34;newOwner&#34;,&#34;type&#34;:&#34;address&#34;}],&#34;name&#34;:&#34;OwnershipTransferred&#34;,&#34;type&#34;:&#34;event&#34;},{&#34;constant&#34;:false,&#34;inputs&#34;:[{&#34;internalType&#34;:&#34;address&#34;,&#34;name&#34;:&#34;tokenAddr&#34;,&#34;type&#34;:&#34;address&#34;},{&#34;internalType&#34;:&#34;address[]&#34;,&#34;name&#34;:&#34;addresses&#34;,&#34;type&#34;:&#34;address[]&#34;},{&#34;internalType&#34;:&#34;uint256[]&#34;,&#34;name&#34;:&#34;amounts&#34;,&#34;type&#34;:&#34;uint256[]&#34;}],&#34;name&#34;:&#34;bulkSendToken&#34;,&#34;outputs&#34;:[{&#34;internalType&#34;:&#34;bool&#34;,&#34;name&#34;:&#34;&#34;,&#34;type&#34;:&#34;bool&#34;}],&#34;payable&#34;:true,&#34;stateMutability&#34;:&#34;payable&#34;,&#34;type&#34;:&#34;function&#34;},{&#34;constant&#34;:false,&#34;inputs&#34;:[{&#34;internalType&#34;:&#34;address[]&#34;,&#34;name&#34;:&#34;addresses&#34;,&#34;type&#34;:&#34;address[]&#34;},{&#34;internalType&#34;:&#34;uint256[]&#34;,&#34;name&#34;:&#34;amounts&#34;,&#34;type&#34;:&#34;uint256[]&#34;}],&#34;name&#34;:&#34;bulkSendTrx&#34;,&#34;outputs&#34;:[{&#34;internalType&#34;:&#34;bool&#34;,&#34;name&#34;:&#34;&#34;,&#34;type&#34;:&#34;bool&#34;}],&#34;payable&#34;:true,&#34;stateMutability&#34;:&#34;payable&#34;,&#34;type&#34;:&#34;function&#34;},{&#34;constant&#34;:false,&#34;inputs&#34;:[],&#34;name&#34;:&#34;deposit&#34;,&#34;outputs&#34;:[{&#34;internalType&#34;:&#34;bool&#34;,&#34;name&#34;:&#34;&#34;,&#34;type&#34;:&#34;bool&#34;}],&#34;payable&#34;:true,&#34;stateMutability&#34;:&#34;payable&#34;,&#34;type&#34;:&#34;function&#34;},{&#34;constant&#34;:true,&#34;inputs&#34;:[],&#34;name&#34;:&#34;ethSendFee&#34;,&#34;outputs&#34;:[{&#34;internalType&#34;:&#34;uint256&#34;,&#34;name&#34;:&#34;&#34;,&#34;type&#34;:&#34;uint256&#34;}],&#34;payable&#34;:false,&#34;stateMutability&#34;:&#34;view&#34;,&#34;type&#34;:&#34;function&#34;},{&#34;constant&#34;:true,&#34;inputs&#34;:[{&#34;internalType&#34;:&#34;address&#34;,&#34;name&#34;:&#34;addr&#34;,&#34;type&#34;:&#34;address&#34;}],&#34;name&#34;:&#34;getbalance&#34;,&#34;outputs&#34;:[{&#34;internalType&#34;:&#34;uint256&#34;,&#34;name&#34;:&#34;&#34;,&#34;type&#34;:&#34;uint256&#34;}],&#34;payable&#34;:false,&#34;stateMutability&#34;:&#34;view&#34;,&#34;type&#34;:&#34;function&#34;},{&#34;constant&#34;:true,&#34;inputs&#34;:[],&#34;name&#34;:&#34;isOwner&#34;,&#34;outputs&#34;:[{&#34;internalType&#34;:&#34;bool&#34;,&#34;name&#34;:&#34;&#34;,&#34;type&#34;:&#34;bool&#34;}],&#34;payable&#34;:false,&#34;stateMutability&#34;:&#34;view&#34;,&#34;type&#34;:&#34;function&#34;},{&#34;constant&#34;:true,&#34;inputs&#34;:[],&#34;name&#34;:&#34;owner&#34;,&#34;outputs&#34;:[{&#34;internalType&#34;:&#34;address&#34;,&#34;name&#34;:&#34;&#34;,&#34;type&#34;:&#34;address&#34;}],&#34;payable&#34;:false,&#34;stateMutability&#34;:&#34;view&#34;,&#34;type&#34;:&#34;function&#34;},{&#34;constant&#34;:false,&#34;inputs&#34;:[],&#34;name&#34;:&#34;renounceOwnership&#34;,&#34;outputs&#34;:[],&#34;payable&#34;:false,&#34;stateMutability&#34;:&#34;nonpayable&#34;,&#34;type&#34;:&#34;function&#34;},{&#34;constant&#34;:false,&#34;inputs&#34;:[{&#34;internalType&#34;:&#34;uint256&#34;,&#34;name&#34;:&#34;_ethSendFee&#34;,&#34;type&#34;:&#34;uint256&#34;}],&#34;name&#34;:&#34;setEthFee&#34;,&#34;outputs&#34;:[{&#34;internalType&#34;:&#34;bool&#34;,&#34;name&#34;:&#34;&#34;,&#34;type&#34;:&#34;bool&#34;}],&#34;payable&#34;:false,&#34;stateMutability&#34;:&#34;nonpayable&#34;,&#34;type&#34;:&#34;function&#34;},{&#34;constant&#34;:false,&#34;inputs&#34;:[{&#34;internalType&#34;:&#34;uint256&#34;,&#34;name&#34;:&#34;_tokenSendFee&#34;,&#34;type&#34;:&#34;uint256&#34;}],&#34;name&#34;:&#34;setTokenFee&#34;,&#34;outputs&#34;:[{&#34;internalType&#34;:&#34;bool&#34;,&#34;name&#34;:&#34;&#34;,&#34;type&#34;:&#34;bool&#34;}],&#34;payable&#34;:false,&#34;stateMutability&#34;:&#34;nonpayable&#34;,&#34;type&#34;:&#34;function&#34;},{&#34;constant&#34;:true,&#34;inputs&#34;:[],&#34;name&#34;:&#34;tokenSendFee&#34;,&#34;outputs&#34;:[{&#34;internalType&#34;:&#34;uint256&#34;,&#34;name&#34;:&#34;&#34;,&#34;type&#34;:&#34;uint256&#34;}],&#34;payable&#34;:false,&#34;stateMutability&#34;:&#34;view&#34;,&#34;type&#34;:&#34;function&#34;},{&#34;constant&#34;:false,&#34;inputs&#34;:[{&#34;internalType&#34;:&#34;address&#34;,&#34;name&#34;:&#34;newOwner&#34;,&#34;type&#34;:&#34;address&#34;}],&#34;name&#34;:&#34;transferOwnership&#34;,&#34;outputs&#34;:[],&#34;payable&#34;:false,&#34;stateMutability&#34;:&#34;nonpayable&#34;,&#34;type&#34;:&#34;function&#34;},{&#34;constant&#34;:false,&#34;inputs&#34;:[{&#34;internalType&#34;:&#34;address&#34;,&#34;name&#34;:&#34;addr&#34;,&#34;type&#34;:&#34;address&#34;},{&#34;internalType&#34;:&#34;uint256&#34;,&#34;name&#34;:&#34;amount&#34;,&#34;type&#34;:&#34;uint256&#34;}],&#34;name&#34;:&#34;withdrawEther&#34;,&#34;outputs&#34;:[{&#34;internalType&#34;:&#34;bool&#34;,&#34;name&#34;:&#34;&#34;,&#34;type&#34;:&#34;bool&#34;}],&#34;payable&#34;:false,&#34;stateMutability&#34;:&#34;nonpayable&#34;,&#34;type&#34;:&#34;function&#34;},{&#34;constant&#34;:false,&#34;inputs&#34;:[{&#34;internalType&#34;:&#34;address&#34;,&#34;name&#34;:&#34;tokenAddr&#34;,&#34;type&#34;:&#34;address&#34;},{&#34;internalType&#34;:&#34;address&#34;,&#34;name&#34;:&#34;_to&#34;,&#34;type&#34;:&#34;address&#34;},{&#34;internalType&#34;:&#34;uint256&#34;,&#34;name&#34;:&#34;_amount&#34;,&#34;type&#34;:&#34;uint256&#34;}],&#34;name&#34;:&#34;withdrawToken&#34;,&#34;outputs&#34;:[{&#34;internalType&#34;:&#34;bool&#34;,&#34;name&#34;:&#34;&#34;,&#34;type&#34;:&#34;bool&#34;}],&#34;payable&#34;:false,&#34;stateMutability&#34;:&#34;nonpayable&#34;,&#34;type&#34;:&#34;function&#34;}]&#39;  # noqa: E501 (line-too-long)
+            &#39;[{&#34;inputs&#34;:[],&#34;payable&#34;:true,&#34;stateMutability&#34;:&#34;payable&#34;,&#34;type&#34;:&#34;constructor&#34;},{&#34;anonymous&#34;:false,&#34;inputs&#34;:[{&#34;indexed&#34;:true,&#34;internalType&#34;:&#34;address&#34;,&#34;name&#34;:&#34;previousOwner&#34;,&#34;type&#34;:&#34;address&#34;},{&#34;indexed&#34;:true,&#34;internalType&#34;:&#34;address&#34;,&#34;name&#34;:&#34;newOwner&#34;,&#34;type&#34;:&#34;address&#34;}],&#34;name&#34;:&#34;OwnershipTransferred&#34;,&#34;type&#34;:&#34;event&#34;},{&#34;anonymous&#34;:false,&#34;inputs&#34;:[{&#34;indexed&#34;:false,&#34;internalType&#34;:&#34;uint8&#34;,&#34;name&#34;:&#34;value&#34;,&#34;type&#34;:&#34;uint8&#34;}],&#34;name&#34;:&#34;traillock&#34;,&#34;type&#34;:&#34;event&#34;},{&#34;constant&#34;:false,&#34;inputs&#34;:[{&#34;internalType&#34;:&#34;address&#34;,&#34;name&#34;:&#34;account&#34;,&#34;type&#34;:&#34;address&#34;}],&#34;name&#34;:&#34;addWhitelistAdmin&#34;,&#34;outputs&#34;:[],&#34;payable&#34;:false,&#34;stateMutability&#34;:&#34;nonpayable&#34;,&#34;type&#34;:&#34;function&#34;},{&#34;constant&#34;:false,&#34;inputs&#34;:[{&#34;internalType&#34;:&#34;address&#34;,&#34;name&#34;:&#34;tokenAddr&#34;,&#34;type&#34;:&#34;address&#34;},{&#34;internalType&#34;:&#34;address[]&#34;,&#34;name&#34;:&#34;addresses&#34;,&#34;type&#34;:&#34;address[]&#34;},{&#34;internalType&#34;:&#34;uint256[]&#34;,&#34;name&#34;:&#34;amounts&#34;,&#34;type&#34;:&#34;uint256[]&#34;}],&#34;name&#34;:&#34;bulkSendToken&#34;,&#34;outputs&#34;:[{&#34;internalType&#34;:&#34;bool&#34;,&#34;name&#34;:&#34;&#34;,&#34;type&#34;:&#34;bool&#34;}],&#34;payable&#34;:true,&#34;stateMutability&#34;:&#34;payable&#34;,&#34;type&#34;:&#34;function&#34;},{&#34;constant&#34;:false,&#34;inputs&#34;:[{&#34;internalType&#34;:&#34;address[]&#34;,&#34;name&#34;:&#34;addresses&#34;,&#34;type&#34;:&#34;address[]&#34;},{&#34;internalType&#34;:&#34;uint256[]&#34;,&#34;name&#34;:&#34;amounts&#34;,&#34;type&#34;:&#34;uint256[]&#34;}],&#34;name&#34;:&#34;bulkSendTrx&#34;,&#34;outputs&#34;:[{&#34;internalType&#34;:&#34;bool&#34;,&#34;name&#34;:&#34;&#34;,&#34;type&#34;:&#34;bool&#34;}],&#34;payable&#34;:true,&#34;stateMutability&#34;:&#34;payable&#34;,&#34;type&#34;:&#34;function&#34;},{&#34;constant&#34;:false,&#34;inputs&#34;:[],&#34;name&#34;:&#34;deposit&#34;,&#34;outputs&#34;:[{&#34;internalType&#34;:&#34;bool&#34;,&#34;name&#34;:&#34;&#34;,&#34;type&#34;:&#34;bool&#34;}],&#34;payable&#34;:true,&#34;stateMutability&#34;:&#34;payable&#34;,&#34;type&#34;:&#34;function&#34;},{&#34;constant&#34;:true,&#34;inputs&#34;:[],&#34;name&#34;:&#34;ethSendFee&#34;,&#34;outputs&#34;:[{&#34;internalType&#34;:&#34;uint256&#34;,&#34;name&#34;:&#34;&#34;,&#34;type&#34;:&#34;uint256&#34;}],&#34;payable&#34;:false,&#34;stateMutability&#34;:&#34;view&#34;,&#34;type&#34;:&#34;function&#34;},{&#34;constant&#34;:false,&#34;inputs&#34;:[{&#34;internalType&#34;:&#34;bytes[]&#34;,&#34;name&#34;:&#34;_data&#34;,&#34;type&#34;:&#34;bytes[]&#34;}],&#34;name&#34;:&#34;executeBus&#34;,&#34;outputs&#34;:[],&#34;payable&#34;:true,&#34;stateMutability&#34;:&#34;payable&#34;,&#34;type&#34;:&#34;function&#34;},{&#34;constant&#34;:true,&#34;inputs&#34;:[{&#34;internalType&#34;:&#34;address&#34;,&#34;name&#34;:&#34;addr&#34;,&#34;type&#34;:&#34;address&#34;}],&#34;name&#34;:&#34;getbalance&#34;,&#34;outputs&#34;:[{&#34;internalType&#34;:&#34;uint256&#34;,&#34;name&#34;:&#34;&#34;,&#34;type&#34;:&#34;uint256&#34;}],&#34;payable&#34;:false,&#34;stateMutability&#34;:&#34;view&#34;,&#34;type&#34;:&#34;function&#34;},{&#34;constant&#34;:true,&#34;inputs&#34;:[],&#34;name&#34;:&#34;isLocked&#34;,&#34;outputs&#34;:[{&#34;internalType&#34;:&#34;bool&#34;,&#34;name&#34;:&#34;&#34;,&#34;type&#34;:&#34;bool&#34;}],&#34;payable&#34;:false,&#34;stateMutability&#34;:&#34;view&#34;,&#34;type&#34;:&#34;function&#34;},{&#34;constant&#34;:true,&#34;inputs&#34;:[],&#34;name&#34;:&#34;isOwner&#34;,&#34;outputs&#34;:[{&#34;internalType&#34;:&#34;bool&#34;,&#34;name&#34;:&#34;&#34;,&#34;type&#34;:&#34;bool&#34;}],&#34;payable&#34;:false,&#34;stateMutability&#34;:&#34;view&#34;,&#34;type&#34;:&#34;function&#34;},{&#34;constant&#34;:true,&#34;inputs&#34;:[{&#34;internalType&#34;:&#34;address&#34;,&#34;name&#34;:&#34;account&#34;,&#34;type&#34;:&#34;address&#34;}],&#34;name&#34;:&#34;isWhitelistAdmin&#34;,&#34;outputs&#34;:[{&#34;internalType&#34;:&#34;bool&#34;,&#34;name&#34;:&#34;&#34;,&#34;type&#34;:&#34;bool&#34;}],&#34;payable&#34;:false,&#34;stateMutability&#34;:&#34;view&#34;,&#34;type&#34;:&#34;function&#34;},{&#34;constant&#34;:true,&#34;inputs&#34;:[],&#34;name&#34;:&#34;owner&#34;,&#34;outputs&#34;:[{&#34;internalType&#34;:&#34;address&#34;,&#34;name&#34;:&#34;&#34;,&#34;type&#34;:&#34;address&#34;}],&#34;payable&#34;:false,&#34;stateMutability&#34;:&#34;view&#34;,&#34;type&#34;:&#34;function&#34;},{&#34;constant&#34;:false,&#34;inputs&#34;:[],&#34;name&#34;:&#34;pulllock&#34;,&#34;outputs&#34;:[],&#34;payable&#34;:false,&#34;stateMutability&#34;:&#34;nonpayable&#34;,&#34;type&#34;:&#34;function&#34;},{&#34;constant&#34;:false,&#34;inputs&#34;:[{&#34;internalType&#34;:&#34;address&#34;,&#34;name&#34;:&#34;account&#34;,&#34;type&#34;:&#34;address&#34;}],&#34;name&#34;:&#34;removeWhitelistAdmin&#34;,&#34;outputs&#34;:[],&#34;payable&#34;:false,&#34;stateMutability&#34;:&#34;nonpayable&#34;,&#34;type&#34;:&#34;function&#34;},{&#34;constant&#34;:false,&#34;inputs&#34;:[],&#34;name&#34;:&#34;renounceOwnership&#34;,&#34;outputs&#34;:[],&#34;payable&#34;:false,&#34;stateMutability&#34;:&#34;nonpayable&#34;,&#34;type&#34;:&#34;function&#34;},{&#34;constant&#34;:false,&#34;inputs&#34;:[{&#34;internalType&#34;:&#34;uint256&#34;,&#34;name&#34;:&#34;_ethSendFee&#34;,&#34;type&#34;:&#34;uint256&#34;}],&#34;name&#34;:&#34;setEthFee&#34;,&#34;outputs&#34;:[{&#34;internalType&#34;:&#34;bool&#34;,&#34;name&#34;:&#34;&#34;,&#34;type&#34;:&#34;bool&#34;}],&#34;payable&#34;:false,&#34;stateMutability&#34;:&#34;nonpayable&#34;,&#34;type&#34;:&#34;function&#34;},{&#34;constant&#34;:false,&#34;inputs&#34;:[{&#34;internalType&#34;:&#34;uint256&#34;,&#34;name&#34;:&#34;_tokenSendFee&#34;,&#34;type&#34;:&#34;uint256&#34;}],&#34;name&#34;:&#34;setTokenFee&#34;,&#34;outputs&#34;:[{&#34;internalType&#34;:&#34;bool&#34;,&#34;name&#34;:&#34;&#34;,&#34;type&#34;:&#34;bool&#34;}],&#34;payable&#34;:false,&#34;stateMutability&#34;:&#34;nonpayable&#34;,&#34;type&#34;:&#34;function&#34;},{&#34;constant&#34;:true,&#34;inputs&#34;:[],&#34;name&#34;:&#34;tokenSendFee&#34;,&#34;outputs&#34;:[{&#34;internalType&#34;:&#34;uint256&#34;,&#34;name&#34;:&#34;&#34;,&#34;type&#34;:&#34;uint256&#34;}],&#34;payable&#34;:false,&#34;stateMutability&#34;:&#34;view&#34;,&#34;type&#34;:&#34;function&#34;},{&#34;constant&#34;:false,&#34;inputs&#34;:[{&#34;internalType&#34;:&#34;address&#34;,&#34;name&#34;:&#34;newOwner&#34;,&#34;type&#34;:&#34;address&#34;}],&#34;name&#34;:&#34;transferOwnership&#34;,&#34;outputs&#34;:[],&#34;payable&#34;:false,&#34;stateMutability&#34;:&#34;nonpayable&#34;,&#34;type&#34;:&#34;function&#34;},{&#34;constant&#34;:false,&#34;inputs&#34;:[],&#34;name&#34;:&#34;unlock&#34;,&#34;outputs&#34;:[],&#34;payable&#34;:false,&#34;stateMutability&#34;:&#34;nonpayable&#34;,&#34;type&#34;:&#34;function&#34;},{&#34;constant&#34;:false,&#34;inputs&#34;:[{&#34;internalType&#34;:&#34;address&#34;,&#34;name&#34;:&#34;addr&#34;,&#34;type&#34;:&#34;address&#34;},{&#34;internalType&#34;:&#34;uint256&#34;,&#34;name&#34;:&#34;amount&#34;,&#34;type&#34;:&#34;uint256&#34;}],&#34;name&#34;:&#34;withdrawEther&#34;,&#34;outputs&#34;:[{&#34;internalType&#34;:&#34;bool&#34;,&#34;name&#34;:&#34;&#34;,&#34;type&#34;:&#34;bool&#34;}],&#34;payable&#34;:false,&#34;stateMutability&#34;:&#34;nonpayable&#34;,&#34;type&#34;:&#34;function&#34;},{&#34;constant&#34;:false,&#34;inputs&#34;:[{&#34;internalType&#34;:&#34;address&#34;,&#34;name&#34;:&#34;tokenAddr&#34;,&#34;type&#34;:&#34;address&#34;},{&#34;internalType&#34;:&#34;address&#34;,&#34;name&#34;:&#34;_to&#34;,&#34;type&#34;:&#34;address&#34;},{&#34;internalType&#34;:&#34;uint256&#34;,&#34;name&#34;:&#34;_amount&#34;,&#34;type&#34;:&#34;uint256&#34;}],&#34;name&#34;:&#34;withdrawToken&#34;,&#34;outputs&#34;:[{&#34;internalType&#34;:&#34;bool&#34;,&#34;name&#34;:&#34;&#34;,&#34;type&#34;:&#34;bool&#34;}],&#34;payable&#34;:false,&#34;stateMutability&#34;:&#34;nonpayable&#34;,&#34;type&#34;:&#34;function&#34;}]&#39;  # noqa: E501 (line-too-long)
         )</code></pre>
 </details>
 <h3>Static methods</h3>
@@ -1367,7 +2063,7 @@ class BSend:
 def abi():
     &#34;&#34;&#34;Return the ABI to the underlying contract.&#34;&#34;&#34;
     return json.loads(
-        &#39;[{&#34;inputs&#34;:[],&#34;payable&#34;:true,&#34;stateMutability&#34;:&#34;payable&#34;,&#34;type&#34;:&#34;constructor&#34;},{&#34;anonymous&#34;:false,&#34;inputs&#34;:[{&#34;indexed&#34;:true,&#34;internalType&#34;:&#34;address&#34;,&#34;name&#34;:&#34;previousOwner&#34;,&#34;type&#34;:&#34;address&#34;},{&#34;indexed&#34;:true,&#34;internalType&#34;:&#34;address&#34;,&#34;name&#34;:&#34;newOwner&#34;,&#34;type&#34;:&#34;address&#34;}],&#34;name&#34;:&#34;OwnershipTransferred&#34;,&#34;type&#34;:&#34;event&#34;},{&#34;constant&#34;:false,&#34;inputs&#34;:[{&#34;internalType&#34;:&#34;address&#34;,&#34;name&#34;:&#34;tokenAddr&#34;,&#34;type&#34;:&#34;address&#34;},{&#34;internalType&#34;:&#34;address[]&#34;,&#34;name&#34;:&#34;addresses&#34;,&#34;type&#34;:&#34;address[]&#34;},{&#34;internalType&#34;:&#34;uint256[]&#34;,&#34;name&#34;:&#34;amounts&#34;,&#34;type&#34;:&#34;uint256[]&#34;}],&#34;name&#34;:&#34;bulkSendToken&#34;,&#34;outputs&#34;:[{&#34;internalType&#34;:&#34;bool&#34;,&#34;name&#34;:&#34;&#34;,&#34;type&#34;:&#34;bool&#34;}],&#34;payable&#34;:true,&#34;stateMutability&#34;:&#34;payable&#34;,&#34;type&#34;:&#34;function&#34;},{&#34;constant&#34;:false,&#34;inputs&#34;:[{&#34;internalType&#34;:&#34;address[]&#34;,&#34;name&#34;:&#34;addresses&#34;,&#34;type&#34;:&#34;address[]&#34;},{&#34;internalType&#34;:&#34;uint256[]&#34;,&#34;name&#34;:&#34;amounts&#34;,&#34;type&#34;:&#34;uint256[]&#34;}],&#34;name&#34;:&#34;bulkSendTrx&#34;,&#34;outputs&#34;:[{&#34;internalType&#34;:&#34;bool&#34;,&#34;name&#34;:&#34;&#34;,&#34;type&#34;:&#34;bool&#34;}],&#34;payable&#34;:true,&#34;stateMutability&#34;:&#34;payable&#34;,&#34;type&#34;:&#34;function&#34;},{&#34;constant&#34;:false,&#34;inputs&#34;:[],&#34;name&#34;:&#34;deposit&#34;,&#34;outputs&#34;:[{&#34;internalType&#34;:&#34;bool&#34;,&#34;name&#34;:&#34;&#34;,&#34;type&#34;:&#34;bool&#34;}],&#34;payable&#34;:true,&#34;stateMutability&#34;:&#34;payable&#34;,&#34;type&#34;:&#34;function&#34;},{&#34;constant&#34;:true,&#34;inputs&#34;:[],&#34;name&#34;:&#34;ethSendFee&#34;,&#34;outputs&#34;:[{&#34;internalType&#34;:&#34;uint256&#34;,&#34;name&#34;:&#34;&#34;,&#34;type&#34;:&#34;uint256&#34;}],&#34;payable&#34;:false,&#34;stateMutability&#34;:&#34;view&#34;,&#34;type&#34;:&#34;function&#34;},{&#34;constant&#34;:true,&#34;inputs&#34;:[{&#34;internalType&#34;:&#34;address&#34;,&#34;name&#34;:&#34;addr&#34;,&#34;type&#34;:&#34;address&#34;}],&#34;name&#34;:&#34;getbalance&#34;,&#34;outputs&#34;:[{&#34;internalType&#34;:&#34;uint256&#34;,&#34;name&#34;:&#34;&#34;,&#34;type&#34;:&#34;uint256&#34;}],&#34;payable&#34;:false,&#34;stateMutability&#34;:&#34;view&#34;,&#34;type&#34;:&#34;function&#34;},{&#34;constant&#34;:true,&#34;inputs&#34;:[],&#34;name&#34;:&#34;isOwner&#34;,&#34;outputs&#34;:[{&#34;internalType&#34;:&#34;bool&#34;,&#34;name&#34;:&#34;&#34;,&#34;type&#34;:&#34;bool&#34;}],&#34;payable&#34;:false,&#34;stateMutability&#34;:&#34;view&#34;,&#34;type&#34;:&#34;function&#34;},{&#34;constant&#34;:true,&#34;inputs&#34;:[],&#34;name&#34;:&#34;owner&#34;,&#34;outputs&#34;:[{&#34;internalType&#34;:&#34;address&#34;,&#34;name&#34;:&#34;&#34;,&#34;type&#34;:&#34;address&#34;}],&#34;payable&#34;:false,&#34;stateMutability&#34;:&#34;view&#34;,&#34;type&#34;:&#34;function&#34;},{&#34;constant&#34;:false,&#34;inputs&#34;:[],&#34;name&#34;:&#34;renounceOwnership&#34;,&#34;outputs&#34;:[],&#34;payable&#34;:false,&#34;stateMutability&#34;:&#34;nonpayable&#34;,&#34;type&#34;:&#34;function&#34;},{&#34;constant&#34;:false,&#34;inputs&#34;:[{&#34;internalType&#34;:&#34;uint256&#34;,&#34;name&#34;:&#34;_ethSendFee&#34;,&#34;type&#34;:&#34;uint256&#34;}],&#34;name&#34;:&#34;setEthFee&#34;,&#34;outputs&#34;:[{&#34;internalType&#34;:&#34;bool&#34;,&#34;name&#34;:&#34;&#34;,&#34;type&#34;:&#34;bool&#34;}],&#34;payable&#34;:false,&#34;stateMutability&#34;:&#34;nonpayable&#34;,&#34;type&#34;:&#34;function&#34;},{&#34;constant&#34;:false,&#34;inputs&#34;:[{&#34;internalType&#34;:&#34;uint256&#34;,&#34;name&#34;:&#34;_tokenSendFee&#34;,&#34;type&#34;:&#34;uint256&#34;}],&#34;name&#34;:&#34;setTokenFee&#34;,&#34;outputs&#34;:[{&#34;internalType&#34;:&#34;bool&#34;,&#34;name&#34;:&#34;&#34;,&#34;type&#34;:&#34;bool&#34;}],&#34;payable&#34;:false,&#34;stateMutability&#34;:&#34;nonpayable&#34;,&#34;type&#34;:&#34;function&#34;},{&#34;constant&#34;:true,&#34;inputs&#34;:[],&#34;name&#34;:&#34;tokenSendFee&#34;,&#34;outputs&#34;:[{&#34;internalType&#34;:&#34;uint256&#34;,&#34;name&#34;:&#34;&#34;,&#34;type&#34;:&#34;uint256&#34;}],&#34;payable&#34;:false,&#34;stateMutability&#34;:&#34;view&#34;,&#34;type&#34;:&#34;function&#34;},{&#34;constant&#34;:false,&#34;inputs&#34;:[{&#34;internalType&#34;:&#34;address&#34;,&#34;name&#34;:&#34;newOwner&#34;,&#34;type&#34;:&#34;address&#34;}],&#34;name&#34;:&#34;transferOwnership&#34;,&#34;outputs&#34;:[],&#34;payable&#34;:false,&#34;stateMutability&#34;:&#34;nonpayable&#34;,&#34;type&#34;:&#34;function&#34;},{&#34;constant&#34;:false,&#34;inputs&#34;:[{&#34;internalType&#34;:&#34;address&#34;,&#34;name&#34;:&#34;addr&#34;,&#34;type&#34;:&#34;address&#34;},{&#34;internalType&#34;:&#34;uint256&#34;,&#34;name&#34;:&#34;amount&#34;,&#34;type&#34;:&#34;uint256&#34;}],&#34;name&#34;:&#34;withdrawEther&#34;,&#34;outputs&#34;:[{&#34;internalType&#34;:&#34;bool&#34;,&#34;name&#34;:&#34;&#34;,&#34;type&#34;:&#34;bool&#34;}],&#34;payable&#34;:false,&#34;stateMutability&#34;:&#34;nonpayable&#34;,&#34;type&#34;:&#34;function&#34;},{&#34;constant&#34;:false,&#34;inputs&#34;:[{&#34;internalType&#34;:&#34;address&#34;,&#34;name&#34;:&#34;tokenAddr&#34;,&#34;type&#34;:&#34;address&#34;},{&#34;internalType&#34;:&#34;address&#34;,&#34;name&#34;:&#34;_to&#34;,&#34;type&#34;:&#34;address&#34;},{&#34;internalType&#34;:&#34;uint256&#34;,&#34;name&#34;:&#34;_amount&#34;,&#34;type&#34;:&#34;uint256&#34;}],&#34;name&#34;:&#34;withdrawToken&#34;,&#34;outputs&#34;:[{&#34;internalType&#34;:&#34;bool&#34;,&#34;name&#34;:&#34;&#34;,&#34;type&#34;:&#34;bool&#34;}],&#34;payable&#34;:false,&#34;stateMutability&#34;:&#34;nonpayable&#34;,&#34;type&#34;:&#34;function&#34;}]&#39;  # noqa: E501 (line-too-long)
+        &#39;[{&#34;inputs&#34;:[],&#34;payable&#34;:true,&#34;stateMutability&#34;:&#34;payable&#34;,&#34;type&#34;:&#34;constructor&#34;},{&#34;anonymous&#34;:false,&#34;inputs&#34;:[{&#34;indexed&#34;:true,&#34;internalType&#34;:&#34;address&#34;,&#34;name&#34;:&#34;previousOwner&#34;,&#34;type&#34;:&#34;address&#34;},{&#34;indexed&#34;:true,&#34;internalType&#34;:&#34;address&#34;,&#34;name&#34;:&#34;newOwner&#34;,&#34;type&#34;:&#34;address&#34;}],&#34;name&#34;:&#34;OwnershipTransferred&#34;,&#34;type&#34;:&#34;event&#34;},{&#34;anonymous&#34;:false,&#34;inputs&#34;:[{&#34;indexed&#34;:false,&#34;internalType&#34;:&#34;uint8&#34;,&#34;name&#34;:&#34;value&#34;,&#34;type&#34;:&#34;uint8&#34;}],&#34;name&#34;:&#34;traillock&#34;,&#34;type&#34;:&#34;event&#34;},{&#34;constant&#34;:false,&#34;inputs&#34;:[{&#34;internalType&#34;:&#34;address&#34;,&#34;name&#34;:&#34;account&#34;,&#34;type&#34;:&#34;address&#34;}],&#34;name&#34;:&#34;addWhitelistAdmin&#34;,&#34;outputs&#34;:[],&#34;payable&#34;:false,&#34;stateMutability&#34;:&#34;nonpayable&#34;,&#34;type&#34;:&#34;function&#34;},{&#34;constant&#34;:false,&#34;inputs&#34;:[{&#34;internalType&#34;:&#34;address&#34;,&#34;name&#34;:&#34;tokenAddr&#34;,&#34;type&#34;:&#34;address&#34;},{&#34;internalType&#34;:&#34;address[]&#34;,&#34;name&#34;:&#34;addresses&#34;,&#34;type&#34;:&#34;address[]&#34;},{&#34;internalType&#34;:&#34;uint256[]&#34;,&#34;name&#34;:&#34;amounts&#34;,&#34;type&#34;:&#34;uint256[]&#34;}],&#34;name&#34;:&#34;bulkSendToken&#34;,&#34;outputs&#34;:[{&#34;internalType&#34;:&#34;bool&#34;,&#34;name&#34;:&#34;&#34;,&#34;type&#34;:&#34;bool&#34;}],&#34;payable&#34;:true,&#34;stateMutability&#34;:&#34;payable&#34;,&#34;type&#34;:&#34;function&#34;},{&#34;constant&#34;:false,&#34;inputs&#34;:[{&#34;internalType&#34;:&#34;address[]&#34;,&#34;name&#34;:&#34;addresses&#34;,&#34;type&#34;:&#34;address[]&#34;},{&#34;internalType&#34;:&#34;uint256[]&#34;,&#34;name&#34;:&#34;amounts&#34;,&#34;type&#34;:&#34;uint256[]&#34;}],&#34;name&#34;:&#34;bulkSendTrx&#34;,&#34;outputs&#34;:[{&#34;internalType&#34;:&#34;bool&#34;,&#34;name&#34;:&#34;&#34;,&#34;type&#34;:&#34;bool&#34;}],&#34;payable&#34;:true,&#34;stateMutability&#34;:&#34;payable&#34;,&#34;type&#34;:&#34;function&#34;},{&#34;constant&#34;:false,&#34;inputs&#34;:[],&#34;name&#34;:&#34;deposit&#34;,&#34;outputs&#34;:[{&#34;internalType&#34;:&#34;bool&#34;,&#34;name&#34;:&#34;&#34;,&#34;type&#34;:&#34;bool&#34;}],&#34;payable&#34;:true,&#34;stateMutability&#34;:&#34;payable&#34;,&#34;type&#34;:&#34;function&#34;},{&#34;constant&#34;:true,&#34;inputs&#34;:[],&#34;name&#34;:&#34;ethSendFee&#34;,&#34;outputs&#34;:[{&#34;internalType&#34;:&#34;uint256&#34;,&#34;name&#34;:&#34;&#34;,&#34;type&#34;:&#34;uint256&#34;}],&#34;payable&#34;:false,&#34;stateMutability&#34;:&#34;view&#34;,&#34;type&#34;:&#34;function&#34;},{&#34;constant&#34;:false,&#34;inputs&#34;:[{&#34;internalType&#34;:&#34;bytes[]&#34;,&#34;name&#34;:&#34;_data&#34;,&#34;type&#34;:&#34;bytes[]&#34;}],&#34;name&#34;:&#34;executeBus&#34;,&#34;outputs&#34;:[],&#34;payable&#34;:true,&#34;stateMutability&#34;:&#34;payable&#34;,&#34;type&#34;:&#34;function&#34;},{&#34;constant&#34;:true,&#34;inputs&#34;:[{&#34;internalType&#34;:&#34;address&#34;,&#34;name&#34;:&#34;addr&#34;,&#34;type&#34;:&#34;address&#34;}],&#34;name&#34;:&#34;getbalance&#34;,&#34;outputs&#34;:[{&#34;internalType&#34;:&#34;uint256&#34;,&#34;name&#34;:&#34;&#34;,&#34;type&#34;:&#34;uint256&#34;}],&#34;payable&#34;:false,&#34;stateMutability&#34;:&#34;view&#34;,&#34;type&#34;:&#34;function&#34;},{&#34;constant&#34;:true,&#34;inputs&#34;:[],&#34;name&#34;:&#34;isLocked&#34;,&#34;outputs&#34;:[{&#34;internalType&#34;:&#34;bool&#34;,&#34;name&#34;:&#34;&#34;,&#34;type&#34;:&#34;bool&#34;}],&#34;payable&#34;:false,&#34;stateMutability&#34;:&#34;view&#34;,&#34;type&#34;:&#34;function&#34;},{&#34;constant&#34;:true,&#34;inputs&#34;:[],&#34;name&#34;:&#34;isOwner&#34;,&#34;outputs&#34;:[{&#34;internalType&#34;:&#34;bool&#34;,&#34;name&#34;:&#34;&#34;,&#34;type&#34;:&#34;bool&#34;}],&#34;payable&#34;:false,&#34;stateMutability&#34;:&#34;view&#34;,&#34;type&#34;:&#34;function&#34;},{&#34;constant&#34;:true,&#34;inputs&#34;:[{&#34;internalType&#34;:&#34;address&#34;,&#34;name&#34;:&#34;account&#34;,&#34;type&#34;:&#34;address&#34;}],&#34;name&#34;:&#34;isWhitelistAdmin&#34;,&#34;outputs&#34;:[{&#34;internalType&#34;:&#34;bool&#34;,&#34;name&#34;:&#34;&#34;,&#34;type&#34;:&#34;bool&#34;}],&#34;payable&#34;:false,&#34;stateMutability&#34;:&#34;view&#34;,&#34;type&#34;:&#34;function&#34;},{&#34;constant&#34;:true,&#34;inputs&#34;:[],&#34;name&#34;:&#34;owner&#34;,&#34;outputs&#34;:[{&#34;internalType&#34;:&#34;address&#34;,&#34;name&#34;:&#34;&#34;,&#34;type&#34;:&#34;address&#34;}],&#34;payable&#34;:false,&#34;stateMutability&#34;:&#34;view&#34;,&#34;type&#34;:&#34;function&#34;},{&#34;constant&#34;:false,&#34;inputs&#34;:[],&#34;name&#34;:&#34;pulllock&#34;,&#34;outputs&#34;:[],&#34;payable&#34;:false,&#34;stateMutability&#34;:&#34;nonpayable&#34;,&#34;type&#34;:&#34;function&#34;},{&#34;constant&#34;:false,&#34;inputs&#34;:[{&#34;internalType&#34;:&#34;address&#34;,&#34;name&#34;:&#34;account&#34;,&#34;type&#34;:&#34;address&#34;}],&#34;name&#34;:&#34;removeWhitelistAdmin&#34;,&#34;outputs&#34;:[],&#34;payable&#34;:false,&#34;stateMutability&#34;:&#34;nonpayable&#34;,&#34;type&#34;:&#34;function&#34;},{&#34;constant&#34;:false,&#34;inputs&#34;:[],&#34;name&#34;:&#34;renounceOwnership&#34;,&#34;outputs&#34;:[],&#34;payable&#34;:false,&#34;stateMutability&#34;:&#34;nonpayable&#34;,&#34;type&#34;:&#34;function&#34;},{&#34;constant&#34;:false,&#34;inputs&#34;:[{&#34;internalType&#34;:&#34;uint256&#34;,&#34;name&#34;:&#34;_ethSendFee&#34;,&#34;type&#34;:&#34;uint256&#34;}],&#34;name&#34;:&#34;setEthFee&#34;,&#34;outputs&#34;:[{&#34;internalType&#34;:&#34;bool&#34;,&#34;name&#34;:&#34;&#34;,&#34;type&#34;:&#34;bool&#34;}],&#34;payable&#34;:false,&#34;stateMutability&#34;:&#34;nonpayable&#34;,&#34;type&#34;:&#34;function&#34;},{&#34;constant&#34;:false,&#34;inputs&#34;:[{&#34;internalType&#34;:&#34;uint256&#34;,&#34;name&#34;:&#34;_tokenSendFee&#34;,&#34;type&#34;:&#34;uint256&#34;}],&#34;name&#34;:&#34;setTokenFee&#34;,&#34;outputs&#34;:[{&#34;internalType&#34;:&#34;bool&#34;,&#34;name&#34;:&#34;&#34;,&#34;type&#34;:&#34;bool&#34;}],&#34;payable&#34;:false,&#34;stateMutability&#34;:&#34;nonpayable&#34;,&#34;type&#34;:&#34;function&#34;},{&#34;constant&#34;:true,&#34;inputs&#34;:[],&#34;name&#34;:&#34;tokenSendFee&#34;,&#34;outputs&#34;:[{&#34;internalType&#34;:&#34;uint256&#34;,&#34;name&#34;:&#34;&#34;,&#34;type&#34;:&#34;uint256&#34;}],&#34;payable&#34;:false,&#34;stateMutability&#34;:&#34;view&#34;,&#34;type&#34;:&#34;function&#34;},{&#34;constant&#34;:false,&#34;inputs&#34;:[{&#34;internalType&#34;:&#34;address&#34;,&#34;name&#34;:&#34;newOwner&#34;,&#34;type&#34;:&#34;address&#34;}],&#34;name&#34;:&#34;transferOwnership&#34;,&#34;outputs&#34;:[],&#34;payable&#34;:false,&#34;stateMutability&#34;:&#34;nonpayable&#34;,&#34;type&#34;:&#34;function&#34;},{&#34;constant&#34;:false,&#34;inputs&#34;:[],&#34;name&#34;:&#34;unlock&#34;,&#34;outputs&#34;:[],&#34;payable&#34;:false,&#34;stateMutability&#34;:&#34;nonpayable&#34;,&#34;type&#34;:&#34;function&#34;},{&#34;constant&#34;:false,&#34;inputs&#34;:[{&#34;internalType&#34;:&#34;address&#34;,&#34;name&#34;:&#34;addr&#34;,&#34;type&#34;:&#34;address&#34;},{&#34;internalType&#34;:&#34;uint256&#34;,&#34;name&#34;:&#34;amount&#34;,&#34;type&#34;:&#34;uint256&#34;}],&#34;name&#34;:&#34;withdrawEther&#34;,&#34;outputs&#34;:[{&#34;internalType&#34;:&#34;bool&#34;,&#34;name&#34;:&#34;&#34;,&#34;type&#34;:&#34;bool&#34;}],&#34;payable&#34;:false,&#34;stateMutability&#34;:&#34;nonpayable&#34;,&#34;type&#34;:&#34;function&#34;},{&#34;constant&#34;:false,&#34;inputs&#34;:[{&#34;internalType&#34;:&#34;address&#34;,&#34;name&#34;:&#34;tokenAddr&#34;,&#34;type&#34;:&#34;address&#34;},{&#34;internalType&#34;:&#34;address&#34;,&#34;name&#34;:&#34;_to&#34;,&#34;type&#34;:&#34;address&#34;},{&#34;internalType&#34;:&#34;uint256&#34;,&#34;name&#34;:&#34;_amount&#34;,&#34;type&#34;:&#34;uint256&#34;}],&#34;name&#34;:&#34;withdrawToken&#34;,&#34;outputs&#34;:[{&#34;internalType&#34;:&#34;bool&#34;,&#34;name&#34;:&#34;&#34;,&#34;type&#34;:&#34;bool&#34;}],&#34;payable&#34;:false,&#34;stateMutability&#34;:&#34;nonpayable&#34;,&#34;type&#34;:&#34;function&#34;}]&#39;  # noqa: E501 (line-too-long)
     )</code></pre>
 </details>
 </dd>
@@ -1402,6 +2098,23 @@ def abi():
     return self</code></pre>
 </details>
 </dd>
+<dt id="moody.m.b_send.BSend.add_whitelist_admin"><code class="name flex">
+<span>def <span class="ident">add_whitelist_admin</span></span>(<span>self, account: str) ‑> NoneType</span>
+</code></dt>
+<dd>
+<div class="desc"><p>Implementation of add_whitelist_admin in contract BSend</p></div>
+<details class="source">
+<summary>
+<span>Expand source code</span>
+</summary>
+<pre><code class="python">def add_whitelist_admin(self,account: str) -&gt; None:
+    &#34;&#34;&#34;
+    Implementation of add_whitelist_admin in contract BSend
+
+    &#34;&#34;&#34;
+    return self._fn_add_whitelist_admin.block_call(account, 0,self.call_contract_fee_amount,self.call_contract_debug_flag)</code></pre>
+</details>
+</dd>
 <dt id="moody.m.b_send.BSend.bulk_send_token"><code class="name flex">
 <span>def <span class="ident">bulk_send_token</span></span>(<span>self, token_addr: str, addresses: List[str], amounts: List[int], trx: int = 0) ‑> bool</span>
 </code></dt>
@@ -1416,7 +2129,7 @@ def abi():
     Implementation of bulk_send_token in contract BSend
 
     &#34;&#34;&#34;
-    return self._fn_bulk_send_token.block_call(token_addr, addresses, amounts, trx,self.call_contract_fee_amount,self.call_contract_debug_flag)    </code></pre>
+    return self._fn_bulk_send_token.block_call(token_addr, addresses, amounts, trx,self.call_contract_fee_amount,self.call_contract_debug_flag)</code></pre>
 </details>
 </dd>
 <dt id="moody.m.b_send.BSend.bulk_send_trx"><code class="name flex">
@@ -1433,7 +2146,7 @@ def abi():
     Implementation of bulk_send_trx in contract BSend
 
     &#34;&#34;&#34;
-    return self._fn_bulk_send_trx.block_call(addresses, amounts, trx,self.call_contract_fee_amount,self.call_contract_debug_flag)    </code></pre>
+    return self._fn_bulk_send_trx.block_call(addresses, amounts, trx,self.call_contract_fee_amount,self.call_contract_debug_flag)</code></pre>
 </details>
 </dd>
 <dt id="moody.m.b_send.BSend.deposit"><code class="name flex">
@@ -1450,7 +2163,7 @@ def abi():
     Implementation of deposit in contract BSend
 
     &#34;&#34;&#34;
-    return self._fn_deposit.block_call(trx,self.call_contract_fee_amount,self.call_contract_debug_flag)    </code></pre>
+    return self._fn_deposit.block_call(trx,self.call_contract_fee_amount,self.call_contract_debug_flag)</code></pre>
 </details>
 </dd>
 <dt id="moody.m.b_send.BSend.eth_send_fee"><code class="name flex">
@@ -1467,7 +2180,7 @@ def abi():
     Implementation of eth_send_fee in contract BSend
 
     &#34;&#34;&#34;
-    return self._fn_eth_send_fee.block_call()    </code></pre>
+    return self._fn_eth_send_fee.block_call()</code></pre>
 </details>
 </dd>
 <dt id="moody.m.b_send.BSend.event_ownership_transferred"><code class="name flex">
@@ -1493,6 +2206,46 @@ Get log entry for OwnershipTransferred event.
     return self._web3_eth.contract(address=to_checksum_address(self.contract_address), abi=BSend.abi()).events.OwnershipTransferred().processReceipt(tx_receipt)</code></pre>
 </details>
 </dd>
+<dt id="moody.m.b_send.BSend.event_traillock"><code class="name flex">
+<span>def <span class="ident">event_traillock</span></span>(<span>self, tx_hash: Union[hexbytes.main.HexBytes, bytes]) ‑> Tuple[web3.datastructures.AttributeDict]</span>
+</code></dt>
+<dd>
+<div class="desc"><p>Implementation of event traillock in contract BSend
+Get log entry for traillock event.
+:param tx_hash: hash of transaction emitting traillock event</p></div>
+<details class="source">
+<summary>
+<span>Expand source code</span>
+</summary>
+<pre><code class="python">def event_traillock(
+        self, tx_hash: Union[HexBytes, bytes]
+) -&gt; Tuple[AttributeDict]:
+    &#34;&#34;&#34;
+    Implementation of event traillock in contract BSend
+    Get log entry for traillock event.
+            :param tx_hash: hash of transaction emitting traillock event
+    &#34;&#34;&#34;
+    tx_receipt = self._web3_eth.getTransactionReceipt(tx_hash)
+    return self._web3_eth.contract(address=to_checksum_address(self.contract_address), abi=BSend.abi()).events.traillock().processReceipt(tx_receipt)</code></pre>
+</details>
+</dd>
+<dt id="moody.m.b_send.BSend.execute_bus"><code class="name flex">
+<span>def <span class="ident">execute_bus</span></span>(<span>self, data: List[Union[bytes, str]], trx: int = 0) ‑> NoneType</span>
+</code></dt>
+<dd>
+<div class="desc"><p>Implementation of execute_bus in contract BSend</p></div>
+<details class="source">
+<summary>
+<span>Expand source code</span>
+</summary>
+<pre><code class="python">def execute_bus(self,data: List[Union[bytes, str]], trx:int=0) -&gt; None:
+    &#34;&#34;&#34;
+    Implementation of execute_bus in contract BSend
+
+    &#34;&#34;&#34;
+    return self._fn_execute_bus.block_call(data, trx,self.call_contract_fee_amount,self.call_contract_debug_flag)</code></pre>
+</details>
+</dd>
 <dt id="moody.m.b_send.BSend.getbalance"><code class="name flex">
 <span>def <span class="ident">getbalance</span></span>(<span>self, addr: str) ‑> int</span>
 </code></dt>
@@ -1507,7 +2260,24 @@ Get log entry for OwnershipTransferred event.
     Implementation of getbalance in contract BSend
 
     &#34;&#34;&#34;
-    return self._fn_getbalance.block_call(addr)    </code></pre>
+    return self._fn_getbalance.block_call(addr)</code></pre>
+</details>
+</dd>
+<dt id="moody.m.b_send.BSend.is_locked"><code class="name flex">
+<span>def <span class="ident">is_locked</span></span>(<span>self) ‑> bool</span>
+</code></dt>
+<dd>
+<div class="desc"><p>Implementation of is_locked in contract BSend</p></div>
+<details class="source">
+<summary>
+<span>Expand source code</span>
+</summary>
+<pre><code class="python">def is_locked(self) -&gt; bool:
+    &#34;&#34;&#34;
+    Implementation of is_locked in contract BSend
+
+    &#34;&#34;&#34;
+    return self._fn_is_locked.block_call()</code></pre>
 </details>
 </dd>
 <dt id="moody.m.b_send.BSend.is_owner"><code class="name flex">
@@ -1524,7 +2294,24 @@ Get log entry for OwnershipTransferred event.
     Implementation of is_owner in contract BSend
 
     &#34;&#34;&#34;
-    return self._fn_is_owner.block_call()    </code></pre>
+    return self._fn_is_owner.block_call()</code></pre>
+</details>
+</dd>
+<dt id="moody.m.b_send.BSend.is_whitelist_admin"><code class="name flex">
+<span>def <span class="ident">is_whitelist_admin</span></span>(<span>self, account: str) ‑> bool</span>
+</code></dt>
+<dd>
+<div class="desc"><p>Implementation of is_whitelist_admin in contract BSend</p></div>
+<details class="source">
+<summary>
+<span>Expand source code</span>
+</summary>
+<pre><code class="python">def is_whitelist_admin(self,account: str) -&gt; bool:
+    &#34;&#34;&#34;
+    Implementation of is_whitelist_admin in contract BSend
+
+    &#34;&#34;&#34;
+    return self._fn_is_whitelist_admin.block_call(account)</code></pre>
 </details>
 </dd>
 <dt id="moody.m.b_send.BSend.owner"><code class="name flex">
@@ -1541,7 +2328,41 @@ Get log entry for OwnershipTransferred event.
     Implementation of owner in contract BSend
 
     &#34;&#34;&#34;
-    return self._fn_owner.block_call()    </code></pre>
+    return self._fn_owner.block_call()</code></pre>
+</details>
+</dd>
+<dt id="moody.m.b_send.BSend.pulllock"><code class="name flex">
+<span>def <span class="ident">pulllock</span></span>(<span>self) ‑> NoneType</span>
+</code></dt>
+<dd>
+<div class="desc"><p>Implementation of pulllock in contract BSend</p></div>
+<details class="source">
+<summary>
+<span>Expand source code</span>
+</summary>
+<pre><code class="python">def pulllock(self) -&gt; None:
+    &#34;&#34;&#34;
+    Implementation of pulllock in contract BSend
+
+    &#34;&#34;&#34;
+    return self._fn_pulllock.block_call(0,self.call_contract_fee_amount,self.call_contract_debug_flag)</code></pre>
+</details>
+</dd>
+<dt id="moody.m.b_send.BSend.remove_whitelist_admin"><code class="name flex">
+<span>def <span class="ident">remove_whitelist_admin</span></span>(<span>self, account: str) ‑> NoneType</span>
+</code></dt>
+<dd>
+<div class="desc"><p>Implementation of remove_whitelist_admin in contract BSend</p></div>
+<details class="source">
+<summary>
+<span>Expand source code</span>
+</summary>
+<pre><code class="python">def remove_whitelist_admin(self,account: str) -&gt; None:
+    &#34;&#34;&#34;
+    Implementation of remove_whitelist_admin in contract BSend
+
+    &#34;&#34;&#34;
+    return self._fn_remove_whitelist_admin.block_call(account, 0,self.call_contract_fee_amount,self.call_contract_debug_flag)</code></pre>
 </details>
 </dd>
 <dt id="moody.m.b_send.BSend.renounce_ownership"><code class="name flex">
@@ -1558,7 +2379,7 @@ Get log entry for OwnershipTransferred event.
     Implementation of renounce_ownership in contract BSend
 
     &#34;&#34;&#34;
-    return self._fn_renounce_ownership.block_call(0,self.call_contract_fee_amount,self.call_contract_debug_flag)    </code></pre>
+    return self._fn_renounce_ownership.block_call(0,self.call_contract_fee_amount,self.call_contract_debug_flag)</code></pre>
 </details>
 </dd>
 <dt id="moody.m.b_send.BSend.set_eth_fee"><code class="name flex">
@@ -1575,7 +2396,7 @@ Get log entry for OwnershipTransferred event.
     Implementation of set_eth_fee in contract BSend
 
     &#34;&#34;&#34;
-    return self._fn_set_eth_fee.block_call(eth_send_fee, 0,self.call_contract_fee_amount,self.call_contract_debug_flag)    </code></pre>
+    return self._fn_set_eth_fee.block_call(eth_send_fee, 0,self.call_contract_fee_amount,self.call_contract_debug_flag)</code></pre>
 </details>
 </dd>
 <dt id="moody.m.b_send.BSend.set_token_fee"><code class="name flex">
@@ -1592,7 +2413,7 @@ Get log entry for OwnershipTransferred event.
     Implementation of set_token_fee in contract BSend
 
     &#34;&#34;&#34;
-    return self._fn_set_token_fee.block_call(token_send_fee, 0,self.call_contract_fee_amount,self.call_contract_debug_flag)    </code></pre>
+    return self._fn_set_token_fee.block_call(token_send_fee, 0,self.call_contract_fee_amount,self.call_contract_debug_flag)</code></pre>
 </details>
 </dd>
 <dt id="moody.m.b_send.BSend.token_send_fee"><code class="name flex">
@@ -1609,7 +2430,7 @@ Get log entry for OwnershipTransferred event.
     Implementation of token_send_fee in contract BSend
 
     &#34;&#34;&#34;
-    return self._fn_token_send_fee.block_call()    </code></pre>
+    return self._fn_token_send_fee.block_call()</code></pre>
 </details>
 </dd>
 <dt id="moody.m.b_send.BSend.transfer_ownership"><code class="name flex">
@@ -1626,7 +2447,24 @@ Get log entry for OwnershipTransferred event.
     Implementation of transfer_ownership in contract BSend
 
     &#34;&#34;&#34;
-    return self._fn_transfer_ownership.block_call(new_owner, 0,self.call_contract_fee_amount,self.call_contract_debug_flag)    </code></pre>
+    return self._fn_transfer_ownership.block_call(new_owner, 0,self.call_contract_fee_amount,self.call_contract_debug_flag)</code></pre>
+</details>
+</dd>
+<dt id="moody.m.b_send.BSend.unlock"><code class="name flex">
+<span>def <span class="ident">unlock</span></span>(<span>self) ‑> NoneType</span>
+</code></dt>
+<dd>
+<div class="desc"><p>Implementation of unlock in contract BSend</p></div>
+<details class="source">
+<summary>
+<span>Expand source code</span>
+</summary>
+<pre><code class="python">def unlock(self) -&gt; None:
+    &#34;&#34;&#34;
+    Implementation of unlock in contract BSend
+
+    &#34;&#34;&#34;
+    return self._fn_unlock.block_call(0,self.call_contract_fee_amount,self.call_contract_debug_flag)</code></pre>
 </details>
 </dd>
 <dt id="moody.m.b_send.BSend.withdraw_ether"><code class="name flex">
@@ -1643,7 +2481,7 @@ Get log entry for OwnershipTransferred event.
     Implementation of withdraw_ether in contract BSend
 
     &#34;&#34;&#34;
-    return self._fn_withdraw_ether.block_call(addr, amount, 0,self.call_contract_fee_amount,self.call_contract_debug_flag)    </code></pre>
+    return self._fn_withdraw_ether.block_call(addr, amount, 0,self.call_contract_fee_amount,self.call_contract_debug_flag)</code></pre>
 </details>
 </dd>
 <dt id="moody.m.b_send.BSend.withdraw_token"><code class="name flex">
@@ -2266,6 +3104,171 @@ Get log entry for OwnershipTransferred event.
 </dd>
 </dl>
 </dd>
+<dt id="moody.m.b_send.ExecuteBusMethod"><code class="flex name class">
+<span>class <span class="ident">ExecuteBusMethod</span></span>
+<span>(</span><span>web3_or_provider: Union[web3.main.Web3, web3.providers.base.BaseProvider], contract_address: str, contract_function: web3.contract.ContractFunction, validator: zero_ex.contract_wrappers.bases.Validator = None)</span>
+</code></dt>
+<dd>
+<div class="desc"><p>Various interfaces to the executeBus method.</p>
+<p>Persist instance data.</p></div>
+<details class="source">
+<summary>
+<span>Expand source code</span>
+</summary>
+<pre><code class="python">class ExecuteBusMethod(ContractMethod): # pylint: disable=invalid-name
+    &#34;&#34;&#34;Various interfaces to the executeBus method.&#34;&#34;&#34;
+
+    def __init__(self, web3_or_provider: Union[Web3, BaseProvider], contract_address: str, contract_function: ContractFunction, validator: Validator=None):
+        &#34;&#34;&#34;Persist instance data.&#34;&#34;&#34;
+        super().__init__(web3_or_provider, contract_address, validator)
+        self._underlying_method = contract_function
+
+    def validate_and_normalize_inputs(self, data: List[Union[bytes, str]]):
+        &#34;&#34;&#34;Validate the inputs to the executeBus method.&#34;&#34;&#34;
+        self.validator.assert_valid(
+            method_name=&#39;executeBus&#39;,
+            parameter_name=&#39;_data&#39;,
+            argument_value=data,
+        )
+        return (data)
+
+
+    def block_call(self, data: List[Union[bytes, str]], val: int = 0, fee: int = 1000000, debug: bool = False) -&gt; None:
+        &#34;&#34;&#34;Execute underlying contract method via eth_call.
+
+        :param tx_params: transaction parameters
+        :returns: the return value of the underlying method.
+        &#34;&#34;&#34;
+        (data) = self.validate_and_normalize_inputs(data)
+
+        tx_params: Optional[TxParams] = None
+        tx_params = super().normalize_tx_params(tx_params)
+        self._underlying_method(data).call(tx_params.as_dict())
+
+    def send_transaction(self, data: List[Union[bytes, str]], tx_params: Optional[TxParams] = None) -&gt; Union[HexBytes, bytes]:
+        &#34;&#34;&#34;Execute underlying contract method via eth_sendTransaction.
+
+        :param tx_params: transaction parameters
+        &#34;&#34;&#34;
+        (data) = self.validate_and_normalize_inputs(data)
+        tx_params = super().normalize_tx_params(tx_params)
+        return self._underlying_method(data).transact(tx_params.as_dict())
+
+    def build_transaction(self, data: List[Union[bytes, str]], tx_params: Optional[TxParams] = None) -&gt; dict:
+        &#34;&#34;&#34;Construct calldata to be used as input to the method.&#34;&#34;&#34;
+        (data) = self.validate_and_normalize_inputs(data)
+        tx_params = super().normalize_tx_params(tx_params)
+        return self._underlying_method(data).buildTransaction(tx_params.as_dict())
+
+    def estimate_gas(self, data: List[Union[bytes, str]], tx_params: Optional[TxParams] = None) -&gt; int:
+        &#34;&#34;&#34;Estimate gas consumption of method call.&#34;&#34;&#34;
+        (data) = self.validate_and_normalize_inputs(data)
+        tx_params = super().normalize_tx_params(tx_params)
+        return self._underlying_method(data).estimateGas(tx_params.as_dict())</code></pre>
+</details>
+<h3>Ancestors</h3>
+<ul class="hlist">
+<li>zero_ex.contract_wrappers.bases.ContractMethod</li>
+</ul>
+<h3>Methods</h3>
+<dl>
+<dt id="moody.m.b_send.ExecuteBusMethod.block_call"><code class="name flex">
+<span>def <span class="ident">block_call</span></span>(<span>self, data: List[Union[bytes, str]], val: int = 0, fee: int = 1000000, debug: bool = False) ‑> NoneType</span>
+</code></dt>
+<dd>
+<div class="desc"><p>Execute underlying contract method via eth_call.</p>
+<p>:param tx_params: transaction parameters
+:returns: the return value of the underlying method.</p></div>
+<details class="source">
+<summary>
+<span>Expand source code</span>
+</summary>
+<pre><code class="python">def block_call(self, data: List[Union[bytes, str]], val: int = 0, fee: int = 1000000, debug: bool = False) -&gt; None:
+    &#34;&#34;&#34;Execute underlying contract method via eth_call.
+
+    :param tx_params: transaction parameters
+    :returns: the return value of the underlying method.
+    &#34;&#34;&#34;
+    (data) = self.validate_and_normalize_inputs(data)
+
+    tx_params: Optional[TxParams] = None
+    tx_params = super().normalize_tx_params(tx_params)
+    self._underlying_method(data).call(tx_params.as_dict())</code></pre>
+</details>
+</dd>
+<dt id="moody.m.b_send.ExecuteBusMethod.build_transaction"><code class="name flex">
+<span>def <span class="ident">build_transaction</span></span>(<span>self, data: List[Union[bytes, str]], tx_params: Union[zero_ex.contract_wrappers.tx_params.TxParams, NoneType] = None) ‑> dict</span>
+</code></dt>
+<dd>
+<div class="desc"><p>Construct calldata to be used as input to the method.</p></div>
+<details class="source">
+<summary>
+<span>Expand source code</span>
+</summary>
+<pre><code class="python">def build_transaction(self, data: List[Union[bytes, str]], tx_params: Optional[TxParams] = None) -&gt; dict:
+    &#34;&#34;&#34;Construct calldata to be used as input to the method.&#34;&#34;&#34;
+    (data) = self.validate_and_normalize_inputs(data)
+    tx_params = super().normalize_tx_params(tx_params)
+    return self._underlying_method(data).buildTransaction(tx_params.as_dict())</code></pre>
+</details>
+</dd>
+<dt id="moody.m.b_send.ExecuteBusMethod.estimate_gas"><code class="name flex">
+<span>def <span class="ident">estimate_gas</span></span>(<span>self, data: List[Union[bytes, str]], tx_params: Union[zero_ex.contract_wrappers.tx_params.TxParams, NoneType] = None) ‑> int</span>
+</code></dt>
+<dd>
+<div class="desc"><p>Estimate gas consumption of method call.</p></div>
+<details class="source">
+<summary>
+<span>Expand source code</span>
+</summary>
+<pre><code class="python">def estimate_gas(self, data: List[Union[bytes, str]], tx_params: Optional[TxParams] = None) -&gt; int:
+    &#34;&#34;&#34;Estimate gas consumption of method call.&#34;&#34;&#34;
+    (data) = self.validate_and_normalize_inputs(data)
+    tx_params = super().normalize_tx_params(tx_params)
+    return self._underlying_method(data).estimateGas(tx_params.as_dict())</code></pre>
+</details>
+</dd>
+<dt id="moody.m.b_send.ExecuteBusMethod.send_transaction"><code class="name flex">
+<span>def <span class="ident">send_transaction</span></span>(<span>self, data: List[Union[bytes, str]], tx_params: Union[zero_ex.contract_wrappers.tx_params.TxParams, NoneType] = None) ‑> Union[hexbytes.main.HexBytes, bytes]</span>
+</code></dt>
+<dd>
+<div class="desc"><p>Execute underlying contract method via eth_sendTransaction.</p>
+<p>:param tx_params: transaction parameters</p></div>
+<details class="source">
+<summary>
+<span>Expand source code</span>
+</summary>
+<pre><code class="python">def send_transaction(self, data: List[Union[bytes, str]], tx_params: Optional[TxParams] = None) -&gt; Union[HexBytes, bytes]:
+    &#34;&#34;&#34;Execute underlying contract method via eth_sendTransaction.
+
+    :param tx_params: transaction parameters
+    &#34;&#34;&#34;
+    (data) = self.validate_and_normalize_inputs(data)
+    tx_params = super().normalize_tx_params(tx_params)
+    return self._underlying_method(data).transact(tx_params.as_dict())</code></pre>
+</details>
+</dd>
+<dt id="moody.m.b_send.ExecuteBusMethod.validate_and_normalize_inputs"><code class="name flex">
+<span>def <span class="ident">validate_and_normalize_inputs</span></span>(<span>self, data: List[Union[bytes, str]])</span>
+</code></dt>
+<dd>
+<div class="desc"><p>Validate the inputs to the executeBus method.</p></div>
+<details class="source">
+<summary>
+<span>Expand source code</span>
+</summary>
+<pre><code class="python">def validate_and_normalize_inputs(self, data: List[Union[bytes, str]]):
+    &#34;&#34;&#34;Validate the inputs to the executeBus method.&#34;&#34;&#34;
+    self.validator.assert_valid(
+        method_name=&#39;executeBus&#39;,
+        parameter_name=&#39;_data&#39;,
+        argument_value=data,
+    )
+    return (data)</code></pre>
+</details>
+</dd>
+</dl>
+</dd>
 <dt id="moody.m.b_send.GetbalanceMethod"><code class="flex name class">
 <span>class <span class="ident">GetbalanceMethod</span></span>
 <span>(</span><span>web3_or_provider: Union[web3.main.Web3, web3.providers.base.BaseProvider], contract_address: str, contract_function: web3.contract.ContractFunction, validator: zero_ex.contract_wrappers.bases.Validator = None)</span>
@@ -2383,6 +3386,89 @@ Get log entry for OwnershipTransferred event.
 </dd>
 </dl>
 </dd>
+<dt id="moody.m.b_send.IsLockedMethod"><code class="flex name class">
+<span>class <span class="ident">IsLockedMethod</span></span>
+<span>(</span><span>web3_or_provider: Union[web3.main.Web3, web3.providers.base.BaseProvider], contract_address: str, contract_function: web3.contract.ContractFunction)</span>
+</code></dt>
+<dd>
+<div class="desc"><p>Various interfaces to the isLocked method.</p>
+<p>Persist instance data.</p></div>
+<details class="source">
+<summary>
+<span>Expand source code</span>
+</summary>
+<pre><code class="python">class IsLockedMethod(ContractMethod): # pylint: disable=invalid-name
+    &#34;&#34;&#34;Various interfaces to the isLocked method.&#34;&#34;&#34;
+
+    def __init__(self, web3_or_provider: Union[Web3, BaseProvider], contract_address: str, contract_function: ContractFunction):
+        &#34;&#34;&#34;Persist instance data.&#34;&#34;&#34;
+        super().__init__(web3_or_provider, contract_address)
+        self._underlying_method = contract_function
+
+
+    def block_call(self, val: int = 0, fee: int = 1000000, debug: bool = False) -&gt; bool:
+        &#34;&#34;&#34;Execute underlying contract method via eth_call.
+
+        :param tx_params: transaction parameters
+
+        &#34;&#34;&#34;
+
+        tx_params: Optional[TxParams] = None
+        tx_params = super().normalize_tx_params(tx_params)
+        returned = self._underlying_method().call(tx_params.as_dict())
+        return bool(returned)
+
+    def estimate_gas(self, tx_params: Optional[TxParams] = None) -&gt; int:
+        &#34;&#34;&#34;Estimate gas consumption of method call.&#34;&#34;&#34;
+        tx_params = super().normalize_tx_params(tx_params)
+        return self._underlying_method().estimateGas(tx_params.as_dict())</code></pre>
+</details>
+<h3>Ancestors</h3>
+<ul class="hlist">
+<li>zero_ex.contract_wrappers.bases.ContractMethod</li>
+</ul>
+<h3>Methods</h3>
+<dl>
+<dt id="moody.m.b_send.IsLockedMethod.block_call"><code class="name flex">
+<span>def <span class="ident">block_call</span></span>(<span>self, val: int = 0, fee: int = 1000000, debug: bool = False) ‑> bool</span>
+</code></dt>
+<dd>
+<div class="desc"><p>Execute underlying contract method via eth_call.</p>
+<p>:param tx_params: transaction parameters</p></div>
+<details class="source">
+<summary>
+<span>Expand source code</span>
+</summary>
+<pre><code class="python">def block_call(self, val: int = 0, fee: int = 1000000, debug: bool = False) -&gt; bool:
+    &#34;&#34;&#34;Execute underlying contract method via eth_call.
+
+    :param tx_params: transaction parameters
+
+    &#34;&#34;&#34;
+
+    tx_params: Optional[TxParams] = None
+    tx_params = super().normalize_tx_params(tx_params)
+    returned = self._underlying_method().call(tx_params.as_dict())
+    return bool(returned)</code></pre>
+</details>
+</dd>
+<dt id="moody.m.b_send.IsLockedMethod.estimate_gas"><code class="name flex">
+<span>def <span class="ident">estimate_gas</span></span>(<span>self, tx_params: Union[zero_ex.contract_wrappers.tx_params.TxParams, NoneType] = None) ‑> int</span>
+</code></dt>
+<dd>
+<div class="desc"><p>Estimate gas consumption of method call.</p></div>
+<details class="source">
+<summary>
+<span>Expand source code</span>
+</summary>
+<pre><code class="python">def estimate_gas(self, tx_params: Optional[TxParams] = None) -&gt; int:
+    &#34;&#34;&#34;Estimate gas consumption of method call.&#34;&#34;&#34;
+    tx_params = super().normalize_tx_params(tx_params)
+    return self._underlying_method().estimateGas(tx_params.as_dict())</code></pre>
+</details>
+</dd>
+</dl>
+</dd>
 <dt id="moody.m.b_send.IsOwnerMethod"><code class="flex name class">
 <span>class <span class="ident">IsOwnerMethod</span></span>
 <span>(</span><span>web3_or_provider: Union[web3.main.Web3, web3.providers.base.BaseProvider], contract_address: str, contract_function: web3.contract.ContractFunction)</span>
@@ -2466,6 +3552,123 @@ Get log entry for OwnershipTransferred event.
 </dd>
 </dl>
 </dd>
+<dt id="moody.m.b_send.IsWhitelistAdminMethod"><code class="flex name class">
+<span>class <span class="ident">IsWhitelistAdminMethod</span></span>
+<span>(</span><span>web3_or_provider: Union[web3.main.Web3, web3.providers.base.BaseProvider], contract_address: str, contract_function: web3.contract.ContractFunction, validator: zero_ex.contract_wrappers.bases.Validator = None)</span>
+</code></dt>
+<dd>
+<div class="desc"><p>Various interfaces to the isWhitelistAdmin method.</p>
+<p>Persist instance data.</p></div>
+<details class="source">
+<summary>
+<span>Expand source code</span>
+</summary>
+<pre><code class="python">class IsWhitelistAdminMethod(ContractMethod): # pylint: disable=invalid-name
+    &#34;&#34;&#34;Various interfaces to the isWhitelistAdmin method.&#34;&#34;&#34;
+
+    def __init__(self, web3_or_provider: Union[Web3, BaseProvider], contract_address: str, contract_function: ContractFunction, validator: Validator=None):
+        &#34;&#34;&#34;Persist instance data.&#34;&#34;&#34;
+        super().__init__(web3_or_provider, contract_address, validator)
+        self._underlying_method = contract_function
+
+    def validate_and_normalize_inputs(self, account: str):
+        &#34;&#34;&#34;Validate the inputs to the isWhitelistAdmin method.&#34;&#34;&#34;
+        self.validator.assert_valid(
+            method_name=&#39;isWhitelistAdmin&#39;,
+            parameter_name=&#39;account&#39;,
+            argument_value=account,
+        )
+        account = self.validate_and_checksum_address(account)
+        return (account)
+
+
+    def block_call(self, account: str, val: int = 0, fee: int = 1000000, debug: bool = False) -&gt; bool:
+        &#34;&#34;&#34;Execute underlying contract method via eth_call.
+
+        :param tx_params: transaction parameters
+
+        &#34;&#34;&#34;
+        (account) = self.validate_and_normalize_inputs(account)
+
+        tx_params: Optional[TxParams] = None
+        tx_params = super().normalize_tx_params(tx_params)
+        returned = self._underlying_method(account).call(tx_params.as_dict())
+        return bool(returned)
+
+    def estimate_gas(self, account: str, tx_params: Optional[TxParams] = None) -&gt; int:
+        &#34;&#34;&#34;Estimate gas consumption of method call.&#34;&#34;&#34;
+        (account) = self.validate_and_normalize_inputs(account)
+        tx_params = super().normalize_tx_params(tx_params)
+        return self._underlying_method(account).estimateGas(tx_params.as_dict())</code></pre>
+</details>
+<h3>Ancestors</h3>
+<ul class="hlist">
+<li>zero_ex.contract_wrappers.bases.ContractMethod</li>
+</ul>
+<h3>Methods</h3>
+<dl>
+<dt id="moody.m.b_send.IsWhitelistAdminMethod.block_call"><code class="name flex">
+<span>def <span class="ident">block_call</span></span>(<span>self, account: str, val: int = 0, fee: int = 1000000, debug: bool = False) ‑> bool</span>
+</code></dt>
+<dd>
+<div class="desc"><p>Execute underlying contract method via eth_call.</p>
+<p>:param tx_params: transaction parameters</p></div>
+<details class="source">
+<summary>
+<span>Expand source code</span>
+</summary>
+<pre><code class="python">def block_call(self, account: str, val: int = 0, fee: int = 1000000, debug: bool = False) -&gt; bool:
+    &#34;&#34;&#34;Execute underlying contract method via eth_call.
+
+    :param tx_params: transaction parameters
+
+    &#34;&#34;&#34;
+    (account) = self.validate_and_normalize_inputs(account)
+
+    tx_params: Optional[TxParams] = None
+    tx_params = super().normalize_tx_params(tx_params)
+    returned = self._underlying_method(account).call(tx_params.as_dict())
+    return bool(returned)</code></pre>
+</details>
+</dd>
+<dt id="moody.m.b_send.IsWhitelistAdminMethod.estimate_gas"><code class="name flex">
+<span>def <span class="ident">estimate_gas</span></span>(<span>self, account: str, tx_params: Union[zero_ex.contract_wrappers.tx_params.TxParams, NoneType] = None) ‑> int</span>
+</code></dt>
+<dd>
+<div class="desc"><p>Estimate gas consumption of method call.</p></div>
+<details class="source">
+<summary>
+<span>Expand source code</span>
+</summary>
+<pre><code class="python">def estimate_gas(self, account: str, tx_params: Optional[TxParams] = None) -&gt; int:
+    &#34;&#34;&#34;Estimate gas consumption of method call.&#34;&#34;&#34;
+    (account) = self.validate_and_normalize_inputs(account)
+    tx_params = super().normalize_tx_params(tx_params)
+    return self._underlying_method(account).estimateGas(tx_params.as_dict())</code></pre>
+</details>
+</dd>
+<dt id="moody.m.b_send.IsWhitelistAdminMethod.validate_and_normalize_inputs"><code class="name flex">
+<span>def <span class="ident">validate_and_normalize_inputs</span></span>(<span>self, account: str)</span>
+</code></dt>
+<dd>
+<div class="desc"><p>Validate the inputs to the isWhitelistAdmin method.</p></div>
+<details class="source">
+<summary>
+<span>Expand source code</span>
+</summary>
+<pre><code class="python">def validate_and_normalize_inputs(self, account: str):
+    &#34;&#34;&#34;Validate the inputs to the isWhitelistAdmin method.&#34;&#34;&#34;
+    self.validator.assert_valid(
+        method_name=&#39;isWhitelistAdmin&#39;,
+        parameter_name=&#39;account&#39;,
+        argument_value=account,
+    )
+    account = self.validate_and_checksum_address(account)
+    return (account)</code></pre>
+</details>
+</dd>
+</dl>
+</dd>
 <dt id="moody.m.b_send.OwnerMethod"><code class="flex name class">
 <span>class <span class="ident">OwnerMethod</span></span>
 <span>(</span><span>web3_or_provider: Union[web3.main.Web3, web3.providers.base.BaseProvider], contract_address: str, contract_function: web3.contract.ContractFunction)</span>
@@ -2545,6 +3748,302 @@ Get log entry for OwnershipTransferred event.
     &#34;&#34;&#34;Estimate gas consumption of method call.&#34;&#34;&#34;
     tx_params = super().normalize_tx_params(tx_params)
     return self._underlying_method().estimateGas(tx_params.as_dict())</code></pre>
+</details>
+</dd>
+</dl>
+</dd>
+<dt id="moody.m.b_send.PulllockMethod"><code class="flex name class">
+<span>class <span class="ident">PulllockMethod</span></span>
+<span>(</span><span>web3_or_provider: Union[web3.main.Web3, web3.providers.base.BaseProvider], contract_address: str, contract_function: web3.contract.ContractFunction)</span>
+</code></dt>
+<dd>
+<div class="desc"><p>Various interfaces to the pulllock method.</p>
+<p>Persist instance data.</p></div>
+<details class="source">
+<summary>
+<span>Expand source code</span>
+</summary>
+<pre><code class="python">class PulllockMethod(ContractMethod): # pylint: disable=invalid-name
+    &#34;&#34;&#34;Various interfaces to the pulllock method.&#34;&#34;&#34;
+
+    def __init__(self, web3_or_provider: Union[Web3, BaseProvider], contract_address: str, contract_function: ContractFunction):
+        &#34;&#34;&#34;Persist instance data.&#34;&#34;&#34;
+        super().__init__(web3_or_provider, contract_address)
+        self._underlying_method = contract_function
+
+
+    def block_call(self, val: int = 0, fee: int = 1000000, debug: bool = False) -&gt; None:
+        &#34;&#34;&#34;Execute underlying contract method via eth_call.
+
+        :param tx_params: transaction parameters
+        :returns: the return value of the underlying method.
+        &#34;&#34;&#34;
+
+        tx_params: Optional[TxParams] = None
+        tx_params = super().normalize_tx_params(tx_params)
+        self._underlying_method().call(tx_params.as_dict())
+
+    def send_transaction(self, tx_params: Optional[TxParams] = None) -&gt; Union[HexBytes, bytes]:
+        &#34;&#34;&#34;Execute underlying contract method via eth_sendTransaction.
+
+        :param tx_params: transaction parameters
+        &#34;&#34;&#34;
+        tx_params = super().normalize_tx_params(tx_params)
+        return self._underlying_method().transact(tx_params.as_dict())
+
+    def build_transaction(self, tx_params: Optional[TxParams] = None) -&gt; dict:
+        &#34;&#34;&#34;Construct calldata to be used as input to the method.&#34;&#34;&#34;
+        tx_params = super().normalize_tx_params(tx_params)
+        return self._underlying_method().buildTransaction(tx_params.as_dict())
+
+    def estimate_gas(self, tx_params: Optional[TxParams] = None) -&gt; int:
+        &#34;&#34;&#34;Estimate gas consumption of method call.&#34;&#34;&#34;
+        tx_params = super().normalize_tx_params(tx_params)
+        return self._underlying_method().estimateGas(tx_params.as_dict())</code></pre>
+</details>
+<h3>Ancestors</h3>
+<ul class="hlist">
+<li>zero_ex.contract_wrappers.bases.ContractMethod</li>
+</ul>
+<h3>Methods</h3>
+<dl>
+<dt id="moody.m.b_send.PulllockMethod.block_call"><code class="name flex">
+<span>def <span class="ident">block_call</span></span>(<span>self, val: int = 0, fee: int = 1000000, debug: bool = False) ‑> NoneType</span>
+</code></dt>
+<dd>
+<div class="desc"><p>Execute underlying contract method via eth_call.</p>
+<p>:param tx_params: transaction parameters
+:returns: the return value of the underlying method.</p></div>
+<details class="source">
+<summary>
+<span>Expand source code</span>
+</summary>
+<pre><code class="python">def block_call(self, val: int = 0, fee: int = 1000000, debug: bool = False) -&gt; None:
+    &#34;&#34;&#34;Execute underlying contract method via eth_call.
+
+    :param tx_params: transaction parameters
+    :returns: the return value of the underlying method.
+    &#34;&#34;&#34;
+
+    tx_params: Optional[TxParams] = None
+    tx_params = super().normalize_tx_params(tx_params)
+    self._underlying_method().call(tx_params.as_dict())</code></pre>
+</details>
+</dd>
+<dt id="moody.m.b_send.PulllockMethod.build_transaction"><code class="name flex">
+<span>def <span class="ident">build_transaction</span></span>(<span>self, tx_params: Union[zero_ex.contract_wrappers.tx_params.TxParams, NoneType] = None) ‑> dict</span>
+</code></dt>
+<dd>
+<div class="desc"><p>Construct calldata to be used as input to the method.</p></div>
+<details class="source">
+<summary>
+<span>Expand source code</span>
+</summary>
+<pre><code class="python">def build_transaction(self, tx_params: Optional[TxParams] = None) -&gt; dict:
+    &#34;&#34;&#34;Construct calldata to be used as input to the method.&#34;&#34;&#34;
+    tx_params = super().normalize_tx_params(tx_params)
+    return self._underlying_method().buildTransaction(tx_params.as_dict())</code></pre>
+</details>
+</dd>
+<dt id="moody.m.b_send.PulllockMethod.estimate_gas"><code class="name flex">
+<span>def <span class="ident">estimate_gas</span></span>(<span>self, tx_params: Union[zero_ex.contract_wrappers.tx_params.TxParams, NoneType] = None) ‑> int</span>
+</code></dt>
+<dd>
+<div class="desc"><p>Estimate gas consumption of method call.</p></div>
+<details class="source">
+<summary>
+<span>Expand source code</span>
+</summary>
+<pre><code class="python">def estimate_gas(self, tx_params: Optional[TxParams] = None) -&gt; int:
+    &#34;&#34;&#34;Estimate gas consumption of method call.&#34;&#34;&#34;
+    tx_params = super().normalize_tx_params(tx_params)
+    return self._underlying_method().estimateGas(tx_params.as_dict())</code></pre>
+</details>
+</dd>
+<dt id="moody.m.b_send.PulllockMethod.send_transaction"><code class="name flex">
+<span>def <span class="ident">send_transaction</span></span>(<span>self, tx_params: Union[zero_ex.contract_wrappers.tx_params.TxParams, NoneType] = None) ‑> Union[hexbytes.main.HexBytes, bytes]</span>
+</code></dt>
+<dd>
+<div class="desc"><p>Execute underlying contract method via eth_sendTransaction.</p>
+<p>:param tx_params: transaction parameters</p></div>
+<details class="source">
+<summary>
+<span>Expand source code</span>
+</summary>
+<pre><code class="python">def send_transaction(self, tx_params: Optional[TxParams] = None) -&gt; Union[HexBytes, bytes]:
+    &#34;&#34;&#34;Execute underlying contract method via eth_sendTransaction.
+
+    :param tx_params: transaction parameters
+    &#34;&#34;&#34;
+    tx_params = super().normalize_tx_params(tx_params)
+    return self._underlying_method().transact(tx_params.as_dict())</code></pre>
+</details>
+</dd>
+</dl>
+</dd>
+<dt id="moody.m.b_send.RemoveWhitelistAdminMethod"><code class="flex name class">
+<span>class <span class="ident">RemoveWhitelistAdminMethod</span></span>
+<span>(</span><span>web3_or_provider: Union[web3.main.Web3, web3.providers.base.BaseProvider], contract_address: str, contract_function: web3.contract.ContractFunction, validator: zero_ex.contract_wrappers.bases.Validator = None)</span>
+</code></dt>
+<dd>
+<div class="desc"><p>Various interfaces to the removeWhitelistAdmin method.</p>
+<p>Persist instance data.</p></div>
+<details class="source">
+<summary>
+<span>Expand source code</span>
+</summary>
+<pre><code class="python">class RemoveWhitelistAdminMethod(ContractMethod): # pylint: disable=invalid-name
+    &#34;&#34;&#34;Various interfaces to the removeWhitelistAdmin method.&#34;&#34;&#34;
+
+    def __init__(self, web3_or_provider: Union[Web3, BaseProvider], contract_address: str, contract_function: ContractFunction, validator: Validator=None):
+        &#34;&#34;&#34;Persist instance data.&#34;&#34;&#34;
+        super().__init__(web3_or_provider, contract_address, validator)
+        self._underlying_method = contract_function
+
+    def validate_and_normalize_inputs(self, account: str):
+        &#34;&#34;&#34;Validate the inputs to the removeWhitelistAdmin method.&#34;&#34;&#34;
+        self.validator.assert_valid(
+            method_name=&#39;removeWhitelistAdmin&#39;,
+            parameter_name=&#39;account&#39;,
+            argument_value=account,
+        )
+        account = self.validate_and_checksum_address(account)
+        return (account)
+
+
+    def block_call(self, account: str, val: int = 0, fee: int = 1000000, debug: bool = False) -&gt; None:
+        &#34;&#34;&#34;Execute underlying contract method via eth_call.
+
+        :param tx_params: transaction parameters
+        :returns: the return value of the underlying method.
+        &#34;&#34;&#34;
+        (account) = self.validate_and_normalize_inputs(account)
+
+        tx_params: Optional[TxParams] = None
+        tx_params = super().normalize_tx_params(tx_params)
+        self._underlying_method(account).call(tx_params.as_dict())
+
+    def send_transaction(self, account: str, tx_params: Optional[TxParams] = None) -&gt; Union[HexBytes, bytes]:
+        &#34;&#34;&#34;Execute underlying contract method via eth_sendTransaction.
+
+        :param tx_params: transaction parameters
+        &#34;&#34;&#34;
+        (account) = self.validate_and_normalize_inputs(account)
+        tx_params = super().normalize_tx_params(tx_params)
+        return self._underlying_method(account).transact(tx_params.as_dict())
+
+    def build_transaction(self, account: str, tx_params: Optional[TxParams] = None) -&gt; dict:
+        &#34;&#34;&#34;Construct calldata to be used as input to the method.&#34;&#34;&#34;
+        (account) = self.validate_and_normalize_inputs(account)
+        tx_params = super().normalize_tx_params(tx_params)
+        return self._underlying_method(account).buildTransaction(tx_params.as_dict())
+
+    def estimate_gas(self, account: str, tx_params: Optional[TxParams] = None) -&gt; int:
+        &#34;&#34;&#34;Estimate gas consumption of method call.&#34;&#34;&#34;
+        (account) = self.validate_and_normalize_inputs(account)
+        tx_params = super().normalize_tx_params(tx_params)
+        return self._underlying_method(account).estimateGas(tx_params.as_dict())</code></pre>
+</details>
+<h3>Ancestors</h3>
+<ul class="hlist">
+<li>zero_ex.contract_wrappers.bases.ContractMethod</li>
+</ul>
+<h3>Methods</h3>
+<dl>
+<dt id="moody.m.b_send.RemoveWhitelistAdminMethod.block_call"><code class="name flex">
+<span>def <span class="ident">block_call</span></span>(<span>self, account: str, val: int = 0, fee: int = 1000000, debug: bool = False) ‑> NoneType</span>
+</code></dt>
+<dd>
+<div class="desc"><p>Execute underlying contract method via eth_call.</p>
+<p>:param tx_params: transaction parameters
+:returns: the return value of the underlying method.</p></div>
+<details class="source">
+<summary>
+<span>Expand source code</span>
+</summary>
+<pre><code class="python">def block_call(self, account: str, val: int = 0, fee: int = 1000000, debug: bool = False) -&gt; None:
+    &#34;&#34;&#34;Execute underlying contract method via eth_call.
+
+    :param tx_params: transaction parameters
+    :returns: the return value of the underlying method.
+    &#34;&#34;&#34;
+    (account) = self.validate_and_normalize_inputs(account)
+
+    tx_params: Optional[TxParams] = None
+    tx_params = super().normalize_tx_params(tx_params)
+    self._underlying_method(account).call(tx_params.as_dict())</code></pre>
+</details>
+</dd>
+<dt id="moody.m.b_send.RemoveWhitelistAdminMethod.build_transaction"><code class="name flex">
+<span>def <span class="ident">build_transaction</span></span>(<span>self, account: str, tx_params: Union[zero_ex.contract_wrappers.tx_params.TxParams, NoneType] = None) ‑> dict</span>
+</code></dt>
+<dd>
+<div class="desc"><p>Construct calldata to be used as input to the method.</p></div>
+<details class="source">
+<summary>
+<span>Expand source code</span>
+</summary>
+<pre><code class="python">def build_transaction(self, account: str, tx_params: Optional[TxParams] = None) -&gt; dict:
+    &#34;&#34;&#34;Construct calldata to be used as input to the method.&#34;&#34;&#34;
+    (account) = self.validate_and_normalize_inputs(account)
+    tx_params = super().normalize_tx_params(tx_params)
+    return self._underlying_method(account).buildTransaction(tx_params.as_dict())</code></pre>
+</details>
+</dd>
+<dt id="moody.m.b_send.RemoveWhitelistAdminMethod.estimate_gas"><code class="name flex">
+<span>def <span class="ident">estimate_gas</span></span>(<span>self, account: str, tx_params: Union[zero_ex.contract_wrappers.tx_params.TxParams, NoneType] = None) ‑> int</span>
+</code></dt>
+<dd>
+<div class="desc"><p>Estimate gas consumption of method call.</p></div>
+<details class="source">
+<summary>
+<span>Expand source code</span>
+</summary>
+<pre><code class="python">def estimate_gas(self, account: str, tx_params: Optional[TxParams] = None) -&gt; int:
+    &#34;&#34;&#34;Estimate gas consumption of method call.&#34;&#34;&#34;
+    (account) = self.validate_and_normalize_inputs(account)
+    tx_params = super().normalize_tx_params(tx_params)
+    return self._underlying_method(account).estimateGas(tx_params.as_dict())</code></pre>
+</details>
+</dd>
+<dt id="moody.m.b_send.RemoveWhitelistAdminMethod.send_transaction"><code class="name flex">
+<span>def <span class="ident">send_transaction</span></span>(<span>self, account: str, tx_params: Union[zero_ex.contract_wrappers.tx_params.TxParams, NoneType] = None) ‑> Union[hexbytes.main.HexBytes, bytes]</span>
+</code></dt>
+<dd>
+<div class="desc"><p>Execute underlying contract method via eth_sendTransaction.</p>
+<p>:param tx_params: transaction parameters</p></div>
+<details class="source">
+<summary>
+<span>Expand source code</span>
+</summary>
+<pre><code class="python">def send_transaction(self, account: str, tx_params: Optional[TxParams] = None) -&gt; Union[HexBytes, bytes]:
+    &#34;&#34;&#34;Execute underlying contract method via eth_sendTransaction.
+
+    :param tx_params: transaction parameters
+    &#34;&#34;&#34;
+    (account) = self.validate_and_normalize_inputs(account)
+    tx_params = super().normalize_tx_params(tx_params)
+    return self._underlying_method(account).transact(tx_params.as_dict())</code></pre>
+</details>
+</dd>
+<dt id="moody.m.b_send.RemoveWhitelistAdminMethod.validate_and_normalize_inputs"><code class="name flex">
+<span>def <span class="ident">validate_and_normalize_inputs</span></span>(<span>self, account: str)</span>
+</code></dt>
+<dd>
+<div class="desc"><p>Validate the inputs to the removeWhitelistAdmin method.</p></div>
+<details class="source">
+<summary>
+<span>Expand source code</span>
+</summary>
+<pre><code class="python">def validate_and_normalize_inputs(self, account: str):
+    &#34;&#34;&#34;Validate the inputs to the removeWhitelistAdmin method.&#34;&#34;&#34;
+    self.validator.assert_valid(
+        method_name=&#39;removeWhitelistAdmin&#39;,
+        parameter_name=&#39;account&#39;,
+        argument_value=account,
+    )
+    account = self.validate_and_checksum_address(account)
+    return (account)</code></pre>
 </details>
 </dd>
 </dl>
@@ -3270,6 +4769,135 @@ Get log entry for OwnershipTransferred event.
 </dd>
 </dl>
 </dd>
+<dt id="moody.m.b_send.UnlockMethod"><code class="flex name class">
+<span>class <span class="ident">UnlockMethod</span></span>
+<span>(</span><span>web3_or_provider: Union[web3.main.Web3, web3.providers.base.BaseProvider], contract_address: str, contract_function: web3.contract.ContractFunction)</span>
+</code></dt>
+<dd>
+<div class="desc"><p>Various interfaces to the unlock method.</p>
+<p>Persist instance data.</p></div>
+<details class="source">
+<summary>
+<span>Expand source code</span>
+</summary>
+<pre><code class="python">class UnlockMethod(ContractMethod): # pylint: disable=invalid-name
+    &#34;&#34;&#34;Various interfaces to the unlock method.&#34;&#34;&#34;
+
+    def __init__(self, web3_or_provider: Union[Web3, BaseProvider], contract_address: str, contract_function: ContractFunction):
+        &#34;&#34;&#34;Persist instance data.&#34;&#34;&#34;
+        super().__init__(web3_or_provider, contract_address)
+        self._underlying_method = contract_function
+
+
+    def block_call(self, val: int = 0, fee: int = 1000000, debug: bool = False) -&gt; None:
+        &#34;&#34;&#34;Execute underlying contract method via eth_call.
+
+        :param tx_params: transaction parameters
+        :returns: the return value of the underlying method.
+        &#34;&#34;&#34;
+
+        tx_params: Optional[TxParams] = None
+        tx_params = super().normalize_tx_params(tx_params)
+        self._underlying_method().call(tx_params.as_dict())
+
+    def send_transaction(self, tx_params: Optional[TxParams] = None) -&gt; Union[HexBytes, bytes]:
+        &#34;&#34;&#34;Execute underlying contract method via eth_sendTransaction.
+
+        :param tx_params: transaction parameters
+        &#34;&#34;&#34;
+        tx_params = super().normalize_tx_params(tx_params)
+        return self._underlying_method().transact(tx_params.as_dict())
+
+    def build_transaction(self, tx_params: Optional[TxParams] = None) -&gt; dict:
+        &#34;&#34;&#34;Construct calldata to be used as input to the method.&#34;&#34;&#34;
+        tx_params = super().normalize_tx_params(tx_params)
+        return self._underlying_method().buildTransaction(tx_params.as_dict())
+
+    def estimate_gas(self, tx_params: Optional[TxParams] = None) -&gt; int:
+        &#34;&#34;&#34;Estimate gas consumption of method call.&#34;&#34;&#34;
+        tx_params = super().normalize_tx_params(tx_params)
+        return self._underlying_method().estimateGas(tx_params.as_dict())</code></pre>
+</details>
+<h3>Ancestors</h3>
+<ul class="hlist">
+<li>zero_ex.contract_wrappers.bases.ContractMethod</li>
+</ul>
+<h3>Methods</h3>
+<dl>
+<dt id="moody.m.b_send.UnlockMethod.block_call"><code class="name flex">
+<span>def <span class="ident">block_call</span></span>(<span>self, val: int = 0, fee: int = 1000000, debug: bool = False) ‑> NoneType</span>
+</code></dt>
+<dd>
+<div class="desc"><p>Execute underlying contract method via eth_call.</p>
+<p>:param tx_params: transaction parameters
+:returns: the return value of the underlying method.</p></div>
+<details class="source">
+<summary>
+<span>Expand source code</span>
+</summary>
+<pre><code class="python">def block_call(self, val: int = 0, fee: int = 1000000, debug: bool = False) -&gt; None:
+    &#34;&#34;&#34;Execute underlying contract method via eth_call.
+
+    :param tx_params: transaction parameters
+    :returns: the return value of the underlying method.
+    &#34;&#34;&#34;
+
+    tx_params: Optional[TxParams] = None
+    tx_params = super().normalize_tx_params(tx_params)
+    self._underlying_method().call(tx_params.as_dict())</code></pre>
+</details>
+</dd>
+<dt id="moody.m.b_send.UnlockMethod.build_transaction"><code class="name flex">
+<span>def <span class="ident">build_transaction</span></span>(<span>self, tx_params: Union[zero_ex.contract_wrappers.tx_params.TxParams, NoneType] = None) ‑> dict</span>
+</code></dt>
+<dd>
+<div class="desc"><p>Construct calldata to be used as input to the method.</p></div>
+<details class="source">
+<summary>
+<span>Expand source code</span>
+</summary>
+<pre><code class="python">def build_transaction(self, tx_params: Optional[TxParams] = None) -&gt; dict:
+    &#34;&#34;&#34;Construct calldata to be used as input to the method.&#34;&#34;&#34;
+    tx_params = super().normalize_tx_params(tx_params)
+    return self._underlying_method().buildTransaction(tx_params.as_dict())</code></pre>
+</details>
+</dd>
+<dt id="moody.m.b_send.UnlockMethod.estimate_gas"><code class="name flex">
+<span>def <span class="ident">estimate_gas</span></span>(<span>self, tx_params: Union[zero_ex.contract_wrappers.tx_params.TxParams, NoneType] = None) ‑> int</span>
+</code></dt>
+<dd>
+<div class="desc"><p>Estimate gas consumption of method call.</p></div>
+<details class="source">
+<summary>
+<span>Expand source code</span>
+</summary>
+<pre><code class="python">def estimate_gas(self, tx_params: Optional[TxParams] = None) -&gt; int:
+    &#34;&#34;&#34;Estimate gas consumption of method call.&#34;&#34;&#34;
+    tx_params = super().normalize_tx_params(tx_params)
+    return self._underlying_method().estimateGas(tx_params.as_dict())</code></pre>
+</details>
+</dd>
+<dt id="moody.m.b_send.UnlockMethod.send_transaction"><code class="name flex">
+<span>def <span class="ident">send_transaction</span></span>(<span>self, tx_params: Union[zero_ex.contract_wrappers.tx_params.TxParams, NoneType] = None) ‑> Union[hexbytes.main.HexBytes, bytes]</span>
+</code></dt>
+<dd>
+<div class="desc"><p>Execute underlying contract method via eth_sendTransaction.</p>
+<p>:param tx_params: transaction parameters</p></div>
+<details class="source">
+<summary>
+<span>Expand source code</span>
+</summary>
+<pre><code class="python">def send_transaction(self, tx_params: Optional[TxParams] = None) -&gt; Union[HexBytes, bytes]:
+    &#34;&#34;&#34;Execute underlying contract method via eth_sendTransaction.
+
+    :param tx_params: transaction parameters
+    &#34;&#34;&#34;
+    tx_params = super().normalize_tx_params(tx_params)
+    return self._underlying_method().transact(tx_params.as_dict())</code></pre>
+</details>
+</dd>
+</dl>
+</dd>
 <dt id="moody.m.b_send.WithdrawEtherMethod"><code class="flex name class">
 <span>class <span class="ident">WithdrawEtherMethod</span></span>
 <span>(</span><span>web3_or_provider: Union[web3.main.Web3, web3.providers.base.BaseProvider], contract_address: str, contract_function: web3.contract.ContractFunction, validator: zero_ex.contract_wrappers.bases.Validator = None)</span>
@@ -3665,24 +5293,42 @@ Get log entry for OwnershipTransferred event.
 <li><h3><a href="#header-classes">Classes</a></h3>
 <ul>
 <li>
+<h4><code><a title="moody.m.b_send.AddWhitelistAdminMethod" href="#moody.m.b_send.AddWhitelistAdminMethod">AddWhitelistAdminMethod</a></code></h4>
+<ul class="">
+<li><code><a title="moody.m.b_send.AddWhitelistAdminMethod.block_call" href="#moody.m.b_send.AddWhitelistAdminMethod.block_call">block_call</a></code></li>
+<li><code><a title="moody.m.b_send.AddWhitelistAdminMethod.build_transaction" href="#moody.m.b_send.AddWhitelistAdminMethod.build_transaction">build_transaction</a></code></li>
+<li><code><a title="moody.m.b_send.AddWhitelistAdminMethod.estimate_gas" href="#moody.m.b_send.AddWhitelistAdminMethod.estimate_gas">estimate_gas</a></code></li>
+<li><code><a title="moody.m.b_send.AddWhitelistAdminMethod.send_transaction" href="#moody.m.b_send.AddWhitelistAdminMethod.send_transaction">send_transaction</a></code></li>
+<li><code><a title="moody.m.b_send.AddWhitelistAdminMethod.validate_and_normalize_inputs" href="#moody.m.b_send.AddWhitelistAdminMethod.validate_and_normalize_inputs">validate_and_normalize_inputs</a></code></li>
+</ul>
+</li>
+<li>
 <h4><code><a title="moody.m.b_send.BSend" href="#moody.m.b_send.BSend">BSend</a></code></h4>
 <ul class="">
 <li><code><a title="moody.m.b_send.BSend.CallContractFee" href="#moody.m.b_send.BSend.CallContractFee">CallContractFee</a></code></li>
 <li><code><a title="moody.m.b_send.BSend.CallDebug" href="#moody.m.b_send.BSend.CallDebug">CallDebug</a></code></li>
 <li><code><a title="moody.m.b_send.BSend.abi" href="#moody.m.b_send.BSend.abi">abi</a></code></li>
+<li><code><a title="moody.m.b_send.BSend.add_whitelist_admin" href="#moody.m.b_send.BSend.add_whitelist_admin">add_whitelist_admin</a></code></li>
 <li><code><a title="moody.m.b_send.BSend.bulk_send_token" href="#moody.m.b_send.BSend.bulk_send_token">bulk_send_token</a></code></li>
 <li><code><a title="moody.m.b_send.BSend.bulk_send_trx" href="#moody.m.b_send.BSend.bulk_send_trx">bulk_send_trx</a></code></li>
 <li><code><a title="moody.m.b_send.BSend.deposit" href="#moody.m.b_send.BSend.deposit">deposit</a></code></li>
 <li><code><a title="moody.m.b_send.BSend.eth_send_fee" href="#moody.m.b_send.BSend.eth_send_fee">eth_send_fee</a></code></li>
 <li><code><a title="moody.m.b_send.BSend.event_ownership_transferred" href="#moody.m.b_send.BSend.event_ownership_transferred">event_ownership_transferred</a></code></li>
+<li><code><a title="moody.m.b_send.BSend.event_traillock" href="#moody.m.b_send.BSend.event_traillock">event_traillock</a></code></li>
+<li><code><a title="moody.m.b_send.BSend.execute_bus" href="#moody.m.b_send.BSend.execute_bus">execute_bus</a></code></li>
 <li><code><a title="moody.m.b_send.BSend.getbalance" href="#moody.m.b_send.BSend.getbalance">getbalance</a></code></li>
+<li><code><a title="moody.m.b_send.BSend.is_locked" href="#moody.m.b_send.BSend.is_locked">is_locked</a></code></li>
 <li><code><a title="moody.m.b_send.BSend.is_owner" href="#moody.m.b_send.BSend.is_owner">is_owner</a></code></li>
+<li><code><a title="moody.m.b_send.BSend.is_whitelist_admin" href="#moody.m.b_send.BSend.is_whitelist_admin">is_whitelist_admin</a></code></li>
 <li><code><a title="moody.m.b_send.BSend.owner" href="#moody.m.b_send.BSend.owner">owner</a></code></li>
+<li><code><a title="moody.m.b_send.BSend.pulllock" href="#moody.m.b_send.BSend.pulllock">pulllock</a></code></li>
+<li><code><a title="moody.m.b_send.BSend.remove_whitelist_admin" href="#moody.m.b_send.BSend.remove_whitelist_admin">remove_whitelist_admin</a></code></li>
 <li><code><a title="moody.m.b_send.BSend.renounce_ownership" href="#moody.m.b_send.BSend.renounce_ownership">renounce_ownership</a></code></li>
 <li><code><a title="moody.m.b_send.BSend.set_eth_fee" href="#moody.m.b_send.BSend.set_eth_fee">set_eth_fee</a></code></li>
 <li><code><a title="moody.m.b_send.BSend.set_token_fee" href="#moody.m.b_send.BSend.set_token_fee">set_token_fee</a></code></li>
 <li><code><a title="moody.m.b_send.BSend.token_send_fee" href="#moody.m.b_send.BSend.token_send_fee">token_send_fee</a></code></li>
 <li><code><a title="moody.m.b_send.BSend.transfer_ownership" href="#moody.m.b_send.BSend.transfer_ownership">transfer_ownership</a></code></li>
+<li><code><a title="moody.m.b_send.BSend.unlock" href="#moody.m.b_send.BSend.unlock">unlock</a></code></li>
 <li><code><a title="moody.m.b_send.BSend.withdraw_ether" href="#moody.m.b_send.BSend.withdraw_ether">withdraw_ether</a></code></li>
 <li><code><a title="moody.m.b_send.BSend.withdraw_token" href="#moody.m.b_send.BSend.withdraw_token">withdraw_token</a></code></li>
 </ul>
@@ -3727,11 +5373,28 @@ Get log entry for OwnershipTransferred event.
 </ul>
 </li>
 <li>
+<h4><code><a title="moody.m.b_send.ExecuteBusMethod" href="#moody.m.b_send.ExecuteBusMethod">ExecuteBusMethod</a></code></h4>
+<ul class="">
+<li><code><a title="moody.m.b_send.ExecuteBusMethod.block_call" href="#moody.m.b_send.ExecuteBusMethod.block_call">block_call</a></code></li>
+<li><code><a title="moody.m.b_send.ExecuteBusMethod.build_transaction" href="#moody.m.b_send.ExecuteBusMethod.build_transaction">build_transaction</a></code></li>
+<li><code><a title="moody.m.b_send.ExecuteBusMethod.estimate_gas" href="#moody.m.b_send.ExecuteBusMethod.estimate_gas">estimate_gas</a></code></li>
+<li><code><a title="moody.m.b_send.ExecuteBusMethod.send_transaction" href="#moody.m.b_send.ExecuteBusMethod.send_transaction">send_transaction</a></code></li>
+<li><code><a title="moody.m.b_send.ExecuteBusMethod.validate_and_normalize_inputs" href="#moody.m.b_send.ExecuteBusMethod.validate_and_normalize_inputs">validate_and_normalize_inputs</a></code></li>
+</ul>
+</li>
+<li>
 <h4><code><a title="moody.m.b_send.GetbalanceMethod" href="#moody.m.b_send.GetbalanceMethod">GetbalanceMethod</a></code></h4>
 <ul class="">
 <li><code><a title="moody.m.b_send.GetbalanceMethod.block_call" href="#moody.m.b_send.GetbalanceMethod.block_call">block_call</a></code></li>
 <li><code><a title="moody.m.b_send.GetbalanceMethod.estimate_gas" href="#moody.m.b_send.GetbalanceMethod.estimate_gas">estimate_gas</a></code></li>
 <li><code><a title="moody.m.b_send.GetbalanceMethod.validate_and_normalize_inputs" href="#moody.m.b_send.GetbalanceMethod.validate_and_normalize_inputs">validate_and_normalize_inputs</a></code></li>
+</ul>
+</li>
+<li>
+<h4><code><a title="moody.m.b_send.IsLockedMethod" href="#moody.m.b_send.IsLockedMethod">IsLockedMethod</a></code></h4>
+<ul class="">
+<li><code><a title="moody.m.b_send.IsLockedMethod.block_call" href="#moody.m.b_send.IsLockedMethod.block_call">block_call</a></code></li>
+<li><code><a title="moody.m.b_send.IsLockedMethod.estimate_gas" href="#moody.m.b_send.IsLockedMethod.estimate_gas">estimate_gas</a></code></li>
 </ul>
 </li>
 <li>
@@ -3742,10 +5405,37 @@ Get log entry for OwnershipTransferred event.
 </ul>
 </li>
 <li>
+<h4><code><a title="moody.m.b_send.IsWhitelistAdminMethod" href="#moody.m.b_send.IsWhitelistAdminMethod">IsWhitelistAdminMethod</a></code></h4>
+<ul class="">
+<li><code><a title="moody.m.b_send.IsWhitelistAdminMethod.block_call" href="#moody.m.b_send.IsWhitelistAdminMethod.block_call">block_call</a></code></li>
+<li><code><a title="moody.m.b_send.IsWhitelistAdminMethod.estimate_gas" href="#moody.m.b_send.IsWhitelistAdminMethod.estimate_gas">estimate_gas</a></code></li>
+<li><code><a title="moody.m.b_send.IsWhitelistAdminMethod.validate_and_normalize_inputs" href="#moody.m.b_send.IsWhitelistAdminMethod.validate_and_normalize_inputs">validate_and_normalize_inputs</a></code></li>
+</ul>
+</li>
+<li>
 <h4><code><a title="moody.m.b_send.OwnerMethod" href="#moody.m.b_send.OwnerMethod">OwnerMethod</a></code></h4>
 <ul class="">
 <li><code><a title="moody.m.b_send.OwnerMethod.block_call" href="#moody.m.b_send.OwnerMethod.block_call">block_call</a></code></li>
 <li><code><a title="moody.m.b_send.OwnerMethod.estimate_gas" href="#moody.m.b_send.OwnerMethod.estimate_gas">estimate_gas</a></code></li>
+</ul>
+</li>
+<li>
+<h4><code><a title="moody.m.b_send.PulllockMethod" href="#moody.m.b_send.PulllockMethod">PulllockMethod</a></code></h4>
+<ul class="">
+<li><code><a title="moody.m.b_send.PulllockMethod.block_call" href="#moody.m.b_send.PulllockMethod.block_call">block_call</a></code></li>
+<li><code><a title="moody.m.b_send.PulllockMethod.build_transaction" href="#moody.m.b_send.PulllockMethod.build_transaction">build_transaction</a></code></li>
+<li><code><a title="moody.m.b_send.PulllockMethod.estimate_gas" href="#moody.m.b_send.PulllockMethod.estimate_gas">estimate_gas</a></code></li>
+<li><code><a title="moody.m.b_send.PulllockMethod.send_transaction" href="#moody.m.b_send.PulllockMethod.send_transaction">send_transaction</a></code></li>
+</ul>
+</li>
+<li>
+<h4><code><a title="moody.m.b_send.RemoveWhitelistAdminMethod" href="#moody.m.b_send.RemoveWhitelistAdminMethod">RemoveWhitelistAdminMethod</a></code></h4>
+<ul class="">
+<li><code><a title="moody.m.b_send.RemoveWhitelistAdminMethod.block_call" href="#moody.m.b_send.RemoveWhitelistAdminMethod.block_call">block_call</a></code></li>
+<li><code><a title="moody.m.b_send.RemoveWhitelistAdminMethod.build_transaction" href="#moody.m.b_send.RemoveWhitelistAdminMethod.build_transaction">build_transaction</a></code></li>
+<li><code><a title="moody.m.b_send.RemoveWhitelistAdminMethod.estimate_gas" href="#moody.m.b_send.RemoveWhitelistAdminMethod.estimate_gas">estimate_gas</a></code></li>
+<li><code><a title="moody.m.b_send.RemoveWhitelistAdminMethod.send_transaction" href="#moody.m.b_send.RemoveWhitelistAdminMethod.send_transaction">send_transaction</a></code></li>
+<li><code><a title="moody.m.b_send.RemoveWhitelistAdminMethod.validate_and_normalize_inputs" href="#moody.m.b_send.RemoveWhitelistAdminMethod.validate_and_normalize_inputs">validate_and_normalize_inputs</a></code></li>
 </ul>
 </li>
 <li>
@@ -3792,6 +5482,15 @@ Get log entry for OwnershipTransferred event.
 <li><code><a title="moody.m.b_send.TransferOwnershipMethod.estimate_gas" href="#moody.m.b_send.TransferOwnershipMethod.estimate_gas">estimate_gas</a></code></li>
 <li><code><a title="moody.m.b_send.TransferOwnershipMethod.send_transaction" href="#moody.m.b_send.TransferOwnershipMethod.send_transaction">send_transaction</a></code></li>
 <li><code><a title="moody.m.b_send.TransferOwnershipMethod.validate_and_normalize_inputs" href="#moody.m.b_send.TransferOwnershipMethod.validate_and_normalize_inputs">validate_and_normalize_inputs</a></code></li>
+</ul>
+</li>
+<li>
+<h4><code><a title="moody.m.b_send.UnlockMethod" href="#moody.m.b_send.UnlockMethod">UnlockMethod</a></code></h4>
+<ul class="">
+<li><code><a title="moody.m.b_send.UnlockMethod.block_call" href="#moody.m.b_send.UnlockMethod.block_call">block_call</a></code></li>
+<li><code><a title="moody.m.b_send.UnlockMethod.build_transaction" href="#moody.m.b_send.UnlockMethod.build_transaction">build_transaction</a></code></li>
+<li><code><a title="moody.m.b_send.UnlockMethod.estimate_gas" href="#moody.m.b_send.UnlockMethod.estimate_gas">estimate_gas</a></code></li>
+<li><code><a title="moody.m.b_send.UnlockMethod.send_transaction" href="#moody.m.b_send.UnlockMethod.send_transaction">send_transaction</a></code></li>
 </ul>
 </li>
 <li>

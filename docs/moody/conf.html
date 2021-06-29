@@ -101,12 +101,20 @@ def HuobiChainTestnet() -&gt; Config:
 
 
 def XDaiMainnet() -&gt; Config:
+    &#34;&#34;&#34;
+    more resources on
+    https://www.xdaichain.com/for-developers/developer-resources#json-rpc-endpoints
+    :return:
+    &#34;&#34;&#34;
     return Config(
-        network_name=&#34;EthereumPOAxDai&#34;,
+        network_name=&#34;xDaiStake&#34;,
         rpc_url=&#34;https://rpc.xdaichain.com&#34;,
+        # rpc_url=&#34;https://xdai.poanetwork.dev&#34;,
+        # rpc_url=&#34;https://stake.getblock.io/mainnet/?api_key=bc690eca-e18a-4c53-b8e9-0f413e225e69&#34;,
         chain_id=100,
         symbol=&#34;xDai&#34;,
-        block_explorer=&#34;https://explorer.anyblock.tools/ethereum/poa/xdai/&#34;
+        block_explorer=&#34;https://explorer.anyblock.tools/ethereum/poa/xdai/&#34;,
+        bridge=&#34;https://bridge.xdaichain.com/&#34;
     )</code></pre>
 </details>
 </section>
@@ -255,18 +263,28 @@ def XDaiMainnet() -&gt; Config:
 <span>def <span class="ident">XDaiMainnet</span></span>(<span>) ‑> <a title="moody.Config" href="index.html#moody.Config">Config</a></span>
 </code></dt>
 <dd>
-<div class="desc"></div>
+<div class="desc"><p>more resources on
+<a href="https://www.xdaichain.com/for-developers/developer-resources#json-rpc-endpoints">https://www.xdaichain.com/for-developers/developer-resources#json-rpc-endpoints</a>
+:return:</p></div>
 <details class="source">
 <summary>
 <span>Expand source code</span>
 </summary>
 <pre><code class="python">def XDaiMainnet() -&gt; Config:
+    &#34;&#34;&#34;
+    more resources on
+    https://www.xdaichain.com/for-developers/developer-resources#json-rpc-endpoints
+    :return:
+    &#34;&#34;&#34;
     return Config(
-        network_name=&#34;EthereumPOAxDai&#34;,
+        network_name=&#34;xDaiStake&#34;,
         rpc_url=&#34;https://rpc.xdaichain.com&#34;,
+        # rpc_url=&#34;https://xdai.poanetwork.dev&#34;,
+        # rpc_url=&#34;https://stake.getblock.io/mainnet/?api_key=bc690eca-e18a-4c53-b8e9-0f413e225e69&#34;,
         chain_id=100,
         symbol=&#34;xDai&#34;,
-        block_explorer=&#34;https://explorer.anyblock.tools/ethereum/poa/xdai/&#34;
+        block_explorer=&#34;https://explorer.anyblock.tools/ethereum/poa/xdai/&#34;,
+        bridge=&#34;https://bridge.xdaichain.com/&#34;
     )</code></pre>
 </details>
 </dd>

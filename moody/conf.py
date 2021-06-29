@@ -73,11 +73,19 @@ def HuobiChainTestnet() -> Config:
 
 
 def XDaiMainnet() -> Config:
+    """
+    more resources on
+    https://www.xdaichain.com/for-developers/developer-resources#json-rpc-endpoints
+    :return:
+    """
     return Config(
-        network_name="EthereumPOAxDai",
+        network_name="xDaiStake",
         rpc_url="https://rpc.xdaichain.com",
+        # rpc_url="https://xdai.poanetwork.dev",
+        # rpc_url="https://stake.getblock.io/mainnet/?api_key=bc690eca-e18a-4c53-b8e9-0f413e225e69",
         chain_id=100,
         symbol="xDai",
-        block_explorer="https://explorer.anyblock.tools/ethereum/poa/xdai/"
+        block_explorer="https://explorer.anyblock.tools/ethereum/poa/xdai/",
+        bridge="https://bridge.xdaichain.com/"
     )
 
