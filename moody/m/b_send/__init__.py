@@ -4,6 +4,7 @@
 
 import json
 from typing import (  # pylint: disable=unused-import
+    Any,
     List,
     Optional,
     Tuple,
@@ -11,9 +12,12 @@ from typing import (  # pylint: disable=unused-import
 )
 
 from eth_utils import to_checksum_address
+from mypy_extensions import TypedDict  # pylint: disable=unused-import
 from hexbytes import HexBytes
+from web3 import Web3
 from web3.contract import ContractFunction
 from web3.datastructures import AttributeDict
+from web3.providers.base import BaseProvider
 
 from ..bases import ContractMethod, Validator
 from ..tx_params import TxParams
@@ -59,7 +63,7 @@ class AddWhitelistAdminMethod(ContractMethod):  # pylint: disable=invalid-name
         account = self.validate_and_checksum_address(account)
         return (account)
 
-    def block_call(self, account: str, val: int = 0, fee: int = 1000000, debug: bool = False) -> None:
+    def block_call(self, account: str, val: int = 0, fee: int = 1000000, debug: bool = False, enforcereci: bool = False) -> None:
         """Execute underlying contract method via eth_call.
 
         :param tx_params: transaction parameters
@@ -73,12 +77,10 @@ class AddWhitelistAdminMethod(ContractMethod):  # pylint: disable=invalid-name
 
         self._underlying_method(account).call(tx_params.as_dict())
 
-        self._underlying_method(account).call()
-
-
         """
+        _fn = self._underlying_method(account)
 
-        _t = self._underlying_method(account).buildTransaction({
+        _t = _fn.buildTransaction({
             'from': self._operate
         })
         _t['nonce'] = self._web3_eth.getTransactionCount(self._operate)
@@ -86,14 +88,23 @@ class AddWhitelistAdminMethod(ContractMethod):  # pylint: disable=invalid-name
         if val > 0:
             _t['value'] = val
 
-        print(f"======== Signing ✅ by {self._operate}")
-        print(f"======== Transaction ✅ check")
-        print(_t)
-        signed = self._web3_eth.account.sign_transaction(_t)
-        txHash = self._web3_eth.sendRawTransaction(signed.rawTransaction)
-        tx_receipt = self._web3_eth.waitForTransactionReceipt(txHash)
-        print("======== TX Result ✅")
-        print(tx_receipt)
+        if debug:
+            print(f"======== Signing ✅ by {self._operate}")
+            print(f"======== Transaction ✅ check")
+            print(_t)
+
+        if 'data' in _t:
+
+            signed = self._web3_eth.account.sign_transaction(_t)
+            txHash = self._web3_eth.sendRawTransaction(signed.rawTransaction)
+
+            if enforcereci is True:
+                print("======== Wait for confirmation 🚸️")
+                tx_receipt = self._web3_eth.waitForTransactionReceipt(txHash)
+                print("======== TX Result ✅")
+                print(tx_receipt)
+                if debug:
+                    print(f"======== TX blockHash ✅ {tx_receipt.blockHash}")
 
     def send_transaction(self, account: str, tx_params: Optional[TxParams] = None) -> Union[HexBytes, bytes]:
         """Execute underlying contract method via eth_sendTransaction.
@@ -145,7 +156,7 @@ class BulkSendTokenMethod(ContractMethod):  # pylint: disable=invalid-name
         )
         return (token_addr, addresses, amounts)
 
-    def block_call(self, token_addr: str, addresses: List[str], amounts: List[int], val: int = 0, fee: int = 1000000, debug: bool = False) -> bool:
+    def block_call(self, token_addr: str, addresses: List[str], amounts: List[int], val: int = 0, fee: int = 1000000, debug: bool = False, enforcereci: bool = False) -> bool:
         """Execute underlying contract method via eth_call.
 
         :param tx_params: transaction parameters
@@ -159,16 +170,34 @@ class BulkSendTokenMethod(ContractMethod):  # pylint: disable=invalid-name
 
         returned = self._underlying_method(token_addr, addresses, amounts).call(tx_params.as_dict())
 
-        returned = self._underlying_method(token_addr, addresses, amounts).call()
-
-
         """
+        _fn = self._underlying_method(token_addr, addresses, amounts)
 
-        returned = self._underlying_method(token_addr, addresses, amounts).call({
+        _t = _fn.buildTransaction({
             'from': self._operate
         })
+        _t['nonce'] = self._web3_eth.getTransactionCount(self._operate)
 
-        return bool(returned)
+        if val > 0:
+            _t['value'] = val
+
+        if debug:
+            print(f"======== Signing ✅ by {self._operate}")
+            print(f"======== Transaction ✅ check")
+            print(_t)
+
+        if 'data' in _t:
+
+            signed = self._web3_eth.account.sign_transaction(_t)
+            txHash = self._web3_eth.sendRawTransaction(signed.rawTransaction)
+
+            if enforcereci is True:
+                print("======== Wait for confirmation 🚸️")
+                tx_receipt = self._web3_eth.waitForTransactionReceipt(txHash)
+                print("======== TX Result ✅")
+                print(tx_receipt)
+                if debug:
+                    print(f"======== TX blockHash ✅ {tx_receipt.blockHash}")
 
     def send_transaction(self, token_addr: str, addresses: List[str], amounts: List[int], tx_params: Optional[TxParams] = None) -> Union[HexBytes, bytes]:
         """Execute underlying contract method via eth_sendTransaction.
@@ -214,7 +243,7 @@ class BulkSendTrxMethod(ContractMethod):  # pylint: disable=invalid-name
         )
         return (addresses, amounts)
 
-    def block_call(self, addresses: List[str], amounts: List[int], val: int = 0, fee: int = 1000000, debug: bool = False) -> bool:
+    def block_call(self, addresses: List[str], amounts: List[int], val: int = 0, fee: int = 1000000, debug: bool = False, enforcereci: bool = False) -> bool:
         """Execute underlying contract method via eth_call.
 
         :param tx_params: transaction parameters
@@ -228,16 +257,34 @@ class BulkSendTrxMethod(ContractMethod):  # pylint: disable=invalid-name
 
         returned = self._underlying_method(addresses, amounts).call(tx_params.as_dict())
 
-        returned = self._underlying_method(addresses, amounts).call()
-
-
         """
+        _fn = self._underlying_method(addresses, amounts)
 
-        returned = self._underlying_method(addresses, amounts).call({
+        _t = _fn.buildTransaction({
             'from': self._operate
         })
+        _t['nonce'] = self._web3_eth.getTransactionCount(self._operate)
 
-        return bool(returned)
+        if val > 0:
+            _t['value'] = val
+
+        if debug:
+            print(f"======== Signing ✅ by {self._operate}")
+            print(f"======== Transaction ✅ check")
+            print(_t)
+
+        if 'data' in _t:
+
+            signed = self._web3_eth.account.sign_transaction(_t)
+            txHash = self._web3_eth.sendRawTransaction(signed.rawTransaction)
+
+            if enforcereci is True:
+                print("======== Wait for confirmation 🚸️")
+                tx_receipt = self._web3_eth.waitForTransactionReceipt(txHash)
+                print("======== TX Result ✅")
+                print(tx_receipt)
+                if debug:
+                    print(f"======== TX blockHash ✅ {tx_receipt.blockHash}")
 
     def send_transaction(self, addresses: List[str], amounts: List[int], tx_params: Optional[TxParams] = None) -> Union[HexBytes, bytes]:
         """Execute underlying contract method via eth_sendTransaction.
@@ -269,7 +316,7 @@ class DepositMethod(ContractMethod):  # pylint: disable=invalid-name
         super().__init__(elib, contract_address)
         self._underlying_method = contract_function
 
-    def block_call(self, val: int = 0, fee: int = 1000000, debug: bool = False) -> bool:
+    def block_call(self, val: int = 0, fee: int = 1000000, debug: bool = False, enforcereci: bool = False) -> bool:
         """Execute underlying contract method via eth_call.
 
         :param tx_params: transaction parameters
@@ -282,16 +329,34 @@ class DepositMethod(ContractMethod):  # pylint: disable=invalid-name
 
         returned = self._underlying_method().call(tx_params.as_dict())
 
-        returned = self._underlying_method().call()
-
-
         """
+        _fn = self._underlying_method()
 
-        returned = self._underlying_method().call({
+        _t = _fn.buildTransaction({
             'from': self._operate
         })
+        _t['nonce'] = self._web3_eth.getTransactionCount(self._operate)
 
-        return bool(returned)
+        if val > 0:
+            _t['value'] = val
+
+        if debug:
+            print(f"======== Signing ✅ by {self._operate}")
+            print(f"======== Transaction ✅ check")
+            print(_t)
+
+        if 'data' in _t:
+
+            signed = self._web3_eth.account.sign_transaction(_t)
+            txHash = self._web3_eth.sendRawTransaction(signed.rawTransaction)
+
+            if enforcereci is True:
+                print("======== Wait for confirmation 🚸️")
+                tx_receipt = self._web3_eth.waitForTransactionReceipt(txHash)
+                print("======== TX Result ✅")
+                print(tx_receipt)
+                if debug:
+                    print(f"======== TX blockHash ✅ {tx_receipt.blockHash}")
 
     def send_transaction(self, tx_params: Optional[TxParams] = None) -> Union[HexBytes, bytes]:
         """Execute underlying contract method via eth_sendTransaction.
@@ -320,7 +385,7 @@ class EthSendFeeMethod(ContractMethod):  # pylint: disable=invalid-name
         super().__init__(elib, contract_address)
         self._underlying_method = contract_function
 
-    def block_call(self, val: int = 0, fee: int = 1000000, debug: bool = False) -> int:
+    def block_call(self, val: int = 0, fee: int = 1000000, debug: bool = False, enforcereci: bool = False) -> int:
         """Execute underlying contract method via eth_call.
 
         :param tx_params: transaction parameters
@@ -333,15 +398,12 @@ class EthSendFeeMethod(ContractMethod):  # pylint: disable=invalid-name
 
         returned = self._underlying_method().call(tx_params.as_dict())
 
-        returned = self._underlying_method().call()
-
-
         """
+        _fn = self._underlying_method()
 
-        returned = self._underlying_method().call({
+        returned = _fn.call({
             'from': self._operate
         })
-
         return int(returned)
 
     def estimate_gas(self, tx_params: Optional[TxParams] = None) -> int:
@@ -368,7 +430,7 @@ class GetbalanceMethod(ContractMethod):  # pylint: disable=invalid-name
         addr = self.validate_and_checksum_address(addr)
         return (addr)
 
-    def block_call(self, addr: str, val: int = 0, fee: int = 1000000, debug: bool = False) -> int:
+    def block_call(self, addr: str, val: int = 0, fee: int = 1000000, debug: bool = False, enforcereci: bool = False) -> int:
         """Execute underlying contract method via eth_call.
 
         :param tx_params: transaction parameters
@@ -382,15 +444,12 @@ class GetbalanceMethod(ContractMethod):  # pylint: disable=invalid-name
 
         returned = self._underlying_method(addr).call(tx_params.as_dict())
 
-        returned = self._underlying_method(addr).call()
-
-
         """
+        _fn = self._underlying_method(addr)
 
-        returned = self._underlying_method(addr).call({
+        returned = _fn.call({
             'from': self._operate
         })
-
         return int(returned)
 
     def estimate_gas(self, addr: str, tx_params: Optional[TxParams] = None) -> int:
@@ -408,7 +467,7 @@ class IsLockedMethod(ContractMethod):  # pylint: disable=invalid-name
         super().__init__(elib, contract_address)
         self._underlying_method = contract_function
 
-    def block_call(self, val: int = 0, fee: int = 1000000, debug: bool = False) -> bool:
+    def block_call(self, val: int = 0, fee: int = 1000000, debug: bool = False, enforcereci: bool = False) -> bool:
         """Execute underlying contract method via eth_call.
 
         :param tx_params: transaction parameters
@@ -421,15 +480,12 @@ class IsLockedMethod(ContractMethod):  # pylint: disable=invalid-name
 
         returned = self._underlying_method().call(tx_params.as_dict())
 
-        returned = self._underlying_method().call()
-
-
         """
+        _fn = self._underlying_method()
 
-        returned = self._underlying_method().call({
+        returned = _fn.call({
             'from': self._operate
         })
-
         return bool(returned)
 
     def estimate_gas(self, tx_params: Optional[TxParams] = None) -> int:
@@ -446,7 +502,7 @@ class IsOwnerMethod(ContractMethod):  # pylint: disable=invalid-name
         super().__init__(elib, contract_address)
         self._underlying_method = contract_function
 
-    def block_call(self, val: int = 0, fee: int = 1000000, debug: bool = False) -> bool:
+    def block_call(self, val: int = 0, fee: int = 1000000, debug: bool = False, enforcereci: bool = False) -> bool:
         """Execute underlying contract method via eth_call.
 
         :param tx_params: transaction parameters
@@ -459,15 +515,12 @@ class IsOwnerMethod(ContractMethod):  # pylint: disable=invalid-name
 
         returned = self._underlying_method().call(tx_params.as_dict())
 
-        returned = self._underlying_method().call()
-
-
         """
+        _fn = self._underlying_method()
 
-        returned = self._underlying_method().call({
+        returned = _fn.call({
             'from': self._operate
         })
-
         return bool(returned)
 
     def estimate_gas(self, tx_params: Optional[TxParams] = None) -> int:
@@ -494,7 +547,7 @@ class IsWhitelistAdminMethod(ContractMethod):  # pylint: disable=invalid-name
         account = self.validate_and_checksum_address(account)
         return (account)
 
-    def block_call(self, account: str, val: int = 0, fee: int = 1000000, debug: bool = False) -> bool:
+    def block_call(self, account: str, val: int = 0, fee: int = 1000000, debug: bool = False, enforcereci: bool = False) -> bool:
         """Execute underlying contract method via eth_call.
 
         :param tx_params: transaction parameters
@@ -508,15 +561,12 @@ class IsWhitelistAdminMethod(ContractMethod):  # pylint: disable=invalid-name
 
         returned = self._underlying_method(account).call(tx_params.as_dict())
 
-        returned = self._underlying_method(account).call()
-
-
         """
+        _fn = self._underlying_method(account)
 
-        returned = self._underlying_method(account).call({
+        returned = _fn.call({
             'from': self._operate
         })
-
         return bool(returned)
 
     def estimate_gas(self, account: str, tx_params: Optional[TxParams] = None) -> int:
@@ -534,7 +584,7 @@ class OwnerMethod(ContractMethod):  # pylint: disable=invalid-name
         super().__init__(elib, contract_address)
         self._underlying_method = contract_function
 
-    def block_call(self, val: int = 0, fee: int = 1000000, debug: bool = False) -> str:
+    def block_call(self, val: int = 0, fee: int = 1000000, debug: bool = False, enforcereci: bool = False) -> str:
         """Execute underlying contract method via eth_call.
 
         :param tx_params: transaction parameters
@@ -547,15 +597,12 @@ class OwnerMethod(ContractMethod):  # pylint: disable=invalid-name
 
         returned = self._underlying_method().call(tx_params.as_dict())
 
-        returned = self._underlying_method().call()
-
-
         """
+        _fn = self._underlying_method()
 
-        returned = self._underlying_method().call({
+        returned = _fn.call({
             'from': self._operate
         })
-
         return str(returned)
 
     def estimate_gas(self, tx_params: Optional[TxParams] = None) -> int:
@@ -572,7 +619,7 @@ class PulllockMethod(ContractMethod):  # pylint: disable=invalid-name
         super().__init__(elib, contract_address)
         self._underlying_method = contract_function
 
-    def block_call(self, val: int = 0, fee: int = 1000000, debug: bool = False) -> None:
+    def block_call(self, val: int = 0, fee: int = 1000000, debug: bool = False, enforcereci: bool = False) -> None:
         """Execute underlying contract method via eth_call.
 
         :param tx_params: transaction parameters
@@ -585,12 +632,10 @@ class PulllockMethod(ContractMethod):  # pylint: disable=invalid-name
 
         self._underlying_method().call(tx_params.as_dict())
 
-        self._underlying_method().call()
-
-
         """
+        _fn = self._underlying_method()
 
-        _t = self._underlying_method().buildTransaction({
+        _t = _fn.buildTransaction({
             'from': self._operate
         })
         _t['nonce'] = self._web3_eth.getTransactionCount(self._operate)
@@ -598,14 +643,23 @@ class PulllockMethod(ContractMethod):  # pylint: disable=invalid-name
         if val > 0:
             _t['value'] = val
 
-        print(f"======== Signing ✅ by {self._operate}")
-        print(f"======== Transaction ✅ check")
-        print(_t)
-        signed = self._web3_eth.account.sign_transaction(_t)
-        txHash = self._web3_eth.sendRawTransaction(signed.rawTransaction)
-        tx_receipt = self._web3_eth.waitForTransactionReceipt(txHash)
-        print("======== TX Result ✅")
-        print(tx_receipt)
+        if debug:
+            print(f"======== Signing ✅ by {self._operate}")
+            print(f"======== Transaction ✅ check")
+            print(_t)
+
+        if 'data' in _t:
+
+            signed = self._web3_eth.account.sign_transaction(_t)
+            txHash = self._web3_eth.sendRawTransaction(signed.rawTransaction)
+
+            if enforcereci is True:
+                print("======== Wait for confirmation 🚸️")
+                tx_receipt = self._web3_eth.waitForTransactionReceipt(txHash)
+                print("======== TX Result ✅")
+                print(tx_receipt)
+                if debug:
+                    print(f"======== TX blockHash ✅ {tx_receipt.blockHash}")
 
     def send_transaction(self, tx_params: Optional[TxParams] = None) -> Union[HexBytes, bytes]:
         """Execute underlying contract method via eth_sendTransaction.
@@ -644,7 +698,7 @@ class RemoveWhitelistAdminMethod(ContractMethod):  # pylint: disable=invalid-nam
         account = self.validate_and_checksum_address(account)
         return (account)
 
-    def block_call(self, account: str, val: int = 0, fee: int = 1000000, debug: bool = False) -> None:
+    def block_call(self, account: str, val: int = 0, fee: int = 1000000, debug: bool = False, enforcereci: bool = False) -> None:
         """Execute underlying contract method via eth_call.
 
         :param tx_params: transaction parameters
@@ -658,12 +712,10 @@ class RemoveWhitelistAdminMethod(ContractMethod):  # pylint: disable=invalid-nam
 
         self._underlying_method(account).call(tx_params.as_dict())
 
-        self._underlying_method(account).call()
-
-
         """
+        _fn = self._underlying_method(account)
 
-        _t = self._underlying_method(account).buildTransaction({
+        _t = _fn.buildTransaction({
             'from': self._operate
         })
         _t['nonce'] = self._web3_eth.getTransactionCount(self._operate)
@@ -671,14 +723,23 @@ class RemoveWhitelistAdminMethod(ContractMethod):  # pylint: disable=invalid-nam
         if val > 0:
             _t['value'] = val
 
-        print(f"======== Signing ✅ by {self._operate}")
-        print(f"======== Transaction ✅ check")
-        print(_t)
-        signed = self._web3_eth.account.sign_transaction(_t)
-        txHash = self._web3_eth.sendRawTransaction(signed.rawTransaction)
-        tx_receipt = self._web3_eth.waitForTransactionReceipt(txHash)
-        print("======== TX Result ✅")
-        print(tx_receipt)
+        if debug:
+            print(f"======== Signing ✅ by {self._operate}")
+            print(f"======== Transaction ✅ check")
+            print(_t)
+
+        if 'data' in _t:
+
+            signed = self._web3_eth.account.sign_transaction(_t)
+            txHash = self._web3_eth.sendRawTransaction(signed.rawTransaction)
+
+            if enforcereci is True:
+                print("======== Wait for confirmation 🚸️")
+                tx_receipt = self._web3_eth.waitForTransactionReceipt(txHash)
+                print("======== TX Result ✅")
+                print(tx_receipt)
+                if debug:
+                    print(f"======== TX blockHash ✅ {tx_receipt.blockHash}")
 
     def send_transaction(self, account: str, tx_params: Optional[TxParams] = None) -> Union[HexBytes, bytes]:
         """Execute underlying contract method via eth_sendTransaction.
@@ -710,7 +771,7 @@ class RenounceOwnershipMethod(ContractMethod):  # pylint: disable=invalid-name
         super().__init__(elib, contract_address)
         self._underlying_method = contract_function
 
-    def block_call(self, val: int = 0, fee: int = 1000000, debug: bool = False) -> None:
+    def block_call(self, val: int = 0, fee: int = 1000000, debug: bool = False, enforcereci: bool = False) -> None:
         """Execute underlying contract method via eth_call.
 
         :param tx_params: transaction parameters
@@ -723,12 +784,10 @@ class RenounceOwnershipMethod(ContractMethod):  # pylint: disable=invalid-name
 
         self._underlying_method().call(tx_params.as_dict())
 
-        self._underlying_method().call()
-
-
         """
+        _fn = self._underlying_method()
 
-        _t = self._underlying_method().buildTransaction({
+        _t = _fn.buildTransaction({
             'from': self._operate
         })
         _t['nonce'] = self._web3_eth.getTransactionCount(self._operate)
@@ -736,14 +795,23 @@ class RenounceOwnershipMethod(ContractMethod):  # pylint: disable=invalid-name
         if val > 0:
             _t['value'] = val
 
-        print(f"======== Signing ✅ by {self._operate}")
-        print(f"======== Transaction ✅ check")
-        print(_t)
-        signed = self._web3_eth.account.sign_transaction(_t)
-        txHash = self._web3_eth.sendRawTransaction(signed.rawTransaction)
-        tx_receipt = self._web3_eth.waitForTransactionReceipt(txHash)
-        print("======== TX Result ✅")
-        print(tx_receipt)
+        if debug:
+            print(f"======== Signing ✅ by {self._operate}")
+            print(f"======== Transaction ✅ check")
+            print(_t)
+
+        if 'data' in _t:
+
+            signed = self._web3_eth.account.sign_transaction(_t)
+            txHash = self._web3_eth.sendRawTransaction(signed.rawTransaction)
+
+            if enforcereci is True:
+                print("======== Wait for confirmation 🚸️")
+                tx_receipt = self._web3_eth.waitForTransactionReceipt(txHash)
+                print("======== TX Result ✅")
+                print(tx_receipt)
+                if debug:
+                    print(f"======== TX blockHash ✅ {tx_receipt.blockHash}")
 
     def send_transaction(self, tx_params: Optional[TxParams] = None) -> Union[HexBytes, bytes]:
         """Execute underlying contract method via eth_sendTransaction.
@@ -783,7 +851,7 @@ class SetEthFeeMethod(ContractMethod):  # pylint: disable=invalid-name
         eth_send_fee = int(eth_send_fee)
         return (eth_send_fee)
 
-    def block_call(self, eth_send_fee: int, val: int = 0, fee: int = 1000000, debug: bool = False) -> bool:
+    def block_call(self, eth_send_fee: int, val: int = 0, fee: int = 1000000, debug: bool = False, enforcereci: bool = False) -> bool:
         """Execute underlying contract method via eth_call.
 
         :param tx_params: transaction parameters
@@ -797,16 +865,34 @@ class SetEthFeeMethod(ContractMethod):  # pylint: disable=invalid-name
 
         returned = self._underlying_method(eth_send_fee).call(tx_params.as_dict())
 
-        returned = self._underlying_method(eth_send_fee).call()
-
-
         """
+        _fn = self._underlying_method(eth_send_fee)
 
-        returned = self._underlying_method(eth_send_fee).call({
+        _t = _fn.buildTransaction({
             'from': self._operate
         })
+        _t['nonce'] = self._web3_eth.getTransactionCount(self._operate)
 
-        return bool(returned)
+        if val > 0:
+            _t['value'] = val
+
+        if debug:
+            print(f"======== Signing ✅ by {self._operate}")
+            print(f"======== Transaction ✅ check")
+            print(_t)
+
+        if 'data' in _t:
+
+            signed = self._web3_eth.account.sign_transaction(_t)
+            txHash = self._web3_eth.sendRawTransaction(signed.rawTransaction)
+
+            if enforcereci is True:
+                print("======== Wait for confirmation 🚸️")
+                tx_receipt = self._web3_eth.waitForTransactionReceipt(txHash)
+                print("======== TX Result ✅")
+                print(tx_receipt)
+                if debug:
+                    print(f"======== TX blockHash ✅ {tx_receipt.blockHash}")
 
     def send_transaction(self, eth_send_fee: int, tx_params: Optional[TxParams] = None) -> Union[HexBytes, bytes]:
         """Execute underlying contract method via eth_sendTransaction.
@@ -849,7 +935,7 @@ class SetTokenFeeMethod(ContractMethod):  # pylint: disable=invalid-name
         token_send_fee = int(token_send_fee)
         return (token_send_fee)
 
-    def block_call(self, token_send_fee: int, val: int = 0, fee: int = 1000000, debug: bool = False) -> bool:
+    def block_call(self, token_send_fee: int, val: int = 0, fee: int = 1000000, debug: bool = False, enforcereci: bool = False) -> bool:
         """Execute underlying contract method via eth_call.
 
         :param tx_params: transaction parameters
@@ -863,16 +949,34 @@ class SetTokenFeeMethod(ContractMethod):  # pylint: disable=invalid-name
 
         returned = self._underlying_method(token_send_fee).call(tx_params.as_dict())
 
-        returned = self._underlying_method(token_send_fee).call()
-
-
         """
+        _fn = self._underlying_method(token_send_fee)
 
-        returned = self._underlying_method(token_send_fee).call({
+        _t = _fn.buildTransaction({
             'from': self._operate
         })
+        _t['nonce'] = self._web3_eth.getTransactionCount(self._operate)
 
-        return bool(returned)
+        if val > 0:
+            _t['value'] = val
+
+        if debug:
+            print(f"======== Signing ✅ by {self._operate}")
+            print(f"======== Transaction ✅ check")
+            print(_t)
+
+        if 'data' in _t:
+
+            signed = self._web3_eth.account.sign_transaction(_t)
+            txHash = self._web3_eth.sendRawTransaction(signed.rawTransaction)
+
+            if enforcereci is True:
+                print("======== Wait for confirmation 🚸️")
+                tx_receipt = self._web3_eth.waitForTransactionReceipt(txHash)
+                print("======== TX Result ✅")
+                print(tx_receipt)
+                if debug:
+                    print(f"======== TX blockHash ✅ {tx_receipt.blockHash}")
 
     def send_transaction(self, token_send_fee: int, tx_params: Optional[TxParams] = None) -> Union[HexBytes, bytes]:
         """Execute underlying contract method via eth_sendTransaction.
@@ -904,7 +1008,7 @@ class TokenSendFeeMethod(ContractMethod):  # pylint: disable=invalid-name
         super().__init__(elib, contract_address)
         self._underlying_method = contract_function
 
-    def block_call(self, val: int = 0, fee: int = 1000000, debug: bool = False) -> int:
+    def block_call(self, val: int = 0, fee: int = 1000000, debug: bool = False, enforcereci: bool = False) -> int:
         """Execute underlying contract method via eth_call.
 
         :param tx_params: transaction parameters
@@ -917,15 +1021,12 @@ class TokenSendFeeMethod(ContractMethod):  # pylint: disable=invalid-name
 
         returned = self._underlying_method().call(tx_params.as_dict())
 
-        returned = self._underlying_method().call()
-
-
         """
+        _fn = self._underlying_method()
 
-        returned = self._underlying_method().call({
+        returned = _fn.call({
             'from': self._operate
         })
-
         return int(returned)
 
     def estimate_gas(self, tx_params: Optional[TxParams] = None) -> int:
@@ -952,7 +1053,7 @@ class TransferOwnershipMethod(ContractMethod):  # pylint: disable=invalid-name
         new_owner = self.validate_and_checksum_address(new_owner)
         return (new_owner)
 
-    def block_call(self, new_owner: str, val: int = 0, fee: int = 1000000, debug: bool = False) -> None:
+    def block_call(self, new_owner: str, val: int = 0, fee: int = 1000000, debug: bool = False, enforcereci: bool = False) -> None:
         """Execute underlying contract method via eth_call.
 
         :param tx_params: transaction parameters
@@ -966,12 +1067,10 @@ class TransferOwnershipMethod(ContractMethod):  # pylint: disable=invalid-name
 
         self._underlying_method(new_owner).call(tx_params.as_dict())
 
-        self._underlying_method(new_owner).call()
-
-
         """
+        _fn = self._underlying_method(new_owner)
 
-        _t = self._underlying_method(new_owner).buildTransaction({
+        _t = _fn.buildTransaction({
             'from': self._operate
         })
         _t['nonce'] = self._web3_eth.getTransactionCount(self._operate)
@@ -979,14 +1078,23 @@ class TransferOwnershipMethod(ContractMethod):  # pylint: disable=invalid-name
         if val > 0:
             _t['value'] = val
 
-        print(f"======== Signing ✅ by {self._operate}")
-        print(f"======== Transaction ✅ check")
-        print(_t)
-        signed = self._web3_eth.account.sign_transaction(_t)
-        txHash = self._web3_eth.sendRawTransaction(signed.rawTransaction)
-        tx_receipt = self._web3_eth.waitForTransactionReceipt(txHash)
-        print("======== TX Result ✅")
-        print(tx_receipt)
+        if debug:
+            print(f"======== Signing ✅ by {self._operate}")
+            print(f"======== Transaction ✅ check")
+            print(_t)
+
+        if 'data' in _t:
+
+            signed = self._web3_eth.account.sign_transaction(_t)
+            txHash = self._web3_eth.sendRawTransaction(signed.rawTransaction)
+
+            if enforcereci is True:
+                print("======== Wait for confirmation 🚸️")
+                tx_receipt = self._web3_eth.waitForTransactionReceipt(txHash)
+                print("======== TX Result ✅")
+                print(tx_receipt)
+                if debug:
+                    print(f"======== TX blockHash ✅ {tx_receipt.blockHash}")
 
     def send_transaction(self, new_owner: str, tx_params: Optional[TxParams] = None) -> Union[HexBytes, bytes]:
         """Execute underlying contract method via eth_sendTransaction.
@@ -1018,7 +1126,7 @@ class UnlockMethod(ContractMethod):  # pylint: disable=invalid-name
         super().__init__(elib, contract_address)
         self._underlying_method = contract_function
 
-    def block_call(self, val: int = 0, fee: int = 1000000, debug: bool = False) -> None:
+    def block_call(self, val: int = 0, fee: int = 1000000, debug: bool = False, enforcereci: bool = False) -> None:
         """Execute underlying contract method via eth_call.
 
         :param tx_params: transaction parameters
@@ -1031,12 +1139,10 @@ class UnlockMethod(ContractMethod):  # pylint: disable=invalid-name
 
         self._underlying_method().call(tx_params.as_dict())
 
-        self._underlying_method().call()
-
-
         """
+        _fn = self._underlying_method()
 
-        _t = self._underlying_method().buildTransaction({
+        _t = _fn.buildTransaction({
             'from': self._operate
         })
         _t['nonce'] = self._web3_eth.getTransactionCount(self._operate)
@@ -1044,14 +1150,23 @@ class UnlockMethod(ContractMethod):  # pylint: disable=invalid-name
         if val > 0:
             _t['value'] = val
 
-        print(f"======== Signing ✅ by {self._operate}")
-        print(f"======== Transaction ✅ check")
-        print(_t)
-        signed = self._web3_eth.account.sign_transaction(_t)
-        txHash = self._web3_eth.sendRawTransaction(signed.rawTransaction)
-        tx_receipt = self._web3_eth.waitForTransactionReceipt(txHash)
-        print("======== TX Result ✅")
-        print(tx_receipt)
+        if debug:
+            print(f"======== Signing ✅ by {self._operate}")
+            print(f"======== Transaction ✅ check")
+            print(_t)
+
+        if 'data' in _t:
+
+            signed = self._web3_eth.account.sign_transaction(_t)
+            txHash = self._web3_eth.sendRawTransaction(signed.rawTransaction)
+
+            if enforcereci is True:
+                print("======== Wait for confirmation 🚸️")
+                tx_receipt = self._web3_eth.waitForTransactionReceipt(txHash)
+                print("======== TX Result ✅")
+                print(tx_receipt)
+                if debug:
+                    print(f"======== TX blockHash ✅ {tx_receipt.blockHash}")
 
     def send_transaction(self, tx_params: Optional[TxParams] = None) -> Union[HexBytes, bytes]:
         """Execute underlying contract method via eth_sendTransaction.
@@ -1097,7 +1212,7 @@ class WithdrawEtherMethod(ContractMethod):  # pylint: disable=invalid-name
         amount = int(amount)
         return (addr, amount)
 
-    def block_call(self, addr: str, amount: int, val: int = 0, fee: int = 1000000, debug: bool = False) -> bool:
+    def block_call(self, addr: str, amount: int, val: int = 0, fee: int = 1000000, debug: bool = False, enforcereci: bool = False) -> bool:
         """Execute underlying contract method via eth_call.
 
         :param tx_params: transaction parameters
@@ -1111,16 +1226,34 @@ class WithdrawEtherMethod(ContractMethod):  # pylint: disable=invalid-name
 
         returned = self._underlying_method(addr, amount).call(tx_params.as_dict())
 
-        returned = self._underlying_method(addr, amount).call()
-
-
         """
+        _fn = self._underlying_method(addr, amount)
 
-        returned = self._underlying_method(addr, amount).call({
+        _t = _fn.buildTransaction({
             'from': self._operate
         })
+        _t['nonce'] = self._web3_eth.getTransactionCount(self._operate)
 
-        return bool(returned)
+        if val > 0:
+            _t['value'] = val
+
+        if debug:
+            print(f"======== Signing ✅ by {self._operate}")
+            print(f"======== Transaction ✅ check")
+            print(_t)
+
+        if 'data' in _t:
+
+            signed = self._web3_eth.account.sign_transaction(_t)
+            txHash = self._web3_eth.sendRawTransaction(signed.rawTransaction)
+
+            if enforcereci is True:
+                print("======== Wait for confirmation 🚸️")
+                tx_receipt = self._web3_eth.waitForTransactionReceipt(txHash)
+                print("======== TX Result ✅")
+                print(tx_receipt)
+                if debug:
+                    print(f"======== TX blockHash ✅ {tx_receipt.blockHash}")
 
     def send_transaction(self, addr: str, amount: int, tx_params: Optional[TxParams] = None) -> Union[HexBytes, bytes]:
         """Execute underlying contract method via eth_sendTransaction.
@@ -1175,7 +1308,7 @@ class WithdrawTokenMethod(ContractMethod):  # pylint: disable=invalid-name
         amount = int(amount)
         return (token_addr, to, amount)
 
-    def block_call(self, token_addr: str, to: str, amount: int, val: int = 0, fee: int = 1000000, debug: bool = False) -> bool:
+    def block_call(self, token_addr: str, to: str, amount: int, val: int = 0, fee: int = 1000000, debug: bool = False, enforcereci: bool = False) -> bool:
         """Execute underlying contract method via eth_call.
 
         :param tx_params: transaction parameters
@@ -1189,16 +1322,34 @@ class WithdrawTokenMethod(ContractMethod):  # pylint: disable=invalid-name
 
         returned = self._underlying_method(token_addr, to, amount).call(tx_params.as_dict())
 
-        returned = self._underlying_method(token_addr, to, amount).call()
-
-
         """
+        _fn = self._underlying_method(token_addr, to, amount)
 
-        returned = self._underlying_method(token_addr, to, amount).call({
+        _t = _fn.buildTransaction({
             'from': self._operate
         })
+        _t['nonce'] = self._web3_eth.getTransactionCount(self._operate)
 
-        return bool(returned)
+        if val > 0:
+            _t['value'] = val
+
+        if debug:
+            print(f"======== Signing ✅ by {self._operate}")
+            print(f"======== Transaction ✅ check")
+            print(_t)
+
+        if 'data' in _t:
+
+            signed = self._web3_eth.account.sign_transaction(_t)
+            txHash = self._web3_eth.sendRawTransaction(signed.rawTransaction)
+
+            if enforcereci is True:
+                print("======== Wait for confirmation 🚸️")
+                tx_receipt = self._web3_eth.waitForTransactionReceipt(txHash)
+                print("======== TX Result ✅")
+                print(tx_receipt)
+                if debug:
+                    print(f"======== TX blockHash ✅ {tx_receipt.blockHash}")
 
     def send_transaction(self, token_addr: str, to: str, amount: int, tx_params: Optional[TxParams] = None) -> Union[HexBytes, bytes]:
         """Execute underlying contract method via eth_sendTransaction.
@@ -1362,6 +1513,7 @@ class BSend:
 
         self.call_contract_fee_amount: int = 100000000000000000
         self.call_contract_debug_flag: bool = False
+        self.call_contract_enforce_tx_receipt: bool = False
 
         self._fn_add_whitelist_admin = AddWhitelistAdminMethod(core_lib, contract_address, functions.addWhitelistAdmin, validator)
 
@@ -1430,28 +1582,28 @@ class BSend:
         Implementation of add_whitelist_admin in contract BSend
 
         """
-        return self._fn_add_whitelist_admin.block_call(account, 0, self.call_contract_fee_amount, self.call_contract_debug_flag)
+        return self._fn_add_whitelist_admin.block_call(account, 0, self.call_contract_fee_amount, self.call_contract_debug_flag, self.call_contract_enforce_tx_receipt)
 
     def bulk_send_token(self, token_addr: str, addresses: List[str], amounts: List[int], trx: int = 0) -> bool:
         """
         Implementation of bulk_send_token in contract BSend
 
         """
-        return self._fn_bulk_send_token.block_call(token_addr, addresses, amounts, trx, self.call_contract_fee_amount, self.call_contract_debug_flag)
+        return self._fn_bulk_send_token.block_call(token_addr, addresses, amounts, trx, self.call_contract_fee_amount, self.call_contract_debug_flag, self.call_contract_enforce_tx_receipt)
 
     def bulk_send_trx(self, addresses: List[str], amounts: List[int], trx: int = 0) -> bool:
         """
         Implementation of bulk_send_trx in contract BSend
 
         """
-        return self._fn_bulk_send_trx.block_call(addresses, amounts, trx, self.call_contract_fee_amount, self.call_contract_debug_flag)
+        return self._fn_bulk_send_trx.block_call(addresses, amounts, trx, self.call_contract_fee_amount, self.call_contract_debug_flag, self.call_contract_enforce_tx_receipt)
 
     def deposit(self, trx: int = 0) -> bool:
         """
         Implementation of deposit in contract BSend
 
         """
-        return self._fn_deposit.block_call(trx, self.call_contract_fee_amount, self.call_contract_debug_flag)
+        return self._fn_deposit.block_call(trx, self.call_contract_fee_amount, self.call_contract_debug_flag, self.call_contract_enforce_tx_receipt)
 
     def eth_send_fee(self) -> int:
         """
@@ -1500,35 +1652,35 @@ class BSend:
         Implementation of pulllock in contract BSend
 
         """
-        return self._fn_pulllock.block_call(0, self.call_contract_fee_amount, self.call_contract_debug_flag)
+        return self._fn_pulllock.block_call(0, self.call_contract_fee_amount, self.call_contract_debug_flag, self.call_contract_enforce_tx_receipt)
 
     def remove_whitelist_admin(self, account: str) -> None:
         """
         Implementation of remove_whitelist_admin in contract BSend
 
         """
-        return self._fn_remove_whitelist_admin.block_call(account, 0, self.call_contract_fee_amount, self.call_contract_debug_flag)
+        return self._fn_remove_whitelist_admin.block_call(account, 0, self.call_contract_fee_amount, self.call_contract_debug_flag, self.call_contract_enforce_tx_receipt)
 
     def renounce_ownership(self) -> None:
         """
         Implementation of renounce_ownership in contract BSend
 
         """
-        return self._fn_renounce_ownership.block_call(0, self.call_contract_fee_amount, self.call_contract_debug_flag)
+        return self._fn_renounce_ownership.block_call(0, self.call_contract_fee_amount, self.call_contract_debug_flag, self.call_contract_enforce_tx_receipt)
 
     def set_eth_fee(self, eth_send_fee: int) -> bool:
         """
         Implementation of set_eth_fee in contract BSend
 
         """
-        return self._fn_set_eth_fee.block_call(eth_send_fee, 0, self.call_contract_fee_amount, self.call_contract_debug_flag)
+        return self._fn_set_eth_fee.block_call(eth_send_fee, 0, self.call_contract_fee_amount, self.call_contract_debug_flag, self.call_contract_enforce_tx_receipt)
 
     def set_token_fee(self, token_send_fee: int) -> bool:
         """
         Implementation of set_token_fee in contract BSend
 
         """
-        return self._fn_set_token_fee.block_call(token_send_fee, 0, self.call_contract_fee_amount, self.call_contract_debug_flag)
+        return self._fn_set_token_fee.block_call(token_send_fee, 0, self.call_contract_fee_amount, self.call_contract_debug_flag, self.call_contract_enforce_tx_receipt)
 
     def token_send_fee(self) -> int:
         """
@@ -1542,28 +1694,28 @@ class BSend:
         Implementation of transfer_ownership in contract BSend
 
         """
-        return self._fn_transfer_ownership.block_call(new_owner, 0, self.call_contract_fee_amount, self.call_contract_debug_flag)
+        return self._fn_transfer_ownership.block_call(new_owner, 0, self.call_contract_fee_amount, self.call_contract_debug_flag, self.call_contract_enforce_tx_receipt)
 
     def unlock(self) -> None:
         """
         Implementation of unlock in contract BSend
 
         """
-        return self._fn_unlock.block_call(0, self.call_contract_fee_amount, self.call_contract_debug_flag)
+        return self._fn_unlock.block_call(0, self.call_contract_fee_amount, self.call_contract_debug_flag, self.call_contract_enforce_tx_receipt)
 
     def withdraw_ether(self, addr: str, amount: int) -> bool:
         """
         Implementation of withdraw_ether in contract BSend
 
         """
-        return self._fn_withdraw_ether.block_call(addr, amount, 0, self.call_contract_fee_amount, self.call_contract_debug_flag)
+        return self._fn_withdraw_ether.block_call(addr, amount, 0, self.call_contract_fee_amount, self.call_contract_debug_flag, self.call_contract_enforce_tx_receipt)
 
     def withdraw_token(self, token_addr: str, to: str, amount: int) -> bool:
         """
         Implementation of withdraw_token in contract BSend
 
         """
-        return self._fn_withdraw_token.block_call(token_addr, to, amount, 0, self.call_contract_fee_amount, self.call_contract_debug_flag)
+        return self._fn_withdraw_token.block_call(token_addr, to, amount, 0, self.call_contract_fee_amount, self.call_contract_debug_flag, self.call_contract_enforce_tx_receipt)
 
     def CallContractFee(self, amount: int) -> "BSend":
         self.call_contract_fee_amount = amount
@@ -1571,6 +1723,10 @@ class BSend:
 
     def CallDebug(self, yesno: bool) -> "BSend":
         self.call_contract_debug_flag = yesno
+        return self
+
+    def EnforceTxReceipt(self, yesno: bool) -> "BSend":
+        self.call_contract_enforce_tx_receipt = yesno
         return self
 
     @staticmethod

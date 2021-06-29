@@ -1,12 +1,12 @@
 #!/usr/bin/env python
 # -*- coding: utf-8 -*-
+from typing import List
 
-from moody import conf
-from moody.libeb import MiliDoS
-from moody.m.b_send import BSend
-
-from keyh import Key
 from key import ROOT
+from keyh import Key
+from . import conf
+from .libeb import MiliDoS
+from .m.b_send import BSend
 
 
 class BusExpress(MiliDoS):
@@ -31,10 +31,31 @@ class BusExpress(MiliDoS):
             raise ValueError("not BSend contract address is found")
 
     def SetupContract(self) -> "BusExpress":
-        self.ContractBusExpress = BSend(self.w3, self.BSendAddress).CallDebug(False).CallContractFee(100000000000000000)
+        self.ContractBusExpress = BSend(self, self.BSendAddress) \
+            .CallDebug(True) \
+            .CallContractFee(100000000000000000) \
+            .EnforceTxReceipt(False)
         # self.MasterContract = ERC20(self.w3, self.BSendAddress).CallDebug(False).CallContractFee(10000000)
         return self
 
     def AddAdmin(self, address: str) -> "BusExpress":
         self.ContractBusExpress.add_whitelist_admin(address)
         return self
+
+    def Error(self, str_s: str) -> None:
+        print(f"Error: {str_s}")
+
+    def ListSend(self, token: str, addresses: List[str], amounts: List[int]) -> "BusExpress":
+
+        if len(addresses) > 256 or len(amounts) > 256:
+            self.Error("items are over 256")
+            return self
+
+        if len(addresses) != len(amounts):
+            self.Error("items are not balanced")
+            return self
+
+        self.ContractBusExpress.EnforceTxReceipt(True).bulk_send_token(token, addresses, amounts)
+        return self
+
+

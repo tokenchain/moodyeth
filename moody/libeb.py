@@ -15,10 +15,10 @@ from web3.logs import DISCARD
 from web3.middleware import geth_poa_middleware
 from web3.types import BlockData
 
-from moody.buildercompile.remotecompile import BuildRemoteLinuxCommand
-from moody.buildercompile.transpile import BuildLang
-from moody.conf import Config
-from moody.paths import Paths
+from .buildercompile.remotecompile import BuildRemoteLinuxCommand
+from .buildercompile.transpile import BuildLang
+from .conf import Config
+from .paths import Paths
 
 
 def web3_provider(address: str) -> Web3:

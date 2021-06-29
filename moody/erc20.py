@@ -1,14 +1,12 @@
-from moody.libeb import MiliDoS
-from moody.m.erc20 import ERC20
+from .libeb import MiliDoS
+from .m.erc20 import Ori20
 from . import Token
-
-# from codec.gen_py.erc20 import ERC20
 
 class ERC20H(MiliDoS):
     def __init__(self, network):
         super().__init__(network)
-        self.TokenContract: ERC20 = None
-        self.MasterContract: ERC20 = None
+        self.TokenContract: Ori20 = None
+        self.MasterContract: Ori20 = None
 
     @property
     def TokenAddress(self) -> str:
@@ -35,8 +33,8 @@ class ERC20H(MiliDoS):
             self.deploy("BSend", [], 10 ** 9, 1)
 
     def SetupContract(self):
-        self.TokenContract = ERC20(self.w3, self.TokenAddress).CallDebug(False).CallContractFee(10000000)
-        self.MasterContract = ERC20(self.w3, self.ERC20Address).CallDebug(False).CallContractFee(10000000)
+        self.TokenContract = Ori20(self, self.TokenAddress).CallDebug(False).CallContractFee(10000000)
+        self.MasterContract = Ori20(self, self.ERC20Address).CallDebug(False).CallContractFee(10000000)
 
 
 
