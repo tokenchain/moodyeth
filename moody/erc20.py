@@ -37,3 +37,7 @@ class ERC20H(MiliDoS):
     def SetupContract(self):
         self.TokenContract = ERC20(self.w3, self.TokenAddress).CallDebug(False).CallContractFee(10000000)
         self.MasterContract = ERC20(self.w3, self.ERC20Address).CallDebug(False).CallContractFee(10000000)
+
+
+
+

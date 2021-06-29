@@ -357,9 +357,9 @@ class MiliDoS:
 
                     yield log
 
-    def Auth(self, priok: str) -> "MiliDoS":
-        # f"0x{priok}"
-        keyoo = self.w3.eth.account.from_key(f"0x{priok}")
+    def Auth(self, private_key_line: str) -> "MiliDoS":
+        # f"0x{private_key_line}"
+        keyoo = self.w3.eth.account.from_key(f"0x{private_key_line}")
         # self.w3.eth.defaultAccount = keyoo.address
         self.w3.eth.account = keyoo
         self.accountAddr = keyoo.address
