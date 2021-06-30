@@ -6,13 +6,99 @@ import math
 import time
 
 import pandas as pd
+from web3 import exceptions, _utils
 
 from .basec import BaseBulk, PrintNetworkName, bcolors
 from ..libeb import MiliDoS
+from ..m.b_send import BSend
 from ..m.erc20 import Ori20
 
 
-class TestBulkManager(BaseBulk):
+class LooperBulk(BaseBulk):
+    """
+    Bulk manager execution now
+    @
+    """
+
+    def __init__(self, mHold: MiliDoS):
+        self.dos = mHold
+        PrintNetworkName(mHold.network_cfg)
+        super().__init__()
+        self.__n = 0
+        self.__t = 0
+
+    def _line_progress(self, notify=None) -> None:
+        if notify is None:
+            return
+        else:
+            perc = "{0:.0f}%".format(self.__n / self.__t * 100)
+            notify(self.__n, self.__t, perc)
+
+    def _line_error(self, errorNotify=None, info: str = "") -> None:
+        if errorNotify is None:
+            print(f"======{info}")
+        else:
+            errorNotify(info)
+
+    def LoopBatchExecution(self,
+                           express_contract: BSend,
+                           coin_contract: Ori20,
+                           notify=None, errorNotify=None) -> None:
+
+        coin_address = coin_contract.contract_address
+        express_address = express_contract.contract_address
+        self.__t = len(self._batch)
+
+        if not self._batch_contract:
+            self._line_error(errorNotify, f"⚠️ Batch contract is not activated")
+            return
+
+        if not self._is_valid_address(coin_address):
+            self._line_error(errorNotify, f"⚠️ ERC20 is not valid {coin_address}")
+            return
+
+        for batch in self._batch:
+            try:
+                batch_size = len(batch[0])
+                total_approval = sum(batch[1])
+                _address = batch[0]
+                _amount = batch[1]
+
+                print(f"====== result batch len: {len(batch[0])}, approving: {total_approval}")
+                balance = coin_contract.balance_of(self.dos.accountAddr)
+
+                if balance >= total_approval:
+                    coin_contract.EnforceTxReceipt(True)
+                    coin_contract.CallContractFee(1 * BaseBulk.wei)
+                    coin_contract.approve(express_address, total_approval)
+                else:
+                    self._line_error(errorNotify, f"⚠️ not enough in the balance")
+                    return
+
+                print(f"====== start batch transactions")
+                express_contract.EnforceTxReceipt(False).bulk_send_token(
+                    coin_address, _address, _amount, 0
+                )
+
+                self.__n += 1
+                self._line_progress(notify)
+
+                if batch_size == BaseBulk.batch_limit:
+                    print("====== result bulk_send_token, the next batch will start in 1 min")
+                    time.sleep(60)
+
+            except exceptions.CannotHandleRequest:
+                self._line_error(errorNotify, f"⚠️ request is not handled")
+                return
+            except _utils.threads.Timeout:
+                self._line_error(errorNotify, f"⚠️ threads timeout")
+                return
+            except exceptions.TimeExhausted:
+                self._line_error(errorNotify, f"⚠️ the transaction is not on chain after timeout")
+                return
+
+
+class TestBulkManager(LooperBulk):
     """
     Bulk manager execution now
     @
@@ -20,11 +106,10 @@ class TestBulkManager(BaseBulk):
 
     def __init__(self, dat: list, mHold: MiliDoS):
         self.datlist = dat
-        self.tron = mHold
-        PrintNetworkName(mHold.network_cfg)
-        super().__init__()
+        super().__init__(mHold)
 
     def prep(self) -> "TestBulkManager":
+        self._enableContractBatch()
         self._status_busy = True
         for row in self.datlist:
             address = str(row[0])
@@ -37,8 +122,9 @@ class TestBulkManager(BaseBulk):
                 self._line_invalid_address(address)
                 self.entryErrAdd(address, enter_digit)
 
+        self._batch_process()
         self.PreStatement()
-        self.PreStatementTg()
+
         return self
 
     def getSENDAddresses(self) -> list:
@@ -101,7 +187,6 @@ class ExcelBulkManager(ExcelBasic):
                 continue
 
         self.PreStatement()
-        self.PreStatementTg()
 
         return self
 
@@ -147,7 +232,6 @@ class ExcelBulkManagerClassic(ExcelBasic):
                 self.entryErrAdd(address, enter_digit)
 
         self.PreStatement()
-        self.PreStatementTg()
 
         return self
 
@@ -177,12 +261,6 @@ class ExcelBulkManagerClassic(ExcelBasic):
                 notify(v, self.transaction_count, perc)
 
         self._status_busy = False
-
-    @property
-    def nowSec(self) -> int:
-        from datetime import datetime
-        import time
-        return int(time.mktime(datetime.today().timetuple()))
 
     def executeTokenTransferDistributionTg(self, token: Ori20, notify=None, errorNotify=None):
         """

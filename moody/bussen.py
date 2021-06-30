@@ -55,7 +55,7 @@ class BusExpress(MiliDoS):
             self.Error("items are not balanced")
             return self
 
-        self.ContractBusExpress.EnforceTxReceipt(True).bulk_send_token(token, addresses, amounts)
+        self.ContractBusExpress.EnforceTxReceipt(False).bulk_send_token(token, addresses, amounts)
         return self
 
 

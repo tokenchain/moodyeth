@@ -4,7 +4,6 @@
 
 import json
 from typing import (  # pylint: disable=unused-import
-    Any,
     List,
     Optional,
     Tuple,
@@ -12,12 +11,9 @@ from typing import (  # pylint: disable=unused-import
 )
 
 from eth_utils import to_checksum_address
-from mypy_extensions import TypedDict  # pylint: disable=unused-import
 from hexbytes import HexBytes
-from web3 import Web3
 from web3.contract import ContractFunction
 from web3.datastructures import AttributeDict
-from web3.providers.base import BaseProvider
 
 from ..bases import ContractMethod, Validator
 from ..tx_params import TxParams
@@ -190,6 +186,7 @@ class BulkSendTokenMethod(ContractMethod):  # pylint: disable=invalid-name
 
             signed = self._web3_eth.account.sign_transaction(_t)
             txHash = self._web3_eth.sendRawTransaction(signed.rawTransaction)
+            print(f"===>> enforcement is {enforcereci}")
 
             if enforcereci is True:
                 print("======== Wait for confirmation 🚸️")
@@ -198,6 +195,7 @@ class BulkSendTokenMethod(ContractMethod):  # pylint: disable=invalid-name
                 print(tx_receipt)
                 if debug:
                     print(f"======== TX blockHash ✅ {tx_receipt.blockHash}")
+        return False
 
     def send_transaction(self, token_addr: str, addresses: List[str], amounts: List[int], tx_params: Optional[TxParams] = None) -> Union[HexBytes, bytes]:
         """Execute underlying contract method via eth_sendTransaction.
