@@ -31,3 +31,12 @@ class Config:
     bridge: str = "",
     gas: int = 500000,
     gasPrice: int = 1000000000
+
+
+@dataclass
+class Key:
+    private_key: str
+    wallet_address: str
+    token: str
+    precision: int
+    network: str

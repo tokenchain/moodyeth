@@ -2,8 +2,7 @@
 # -*- coding: utf-8 -*-
 from typing import List
 
-from keyh import Key
-from . import conf
+from . import conf, Key
 from .libeb import MiliDoS
 from .m.b_send import BSend
 

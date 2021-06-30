@@ -1,0 +1,2358 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, minimum-scale=1" />
+<meta name="generator" content="pdoc 0.9.1" />
+<title>moody.libeb API documentation</title>
+<meta name="description" content="" />
+<link rel="preload stylesheet" as="style" href="https://cdnjs.cloudflare.com/ajax/libs/10up-sanitize.css/11.0.1/sanitize.min.css" integrity="sha256-PK9q560IAAa6WVRRh76LtCaI8pjTJ2z11v0miyNNjrs=" crossorigin>
+<link rel="preload stylesheet" as="style" href="https://cdnjs.cloudflare.com/ajax/libs/10up-sanitize.css/11.0.1/typography.min.css" integrity="sha256-7l/o7C8jubJiy74VsKTidCy1yBkRtiUGbVkYBylBqUg=" crossorigin>
+<link rel="stylesheet preload" as="style" href="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/10.1.1/styles/github.min.css" crossorigin>
+<style>:root{--highlight-color:#fe9}.flex{display:flex !important}body{line-height:1.5em}#content{padding:20px}#sidebar{padding:30px;overflow:hidden}#sidebar > *:last-child{margin-bottom:2cm}.http-server-breadcrumbs{font-size:130%;margin:0 0 15px 0}#footer{font-size:.75em;padding:5px 30px;border-top:1px solid #ddd;text-align:right}#footer p{margin:0 0 0 1em;display:inline-block}#footer p:last-child{margin-right:30px}h1,h2,h3,h4,h5{font-weight:300}h1{font-size:2.5em;line-height:1.1em}h2{font-size:1.75em;margin:1em 0 .50em 0}h3{font-size:1.4em;margin:25px 0 10px 0}h4{margin:0;font-size:105%}h1:target,h2:target,h3:target,h4:target,h5:target,h6:target{background:var(--highlight-color);padding:.2em 0}a{color:#058;text-decoration:none;transition:color .3s ease-in-out}a:hover{color:#e82}.title code{font-weight:bold}h2[id^="header-"]{margin-top:2em}.ident{color:#900}pre code{background:#f8f8f8;font-size:.8em;line-height:1.4em}code{background:#f2f2f1;padding:1px 4px;overflow-wrap:break-word}h1 code{background:transparent}pre{background:#f8f8f8;border:0;border-top:1px solid #ccc;border-bottom:1px solid #ccc;margin:1em 0;padding:1ex}#http-server-module-list{display:flex;flex-flow:column}#http-server-module-list div{display:flex}#http-server-module-list dt{min-width:10%}#http-server-module-list p{margin-top:0}.toc ul,#index{list-style-type:none;margin:0;padding:0}#index code{background:transparent}#index h3{border-bottom:1px solid #ddd}#index ul{padding:0}#index h4{margin-top:.6em;font-weight:bold}@media (min-width:200ex){#index .two-column{column-count:2}}@media (min-width:300ex){#index .two-column{column-count:3}}dl{margin-bottom:2em}dl dl:last-child{margin-bottom:4em}dd{margin:0 0 1em 3em}#header-classes + dl > dd{margin-bottom:3em}dd dd{margin-left:2em}dd p{margin:10px 0}.name{background:#eee;font-weight:bold;font-size:.85em;padding:5px 10px;display:inline-block;min-width:40%}.name:hover{background:#e0e0e0}dt:target .name{background:var(--highlight-color)}.name > span:first-child{white-space:nowrap}.name.class > span:nth-child(2){margin-left:.4em}.inherited{color:#999;border-left:5px solid #eee;padding-left:1em}.inheritance em{font-style:normal;font-weight:bold}.desc h2{font-weight:400;font-size:1.25em}.desc h3{font-size:1em}.desc dt code{background:inherit}.source summary,.git-link-div{color:#666;text-align:right;font-weight:400;font-size:.8em;text-transform:uppercase}.source summary > *{white-space:nowrap;cursor:pointer}.git-link{color:inherit;margin-left:1em}.source pre{max-height:500px;overflow:auto;margin:0}.source pre code{font-size:12px;overflow:visible}.hlist{list-style:none}.hlist li{display:inline}.hlist li:after{content:',\2002'}.hlist li:last-child:after{content:none}.hlist .hlist{display:inline;padding-left:1em}img{max-width:100%}td{padding:0 .5em}.admonition{padding:.1em .5em;margin-bottom:1em}.admonition-title{font-weight:bold}.admonition.note,.admonition.info,.admonition.important{background:#aef}.admonition.todo,.admonition.versionadded,.admonition.tip,.admonition.hint{background:#dfd}.admonition.warning,.admonition.versionchanged,.admonition.deprecated{background:#fd4}.admonition.error,.admonition.danger,.admonition.caution{background:lightpink}</style>
+<style media="screen and (min-width: 700px)">@media screen and (min-width:700px){#sidebar{width:30%;height:100vh;overflow:auto;position:sticky;top:0}#content{width:70%;max-width:100ch;padding:3em 4em;border-left:1px solid #ddd}pre code{font-size:1em}.item .name{font-size:1em}main{display:flex;flex-direction:row-reverse;justify-content:flex-end}.toc ul ul,#index ul{padding-left:1.5em}.toc > ul > li{margin-top:.5em}}</style>
+<style media="print">@media print{#sidebar h1{page-break-before:always}.source{display:none}}@media print{*{background:transparent !important;color:#000 !important;box-shadow:none !important;text-shadow:none !important}a[href]:after{content:" (" attr(href) ")";font-size:90%}a[href][title]:after{content:none}abbr[title]:after{content:" (" attr(title) ")"}.ir a:after,a[href^="javascript:"]:after,a[href^="#"]:after{content:""}pre,blockquote{border:1px solid #999;page-break-inside:avoid}thead{display:table-header-group}tr,img{page-break-inside:avoid}img{max-width:100% !important}@page{margin:0.5cm}p,h2,h3{orphans:3;widows:3}h1,h2,h3,h4,h5,h6{page-break-after:avoid}}</style>
+<script defer src="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/10.1.1/highlight.min.js" integrity="sha256-Uv3H6lx7dJmRfRvH8TH6kJD1TSK1aFcwgx+mdg3epi8=" crossorigin></script>
+<script>window.addEventListener('DOMContentLoaded', () => hljs.initHighlighting())</script>
+</head>
+<body>
+<main>
+<article id="content">
+<header>
+<h1 class="title">Module <code>moody.libeb</code></h1>
+</header>
+<section id="section-intro">
+<details class="source">
+<summary>
+<span>Expand source code</span>
+</summary>
+<pre><code class="python">import codecs
+import json
+import os
+import subprocess
+import time
+from threading import Lock
+from typing import List, Tuple, Optional
+
+from hexbytes import HexBytes
+from web3 import Web3, HTTPProvider
+from web3.contract import Contract as Web3Contract
+from web3.datastructures import AttributeDict
+from web3.exceptions import TransactionNotFound
+from web3.logs import DISCARD
+from web3.middleware import geth_poa_middleware
+from web3.types import BlockData
+
+from .buildercompile.remotecompile import BuildRemoteLinuxCommand
+from .buildercompile.transpile import BuildLang
+from .conf import Config
+from .paths import Paths
+
+
+def web3_provider(address: str) -&gt; Web3:
+    try:
+        if address.startswith(&#39;http&#39;):  # HTTP
+            return Web3(Web3.HTTPProvider(address))
+        if address.startswith(&#39;ws&#39;):  # WebSocket
+            return Web3(Web3.WebsocketProvider(address))
+        return Web3(Web3.IPCProvider(address))
+    except FileNotFoundError:
+        raise ValueError(&#34;Failed to initialize web3 provider (is eth_node set?)&#34;) from None
+
+
+w3_lock = Lock()
+event_lock = Lock()
+statement = &#39;End : {}, IO File {}&#39;
+
+
+def extract_tx_by_address(address, block: BlockData) -&gt; list:
+    # Note: block attribute dict has to be generated with full_transactions=True flag
+    return [tx for tx in block.transactions if tx.to and address.lower() == tx.to.lower()]
+
+
+def event_log(tx_hash: str, events: List[str], provider: Web3, contract: Web3Contract) -&gt; Tuple[str, Optional[AttributeDict]]:
+    &#34;&#34;&#34;
+    Extracts logs of @event from tx_hash if present
+    :param tx_hash:
+    :param events: Case sensitive events name
+    :param provider:
+    :param contract: Web3 Contract
+    :return: event name and log represented in &#39;AttributeDict&#39; or &#39;None&#39; if not found
+    &#34;&#34;&#34;
+    try:
+        receipt = provider.eth.getTransactionReceipt(tx_hash)
+    except TransactionNotFound:
+        time.sleep(3000)  # hard coded sleep for 3 seconds... maybe this will help?
+        # retry
+        try:
+            receipt = provider.eth.getTransactionReceipt(tx_hash)
+        except TransactionNotFound:
+            return &#39;&#39;, None
+
+    for event in events:
+        # we discard warning as we do best effort to find wanted event, not always there
+        # as we listen to the entire contract tx, might
+        log = getattr(contract.events, event)().processReceipt(receipt, DISCARD)
+        if log:
+            data_index = 0
+            return event, log[data_index]
+    # todo: fix this - seems like some weird return
+    return &#39;&#39;, None
+
+
+def normalize_address(address: str):
+    &#34;&#34;&#34;Converts address to address acceptable by web3&#34;&#34;&#34;
+    return Web3.toChecksumAddress(address.lower())
+
+
+def Logd(anystr: any):
+    print(anystr)
+
+
+def writeFile(content, filename):
+    fo = open(filename, &#34;w&#34;)
+    fo.write(content)
+    fo.close()
+    print(statement.format(time.ctime(), filename))
+
+
+class HexJsonEncoder(json.JSONEncoder):
+    def default(self, obj):
+        if isinstance(obj, HexBytes):
+            return obj.hex()
+        return super().default(obj)
+
+
+def _parseValue(val):
+    # check for nested dict structures to iterate through
+    if &#39;dict&#39; in str(type(val)).lower():
+        return toDict(val)
+    # convert &#39;HexBytes&#39; type to &#39;str&#39;
+    elif &#39;HexBytes&#39; in str(type(val)):
+        return val.hex()
+    else:
+        return val
+
+
+def toDict(dictToParse):
+    # convert any &#39;AttributeDict&#39; type found to &#39;dict&#39;
+    parsedDict = dict(dictToParse)
+    for key, val in parsedDict.items():
+        if &#39;list&#39; in str(type(val)):
+            parsedDict[key] = [_parseValue(x) for x in val]
+        else:
+            parsedDict[key] = _parseValue(val)
+    return parsedDict
+
+
+class SolWeb3Tool(object):
+    OUTPUT_BUILD = &#34;build&#34;
+    WORKSPACE_PATH = &#34;&#34;
+    solfolder = &#34;&#34;
+    file_name = &#34;xxx.sol&#34;
+    prefixname = &#34;&#34;
+    statement = &#39;End : {}, IO File {}&#39;
+
+    def __init__(self):
+        self._abi = None
+        self._bin = None
+        self.combined_data = None
+        self._key = None
+
+    def setBuildNameSpace(self, path: str) -&gt; &#34;SolWeb3Tool&#34;:
+        self.OUTPUT_BUILD = path
+        return self
+
+    def setBasePath(self, path: str) -&gt; &#34;SolWeb3Tool&#34;:
+        self.WORKSPACE_PATH = path
+        return self
+
+    def GetCodeClassFromBuild(self, class_name: str) -&gt; &#34;SolWeb3Tool&#34;:
+        &#34;&#34;&#34;
+        get the independent files and content from the file system
+        :param class_name:
+        :return:
+        &#34;&#34;&#34;
+        p1bin = os.path.join(self.WORKSPACE_PATH, self.OUTPUT_BUILD, &#34;{}.bin&#34;.format(class_name))
+        p2abi = os.path.join(self.WORKSPACE_PATH, self.OUTPUT_BUILD, &#34;{}.abi&#34;.format(class_name))
+        self._bin = codecs.open(p1bin, &#39;r&#39;, &#39;utf-8-sig&#39;).read()
+        self._abi = json.load(codecs.open(p2abi, &#39;r&#39;, &#39;utf-8-sig&#39;))
+        return self
+
+    def GetCombinedFile(self):
+        pathc = os.path.join(self.WORKSPACE_PATH, self.OUTPUT_BUILD, &#34;combined.json&#34;)
+        try:
+            pathcli = codecs.open(pathc, &#39;r&#39;, &#39;utf-8-sig&#39;)
+            self.combined_data = json.load(pathcli)
+        except Exception as e:
+            print(&#34;Problems from loading items from the file: &#34;, e)
+        return self
+
+    def byClassName(self, path: str, classname: str) -&gt; str:
+        return &#34;{prefix}:{name}&#34;.format(prefix=path, name=classname)
+
+    def GetCodeTag(self, fullname):
+        return self.combined_data[&#34;contracts&#34;][fullname][&#34;abi&#34;], self.combined_data[&#34;contracts&#34;][fullname][&#34;bin&#34;]
+
+    def GetCode(self, path: str, classname: str) -&gt; [str, str]:
+        &#34;&#34;&#34;
+        get the code and abi from combined.json
+        :param path:
+        :param classname:
+        :return:
+        &#34;&#34;&#34;
+        abi = self.combined_data[&#34;contracts&#34;][self.byClassName(path, classname)][&#34;abi&#34;]
+        bin = self.combined_data[&#34;contracts&#34;][self.byClassName(path, classname)][&#34;bin&#34;]
+        return abi, bin
+
+    def CompileBash(self) -&gt; None:
+        &#34;&#34;&#34;
+        This is the remote command to execute the solc_remote bash file
+        using remote compile method to compile the sol files
+        all works will be done with the remote server or using the docker
+        &#34;&#34;&#34;
+        list_files = subprocess.run([&#34;{}/solc_remote&#34;.format(self.WORKSPACE_PATH)])
+        print(&#34;The exit code was: %d&#34; % list_files.returncode)
+
+    @property
+    def abi(self) -&gt; str:
+        return self._abi
+
+    @property
+    def bin(self) -&gt; str:
+        return self._bin
+
+    @property
+    def workspace(self):
+        return self.WORKSPACE_PATH
+
+    def StoreTxResult(self, tx_result_data: any, filepath: str):
+        predump = toDict(tx_result_data)
+        writeFile(json.dumps(predump, ensure_ascii=False), filepath)
+
+
+class MiliDoS:
+    &#34;&#34;&#34;
+    wrap the web3 into the package
+    @
+    &#34;&#34;&#34;
+
+    def __init__(self, netconfig: Config):
+        # the hidden list
+        self._contract_dict = dict()
+        self._sol_list = list()
+        # publicly accessible
+        self.base_path = &#34;&#34;
+        self.accountAddr = None
+        self.pathfinder = None
+        self.artifact_manager = None
+        self.is_deploy = False
+        self.last_class = &#34;&#34;
+        self.list_type = &#34;list_address&#34;
+        self.network_cfg = netconfig
+        self.w3 = web3_provider(netconfig.rpc_url)
+
+        result = self.w3.isConnected()
+        if not result:
+            print(f&#34;try to connect {self.network_cfg.network_name} {self.network_cfg.rpc_url}: {result}&#34;)
+            exit(0)
+            return
+        else:
+            print(f&#34;You are now connected to {self.network_cfg.network_name} {self.network_cfg.rpc_url}&#34;)
+
+    def withPOA(self) -&gt; &#34;MiliDoS&#34;:
+        self.w3.middleware_onion.inject(geth_poa_middleware, layer=0)
+        return self
+
+    def connect(self, workspace: str, history: any) -&gt; None:
+
+        &#34;&#34;&#34;
+        connect the existing deployed contract
+        :param workspace: the workspace directory
+        :param history: the deployed history folder under the deploy_history
+        :return:
+        &#34;&#34;&#34;
+        self.is_deploy = False
+        self.artifact_manager = SolWeb3Tool()
+        if history is False:
+            self.pathfinder = Paths(workspace).setDefaultPath().Network(self.network_cfg.network_name)
+        else:
+            self.pathfinder = Paths(workspace).SetUseHistory(history).Network(self.network_cfg.network_name)
+
+        self.ready_io(True)
+
+    def SetupContract(self):
+        pass
+
+    def after_deployment_initialize_settings(self):
+        &#34;&#34;&#34;
+        setup contract starting params
+        setup the starting time using bang
+        setup the first member
+        :return:
+        &#34;&#34;&#34;
+        pass
+
+    def setWorkspace(self, path: str) -&gt; &#34;MiliDoS&#34;:
+        self.base_path = path
+        self.pathfinder = Paths(path).setDefaultPath().Network(self.network_cfg.network_name)
+        return self
+
+    def setClassSolNames(self, to_compile_contract_list: list) -&gt; &#34;MiliDoS&#34;:
+        self._sol_list = to_compile_contract_list
+        return self
+
+    def remoteCompile(self, ver: str) -&gt; &#34;MiliDoS&#34;:
+        self.pathfinder.setSolVersion(ver)
+        BuildRemoteLinuxCommand(self.pathfinder, self._sol_list)
+        return self
+
+    def localTranspile(self) -&gt; &#34;MiliDoS&#34;:
+        BuildLang(self.pathfinder, self._sol_list)
+        return self
+
+    def get_block(self, block_identifier, full_transactions: bool = False):
+        &#34;&#34;&#34;
+        to see the block information
+        :param block_identifier:
+        :param full_transactions:
+        :return:
+        &#34;&#34;&#34;
+        with w3_lock:
+            res = self.w3.eth.getBlock(block_identifier, full_transactions)
+        return res
+
+    def erc20_contract(self):
+        cTool = SolWeb3Tool()
+        cTool.setBuildNameSpace(&#34;artifact&#34;).GetCodeClassFromBuild(&#34;ERC20&#34;)
+        return self.w3.eth.contract(abi=cTool.abi)
+
+    def estimate_gas_price(self):
+        return self.w3.eth.gasPrice
+
+    def send_contract_tx(self, contract: Web3Contract, function_name: str, from_acc: str,
+                         private_key: bytes, gas: int = 0, gas_price: int = 0, _value: int = 0,
+                         args: Tuple = ()):
+        &#34;&#34;&#34;
+        Creates the contract tx and signs it with private_key to be transmitted as raw tx
+        &#34;&#34;&#34;
+
+        tx = getattr(contract.functions, function_name)(*args).buildTransaction(
+            {
+                &#39;from&#39;: from_acc,
+                &#39;chainId&#39;: self.w3.eth.chainId,
+                # gas_price is in gwei
+                &#39;gasPrice&#39;: gas_price * 1e9 if gas_price else self.estimate_gas_price(),
+                &#39;gas&#39;: gas or None,
+                &#39;nonce&#39;: self.w3.eth.getTransactionCount(from_acc, block_identifier=&#39;pending&#39;),
+                &#39;value&#39;: _value
+            })
+        signed_txn = self.w3.eth.account.sign_transaction(tx, private_key)
+        return self.w3.eth.sendRawTransaction(signed_txn.rawTransaction)
+
+    def contract_event_in_range(self, contract, event_name: str, from_block: int = 0, to_block: Optional[int] = None) -&gt; None:
+        &#34;&#34;&#34;
+        scans the blockchain, and yields blocks that has contract tx with the provided event
+        Note: Be cautions with the range provided, as the logic creates query for each block which could be a bottleneck.
+        :param from_block: starting block, defaults to 0
+        :param to_block: end block, defaults to &#39;latest&#39;
+        :param provider:
+        :param logger:
+        :param contract:
+        :param event_name: name of the contract emit event you wish to be notified of
+        &#34;&#34;&#34;
+        if to_block is None:
+            to_block = self.w3.eth.blockNumber
+
+        with w3_lock:
+
+            if isinstance(self.w3.provider, HTTPProvider):
+                for block_num in range(from_block, to_block + 1):
+                    block = self.w3.eth.getBlock(block_num, full_transactions=True)
+                    contract_transactions = extract_tx_by_address(contract.address, block)
+
+                    if not contract_transactions:
+                        continue
+                    for tx in contract_transactions:
+                        _, log = event_log(tx_hash=tx.hash, events=[event_name], provider=self.w3, contract=contract.tracked_contract)
+                        if log is None:
+                            continue
+                        yield log
+            else:
+                event = getattr(contract.tracked_contract.events, event_name)
+                event_filter = event.createFilter(fromBlock=from_block, toBlock=to_block)
+
+                for tx in event_filter.get_new_entries():
+                    _, log = event_log(tx_hash=tx.hash, events=[event_name], provider=self.w3, contract=contract.tracked_contract)
+
+                    if log is None:
+                        continue
+
+                    yield log
+
+    def Auth(self, private_key_line: str) -&gt; &#34;MiliDoS&#34;:
+        # f&#34;0x{private_key_line}&#34;
+        keyLo = self.w3.eth.account.from_key(f&#34;0x{private_key_line}&#34;)
+        # self.w3.eth.defaultAccount = keyoo.address
+        self.w3.eth.account = keyLo
+        # self.w3.eth.get_transaction_count
+        # self.w3.eth.accounts[0] = keyLo.address
+        # self.w3.eth.defaultAccount(f&#34;0x{keyLo.key}&#34;)
+        is_address = self.w3.isAddress(keyLo.address)
+        # self.w3.isChecksumAddress(keyLo.address)
+        # keyLo.
+        self.accountAddr = keyLo.address
+        print(f&#34;You are now using {keyLo.address} and it is a {&#39;valid key&#39; if is_address else &#39;invalid key&#39;}&#34;)
+
+        return self
+
+    def deploy(self, class_name: str,
+               params: list = [],
+               fee: int = 10 ** 9,
+               percent: int = 1) -&gt; None:
+        &#34;&#34;&#34;
+        This is using the faster way to deploy files by using the specific abi and bin files
+
+        &#34;&#34;&#34;
+
+        solc_artifact = SolWeb3Tool()
+        solc_artifact.setBasePath(self.base_path)
+        solc_artifact = solc_artifact.GetCodeClassFromBuild(class_name)
+        nr = self.w3.eth.contract(abi=solc_artifact.abi, bytecode=solc_artifact.bin)
+        _transaction = nr.constructor().buildTransaction()
+
+        _transaction[&#39;nonce&#39;] = self.w3.eth.getTransactionCount(self.accountAddr)
+        _transaction[&#39;to&#39;] = None
+        # Get correct transaction nonce for sender from the node
+        print(&#34;======== Signing {} ✅ ...&#34;.format(class_name))
+        signed = self.w3.eth.account.sign_transaction(_transaction)
+        txHash = self.w3.eth.sendRawTransaction(signed.rawTransaction)
+        # print(f&#34;Contract &#39;{class_name}&#39; deployed; Waiting to transaction receipt&#34;)
+        tx_receipt = self.w3.eth.waitForTransactionReceipt(txHash)
+        print(&#34;======== TX Result ✅&#34;)
+        print(tx_receipt)
+
+        print(&#34;======== Broadcast Result ✅ -&gt; {}&#34;.format(Paths.showCurrentDeployedClass(class_name)))
+
+        if &#34;contractAddress&#34; not in tx_receipt:
+            print(&#34;error from deploy contract&#34;)
+            exit(1)
+
+        self._contract_dict[class_name] = tx_receipt.contractAddress
+        self._contract_dict[&#34;kv_{}&#34;.format(class_name)] = dict(
+            owner=&#34;&#34;,
+        )
+        print(&#34;======== address saved to ✅ {} -&gt; {}&#34;.format(tx_receipt.contractAddress, class_name))
+        print(&#34;You can check with the explorer for more detail: {}&#34;.format(self.network_cfg.block_explorer))
+        self.artifact_manager = solc_artifact
+        solc_artifact.StoreTxResult(tx_receipt, self.pathfinder.classObject(class_name))
+        self.complete_deployment()
+
+    @property
+    def __list_key_label(self) -&gt; str:
+        return &#34;{}_{}&#34;.format(self.list_type, self.last_class)
+
+    @property
+    def __kv_label(self) -&gt; str:
+        return &#34;kv_{}&#34;.format(self.last_class)
+
+    def getAddr(self, keyname: str) -&gt; str:
+        &#34;&#34;&#34;example: TT67rPNwgmpeimvHUMVzFfKsjL9GZ1wGw8&#34;&#34;&#34;
+        return self._contract_dict.get(keyname)
+
+    def getAllAddress(self) -&gt; dict:
+        return self._contract_dict
+
+    def preview_all_addresses(self) -&gt; None:
+        print(self._contract_dict)
+
+    def is_deployment(self) -&gt; bool:
+        return self.is_deploy
+
+    def ready_io(self, show_address: bool = False):
+        &#34;&#34;&#34;try to load up the file from the existing path&#34;&#34;&#34;
+        try:
+            self._contract_dict = self.pathfinder.LoadDeploymentFile()
+            print(&#34;==== 🛄 data is prepared and it is ready now.. &#34;)
+            if show_address:
+                self.preview_all_addresses()
+        except ValueError:
+            pass
+        except TypeError as e:
+            print(e)
+
+    def setTargetClass(self, classname: str) -&gt; &#34;MiliDoS&#34;:
+        self.last_class = classname
+        return self
+
+    def setTargetListName(self, listname: str) -&gt; &#34;MiliDoS&#34;:
+        self.list_type = listname
+        return self
+
+    def setKV(self, key: str, value: any) -&gt; &#34;MiliDoS&#34;:
+
+        if self.__kv_label not in self._contract_dict:
+            self._contract_dict[self.__kv_label] = dict()
+
+        self._contract_dict[self.__kv_label][key] = value
+        return self
+
+    def hasAddressInList(self, address: str) -&gt; bool:
+        if self.__list_key_label not in self._contract_dict:
+            return False
+        try:
+            v = self._contract_dict[self.__list_key_label].index(address)
+            return True
+        except ValueError:
+            return False
+
+    def pushAddress(self, address: str, unique: bool = True) -&gt; bool:
+        if self.__list_key_label not in self._contract_dict:
+            self._contract_dict[self.__list_key_label] = list()
+
+        if unique is True:
+            try:
+                found_index = self._contract_dict[self.__list_key_label].index(address)
+                return False
+            except ValueError:
+                self._contract_dict[self.__list_key_label].append(address)
+                return True
+            except IndexError:
+                self._contract_dict[self.__list_key_label].append(address)
+                return True
+        else:
+            self._contract_dict[self.__list_key_label].append(address)
+            return True
+
+    def removeAddress(self, address: str) -&gt; bool:
+        if self.__list_key_label not in self._contract_dict:
+            return False
+        self._contract_dict[self.__list_key_label].remove(address)
+        return True
+
+    def iterList(self) -&gt; iter:
+        if self.__list_key_label not in self._contract_dict:
+            raise Exception(&#34;there is no list in the map&#34;)
+        return iter(self._contract_dict[self.__list_key_label])
+
+    def hasList(self) -&gt; bool:
+        if self.__list_key_label not in self._contract_dict:
+            return False
+        return len(self._contract_dict[self.__list_key_label]) &gt; 0
+
+    def hasField(self, key: str) -&gt; bool:
+        if self.__kv_label not in self._contract_dict:
+            self._contract_dict[self.__kv_label] = dict()
+
+        if key not in self._contract_dict[self.__kv_label]:
+            return False
+        else:
+            return True
+
+    def getString(self, key: str) -&gt; str:
+        return str(self.getVal(key))
+
+    def getInt(self, key: str) -&gt; int:
+        return int(self.getVal(key))
+
+    def getBytesArray(self, key: str) -&gt; bytearray:
+        return bytearray(self.getVal(key))
+
+    def getBytes(self, key: str) -&gt; bytes:
+        return bytes(self.getVal(key))
+
+    def getFloat(self, key: str) -&gt; float:
+        return float(self.getVal(key))
+
+    def getVal(self, key: str) -&gt; any:
+        if self.__kv_label not in self._contract_dict:
+            self._contract_dict[self.__kv_label] = dict()
+
+        if key in self._contract_dict[self.__kv_label]:
+            return self._contract_dict[self.__kv_label][key]
+
+        return &#34;&#34;
+
+    def complete_deployment(self) -&gt; None:
+        &#34;&#34;&#34;store up the deployed contrcat addresses to the local file storage&#34;&#34;&#34;
+        self.artifact_manager.StoreTxResult(self._contract_dict, self.pathfinder.SaveDeployConfig)
+
+    def SaveConfig(self) -&gt; None:
+        self.complete_deployment()</code></pre>
+</details>
+</section>
+<section>
+</section>
+<section>
+</section>
+<section>
+<h2 class="section-title" id="header-functions">Functions</h2>
+<dl>
+<dt id="moody.libeb.Logd"><code class="name flex">
+<span>def <span class="ident">Logd</span></span>(<span>anystr: <built-in function any>)</span>
+</code></dt>
+<dd>
+<div class="desc"></div>
+<details class="source">
+<summary>
+<span>Expand source code</span>
+</summary>
+<pre><code class="python">def Logd(anystr: any):
+    print(anystr)</code></pre>
+</details>
+</dd>
+<dt id="moody.libeb.event_log"><code class="name flex">
+<span>def <span class="ident">event_log</span></span>(<span>tx_hash: str, events: List[str], provider: web3.main.Web3, contract: web3.contract.Contract) ‑> Tuple[str, Union[web3.datastructures.AttributeDict, NoneType]]</span>
+</code></dt>
+<dd>
+<div class="desc"><p>Extracts logs of @event from tx_hash if present
+:param tx_hash:
+:param events: Case sensitive events name
+:param provider:
+:param contract: Web3 Contract
+:return: event name and log represented in 'AttributeDict' or 'None' if not found</p></div>
+<details class="source">
+<summary>
+<span>Expand source code</span>
+</summary>
+<pre><code class="python">def event_log(tx_hash: str, events: List[str], provider: Web3, contract: Web3Contract) -&gt; Tuple[str, Optional[AttributeDict]]:
+    &#34;&#34;&#34;
+    Extracts logs of @event from tx_hash if present
+    :param tx_hash:
+    :param events: Case sensitive events name
+    :param provider:
+    :param contract: Web3 Contract
+    :return: event name and log represented in &#39;AttributeDict&#39; or &#39;None&#39; if not found
+    &#34;&#34;&#34;
+    try:
+        receipt = provider.eth.getTransactionReceipt(tx_hash)
+    except TransactionNotFound:
+        time.sleep(3000)  # hard coded sleep for 3 seconds... maybe this will help?
+        # retry
+        try:
+            receipt = provider.eth.getTransactionReceipt(tx_hash)
+        except TransactionNotFound:
+            return &#39;&#39;, None
+
+    for event in events:
+        # we discard warning as we do best effort to find wanted event, not always there
+        # as we listen to the entire contract tx, might
+        log = getattr(contract.events, event)().processReceipt(receipt, DISCARD)
+        if log:
+            data_index = 0
+            return event, log[data_index]
+    # todo: fix this - seems like some weird return
+    return &#39;&#39;, None</code></pre>
+</details>
+</dd>
+<dt id="moody.libeb.extract_tx_by_address"><code class="name flex">
+<span>def <span class="ident">extract_tx_by_address</span></span>(<span>address, block: web3.types.BlockData) ‑> list</span>
+</code></dt>
+<dd>
+<div class="desc"></div>
+<details class="source">
+<summary>
+<span>Expand source code</span>
+</summary>
+<pre><code class="python">def extract_tx_by_address(address, block: BlockData) -&gt; list:
+    # Note: block attribute dict has to be generated with full_transactions=True flag
+    return [tx for tx in block.transactions if tx.to and address.lower() == tx.to.lower()]</code></pre>
+</details>
+</dd>
+<dt id="moody.libeb.normalize_address"><code class="name flex">
+<span>def <span class="ident">normalize_address</span></span>(<span>address: str)</span>
+</code></dt>
+<dd>
+<div class="desc"><p>Converts address to address acceptable by web3</p></div>
+<details class="source">
+<summary>
+<span>Expand source code</span>
+</summary>
+<pre><code class="python">def normalize_address(address: str):
+    &#34;&#34;&#34;Converts address to address acceptable by web3&#34;&#34;&#34;
+    return Web3.toChecksumAddress(address.lower())</code></pre>
+</details>
+</dd>
+<dt id="moody.libeb.toDict"><code class="name flex">
+<span>def <span class="ident">toDict</span></span>(<span>dictToParse)</span>
+</code></dt>
+<dd>
+<div class="desc"></div>
+<details class="source">
+<summary>
+<span>Expand source code</span>
+</summary>
+<pre><code class="python">def toDict(dictToParse):
+    # convert any &#39;AttributeDict&#39; type found to &#39;dict&#39;
+    parsedDict = dict(dictToParse)
+    for key, val in parsedDict.items():
+        if &#39;list&#39; in str(type(val)):
+            parsedDict[key] = [_parseValue(x) for x in val]
+        else:
+            parsedDict[key] = _parseValue(val)
+    return parsedDict</code></pre>
+</details>
+</dd>
+<dt id="moody.libeb.web3_provider"><code class="name flex">
+<span>def <span class="ident">web3_provider</span></span>(<span>address: str) ‑> web3.main.Web3</span>
+</code></dt>
+<dd>
+<div class="desc"></div>
+<details class="source">
+<summary>
+<span>Expand source code</span>
+</summary>
+<pre><code class="python">def web3_provider(address: str) -&gt; Web3:
+    try:
+        if address.startswith(&#39;http&#39;):  # HTTP
+            return Web3(Web3.HTTPProvider(address))
+        if address.startswith(&#39;ws&#39;):  # WebSocket
+            return Web3(Web3.WebsocketProvider(address))
+        return Web3(Web3.IPCProvider(address))
+    except FileNotFoundError:
+        raise ValueError(&#34;Failed to initialize web3 provider (is eth_node set?)&#34;) from None</code></pre>
+</details>
+</dd>
+<dt id="moody.libeb.writeFile"><code class="name flex">
+<span>def <span class="ident">writeFile</span></span>(<span>content, filename)</span>
+</code></dt>
+<dd>
+<div class="desc"></div>
+<details class="source">
+<summary>
+<span>Expand source code</span>
+</summary>
+<pre><code class="python">def writeFile(content, filename):
+    fo = open(filename, &#34;w&#34;)
+    fo.write(content)
+    fo.close()
+    print(statement.format(time.ctime(), filename))</code></pre>
+</details>
+</dd>
+</dl>
+</section>
+<section>
+<h2 class="section-title" id="header-classes">Classes</h2>
+<dl>
+<dt id="moody.libeb.HexJsonEncoder"><code class="flex name class">
+<span>class <span class="ident">HexJsonEncoder</span></span>
+<span>(</span><span>*, skipkeys=False, ensure_ascii=True, check_circular=True, allow_nan=True, sort_keys=False, indent=None, separators=None, default=None)</span>
+</code></dt>
+<dd>
+<div class="desc"><p>Extensible JSON <a href="http://json.org">http://json.org</a> encoder for Python data structures.</p>
+<p>Supports the following objects and types by default:</p>
+<p>+-------------------+---------------+
+| Python
+| JSON
+|
++===================+===============+
+| dict
+| object
+|
++-------------------+---------------+
+| list, tuple
+| array
+|
++-------------------+---------------+
+| str
+| string
+|
++-------------------+---------------+
+| int, float
+| number
+|
++-------------------+---------------+
+| True
+| true
+|
++-------------------+---------------+
+| False
+| false
+|
++-------------------+---------------+
+| None
+| null
+|
++-------------------+---------------+</p>
+<p>To extend this to recognize other objects, subclass and implement a
+<code>.default()</code> method with another method that returns a serializable
+object for <code>o</code> if possible, otherwise it should call the superclass
+implementation (to raise <code>TypeError</code>).</p>
+<p>Constructor for JSONEncoder, with sensible defaults.</p>
+<p>If skipkeys is false, then it is a TypeError to attempt
+encoding of keys that are not str, int, float or None.
+If
+skipkeys is True, such items are simply skipped.</p>
+<p>If ensure_ascii is true, the output is guaranteed to be str
+objects with all incoming non-ASCII characters escaped.
+If
+ensure_ascii is false, the output can contain non-ASCII characters.</p>
+<p>If check_circular is true, then lists, dicts, and custom encoded
+objects will be checked for circular references during encoding to
+prevent an infinite recursion (which would cause an OverflowError).
+Otherwise, no such check takes place.</p>
+<p>If allow_nan is true, then NaN, Infinity, and -Infinity will be
+encoded as such.
+This behavior is not JSON specification compliant,
+but is consistent with most JavaScript based encoders and decoders.
+Otherwise, it will be a ValueError to encode such floats.</p>
+<p>If sort_keys is true, then the output of dictionaries will be
+sorted by key; this is useful for regression tests to ensure
+that JSON serializations can be compared on a day-to-day basis.</p>
+<p>If indent is a non-negative integer, then JSON array
+elements and object members will be pretty-printed with that
+indent level.
+An indent level of 0 will only insert newlines.
+None is the most compact representation.</p>
+<p>If specified, separators should be an (item_separator, key_separator)
+tuple.
+The default is (', ', ': ') if <em>indent</em> is <code>None</code> and
+(',', ': ') otherwise.
+To get the most compact JSON representation,
+you should specify (',', ':') to eliminate whitespace.</p>
+<p>If specified, default is a function that gets called for objects
+that can't otherwise be serialized.
+It should return a JSON encodable
+version of the object or raise a <code>TypeError</code>.</p></div>
+<details class="source">
+<summary>
+<span>Expand source code</span>
+</summary>
+<pre><code class="python">class HexJsonEncoder(json.JSONEncoder):
+    def default(self, obj):
+        if isinstance(obj, HexBytes):
+            return obj.hex()
+        return super().default(obj)</code></pre>
+</details>
+<h3>Ancestors</h3>
+<ul class="hlist">
+<li>json.encoder.JSONEncoder</li>
+</ul>
+<h3>Methods</h3>
+<dl>
+<dt id="moody.libeb.HexJsonEncoder.default"><code class="name flex">
+<span>def <span class="ident">default</span></span>(<span>self, obj)</span>
+</code></dt>
+<dd>
+<div class="desc"><p>Implement this method in a subclass such that it returns
+a serializable object for <code>o</code>, or calls the base implementation
+(to raise a <code>TypeError</code>).</p>
+<p>For example, to support arbitrary iterators, you could
+implement default like this::</p>
+<pre><code>def default(self, o):
+    try:
+        iterable = iter(o)
+    except TypeError:
+        pass
+    else:
+        return list(iterable)
+    # Let the base class default method raise the TypeError
+    return JSONEncoder.default(self, o)
+</code></pre></div>
+<details class="source">
+<summary>
+<span>Expand source code</span>
+</summary>
+<pre><code class="python">def default(self, obj):
+    if isinstance(obj, HexBytes):
+        return obj.hex()
+    return super().default(obj)</code></pre>
+</details>
+</dd>
+</dl>
+</dd>
+<dt id="moody.libeb.MiliDoS"><code class="flex name class">
+<span>class <span class="ident">MiliDoS</span></span>
+<span>(</span><span>netconfig: <a title="moody.Config" href="index.html#moody.Config">Config</a>)</span>
+</code></dt>
+<dd>
+<div class="desc"><p>wrap the web3 into the package
+@</p></div>
+<details class="source">
+<summary>
+<span>Expand source code</span>
+</summary>
+<pre><code class="python">class MiliDoS:
+    &#34;&#34;&#34;
+    wrap the web3 into the package
+    @
+    &#34;&#34;&#34;
+
+    def __init__(self, netconfig: Config):
+        # the hidden list
+        self._contract_dict = dict()
+        self._sol_list = list()
+        # publicly accessible
+        self.base_path = &#34;&#34;
+        self.accountAddr = None
+        self.pathfinder = None
+        self.artifact_manager = None
+        self.is_deploy = False
+        self.last_class = &#34;&#34;
+        self.list_type = &#34;list_address&#34;
+        self.network_cfg = netconfig
+        self.w3 = web3_provider(netconfig.rpc_url)
+
+        result = self.w3.isConnected()
+        if not result:
+            print(f&#34;try to connect {self.network_cfg.network_name} {self.network_cfg.rpc_url}: {result}&#34;)
+            exit(0)
+            return
+        else:
+            print(f&#34;You are now connected to {self.network_cfg.network_name} {self.network_cfg.rpc_url}&#34;)
+
+    def withPOA(self) -&gt; &#34;MiliDoS&#34;:
+        self.w3.middleware_onion.inject(geth_poa_middleware, layer=0)
+        return self
+
+    def connect(self, workspace: str, history: any) -&gt; None:
+
+        &#34;&#34;&#34;
+        connect the existing deployed contract
+        :param workspace: the workspace directory
+        :param history: the deployed history folder under the deploy_history
+        :return:
+        &#34;&#34;&#34;
+        self.is_deploy = False
+        self.artifact_manager = SolWeb3Tool()
+        if history is False:
+            self.pathfinder = Paths(workspace).setDefaultPath().Network(self.network_cfg.network_name)
+        else:
+            self.pathfinder = Paths(workspace).SetUseHistory(history).Network(self.network_cfg.network_name)
+
+        self.ready_io(True)
+
+    def SetupContract(self):
+        pass
+
+    def after_deployment_initialize_settings(self):
+        &#34;&#34;&#34;
+        setup contract starting params
+        setup the starting time using bang
+        setup the first member
+        :return:
+        &#34;&#34;&#34;
+        pass
+
+    def setWorkspace(self, path: str) -&gt; &#34;MiliDoS&#34;:
+        self.base_path = path
+        self.pathfinder = Paths(path).setDefaultPath().Network(self.network_cfg.network_name)
+        return self
+
+    def setClassSolNames(self, to_compile_contract_list: list) -&gt; &#34;MiliDoS&#34;:
+        self._sol_list = to_compile_contract_list
+        return self
+
+    def remoteCompile(self, ver: str) -&gt; &#34;MiliDoS&#34;:
+        self.pathfinder.setSolVersion(ver)
+        BuildRemoteLinuxCommand(self.pathfinder, self._sol_list)
+        return self
+
+    def localTranspile(self) -&gt; &#34;MiliDoS&#34;:
+        BuildLang(self.pathfinder, self._sol_list)
+        return self
+
+    def get_block(self, block_identifier, full_transactions: bool = False):
+        &#34;&#34;&#34;
+        to see the block information
+        :param block_identifier:
+        :param full_transactions:
+        :return:
+        &#34;&#34;&#34;
+        with w3_lock:
+            res = self.w3.eth.getBlock(block_identifier, full_transactions)
+        return res
+
+    def erc20_contract(self):
+        cTool = SolWeb3Tool()
+        cTool.setBuildNameSpace(&#34;artifact&#34;).GetCodeClassFromBuild(&#34;ERC20&#34;)
+        return self.w3.eth.contract(abi=cTool.abi)
+
+    def estimate_gas_price(self):
+        return self.w3.eth.gasPrice
+
+    def send_contract_tx(self, contract: Web3Contract, function_name: str, from_acc: str,
+                         private_key: bytes, gas: int = 0, gas_price: int = 0, _value: int = 0,
+                         args: Tuple = ()):
+        &#34;&#34;&#34;
+        Creates the contract tx and signs it with private_key to be transmitted as raw tx
+        &#34;&#34;&#34;
+
+        tx = getattr(contract.functions, function_name)(*args).buildTransaction(
+            {
+                &#39;from&#39;: from_acc,
+                &#39;chainId&#39;: self.w3.eth.chainId,
+                # gas_price is in gwei
+                &#39;gasPrice&#39;: gas_price * 1e9 if gas_price else self.estimate_gas_price(),
+                &#39;gas&#39;: gas or None,
+                &#39;nonce&#39;: self.w3.eth.getTransactionCount(from_acc, block_identifier=&#39;pending&#39;),
+                &#39;value&#39;: _value
+            })
+        signed_txn = self.w3.eth.account.sign_transaction(tx, private_key)
+        return self.w3.eth.sendRawTransaction(signed_txn.rawTransaction)
+
+    def contract_event_in_range(self, contract, event_name: str, from_block: int = 0, to_block: Optional[int] = None) -&gt; None:
+        &#34;&#34;&#34;
+        scans the blockchain, and yields blocks that has contract tx with the provided event
+        Note: Be cautions with the range provided, as the logic creates query for each block which could be a bottleneck.
+        :param from_block: starting block, defaults to 0
+        :param to_block: end block, defaults to &#39;latest&#39;
+        :param provider:
+        :param logger:
+        :param contract:
+        :param event_name: name of the contract emit event you wish to be notified of
+        &#34;&#34;&#34;
+        if to_block is None:
+            to_block = self.w3.eth.blockNumber
+
+        with w3_lock:
+
+            if isinstance(self.w3.provider, HTTPProvider):
+                for block_num in range(from_block, to_block + 1):
+                    block = self.w3.eth.getBlock(block_num, full_transactions=True)
+                    contract_transactions = extract_tx_by_address(contract.address, block)
+
+                    if not contract_transactions:
+                        continue
+                    for tx in contract_transactions:
+                        _, log = event_log(tx_hash=tx.hash, events=[event_name], provider=self.w3, contract=contract.tracked_contract)
+                        if log is None:
+                            continue
+                        yield log
+            else:
+                event = getattr(contract.tracked_contract.events, event_name)
+                event_filter = event.createFilter(fromBlock=from_block, toBlock=to_block)
+
+                for tx in event_filter.get_new_entries():
+                    _, log = event_log(tx_hash=tx.hash, events=[event_name], provider=self.w3, contract=contract.tracked_contract)
+
+                    if log is None:
+                        continue
+
+                    yield log
+
+    def Auth(self, private_key_line: str) -&gt; &#34;MiliDoS&#34;:
+        # f&#34;0x{private_key_line}&#34;
+        keyLo = self.w3.eth.account.from_key(f&#34;0x{private_key_line}&#34;)
+        # self.w3.eth.defaultAccount = keyoo.address
+        self.w3.eth.account = keyLo
+        # self.w3.eth.get_transaction_count
+        # self.w3.eth.accounts[0] = keyLo.address
+        # self.w3.eth.defaultAccount(f&#34;0x{keyLo.key}&#34;)
+        is_address = self.w3.isAddress(keyLo.address)
+        # self.w3.isChecksumAddress(keyLo.address)
+        # keyLo.
+        self.accountAddr = keyLo.address
+        print(f&#34;You are now using {keyLo.address} and it is a {&#39;valid key&#39; if is_address else &#39;invalid key&#39;}&#34;)
+
+        return self
+
+    def deploy(self, class_name: str,
+               params: list = [],
+               fee: int = 10 ** 9,
+               percent: int = 1) -&gt; None:
+        &#34;&#34;&#34;
+        This is using the faster way to deploy files by using the specific abi and bin files
+
+        &#34;&#34;&#34;
+
+        solc_artifact = SolWeb3Tool()
+        solc_artifact.setBasePath(self.base_path)
+        solc_artifact = solc_artifact.GetCodeClassFromBuild(class_name)
+        nr = self.w3.eth.contract(abi=solc_artifact.abi, bytecode=solc_artifact.bin)
+        _transaction = nr.constructor().buildTransaction()
+
+        _transaction[&#39;nonce&#39;] = self.w3.eth.getTransactionCount(self.accountAddr)
+        _transaction[&#39;to&#39;] = None
+        # Get correct transaction nonce for sender from the node
+        print(&#34;======== Signing {} ✅ ...&#34;.format(class_name))
+        signed = self.w3.eth.account.sign_transaction(_transaction)
+        txHash = self.w3.eth.sendRawTransaction(signed.rawTransaction)
+        # print(f&#34;Contract &#39;{class_name}&#39; deployed; Waiting to transaction receipt&#34;)
+        tx_receipt = self.w3.eth.waitForTransactionReceipt(txHash)
+        print(&#34;======== TX Result ✅&#34;)
+        print(tx_receipt)
+
+        print(&#34;======== Broadcast Result ✅ -&gt; {}&#34;.format(Paths.showCurrentDeployedClass(class_name)))
+
+        if &#34;contractAddress&#34; not in tx_receipt:
+            print(&#34;error from deploy contract&#34;)
+            exit(1)
+
+        self._contract_dict[class_name] = tx_receipt.contractAddress
+        self._contract_dict[&#34;kv_{}&#34;.format(class_name)] = dict(
+            owner=&#34;&#34;,
+        )
+        print(&#34;======== address saved to ✅ {} -&gt; {}&#34;.format(tx_receipt.contractAddress, class_name))
+        print(&#34;You can check with the explorer for more detail: {}&#34;.format(self.network_cfg.block_explorer))
+        self.artifact_manager = solc_artifact
+        solc_artifact.StoreTxResult(tx_receipt, self.pathfinder.classObject(class_name))
+        self.complete_deployment()
+
+    @property
+    def __list_key_label(self) -&gt; str:
+        return &#34;{}_{}&#34;.format(self.list_type, self.last_class)
+
+    @property
+    def __kv_label(self) -&gt; str:
+        return &#34;kv_{}&#34;.format(self.last_class)
+
+    def getAddr(self, keyname: str) -&gt; str:
+        &#34;&#34;&#34;example: TT67rPNwgmpeimvHUMVzFfKsjL9GZ1wGw8&#34;&#34;&#34;
+        return self._contract_dict.get(keyname)
+
+    def getAllAddress(self) -&gt; dict:
+        return self._contract_dict
+
+    def preview_all_addresses(self) -&gt; None:
+        print(self._contract_dict)
+
+    def is_deployment(self) -&gt; bool:
+        return self.is_deploy
+
+    def ready_io(self, show_address: bool = False):
+        &#34;&#34;&#34;try to load up the file from the existing path&#34;&#34;&#34;
+        try:
+            self._contract_dict = self.pathfinder.LoadDeploymentFile()
+            print(&#34;==== 🛄 data is prepared and it is ready now.. &#34;)
+            if show_address:
+                self.preview_all_addresses()
+        except ValueError:
+            pass
+        except TypeError as e:
+            print(e)
+
+    def setTargetClass(self, classname: str) -&gt; &#34;MiliDoS&#34;:
+        self.last_class = classname
+        return self
+
+    def setTargetListName(self, listname: str) -&gt; &#34;MiliDoS&#34;:
+        self.list_type = listname
+        return self
+
+    def setKV(self, key: str, value: any) -&gt; &#34;MiliDoS&#34;:
+
+        if self.__kv_label not in self._contract_dict:
+            self._contract_dict[self.__kv_label] = dict()
+
+        self._contract_dict[self.__kv_label][key] = value
+        return self
+
+    def hasAddressInList(self, address: str) -&gt; bool:
+        if self.__list_key_label not in self._contract_dict:
+            return False
+        try:
+            v = self._contract_dict[self.__list_key_label].index(address)
+            return True
+        except ValueError:
+            return False
+
+    def pushAddress(self, address: str, unique: bool = True) -&gt; bool:
+        if self.__list_key_label not in self._contract_dict:
+            self._contract_dict[self.__list_key_label] = list()
+
+        if unique is True:
+            try:
+                found_index = self._contract_dict[self.__list_key_label].index(address)
+                return False
+            except ValueError:
+                self._contract_dict[self.__list_key_label].append(address)
+                return True
+            except IndexError:
+                self._contract_dict[self.__list_key_label].append(address)
+                return True
+        else:
+            self._contract_dict[self.__list_key_label].append(address)
+            return True
+
+    def removeAddress(self, address: str) -&gt; bool:
+        if self.__list_key_label not in self._contract_dict:
+            return False
+        self._contract_dict[self.__list_key_label].remove(address)
+        return True
+
+    def iterList(self) -&gt; iter:
+        if self.__list_key_label not in self._contract_dict:
+            raise Exception(&#34;there is no list in the map&#34;)
+        return iter(self._contract_dict[self.__list_key_label])
+
+    def hasList(self) -&gt; bool:
+        if self.__list_key_label not in self._contract_dict:
+            return False
+        return len(self._contract_dict[self.__list_key_label]) &gt; 0
+
+    def hasField(self, key: str) -&gt; bool:
+        if self.__kv_label not in self._contract_dict:
+            self._contract_dict[self.__kv_label] = dict()
+
+        if key not in self._contract_dict[self.__kv_label]:
+            return False
+        else:
+            return True
+
+    def getString(self, key: str) -&gt; str:
+        return str(self.getVal(key))
+
+    def getInt(self, key: str) -&gt; int:
+        return int(self.getVal(key))
+
+    def getBytesArray(self, key: str) -&gt; bytearray:
+        return bytearray(self.getVal(key))
+
+    def getBytes(self, key: str) -&gt; bytes:
+        return bytes(self.getVal(key))
+
+    def getFloat(self, key: str) -&gt; float:
+        return float(self.getVal(key))
+
+    def getVal(self, key: str) -&gt; any:
+        if self.__kv_label not in self._contract_dict:
+            self._contract_dict[self.__kv_label] = dict()
+
+        if key in self._contract_dict[self.__kv_label]:
+            return self._contract_dict[self.__kv_label][key]
+
+        return &#34;&#34;
+
+    def complete_deployment(self) -&gt; None:
+        &#34;&#34;&#34;store up the deployed contrcat addresses to the local file storage&#34;&#34;&#34;
+        self.artifact_manager.StoreTxResult(self._contract_dict, self.pathfinder.SaveDeployConfig)
+
+    def SaveConfig(self) -&gt; None:
+        self.complete_deployment()</code></pre>
+</details>
+<h3>Subclasses</h3>
+<ul class="hlist">
+<li><a title="moody.bussen.BusExpress" href="bussen.html#moody.bussen.BusExpress">BusExpress</a></li>
+<li><a title="moody.erc20.ERC20H" href="erc20.html#moody.erc20.ERC20H">ERC20H</a></li>
+</ul>
+<h3>Methods</h3>
+<dl>
+<dt id="moody.libeb.MiliDoS.Auth"><code class="name flex">
+<span>def <span class="ident">Auth</span></span>(<span>self, private_key_line: str) ‑> <a title="moody.libeb.MiliDoS" href="#moody.libeb.MiliDoS">MiliDoS</a></span>
+</code></dt>
+<dd>
+<div class="desc"></div>
+<details class="source">
+<summary>
+<span>Expand source code</span>
+</summary>
+<pre><code class="python">def Auth(self, private_key_line: str) -&gt; &#34;MiliDoS&#34;:
+    # f&#34;0x{private_key_line}&#34;
+    keyLo = self.w3.eth.account.from_key(f&#34;0x{private_key_line}&#34;)
+    # self.w3.eth.defaultAccount = keyoo.address
+    self.w3.eth.account = keyLo
+    # self.w3.eth.get_transaction_count
+    # self.w3.eth.accounts[0] = keyLo.address
+    # self.w3.eth.defaultAccount(f&#34;0x{keyLo.key}&#34;)
+    is_address = self.w3.isAddress(keyLo.address)
+    # self.w3.isChecksumAddress(keyLo.address)
+    # keyLo.
+    self.accountAddr = keyLo.address
+    print(f&#34;You are now using {keyLo.address} and it is a {&#39;valid key&#39; if is_address else &#39;invalid key&#39;}&#34;)
+
+    return self</code></pre>
+</details>
+</dd>
+<dt id="moody.libeb.MiliDoS.SaveConfig"><code class="name flex">
+<span>def <span class="ident">SaveConfig</span></span>(<span>self) ‑> NoneType</span>
+</code></dt>
+<dd>
+<div class="desc"></div>
+<details class="source">
+<summary>
+<span>Expand source code</span>
+</summary>
+<pre><code class="python">def SaveConfig(self) -&gt; None:
+    self.complete_deployment()</code></pre>
+</details>
+</dd>
+<dt id="moody.libeb.MiliDoS.SetupContract"><code class="name flex">
+<span>def <span class="ident">SetupContract</span></span>(<span>self)</span>
+</code></dt>
+<dd>
+<div class="desc"></div>
+<details class="source">
+<summary>
+<span>Expand source code</span>
+</summary>
+<pre><code class="python">def SetupContract(self):
+    pass</code></pre>
+</details>
+</dd>
+<dt id="moody.libeb.MiliDoS.after_deployment_initialize_settings"><code class="name flex">
+<span>def <span class="ident">after_deployment_initialize_settings</span></span>(<span>self)</span>
+</code></dt>
+<dd>
+<div class="desc"><p>setup contract starting params
+setup the starting time using bang
+setup the first member
+:return:</p></div>
+<details class="source">
+<summary>
+<span>Expand source code</span>
+</summary>
+<pre><code class="python">def after_deployment_initialize_settings(self):
+    &#34;&#34;&#34;
+    setup contract starting params
+    setup the starting time using bang
+    setup the first member
+    :return:
+    &#34;&#34;&#34;
+    pass</code></pre>
+</details>
+</dd>
+<dt id="moody.libeb.MiliDoS.complete_deployment"><code class="name flex">
+<span>def <span class="ident">complete_deployment</span></span>(<span>self) ‑> NoneType</span>
+</code></dt>
+<dd>
+<div class="desc"><p>store up the deployed contrcat addresses to the local file storage</p></div>
+<details class="source">
+<summary>
+<span>Expand source code</span>
+</summary>
+<pre><code class="python">def complete_deployment(self) -&gt; None:
+    &#34;&#34;&#34;store up the deployed contrcat addresses to the local file storage&#34;&#34;&#34;
+    self.artifact_manager.StoreTxResult(self._contract_dict, self.pathfinder.SaveDeployConfig)</code></pre>
+</details>
+</dd>
+<dt id="moody.libeb.MiliDoS.connect"><code class="name flex">
+<span>def <span class="ident">connect</span></span>(<span>self, workspace: str, history: <built-in function any>) ‑> NoneType</span>
+</code></dt>
+<dd>
+<div class="desc"><p>connect the existing deployed contract
+:param workspace: the workspace directory
+:param history: the deployed history folder under the deploy_history
+:return:</p></div>
+<details class="source">
+<summary>
+<span>Expand source code</span>
+</summary>
+<pre><code class="python">def connect(self, workspace: str, history: any) -&gt; None:
+
+    &#34;&#34;&#34;
+    connect the existing deployed contract
+    :param workspace: the workspace directory
+    :param history: the deployed history folder under the deploy_history
+    :return:
+    &#34;&#34;&#34;
+    self.is_deploy = False
+    self.artifact_manager = SolWeb3Tool()
+    if history is False:
+        self.pathfinder = Paths(workspace).setDefaultPath().Network(self.network_cfg.network_name)
+    else:
+        self.pathfinder = Paths(workspace).SetUseHistory(history).Network(self.network_cfg.network_name)
+
+    self.ready_io(True)</code></pre>
+</details>
+</dd>
+<dt id="moody.libeb.MiliDoS.contract_event_in_range"><code class="name flex">
+<span>def <span class="ident">contract_event_in_range</span></span>(<span>self, contract, event_name: str, from_block: int = 0, to_block: Union[int, NoneType] = None) ‑> NoneType</span>
+</code></dt>
+<dd>
+<div class="desc"><p>scans the blockchain, and yields blocks that has contract tx with the provided event
+Note: Be cautions with the range provided, as the logic creates query for each block which could be a bottleneck.
+:param from_block: starting block, defaults to 0
+:param to_block: end block, defaults to 'latest'
+:param provider:
+:param logger:
+:param contract:
+:param event_name: name of the contract emit event you wish to be notified of</p></div>
+<details class="source">
+<summary>
+<span>Expand source code</span>
+</summary>
+<pre><code class="python">def contract_event_in_range(self, contract, event_name: str, from_block: int = 0, to_block: Optional[int] = None) -&gt; None:
+    &#34;&#34;&#34;
+    scans the blockchain, and yields blocks that has contract tx with the provided event
+    Note: Be cautions with the range provided, as the logic creates query for each block which could be a bottleneck.
+    :param from_block: starting block, defaults to 0
+    :param to_block: end block, defaults to &#39;latest&#39;
+    :param provider:
+    :param logger:
+    :param contract:
+    :param event_name: name of the contract emit event you wish to be notified of
+    &#34;&#34;&#34;
+    if to_block is None:
+        to_block = self.w3.eth.blockNumber
+
+    with w3_lock:
+
+        if isinstance(self.w3.provider, HTTPProvider):
+            for block_num in range(from_block, to_block + 1):
+                block = self.w3.eth.getBlock(block_num, full_transactions=True)
+                contract_transactions = extract_tx_by_address(contract.address, block)
+
+                if not contract_transactions:
+                    continue
+                for tx in contract_transactions:
+                    _, log = event_log(tx_hash=tx.hash, events=[event_name], provider=self.w3, contract=contract.tracked_contract)
+                    if log is None:
+                        continue
+                    yield log
+        else:
+            event = getattr(contract.tracked_contract.events, event_name)
+            event_filter = event.createFilter(fromBlock=from_block, toBlock=to_block)
+
+            for tx in event_filter.get_new_entries():
+                _, log = event_log(tx_hash=tx.hash, events=[event_name], provider=self.w3, contract=contract.tracked_contract)
+
+                if log is None:
+                    continue
+
+                yield log</code></pre>
+</details>
+</dd>
+<dt id="moody.libeb.MiliDoS.deploy"><code class="name flex">
+<span>def <span class="ident">deploy</span></span>(<span>self, class_name: str, params: list = [], fee: int = 1000000000, percent: int = 1) ‑> NoneType</span>
+</code></dt>
+<dd>
+<div class="desc"><p>This is using the faster way to deploy files by using the specific abi and bin files</p></div>
+<details class="source">
+<summary>
+<span>Expand source code</span>
+</summary>
+<pre><code class="python">def deploy(self, class_name: str,
+           params: list = [],
+           fee: int = 10 ** 9,
+           percent: int = 1) -&gt; None:
+    &#34;&#34;&#34;
+    This is using the faster way to deploy files by using the specific abi and bin files
+
+    &#34;&#34;&#34;
+
+    solc_artifact = SolWeb3Tool()
+    solc_artifact.setBasePath(self.base_path)
+    solc_artifact = solc_artifact.GetCodeClassFromBuild(class_name)
+    nr = self.w3.eth.contract(abi=solc_artifact.abi, bytecode=solc_artifact.bin)
+    _transaction = nr.constructor().buildTransaction()
+
+    _transaction[&#39;nonce&#39;] = self.w3.eth.getTransactionCount(self.accountAddr)
+    _transaction[&#39;to&#39;] = None
+    # Get correct transaction nonce for sender from the node
+    print(&#34;======== Signing {} ✅ ...&#34;.format(class_name))
+    signed = self.w3.eth.account.sign_transaction(_transaction)
+    txHash = self.w3.eth.sendRawTransaction(signed.rawTransaction)
+    # print(f&#34;Contract &#39;{class_name}&#39; deployed; Waiting to transaction receipt&#34;)
+    tx_receipt = self.w3.eth.waitForTransactionReceipt(txHash)
+    print(&#34;======== TX Result ✅&#34;)
+    print(tx_receipt)
+
+    print(&#34;======== Broadcast Result ✅ -&gt; {}&#34;.format(Paths.showCurrentDeployedClass(class_name)))
+
+    if &#34;contractAddress&#34; not in tx_receipt:
+        print(&#34;error from deploy contract&#34;)
+        exit(1)
+
+    self._contract_dict[class_name] = tx_receipt.contractAddress
+    self._contract_dict[&#34;kv_{}&#34;.format(class_name)] = dict(
+        owner=&#34;&#34;,
+    )
+    print(&#34;======== address saved to ✅ {} -&gt; {}&#34;.format(tx_receipt.contractAddress, class_name))
+    print(&#34;You can check with the explorer for more detail: {}&#34;.format(self.network_cfg.block_explorer))
+    self.artifact_manager = solc_artifact
+    solc_artifact.StoreTxResult(tx_receipt, self.pathfinder.classObject(class_name))
+    self.complete_deployment()</code></pre>
+</details>
+</dd>
+<dt id="moody.libeb.MiliDoS.erc20_contract"><code class="name flex">
+<span>def <span class="ident">erc20_contract</span></span>(<span>self)</span>
+</code></dt>
+<dd>
+<div class="desc"></div>
+<details class="source">
+<summary>
+<span>Expand source code</span>
+</summary>
+<pre><code class="python">def erc20_contract(self):
+    cTool = SolWeb3Tool()
+    cTool.setBuildNameSpace(&#34;artifact&#34;).GetCodeClassFromBuild(&#34;ERC20&#34;)
+    return self.w3.eth.contract(abi=cTool.abi)</code></pre>
+</details>
+</dd>
+<dt id="moody.libeb.MiliDoS.estimate_gas_price"><code class="name flex">
+<span>def <span class="ident">estimate_gas_price</span></span>(<span>self)</span>
+</code></dt>
+<dd>
+<div class="desc"></div>
+<details class="source">
+<summary>
+<span>Expand source code</span>
+</summary>
+<pre><code class="python">def estimate_gas_price(self):
+    return self.w3.eth.gasPrice</code></pre>
+</details>
+</dd>
+<dt id="moody.libeb.MiliDoS.getAddr"><code class="name flex">
+<span>def <span class="ident">getAddr</span></span>(<span>self, keyname: str) ‑> str</span>
+</code></dt>
+<dd>
+<div class="desc"><p>example: TT67rPNwgmpeimvHUMVzFfKsjL9GZ1wGw8</p></div>
+<details class="source">
+<summary>
+<span>Expand source code</span>
+</summary>
+<pre><code class="python">def getAddr(self, keyname: str) -&gt; str:
+    &#34;&#34;&#34;example: TT67rPNwgmpeimvHUMVzFfKsjL9GZ1wGw8&#34;&#34;&#34;
+    return self._contract_dict.get(keyname)</code></pre>
+</details>
+</dd>
+<dt id="moody.libeb.MiliDoS.getAllAddress"><code class="name flex">
+<span>def <span class="ident">getAllAddress</span></span>(<span>self) ‑> dict</span>
+</code></dt>
+<dd>
+<div class="desc"></div>
+<details class="source">
+<summary>
+<span>Expand source code</span>
+</summary>
+<pre><code class="python">def getAllAddress(self) -&gt; dict:
+    return self._contract_dict</code></pre>
+</details>
+</dd>
+<dt id="moody.libeb.MiliDoS.getBytes"><code class="name flex">
+<span>def <span class="ident">getBytes</span></span>(<span>self, key: str) ‑> bytes</span>
+</code></dt>
+<dd>
+<div class="desc"></div>
+<details class="source">
+<summary>
+<span>Expand source code</span>
+</summary>
+<pre><code class="python">def getBytes(self, key: str) -&gt; bytes:
+    return bytes(self.getVal(key))</code></pre>
+</details>
+</dd>
+<dt id="moody.libeb.MiliDoS.getBytesArray"><code class="name flex">
+<span>def <span class="ident">getBytesArray</span></span>(<span>self, key: str) ‑> bytearray</span>
+</code></dt>
+<dd>
+<div class="desc"></div>
+<details class="source">
+<summary>
+<span>Expand source code</span>
+</summary>
+<pre><code class="python">def getBytesArray(self, key: str) -&gt; bytearray:
+    return bytearray(self.getVal(key))</code></pre>
+</details>
+</dd>
+<dt id="moody.libeb.MiliDoS.getFloat"><code class="name flex">
+<span>def <span class="ident">getFloat</span></span>(<span>self, key: str) ‑> float</span>
+</code></dt>
+<dd>
+<div class="desc"></div>
+<details class="source">
+<summary>
+<span>Expand source code</span>
+</summary>
+<pre><code class="python">def getFloat(self, key: str) -&gt; float:
+    return float(self.getVal(key))</code></pre>
+</details>
+</dd>
+<dt id="moody.libeb.MiliDoS.getInt"><code class="name flex">
+<span>def <span class="ident">getInt</span></span>(<span>self, key: str) ‑> int</span>
+</code></dt>
+<dd>
+<div class="desc"></div>
+<details class="source">
+<summary>
+<span>Expand source code</span>
+</summary>
+<pre><code class="python">def getInt(self, key: str) -&gt; int:
+    return int(self.getVal(key))</code></pre>
+</details>
+</dd>
+<dt id="moody.libeb.MiliDoS.getString"><code class="name flex">
+<span>def <span class="ident">getString</span></span>(<span>self, key: str) ‑> str</span>
+</code></dt>
+<dd>
+<div class="desc"></div>
+<details class="source">
+<summary>
+<span>Expand source code</span>
+</summary>
+<pre><code class="python">def getString(self, key: str) -&gt; str:
+    return str(self.getVal(key))</code></pre>
+</details>
+</dd>
+<dt id="moody.libeb.MiliDoS.getVal"><code class="name flex">
+<span>def <span class="ident">getVal</span></span>(<span>self, key: str) ‑> <built-in function any></span>
+</code></dt>
+<dd>
+<div class="desc"></div>
+<details class="source">
+<summary>
+<span>Expand source code</span>
+</summary>
+<pre><code class="python">def getVal(self, key: str) -&gt; any:
+    if self.__kv_label not in self._contract_dict:
+        self._contract_dict[self.__kv_label] = dict()
+
+    if key in self._contract_dict[self.__kv_label]:
+        return self._contract_dict[self.__kv_label][key]
+
+    return &#34;&#34;</code></pre>
+</details>
+</dd>
+<dt id="moody.libeb.MiliDoS.get_block"><code class="name flex">
+<span>def <span class="ident">get_block</span></span>(<span>self, block_identifier, full_transactions: bool = False)</span>
+</code></dt>
+<dd>
+<div class="desc"><p>to see the block information
+:param block_identifier:
+:param full_transactions:
+:return:</p></div>
+<details class="source">
+<summary>
+<span>Expand source code</span>
+</summary>
+<pre><code class="python">def get_block(self, block_identifier, full_transactions: bool = False):
+    &#34;&#34;&#34;
+    to see the block information
+    :param block_identifier:
+    :param full_transactions:
+    :return:
+    &#34;&#34;&#34;
+    with w3_lock:
+        res = self.w3.eth.getBlock(block_identifier, full_transactions)
+    return res</code></pre>
+</details>
+</dd>
+<dt id="moody.libeb.MiliDoS.hasAddressInList"><code class="name flex">
+<span>def <span class="ident">hasAddressInList</span></span>(<span>self, address: str) ‑> bool</span>
+</code></dt>
+<dd>
+<div class="desc"></div>
+<details class="source">
+<summary>
+<span>Expand source code</span>
+</summary>
+<pre><code class="python">def hasAddressInList(self, address: str) -&gt; bool:
+    if self.__list_key_label not in self._contract_dict:
+        return False
+    try:
+        v = self._contract_dict[self.__list_key_label].index(address)
+        return True
+    except ValueError:
+        return False</code></pre>
+</details>
+</dd>
+<dt id="moody.libeb.MiliDoS.hasField"><code class="name flex">
+<span>def <span class="ident">hasField</span></span>(<span>self, key: str) ‑> bool</span>
+</code></dt>
+<dd>
+<div class="desc"></div>
+<details class="source">
+<summary>
+<span>Expand source code</span>
+</summary>
+<pre><code class="python">def hasField(self, key: str) -&gt; bool:
+    if self.__kv_label not in self._contract_dict:
+        self._contract_dict[self.__kv_label] = dict()
+
+    if key not in self._contract_dict[self.__kv_label]:
+        return False
+    else:
+        return True</code></pre>
+</details>
+</dd>
+<dt id="moody.libeb.MiliDoS.hasList"><code class="name flex">
+<span>def <span class="ident">hasList</span></span>(<span>self) ‑> bool</span>
+</code></dt>
+<dd>
+<div class="desc"></div>
+<details class="source">
+<summary>
+<span>Expand source code</span>
+</summary>
+<pre><code class="python">def hasList(self) -&gt; bool:
+    if self.__list_key_label not in self._contract_dict:
+        return False
+    return len(self._contract_dict[self.__list_key_label]) &gt; 0</code></pre>
+</details>
+</dd>
+<dt id="moody.libeb.MiliDoS.is_deployment"><code class="name flex">
+<span>def <span class="ident">is_deployment</span></span>(<span>self) ‑> bool</span>
+</code></dt>
+<dd>
+<div class="desc"></div>
+<details class="source">
+<summary>
+<span>Expand source code</span>
+</summary>
+<pre><code class="python">def is_deployment(self) -&gt; bool:
+    return self.is_deploy</code></pre>
+</details>
+</dd>
+<dt id="moody.libeb.MiliDoS.iterList"><code class="name flex">
+<span>def <span class="ident">iterList</span></span>(<span>self) ‑> <built-in function iter></span>
+</code></dt>
+<dd>
+<div class="desc"></div>
+<details class="source">
+<summary>
+<span>Expand source code</span>
+</summary>
+<pre><code class="python">def iterList(self) -&gt; iter:
+    if self.__list_key_label not in self._contract_dict:
+        raise Exception(&#34;there is no list in the map&#34;)
+    return iter(self._contract_dict[self.__list_key_label])</code></pre>
+</details>
+</dd>
+<dt id="moody.libeb.MiliDoS.localTranspile"><code class="name flex">
+<span>def <span class="ident">localTranspile</span></span>(<span>self) ‑> <a title="moody.libeb.MiliDoS" href="#moody.libeb.MiliDoS">MiliDoS</a></span>
+</code></dt>
+<dd>
+<div class="desc"></div>
+<details class="source">
+<summary>
+<span>Expand source code</span>
+</summary>
+<pre><code class="python">def localTranspile(self) -&gt; &#34;MiliDoS&#34;:
+    BuildLang(self.pathfinder, self._sol_list)
+    return self</code></pre>
+</details>
+</dd>
+<dt id="moody.libeb.MiliDoS.preview_all_addresses"><code class="name flex">
+<span>def <span class="ident">preview_all_addresses</span></span>(<span>self) ‑> NoneType</span>
+</code></dt>
+<dd>
+<div class="desc"></div>
+<details class="source">
+<summary>
+<span>Expand source code</span>
+</summary>
+<pre><code class="python">def preview_all_addresses(self) -&gt; None:
+    print(self._contract_dict)</code></pre>
+</details>
+</dd>
+<dt id="moody.libeb.MiliDoS.pushAddress"><code class="name flex">
+<span>def <span class="ident">pushAddress</span></span>(<span>self, address: str, unique: bool = True) ‑> bool</span>
+</code></dt>
+<dd>
+<div class="desc"></div>
+<details class="source">
+<summary>
+<span>Expand source code</span>
+</summary>
+<pre><code class="python">def pushAddress(self, address: str, unique: bool = True) -&gt; bool:
+    if self.__list_key_label not in self._contract_dict:
+        self._contract_dict[self.__list_key_label] = list()
+
+    if unique is True:
+        try:
+            found_index = self._contract_dict[self.__list_key_label].index(address)
+            return False
+        except ValueError:
+            self._contract_dict[self.__list_key_label].append(address)
+            return True
+        except IndexError:
+            self._contract_dict[self.__list_key_label].append(address)
+            return True
+    else:
+        self._contract_dict[self.__list_key_label].append(address)
+        return True</code></pre>
+</details>
+</dd>
+<dt id="moody.libeb.MiliDoS.ready_io"><code class="name flex">
+<span>def <span class="ident">ready_io</span></span>(<span>self, show_address: bool = False)</span>
+</code></dt>
+<dd>
+<div class="desc"><p>try to load up the file from the existing path</p></div>
+<details class="source">
+<summary>
+<span>Expand source code</span>
+</summary>
+<pre><code class="python">def ready_io(self, show_address: bool = False):
+    &#34;&#34;&#34;try to load up the file from the existing path&#34;&#34;&#34;
+    try:
+        self._contract_dict = self.pathfinder.LoadDeploymentFile()
+        print(&#34;==== 🛄 data is prepared and it is ready now.. &#34;)
+        if show_address:
+            self.preview_all_addresses()
+    except ValueError:
+        pass
+    except TypeError as e:
+        print(e)</code></pre>
+</details>
+</dd>
+<dt id="moody.libeb.MiliDoS.remoteCompile"><code class="name flex">
+<span>def <span class="ident">remoteCompile</span></span>(<span>self, ver: str) ‑> <a title="moody.libeb.MiliDoS" href="#moody.libeb.MiliDoS">MiliDoS</a></span>
+</code></dt>
+<dd>
+<div class="desc"></div>
+<details class="source">
+<summary>
+<span>Expand source code</span>
+</summary>
+<pre><code class="python">def remoteCompile(self, ver: str) -&gt; &#34;MiliDoS&#34;:
+    self.pathfinder.setSolVersion(ver)
+    BuildRemoteLinuxCommand(self.pathfinder, self._sol_list)
+    return self</code></pre>
+</details>
+</dd>
+<dt id="moody.libeb.MiliDoS.removeAddress"><code class="name flex">
+<span>def <span class="ident">removeAddress</span></span>(<span>self, address: str) ‑> bool</span>
+</code></dt>
+<dd>
+<div class="desc"></div>
+<details class="source">
+<summary>
+<span>Expand source code</span>
+</summary>
+<pre><code class="python">def removeAddress(self, address: str) -&gt; bool:
+    if self.__list_key_label not in self._contract_dict:
+        return False
+    self._contract_dict[self.__list_key_label].remove(address)
+    return True</code></pre>
+</details>
+</dd>
+<dt id="moody.libeb.MiliDoS.send_contract_tx"><code class="name flex">
+<span>def <span class="ident">send_contract_tx</span></span>(<span>self, contract: web3.contract.Contract, function_name: str, from_acc: str, private_key: bytes, gas: int = 0, gas_price: int = 0, args: Tuple = ())</span>
+</code></dt>
+<dd>
+<div class="desc"><p>Creates the contract tx and signs it with private_key to be transmitted as raw tx</p></div>
+<details class="source">
+<summary>
+<span>Expand source code</span>
+</summary>
+<pre><code class="python">def send_contract_tx(self, contract: Web3Contract, function_name: str, from_acc: str,
+                     private_key: bytes, gas: int = 0, gas_price: int = 0, _value: int = 0,
+                     args: Tuple = ()):
+    &#34;&#34;&#34;
+    Creates the contract tx and signs it with private_key to be transmitted as raw tx
+    &#34;&#34;&#34;
+
+    tx = getattr(contract.functions, function_name)(*args).buildTransaction(
+        {
+            &#39;from&#39;: from_acc,
+            &#39;chainId&#39;: self.w3.eth.chainId,
+            # gas_price is in gwei
+            &#39;gasPrice&#39;: gas_price * 1e9 if gas_price else self.estimate_gas_price(),
+            &#39;gas&#39;: gas or None,
+            &#39;nonce&#39;: self.w3.eth.getTransactionCount(from_acc, block_identifier=&#39;pending&#39;),
+            &#39;value&#39;: _value
+        })
+    signed_txn = self.w3.eth.account.sign_transaction(tx, private_key)
+    return self.w3.eth.sendRawTransaction(signed_txn.rawTransaction)</code></pre>
+</details>
+</dd>
+<dt id="moody.libeb.MiliDoS.setClassSolNames"><code class="name flex">
+<span>def <span class="ident">setClassSolNames</span></span>(<span>self, to_compile_contract_list: list) ‑> <a title="moody.libeb.MiliDoS" href="#moody.libeb.MiliDoS">MiliDoS</a></span>
+</code></dt>
+<dd>
+<div class="desc"></div>
+<details class="source">
+<summary>
+<span>Expand source code</span>
+</summary>
+<pre><code class="python">def setClassSolNames(self, to_compile_contract_list: list) -&gt; &#34;MiliDoS&#34;:
+    self._sol_list = to_compile_contract_list
+    return self</code></pre>
+</details>
+</dd>
+<dt id="moody.libeb.MiliDoS.setKV"><code class="name flex">
+<span>def <span class="ident">setKV</span></span>(<span>self, key: str, value: <built-in function any>) ‑> <a title="moody.libeb.MiliDoS" href="#moody.libeb.MiliDoS">MiliDoS</a></span>
+</code></dt>
+<dd>
+<div class="desc"></div>
+<details class="source">
+<summary>
+<span>Expand source code</span>
+</summary>
+<pre><code class="python">def setKV(self, key: str, value: any) -&gt; &#34;MiliDoS&#34;:
+
+    if self.__kv_label not in self._contract_dict:
+        self._contract_dict[self.__kv_label] = dict()
+
+    self._contract_dict[self.__kv_label][key] = value
+    return self</code></pre>
+</details>
+</dd>
+<dt id="moody.libeb.MiliDoS.setTargetClass"><code class="name flex">
+<span>def <span class="ident">setTargetClass</span></span>(<span>self, classname: str) ‑> <a title="moody.libeb.MiliDoS" href="#moody.libeb.MiliDoS">MiliDoS</a></span>
+</code></dt>
+<dd>
+<div class="desc"></div>
+<details class="source">
+<summary>
+<span>Expand source code</span>
+</summary>
+<pre><code class="python">def setTargetClass(self, classname: str) -&gt; &#34;MiliDoS&#34;:
+    self.last_class = classname
+    return self</code></pre>
+</details>
+</dd>
+<dt id="moody.libeb.MiliDoS.setTargetListName"><code class="name flex">
+<span>def <span class="ident">setTargetListName</span></span>(<span>self, listname: str) ‑> <a title="moody.libeb.MiliDoS" href="#moody.libeb.MiliDoS">MiliDoS</a></span>
+</code></dt>
+<dd>
+<div class="desc"></div>
+<details class="source">
+<summary>
+<span>Expand source code</span>
+</summary>
+<pre><code class="python">def setTargetListName(self, listname: str) -&gt; &#34;MiliDoS&#34;:
+    self.list_type = listname
+    return self</code></pre>
+</details>
+</dd>
+<dt id="moody.libeb.MiliDoS.setWorkspace"><code class="name flex">
+<span>def <span class="ident">setWorkspace</span></span>(<span>self, path: str) ‑> <a title="moody.libeb.MiliDoS" href="#moody.libeb.MiliDoS">MiliDoS</a></span>
+</code></dt>
+<dd>
+<div class="desc"></div>
+<details class="source">
+<summary>
+<span>Expand source code</span>
+</summary>
+<pre><code class="python">def setWorkspace(self, path: str) -&gt; &#34;MiliDoS&#34;:
+    self.base_path = path
+    self.pathfinder = Paths(path).setDefaultPath().Network(self.network_cfg.network_name)
+    return self</code></pre>
+</details>
+</dd>
+<dt id="moody.libeb.MiliDoS.withPOA"><code class="name flex">
+<span>def <span class="ident">withPOA</span></span>(<span>self) ‑> <a title="moody.libeb.MiliDoS" href="#moody.libeb.MiliDoS">MiliDoS</a></span>
+</code></dt>
+<dd>
+<div class="desc"></div>
+<details class="source">
+<summary>
+<span>Expand source code</span>
+</summary>
+<pre><code class="python">def withPOA(self) -&gt; &#34;MiliDoS&#34;:
+    self.w3.middleware_onion.inject(geth_poa_middleware, layer=0)
+    return self</code></pre>
+</details>
+</dd>
+</dl>
+</dd>
+<dt id="moody.libeb.SolWeb3Tool"><code class="flex name class">
+<span>class <span class="ident">SolWeb3Tool</span></span>
+</code></dt>
+<dd>
+<div class="desc"></div>
+<details class="source">
+<summary>
+<span>Expand source code</span>
+</summary>
+<pre><code class="python">class SolWeb3Tool(object):
+    OUTPUT_BUILD = &#34;build&#34;
+    WORKSPACE_PATH = &#34;&#34;
+    solfolder = &#34;&#34;
+    file_name = &#34;xxx.sol&#34;
+    prefixname = &#34;&#34;
+    statement = &#39;End : {}, IO File {}&#39;
+
+    def __init__(self):
+        self._abi = None
+        self._bin = None
+        self.combined_data = None
+        self._key = None
+
+    def setBuildNameSpace(self, path: str) -&gt; &#34;SolWeb3Tool&#34;:
+        self.OUTPUT_BUILD = path
+        return self
+
+    def setBasePath(self, path: str) -&gt; &#34;SolWeb3Tool&#34;:
+        self.WORKSPACE_PATH = path
+        return self
+
+    def GetCodeClassFromBuild(self, class_name: str) -&gt; &#34;SolWeb3Tool&#34;:
+        &#34;&#34;&#34;
+        get the independent files and content from the file system
+        :param class_name:
+        :return:
+        &#34;&#34;&#34;
+        p1bin = os.path.join(self.WORKSPACE_PATH, self.OUTPUT_BUILD, &#34;{}.bin&#34;.format(class_name))
+        p2abi = os.path.join(self.WORKSPACE_PATH, self.OUTPUT_BUILD, &#34;{}.abi&#34;.format(class_name))
+        self._bin = codecs.open(p1bin, &#39;r&#39;, &#39;utf-8-sig&#39;).read()
+        self._abi = json.load(codecs.open(p2abi, &#39;r&#39;, &#39;utf-8-sig&#39;))
+        return self
+
+    def GetCombinedFile(self):
+        pathc = os.path.join(self.WORKSPACE_PATH, self.OUTPUT_BUILD, &#34;combined.json&#34;)
+        try:
+            pathcli = codecs.open(pathc, &#39;r&#39;, &#39;utf-8-sig&#39;)
+            self.combined_data = json.load(pathcli)
+        except Exception as e:
+            print(&#34;Problems from loading items from the file: &#34;, e)
+        return self
+
+    def byClassName(self, path: str, classname: str) -&gt; str:
+        return &#34;{prefix}:{name}&#34;.format(prefix=path, name=classname)
+
+    def GetCodeTag(self, fullname):
+        return self.combined_data[&#34;contracts&#34;][fullname][&#34;abi&#34;], self.combined_data[&#34;contracts&#34;][fullname][&#34;bin&#34;]
+
+    def GetCode(self, path: str, classname: str) -&gt; [str, str]:
+        &#34;&#34;&#34;
+        get the code and abi from combined.json
+        :param path:
+        :param classname:
+        :return:
+        &#34;&#34;&#34;
+        abi = self.combined_data[&#34;contracts&#34;][self.byClassName(path, classname)][&#34;abi&#34;]
+        bin = self.combined_data[&#34;contracts&#34;][self.byClassName(path, classname)][&#34;bin&#34;]
+        return abi, bin
+
+    def CompileBash(self) -&gt; None:
+        &#34;&#34;&#34;
+        This is the remote command to execute the solc_remote bash file
+        using remote compile method to compile the sol files
+        all works will be done with the remote server or using the docker
+        &#34;&#34;&#34;
+        list_files = subprocess.run([&#34;{}/solc_remote&#34;.format(self.WORKSPACE_PATH)])
+        print(&#34;The exit code was: %d&#34; % list_files.returncode)
+
+    @property
+    def abi(self) -&gt; str:
+        return self._abi
+
+    @property
+    def bin(self) -&gt; str:
+        return self._bin
+
+    @property
+    def workspace(self):
+        return self.WORKSPACE_PATH
+
+    def StoreTxResult(self, tx_result_data: any, filepath: str):
+        predump = toDict(tx_result_data)
+        writeFile(json.dumps(predump, ensure_ascii=False), filepath)</code></pre>
+</details>
+<h3>Class variables</h3>
+<dl>
+<dt id="moody.libeb.SolWeb3Tool.OUTPUT_BUILD"><code class="name">var <span class="ident">OUTPUT_BUILD</span></code></dt>
+<dd>
+<div class="desc"></div>
+</dd>
+<dt id="moody.libeb.SolWeb3Tool.WORKSPACE_PATH"><code class="name">var <span class="ident">WORKSPACE_PATH</span></code></dt>
+<dd>
+<div class="desc"></div>
+</dd>
+<dt id="moody.libeb.SolWeb3Tool.file_name"><code class="name">var <span class="ident">file_name</span></code></dt>
+<dd>
+<div class="desc"></div>
+</dd>
+<dt id="moody.libeb.SolWeb3Tool.prefixname"><code class="name">var <span class="ident">prefixname</span></code></dt>
+<dd>
+<div class="desc"></div>
+</dd>
+<dt id="moody.libeb.SolWeb3Tool.solfolder"><code class="name">var <span class="ident">solfolder</span></code></dt>
+<dd>
+<div class="desc"></div>
+</dd>
+<dt id="moody.libeb.SolWeb3Tool.statement"><code class="name">var <span class="ident">statement</span></code></dt>
+<dd>
+<div class="desc"></div>
+</dd>
+</dl>
+<h3>Instance variables</h3>
+<dl>
+<dt id="moody.libeb.SolWeb3Tool.abi"><code class="name">var <span class="ident">abi</span> : str</code></dt>
+<dd>
+<div class="desc"></div>
+<details class="source">
+<summary>
+<span>Expand source code</span>
+</summary>
+<pre><code class="python">@property
+def abi(self) -&gt; str:
+    return self._abi</code></pre>
+</details>
+</dd>
+<dt id="moody.libeb.SolWeb3Tool.bin"><code class="name">var <span class="ident">bin</span> : str</code></dt>
+<dd>
+<div class="desc"></div>
+<details class="source">
+<summary>
+<span>Expand source code</span>
+</summary>
+<pre><code class="python">@property
+def bin(self) -&gt; str:
+    return self._bin</code></pre>
+</details>
+</dd>
+<dt id="moody.libeb.SolWeb3Tool.workspace"><code class="name">var <span class="ident">workspace</span></code></dt>
+<dd>
+<div class="desc"></div>
+<details class="source">
+<summary>
+<span>Expand source code</span>
+</summary>
+<pre><code class="python">@property
+def workspace(self):
+    return self.WORKSPACE_PATH</code></pre>
+</details>
+</dd>
+</dl>
+<h3>Methods</h3>
+<dl>
+<dt id="moody.libeb.SolWeb3Tool.CompileBash"><code class="name flex">
+<span>def <span class="ident">CompileBash</span></span>(<span>self) ‑> NoneType</span>
+</code></dt>
+<dd>
+<div class="desc"><p>This is the remote command to execute the solc_remote bash file
+using remote compile method to compile the sol files
+all works will be done with the remote server or using the docker</p></div>
+<details class="source">
+<summary>
+<span>Expand source code</span>
+</summary>
+<pre><code class="python">def CompileBash(self) -&gt; None:
+    &#34;&#34;&#34;
+    This is the remote command to execute the solc_remote bash file
+    using remote compile method to compile the sol files
+    all works will be done with the remote server or using the docker
+    &#34;&#34;&#34;
+    list_files = subprocess.run([&#34;{}/solc_remote&#34;.format(self.WORKSPACE_PATH)])
+    print(&#34;The exit code was: %d&#34; % list_files.returncode)</code></pre>
+</details>
+</dd>
+<dt id="moody.libeb.SolWeb3Tool.GetCode"><code class="name flex">
+<span>def <span class="ident">GetCode</span></span>(<span>self, path: str, classname: str) ‑> [<class 'str'>, <class 'str'>]</span>
+</code></dt>
+<dd>
+<div class="desc"><p>get the code and abi from combined.json
+:param path:
+:param classname:
+:return:</p></div>
+<details class="source">
+<summary>
+<span>Expand source code</span>
+</summary>
+<pre><code class="python">def GetCode(self, path: str, classname: str) -&gt; [str, str]:
+    &#34;&#34;&#34;
+    get the code and abi from combined.json
+    :param path:
+    :param classname:
+    :return:
+    &#34;&#34;&#34;
+    abi = self.combined_data[&#34;contracts&#34;][self.byClassName(path, classname)][&#34;abi&#34;]
+    bin = self.combined_data[&#34;contracts&#34;][self.byClassName(path, classname)][&#34;bin&#34;]
+    return abi, bin</code></pre>
+</details>
+</dd>
+<dt id="moody.libeb.SolWeb3Tool.GetCodeClassFromBuild"><code class="name flex">
+<span>def <span class="ident">GetCodeClassFromBuild</span></span>(<span>self, class_name: str) ‑> <a title="moody.libeb.SolWeb3Tool" href="#moody.libeb.SolWeb3Tool">SolWeb3Tool</a></span>
+</code></dt>
+<dd>
+<div class="desc"><p>get the independent files and content from the file system
+:param class_name:
+:return:</p></div>
+<details class="source">
+<summary>
+<span>Expand source code</span>
+</summary>
+<pre><code class="python">def GetCodeClassFromBuild(self, class_name: str) -&gt; &#34;SolWeb3Tool&#34;:
+    &#34;&#34;&#34;
+    get the independent files and content from the file system
+    :param class_name:
+    :return:
+    &#34;&#34;&#34;
+    p1bin = os.path.join(self.WORKSPACE_PATH, self.OUTPUT_BUILD, &#34;{}.bin&#34;.format(class_name))
+    p2abi = os.path.join(self.WORKSPACE_PATH, self.OUTPUT_BUILD, &#34;{}.abi&#34;.format(class_name))
+    self._bin = codecs.open(p1bin, &#39;r&#39;, &#39;utf-8-sig&#39;).read()
+    self._abi = json.load(codecs.open(p2abi, &#39;r&#39;, &#39;utf-8-sig&#39;))
+    return self</code></pre>
+</details>
+</dd>
+<dt id="moody.libeb.SolWeb3Tool.GetCodeTag"><code class="name flex">
+<span>def <span class="ident">GetCodeTag</span></span>(<span>self, fullname)</span>
+</code></dt>
+<dd>
+<div class="desc"></div>
+<details class="source">
+<summary>
+<span>Expand source code</span>
+</summary>
+<pre><code class="python">def GetCodeTag(self, fullname):
+    return self.combined_data[&#34;contracts&#34;][fullname][&#34;abi&#34;], self.combined_data[&#34;contracts&#34;][fullname][&#34;bin&#34;]</code></pre>
+</details>
+</dd>
+<dt id="moody.libeb.SolWeb3Tool.GetCombinedFile"><code class="name flex">
+<span>def <span class="ident">GetCombinedFile</span></span>(<span>self)</span>
+</code></dt>
+<dd>
+<div class="desc"></div>
+<details class="source">
+<summary>
+<span>Expand source code</span>
+</summary>
+<pre><code class="python">def GetCombinedFile(self):
+    pathc = os.path.join(self.WORKSPACE_PATH, self.OUTPUT_BUILD, &#34;combined.json&#34;)
+    try:
+        pathcli = codecs.open(pathc, &#39;r&#39;, &#39;utf-8-sig&#39;)
+        self.combined_data = json.load(pathcli)
+    except Exception as e:
+        print(&#34;Problems from loading items from the file: &#34;, e)
+    return self</code></pre>
+</details>
+</dd>
+<dt id="moody.libeb.SolWeb3Tool.StoreTxResult"><code class="name flex">
+<span>def <span class="ident">StoreTxResult</span></span>(<span>self, tx_result_data: <built-in function any>, filepath: str)</span>
+</code></dt>
+<dd>
+<div class="desc"></div>
+<details class="source">
+<summary>
+<span>Expand source code</span>
+</summary>
+<pre><code class="python">def StoreTxResult(self, tx_result_data: any, filepath: str):
+    predump = toDict(tx_result_data)
+    writeFile(json.dumps(predump, ensure_ascii=False), filepath)</code></pre>
+</details>
+</dd>
+<dt id="moody.libeb.SolWeb3Tool.byClassName"><code class="name flex">
+<span>def <span class="ident">byClassName</span></span>(<span>self, path: str, classname: str) ‑> str</span>
+</code></dt>
+<dd>
+<div class="desc"></div>
+<details class="source">
+<summary>
+<span>Expand source code</span>
+</summary>
+<pre><code class="python">def byClassName(self, path: str, classname: str) -&gt; str:
+    return &#34;{prefix}:{name}&#34;.format(prefix=path, name=classname)</code></pre>
+</details>
+</dd>
+<dt id="moody.libeb.SolWeb3Tool.setBasePath"><code class="name flex">
+<span>def <span class="ident">setBasePath</span></span>(<span>self, path: str) ‑> <a title="moody.libeb.SolWeb3Tool" href="#moody.libeb.SolWeb3Tool">SolWeb3Tool</a></span>
+</code></dt>
+<dd>
+<div class="desc"></div>
+<details class="source">
+<summary>
+<span>Expand source code</span>
+</summary>
+<pre><code class="python">def setBasePath(self, path: str) -&gt; &#34;SolWeb3Tool&#34;:
+    self.WORKSPACE_PATH = path
+    return self</code></pre>
+</details>
+</dd>
+<dt id="moody.libeb.SolWeb3Tool.setBuildNameSpace"><code class="name flex">
+<span>def <span class="ident">setBuildNameSpace</span></span>(<span>self, path: str) ‑> <a title="moody.libeb.SolWeb3Tool" href="#moody.libeb.SolWeb3Tool">SolWeb3Tool</a></span>
+</code></dt>
+<dd>
+<div class="desc"></div>
+<details class="source">
+<summary>
+<span>Expand source code</span>
+</summary>
+<pre><code class="python">def setBuildNameSpace(self, path: str) -&gt; &#34;SolWeb3Tool&#34;:
+    self.OUTPUT_BUILD = path
+    return self</code></pre>
+</details>
+</dd>
+</dl>
+</dd>
+</dl>
+</section>
+</article>
+<nav id="sidebar">
+<h1>Index</h1>
+<div class="toc">
+<ul></ul>
+</div>
+<ul id="index">
+<li><h3>Super-module</h3>
+<ul>
+<li><code><a title="moody" href="index.html">moody</a></code></li>
+</ul>
+</li>
+<li><h3><a href="#header-functions">Functions</a></h3>
+<ul class="">
+<li><code><a title="moody.libeb.Logd" href="#moody.libeb.Logd">Logd</a></code></li>
+<li><code><a title="moody.libeb.event_log" href="#moody.libeb.event_log">event_log</a></code></li>
+<li><code><a title="moody.libeb.extract_tx_by_address" href="#moody.libeb.extract_tx_by_address">extract_tx_by_address</a></code></li>
+<li><code><a title="moody.libeb.normalize_address" href="#moody.libeb.normalize_address">normalize_address</a></code></li>
+<li><code><a title="moody.libeb.toDict" href="#moody.libeb.toDict">toDict</a></code></li>
+<li><code><a title="moody.libeb.web3_provider" href="#moody.libeb.web3_provider">web3_provider</a></code></li>
+<li><code><a title="moody.libeb.writeFile" href="#moody.libeb.writeFile">writeFile</a></code></li>
+</ul>
+</li>
+<li><h3><a href="#header-classes">Classes</a></h3>
+<ul>
+<li>
+<h4><code><a title="moody.libeb.HexJsonEncoder" href="#moody.libeb.HexJsonEncoder">HexJsonEncoder</a></code></h4>
+<ul class="">
+<li><code><a title="moody.libeb.HexJsonEncoder.default" href="#moody.libeb.HexJsonEncoder.default">default</a></code></li>
+</ul>
+</li>
+<li>
+<h4><code><a title="moody.libeb.MiliDoS" href="#moody.libeb.MiliDoS">MiliDoS</a></code></h4>
+<ul class="">
+<li><code><a title="moody.libeb.MiliDoS.Auth" href="#moody.libeb.MiliDoS.Auth">Auth</a></code></li>
+<li><code><a title="moody.libeb.MiliDoS.SaveConfig" href="#moody.libeb.MiliDoS.SaveConfig">SaveConfig</a></code></li>
+<li><code><a title="moody.libeb.MiliDoS.SetupContract" href="#moody.libeb.MiliDoS.SetupContract">SetupContract</a></code></li>
+<li><code><a title="moody.libeb.MiliDoS.after_deployment_initialize_settings" href="#moody.libeb.MiliDoS.after_deployment_initialize_settings">after_deployment_initialize_settings</a></code></li>
+<li><code><a title="moody.libeb.MiliDoS.complete_deployment" href="#moody.libeb.MiliDoS.complete_deployment">complete_deployment</a></code></li>
+<li><code><a title="moody.libeb.MiliDoS.connect" href="#moody.libeb.MiliDoS.connect">connect</a></code></li>
+<li><code><a title="moody.libeb.MiliDoS.contract_event_in_range" href="#moody.libeb.MiliDoS.contract_event_in_range">contract_event_in_range</a></code></li>
+<li><code><a title="moody.libeb.MiliDoS.deploy" href="#moody.libeb.MiliDoS.deploy">deploy</a></code></li>
+<li><code><a title="moody.libeb.MiliDoS.erc20_contract" href="#moody.libeb.MiliDoS.erc20_contract">erc20_contract</a></code></li>
+<li><code><a title="moody.libeb.MiliDoS.estimate_gas_price" href="#moody.libeb.MiliDoS.estimate_gas_price">estimate_gas_price</a></code></li>
+<li><code><a title="moody.libeb.MiliDoS.getAddr" href="#moody.libeb.MiliDoS.getAddr">getAddr</a></code></li>
+<li><code><a title="moody.libeb.MiliDoS.getAllAddress" href="#moody.libeb.MiliDoS.getAllAddress">getAllAddress</a></code></li>
+<li><code><a title="moody.libeb.MiliDoS.getBytes" href="#moody.libeb.MiliDoS.getBytes">getBytes</a></code></li>
+<li><code><a title="moody.libeb.MiliDoS.getBytesArray" href="#moody.libeb.MiliDoS.getBytesArray">getBytesArray</a></code></li>
+<li><code><a title="moody.libeb.MiliDoS.getFloat" href="#moody.libeb.MiliDoS.getFloat">getFloat</a></code></li>
+<li><code><a title="moody.libeb.MiliDoS.getInt" href="#moody.libeb.MiliDoS.getInt">getInt</a></code></li>
+<li><code><a title="moody.libeb.MiliDoS.getString" href="#moody.libeb.MiliDoS.getString">getString</a></code></li>
+<li><code><a title="moody.libeb.MiliDoS.getVal" href="#moody.libeb.MiliDoS.getVal">getVal</a></code></li>
+<li><code><a title="moody.libeb.MiliDoS.get_block" href="#moody.libeb.MiliDoS.get_block">get_block</a></code></li>
+<li><code><a title="moody.libeb.MiliDoS.hasAddressInList" href="#moody.libeb.MiliDoS.hasAddressInList">hasAddressInList</a></code></li>
+<li><code><a title="moody.libeb.MiliDoS.hasField" href="#moody.libeb.MiliDoS.hasField">hasField</a></code></li>
+<li><code><a title="moody.libeb.MiliDoS.hasList" href="#moody.libeb.MiliDoS.hasList">hasList</a></code></li>
+<li><code><a title="moody.libeb.MiliDoS.is_deployment" href="#moody.libeb.MiliDoS.is_deployment">is_deployment</a></code></li>
+<li><code><a title="moody.libeb.MiliDoS.iterList" href="#moody.libeb.MiliDoS.iterList">iterList</a></code></li>
+<li><code><a title="moody.libeb.MiliDoS.localTranspile" href="#moody.libeb.MiliDoS.localTranspile">localTranspile</a></code></li>
+<li><code><a title="moody.libeb.MiliDoS.preview_all_addresses" href="#moody.libeb.MiliDoS.preview_all_addresses">preview_all_addresses</a></code></li>
+<li><code><a title="moody.libeb.MiliDoS.pushAddress" href="#moody.libeb.MiliDoS.pushAddress">pushAddress</a></code></li>
+<li><code><a title="moody.libeb.MiliDoS.ready_io" href="#moody.libeb.MiliDoS.ready_io">ready_io</a></code></li>
+<li><code><a title="moody.libeb.MiliDoS.remoteCompile" href="#moody.libeb.MiliDoS.remoteCompile">remoteCompile</a></code></li>
+<li><code><a title="moody.libeb.MiliDoS.removeAddress" href="#moody.libeb.MiliDoS.removeAddress">removeAddress</a></code></li>
+<li><code><a title="moody.libeb.MiliDoS.send_contract_tx" href="#moody.libeb.MiliDoS.send_contract_tx">send_contract_tx</a></code></li>
+<li><code><a title="moody.libeb.MiliDoS.setClassSolNames" href="#moody.libeb.MiliDoS.setClassSolNames">setClassSolNames</a></code></li>
+<li><code><a title="moody.libeb.MiliDoS.setKV" href="#moody.libeb.MiliDoS.setKV">setKV</a></code></li>
+<li><code><a title="moody.libeb.MiliDoS.setTargetClass" href="#moody.libeb.MiliDoS.setTargetClass">setTargetClass</a></code></li>
+<li><code><a title="moody.libeb.MiliDoS.setTargetListName" href="#moody.libeb.MiliDoS.setTargetListName">setTargetListName</a></code></li>
+<li><code><a title="moody.libeb.MiliDoS.setWorkspace" href="#moody.libeb.MiliDoS.setWorkspace">setWorkspace</a></code></li>
+<li><code><a title="moody.libeb.MiliDoS.withPOA" href="#moody.libeb.MiliDoS.withPOA">withPOA</a></code></li>
+</ul>
+</li>
+<li>
+<h4><code><a title="moody.libeb.SolWeb3Tool" href="#moody.libeb.SolWeb3Tool">SolWeb3Tool</a></code></h4>
+<ul class="">
+<li><code><a title="moody.libeb.SolWeb3Tool.CompileBash" href="#moody.libeb.SolWeb3Tool.CompileBash">CompileBash</a></code></li>
+<li><code><a title="moody.libeb.SolWeb3Tool.GetCode" href="#moody.libeb.SolWeb3Tool.GetCode">GetCode</a></code></li>
+<li><code><a title="moody.libeb.SolWeb3Tool.GetCodeClassFromBuild" href="#moody.libeb.SolWeb3Tool.GetCodeClassFromBuild">GetCodeClassFromBuild</a></code></li>
+<li><code><a title="moody.libeb.SolWeb3Tool.GetCodeTag" href="#moody.libeb.SolWeb3Tool.GetCodeTag">GetCodeTag</a></code></li>
+<li><code><a title="moody.libeb.SolWeb3Tool.GetCombinedFile" href="#moody.libeb.SolWeb3Tool.GetCombinedFile">GetCombinedFile</a></code></li>
+<li><code><a title="moody.libeb.SolWeb3Tool.OUTPUT_BUILD" href="#moody.libeb.SolWeb3Tool.OUTPUT_BUILD">OUTPUT_BUILD</a></code></li>
+<li><code><a title="moody.libeb.SolWeb3Tool.StoreTxResult" href="#moody.libeb.SolWeb3Tool.StoreTxResult">StoreTxResult</a></code></li>
+<li><code><a title="moody.libeb.SolWeb3Tool.WORKSPACE_PATH" href="#moody.libeb.SolWeb3Tool.WORKSPACE_PATH">WORKSPACE_PATH</a></code></li>
+<li><code><a title="moody.libeb.SolWeb3Tool.abi" href="#moody.libeb.SolWeb3Tool.abi">abi</a></code></li>
+<li><code><a title="moody.libeb.SolWeb3Tool.bin" href="#moody.libeb.SolWeb3Tool.bin">bin</a></code></li>
+<li><code><a title="moody.libeb.SolWeb3Tool.byClassName" href="#moody.libeb.SolWeb3Tool.byClassName">byClassName</a></code></li>
+<li><code><a title="moody.libeb.SolWeb3Tool.file_name" href="#moody.libeb.SolWeb3Tool.file_name">file_name</a></code></li>
+<li><code><a title="moody.libeb.SolWeb3Tool.prefixname" href="#moody.libeb.SolWeb3Tool.prefixname">prefixname</a></code></li>
+<li><code><a title="moody.libeb.SolWeb3Tool.setBasePath" href="#moody.libeb.SolWeb3Tool.setBasePath">setBasePath</a></code></li>
+<li><code><a title="moody.libeb.SolWeb3Tool.setBuildNameSpace" href="#moody.libeb.SolWeb3Tool.setBuildNameSpace">setBuildNameSpace</a></code></li>
+<li><code><a title="moody.libeb.SolWeb3Tool.solfolder" href="#moody.libeb.SolWeb3Tool.solfolder">solfolder</a></code></li>
+<li><code><a title="moody.libeb.SolWeb3Tool.statement" href="#moody.libeb.SolWeb3Tool.statement">statement</a></code></li>
+<li><code><a title="moody.libeb.SolWeb3Tool.workspace" href="#moody.libeb.SolWeb3Tool.workspace">workspace</a></code></li>
+</ul>
+</li>
+</ul>
+</li>
+</ul>
+</nav>
+</main>
+<footer id="footer">
+<p>Generated by <a href="https://pdoc3.github.io/pdoc"><cite>pdoc</cite> 0.9.1</a>.</p>
+</footer>
+</body>
+</html>
