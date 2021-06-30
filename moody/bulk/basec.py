@@ -254,3 +254,6 @@ class BaseBulk:
 
     def setCheckLogger(self, check_save) -> None:
         self.checker_log = check_save
+
+    def setProgramUseOnly(self):
+        self._program_override = True
