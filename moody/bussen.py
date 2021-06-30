@@ -2,7 +2,6 @@
 # -*- coding: utf-8 -*-
 from typing import List
 
-from key import ROOT
 from keyh import Key
 from . import conf
 from .libeb import MiliDoS
@@ -17,9 +16,9 @@ class BusExpress(MiliDoS):
     def __init__(self):
         self.kol = None
 
-    def start(self, holder: Key) -> "BusExpress":
+    def start(self, holder: Key, rootpath: str) -> "BusExpress":
         super().__init__(conf.XDaiMainnet())
-        self.Auth(holder.private_key).connect(ROOT, "xDaiBusSend")
+        self.Auth(holder.private_key).connect(rootpath, "xDaiBusSend")
         self.ready_io(True)
         return self
 
@@ -57,5 +56,3 @@ class BusExpress(MiliDoS):
 
         self.ContractBusExpress.EnforceTxReceipt(False).bulk_send_token(token, addresses, amounts)
         return self
-
-
