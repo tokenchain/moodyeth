@@ -206,9 +206,14 @@ class SolWeb3Tool(object):
 class MiliDoS:
     """
     wrap the web3 into the package
+    @
     """
 
     def __init__(self, netconfig: Config):
+        # the hidden list
+        self._contract_dict = dict()
+        self._sol_list = list()
+        # publicly accessible
         self.base_path = ""
         self.accountAddr = None
         self.pathfinder = None
@@ -216,8 +221,6 @@ class MiliDoS:
         self.is_deploy = False
         self.last_class = ""
         self.list_type = "list_address"
-        self._contract_dict = dict()
-        self._sol_list = list()
         self.network_cfg = netconfig
         self.w3 = web3_provider(netconfig.rpc_url)
 
@@ -364,15 +367,14 @@ class MiliDoS:
         keyLo = self.w3.eth.account.from_key(f"0x{private_key_line}")
         # self.w3.eth.defaultAccount = keyoo.address
         self.w3.eth.account = keyLo
-        #self.w3.eth.get_transaction_count
+        # self.w3.eth.get_transaction_count
         # self.w3.eth.accounts[0] = keyLo.address
         # self.w3.eth.defaultAccount(f"0x{keyLo.key}")
         is_address = self.w3.isAddress(keyLo.address)
-        #self.w3.isChecksumAddress(keyLo.address)
-        #keyLo.
+        # self.w3.isChecksumAddress(keyLo.address)
+        # keyLo.
         self.accountAddr = keyLo.address
         print(f"You are now using {keyLo.address} and it is a {'valid key' if is_address else 'invalid key'}")
-
 
         return self
 

@@ -1,6 +1,6 @@
 from .libeb import MiliDoS
 from .m.erc20 import Ori20
-from . import Token
+
 
 class ERC20H(MiliDoS):
     def __init__(self, network):
@@ -35,7 +35,3 @@ class ERC20H(MiliDoS):
     def SetupContract(self):
         self.TokenContract = Ori20(self, self.TokenAddress).CallDebug(False).CallContractFee(10000000)
         self.MasterContract = Ori20(self, self.ERC20Address).CallDebug(False).CallContractFee(10000000)
-
-
-
-
