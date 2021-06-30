@@ -107,9 +107,9 @@ class TestBulkManager(LooperBulk):
     def __init__(self, dat: list, mHold: MiliDoS):
         self.datlist = dat
         super().__init__(mHold)
+        self._enableContractBatch()
 
     def prep(self) -> "TestBulkManager":
-        self._enableContractBatch()
         self._status_busy = True
         for row in self.datlist:
             address = str(row[0])
@@ -140,15 +140,14 @@ class TestBulkManager(LooperBulk):
         return math.ceil(self.total / TestBulkManager.wei)
 
 
-class ExcelBasic(BaseBulk):
+class ExcelBasic(LooperBulk):
 
-    def __init__(self, filepath, network_conf):
-        super().__init__()
-        PrintNetworkName(network_conf)
+    def __init__(self, filepath, mHold: MiliDoS):
+        super().__init__(mHold)
         self.exeFilepath = filepath
-        self.tron = network_conf
         self.kAddress = "address"
         self.kAmount = "amount"
+        PrintNetworkName(mHold.network_cfg)
 
     def useKeyChinese(self) -> "ExcelBasic":
         self.kAddress = "提现地址"
@@ -162,9 +161,13 @@ class ExcelBasic(BaseBulk):
 
 
 class ExcelBulkManager(ExcelBasic):
+    """
+    using contract on making at least 250 transactions in a batch.
+    """
 
-    def __init__(self, filepath, tron):
-        super().__init__(filepath, tron)
+    def __init__(self, filepath, m: MiliDoS):
+        super().__init__(filepath, m)
+        self._enableContractBatch()
 
     def prep(self) -> "ExcelBulkManager":
         self._status_busy = True
@@ -186,6 +189,7 @@ class ExcelBulkManager(ExcelBasic):
                 self.entryErrAdd(address, enter_digit)
                 continue
 
+        self._batch_process()
         self.PreStatement()
 
         return self
