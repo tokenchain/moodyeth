@@ -297,8 +297,8 @@ class ExcelBulkManagerClassic(ExcelBasic):
                     _perc = "{0:.0f}%".format(v / self.transaction_count * 100)
                     notify(v, self.transaction_count, _perc)
 
-                if self.logger is not None:
-                    self.logger(f"#{v} {recipient} {report_amount} 📤 ")
+                if self._file_logger is not None:
+                    self._file_logger(f"#{v} {recipient} {report_amount} 📤 ")
 
                 time.sleep(0.5)
 

@@ -55,9 +55,9 @@ class BaseBulk:
         self.err_total = 0
         self.transaction_count = 0
         self.processed_count = 0
-        self.logger = None
-        self.checker_log = None
 
+        self._file_logger = None
+        self._tg_logger = None
         self._status_busy = False
         self._program_override = False
         self._logfile = None
@@ -122,6 +122,9 @@ class BaseBulk:
     def calculation(self) -> float:
         return int(self.total / BaseBulk.wei)
 
+    def _error_too_many(self) -> bool:
+        return len(self.err_address) > 50
+
     def ListErrors(self):
         j = 0
         for h in self.err_address:
@@ -131,13 +134,17 @@ class BaseBulk:
     def ListErrorsLogger(self):
         j = 0
         for h in self.err_address:
-            self.logger(f"❌ {h} -> {self.err_amount[j]}")
+            self._file_logger(f"❌ {h} -> {self.err_amount[j]}")
             j = j + 1
 
     def ListErrorsLoggerChecker(self):
+        if self._error_too_many():
+            self._tg_logger("Too much errors. cannot show them all")
+            return
+
         j = 0
         for h in self.err_address:
-            self.checker_log(f"❌ {h} -> {self.err_amount[j]}")
+            self._tg_logger(f"❌ {h} -> {self.err_amount[j]}")
             j = j + 1
 
     def _line_invalid_address(self, error_address: str) -> None:
@@ -191,31 +198,31 @@ class BaseBulk:
     def PreStatement(self) -> None:
         transaction_reserve = self.transaction_count * self.fee_set
 
-        if self.logger is not None:
-            self.logger("===============================================")
-            self.logger(f"Grand total:{self.getPlatformVal()}, decimal code> {self.total}")
-            self.logger(f"Error total:{self.getPlatformErrVal()}, decimal code> {self.err_total}")
-            self.logger(f"Trn count:{self.transaction_count}, Est. fee> {transaction_reserve} {self.token_symbol}")
+        if self._file_logger is not None:
+            self._file_logger("===============================================")
+            self._file_logger(f"Grand total:{self.getPlatformVal()}, decimal code> {self.total}")
+            self._file_logger(f"Error total:{self.getPlatformErrVal()}, decimal code> {self.err_total}")
+            self._file_logger(f"Trn count:{self.transaction_count}, Est. fee> {transaction_reserve} {self.token_symbol}")
 
             if self._batch_contract:
-                self.logger(f"Batch count: {self._batches_count}")
+                self._file_logger(f"Batch count: {self._batches_count}")
 
-            self.logger("===============================================")
+            self._file_logger("===============================================")
             self.ListErrorsLogger()
-            self.logger("===============================================")
+            self._file_logger("===============================================")
 
-        if self.checker_log is not None:
-            self.checker_log("===============================================")
-            self.checker_log(f"Grand total:{self.getPlatformVal()}, decimal code> {self.total}")
-            self.checker_log(f"Error total:{self.getPlatformErrVal()}, decimal code> {self.err_total}")
-            self.checker_log(f"Trn count:{self.transaction_count}, Est. fee> {transaction_reserve} {self.token_symbol}")
+        if self._tg_logger is not None:
+            self._tg_logger("===============================================")
+            self._tg_logger(f"Grand total:{self.getPlatformVal()}, decimal code> {self.total}")
+            self._tg_logger(f"Error total:{self.getPlatformErrVal()}, decimal code> {self.err_total}")
+            self._tg_logger(f"Trn count:{self.transaction_count}, Est. fee> {transaction_reserve} {self.token_symbol}")
 
             if self._batch_contract:
-                self.checker_log(f"Batch count: {self._batches_count}")
+                self._tg_logger(f"Batch count: {self._batches_count}")
 
-            self.checker_log("===============================================")
+            self._tg_logger("===============================================")
             self.ListErrorsLoggerChecker()
-            self.checker_log("===============================================")
+            self._tg_logger("===============================================")
 
         if not self._program_override:
             print("===============================================")
@@ -236,8 +243,8 @@ class BaseBulk:
 
         self._status_busy = False
 
-    def setLogger(self, logger) -> None:
-        self.logger = logger
+    def setLogger(self, logger_to_file) -> None:
+        self._file_logger = logger_to_file
 
     def setLogFile(self, outputfile: str) -> None:
         self._logfile = outputfile
@@ -253,7 +260,7 @@ class BaseBulk:
         file_object.close()
 
     def setCheckLogger(self, check_save) -> None:
-        self.checker_log = check_save
+        self._tg_logger = check_save
 
     def setProgramUseOnly(self):
         self._program_override = True
