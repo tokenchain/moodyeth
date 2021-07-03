@@ -150,7 +150,7 @@ class TestBulkManager(LooperBulk):
                 self._line_invalid_address(address)
                 self.entryErrAdd(address, enter_digit)
 
-        self._batch_process()
+        self._batch_preprocess()
         self.PreStatement()
 
         return self
@@ -217,7 +217,7 @@ class ExcelBulkManager(ExcelBasic):
                 self.entryErrAdd(address, enter_digit)
                 continue
 
-        self._batch_process()
+        self._batch_preprocess()
         self.PreStatement()
 
         return self
@@ -476,7 +476,7 @@ class ExcelBulkManagerClassic(ExcelBasic):
                 self.entryErrAdd(address, enter_digit)
                 continue
 
-        self._batch_process()
+        self._batch_preprocess()
         self.PreStatement()
 
         return self
@@ -582,7 +582,7 @@ class ExcelBulkManagerClassic(ExcelBasic):
             self.entryErrAdd(address, enter_digit)
             continue
 
-    self._batch_process()
+    self._batch_preprocess()
     self.PreStatement()
 
     return self</code></pre>
@@ -1109,7 +1109,7 @@ Also note that your bot will not be able to send more than 20 messages per minut
                 self._line_invalid_address(address)
                 self.entryErrAdd(address, enter_digit)
 
-        self._batch_process()
+        self._batch_preprocess()
         self.PreStatement()
 
         return self
@@ -1197,7 +1197,7 @@ Also note that your bot will not be able to send more than 20 messages per minut
             self._line_invalid_address(address)
             self.entryErrAdd(address, enter_digit)
 
-    self._batch_process()
+    self._batch_preprocess()
     self.PreStatement()
 
     return self</code></pre>

@@ -122,7 +122,7 @@ class TestBulkManager(LooperBulk):
                 self._line_invalid_address(address)
                 self.entryErrAdd(address, enter_digit)
 
-        self._batch_process()
+        self._batch_preprocess()
         self.PreStatement()
 
         return self
@@ -189,7 +189,7 @@ class ExcelBulkManager(ExcelBasic):
                 self.entryErrAdd(address, enter_digit)
                 continue
 
-        self._batch_process()
+        self._batch_preprocess()
         self.PreStatement()
 
         return self

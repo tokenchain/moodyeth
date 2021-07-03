@@ -55,6 +55,7 @@ class BaseBulk:
         self.err_total = 0
         self.transaction_count = 0
         self.processed_count = 0
+        self._gas_fee = 0
 
         self._file_logger = None
         self._tg_logger = None
@@ -74,6 +75,18 @@ class BaseBulk:
     def withDecimal(self, dec: int) -> "BaseBulk":
         self.decimal = dec
         return self
+
+    def setPerTransactionFee(self, fee: float) -> "BaseBulk":
+        self.fee_set = fee
+        return self
+
+    @property
+    def getGasFeeCode(self):
+        return self._gas_fee * BaseBulk.wei
+
+    @property
+    def CountAllValidTrans(self):
+        return self.transaction_count
 
     @property
     def nowSec(self) -> int:
@@ -169,7 +182,7 @@ class BaseBulk:
             return False
         return True
 
-    def _batch_process(self):
+    def _batch_preprocess(self):
         if not self._batch_contract:
             return
 
@@ -197,6 +210,7 @@ class BaseBulk:
 
     def PreStatement(self) -> None:
         transaction_reserve = self.transaction_count * self.fee_set
+        self._gas_fee = transaction_reserve
 
         if self._file_logger is not None:
             self._file_logger("===============================================")
