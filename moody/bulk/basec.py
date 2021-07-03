@@ -81,11 +81,11 @@ class BaseBulk:
         return self
 
     @property
-    def getGasFeeCode(self):
-        return self._gas_fee * BaseBulk.wei
+    def getGasFeeCode(self) -> int:
+        return int(self._gas_fee * BaseBulk.wei)
 
     @property
-    def CountAllValidTrans(self):
+    def CountAllValidTrans(self) -> int:
         return self.transaction_count
 
     @property

@@ -109,11 +109,11 @@ class BaseBulk:
         return self
 
     @property
-    def getGasFeeCode(self):
-        return self._gas_fee * BaseBulk.wei
+    def getGasFeeCode(self) -&gt; int:
+        return int(self._gas_fee * BaseBulk.wei)
 
     @property
-    def CountAllValidTrans(self):
+    def CountAllValidTrans(self) -&gt; int:
         return self.transaction_count
 
     @property
@@ -421,11 +421,11 @@ class BaseBulk:
         return self
 
     @property
-    def getGasFeeCode(self):
-        return self._gas_fee * BaseBulk.wei
+    def getGasFeeCode(self) -&gt; int:
+        return int(self._gas_fee * BaseBulk.wei)
 
     @property
-    def CountAllValidTrans(self):
+    def CountAllValidTrans(self) -&gt; int:
         return self.transaction_count
 
     @property
@@ -644,7 +644,7 @@ class BaseBulk:
 </dl>
 <h3>Instance variables</h3>
 <dl>
-<dt id="moody.bulk.basec.BaseBulk.CountAllValidTrans"><code class="name">var <span class="ident">CountAllValidTrans</span></code></dt>
+<dt id="moody.bulk.basec.BaseBulk.CountAllValidTrans"><code class="name">var <span class="ident">CountAllValidTrans</span> : int</code></dt>
 <dd>
 <div class="desc"></div>
 <details class="source">
@@ -652,11 +652,11 @@ class BaseBulk:
 <span>Expand source code</span>
 </summary>
 <pre><code class="python">@property
-def CountAllValidTrans(self):
+def CountAllValidTrans(self) -&gt; int:
     return self.transaction_count</code></pre>
 </details>
 </dd>
-<dt id="moody.bulk.basec.BaseBulk.getGasFeeCode"><code class="name">var <span class="ident">getGasFeeCode</span></code></dt>
+<dt id="moody.bulk.basec.BaseBulk.getGasFeeCode"><code class="name">var <span class="ident">getGasFeeCode</span> : int</code></dt>
 <dd>
 <div class="desc"></div>
 <details class="source">
@@ -664,8 +664,8 @@ def CountAllValidTrans(self):
 <span>Expand source code</span>
 </summary>
 <pre><code class="python">@property
-def getGasFeeCode(self):
-    return self._gas_fee * BaseBulk.wei</code></pre>
+def getGasFeeCode(self) -&gt; int:
+    return int(self._gas_fee * BaseBulk.wei)</code></pre>
 </details>
 </dd>
 <dt id="moody.bulk.basec.BaseBulk.getLogFileLocation"><code class="name">var <span class="ident">getLogFileLocation</span> : str</code></dt>
