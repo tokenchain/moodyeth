@@ -209,7 +209,7 @@ class BaseBulk:
         self._batches_count = batches
 
     def PreStatement(self) -> None:
-        transaction_reserve = self.transaction_count * self.fee_set
+        transaction_reserve = int(self.transaction_count * self.fee_set)
         self._gas_fee = transaction_reserve
 
         if self._file_logger is not None:
