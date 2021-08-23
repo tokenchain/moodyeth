@@ -115,6 +115,26 @@ def XDaiMainnet() -&gt; Config:
         symbol=&#34;xDai&#34;,
         block_explorer=&#34;https://explorer.anyblock.tools/ethereum/poa/xdai/&#34;,
         bridge=&#34;https://bridge.xdaichain.com/&#34;
+    )
+
+
+def OKChainMainnet() -&gt; Config:
+    return Config(
+        network_name=&#34;OKExChainMainnet&#34;,
+        rpc_url=&#34;https://exchainrpc.okex.org&#34;,
+        chain_id=66,
+        symbol=&#34;OKT&#34;,
+        block_explorer=&#34;https://www.oklink.com/okexchain/&#34;
+    )
+
+
+def OKChainTestnet() -&gt; Config:
+    return Config(
+        network_name=&#34;OKExChainTestnet&#34;,
+        rpc_url=&#34;https://exchaintestrpc.okex.org&#34;,
+        chain_id=65,
+        symbol=&#34;OKT&#34;,
+        block_explorer=&#34;https://www.oklink.com/okexchain-test/&#34;
     )</code></pre>
 </details>
 </section>
@@ -240,6 +260,44 @@ def XDaiMainnet() -&gt; Config:
     )</code></pre>
 </details>
 </dd>
+<dt id="moody.conf.OKChainMainnet"><code class="name flex">
+<span>def <span class="ident">OKChainMainnet</span></span>(<span>) ‑> <a title="moody.Config" href="index.html#moody.Config">Config</a></span>
+</code></dt>
+<dd>
+<div class="desc"></div>
+<details class="source">
+<summary>
+<span>Expand source code</span>
+</summary>
+<pre><code class="python">def OKChainMainnet() -&gt; Config:
+    return Config(
+        network_name=&#34;OKExChainMainnet&#34;,
+        rpc_url=&#34;https://exchainrpc.okex.org&#34;,
+        chain_id=66,
+        symbol=&#34;OKT&#34;,
+        block_explorer=&#34;https://www.oklink.com/okexchain/&#34;
+    )</code></pre>
+</details>
+</dd>
+<dt id="moody.conf.OKChainTestnet"><code class="name flex">
+<span>def <span class="ident">OKChainTestnet</span></span>(<span>) ‑> <a title="moody.Config" href="index.html#moody.Config">Config</a></span>
+</code></dt>
+<dd>
+<div class="desc"></div>
+<details class="source">
+<summary>
+<span>Expand source code</span>
+</summary>
+<pre><code class="python">def OKChainTestnet() -&gt; Config:
+    return Config(
+        network_name=&#34;OKExChainTestnet&#34;,
+        rpc_url=&#34;https://exchaintestrpc.okex.org&#34;,
+        chain_id=65,
+        symbol=&#34;OKT&#34;,
+        block_explorer=&#34;https://www.oklink.com/okexchain-test/&#34;
+    )</code></pre>
+</details>
+</dd>
 <dt id="moody.conf.Ropsten"><code class="name flex">
 <span>def <span class="ident">Ropsten</span></span>(<span>) ‑> <a title="moody.Config" href="index.html#moody.Config">Config</a></span>
 </code></dt>
@@ -312,6 +370,8 @@ def XDaiMainnet() -&gt; Config:
 <li><code><a title="moody.conf.HuobiChainTestnet" href="#moody.conf.HuobiChainTestnet">HuobiChainTestnet</a></code></li>
 <li><code><a title="moody.conf.Kovan" href="#moody.conf.Kovan">Kovan</a></code></li>
 <li><code><a title="moody.conf.MoonBeamTestnet" href="#moody.conf.MoonBeamTestnet">MoonBeamTestnet</a></code></li>
+<li><code><a title="moody.conf.OKChainMainnet" href="#moody.conf.OKChainMainnet">OKChainMainnet</a></code></li>
+<li><code><a title="moody.conf.OKChainTestnet" href="#moody.conf.OKChainTestnet">OKChainTestnet</a></code></li>
 <li><code><a title="moody.conf.Ropsten" href="#moody.conf.Ropsten">Ropsten</a></code></li>
 <li><code><a title="moody.conf.XDaiMainnet" href="#moody.conf.XDaiMainnet">XDaiMainnet</a></code></li>
 </ul>

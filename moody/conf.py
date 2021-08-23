@@ -89,3 +89,22 @@ def XDaiMainnet() -> Config:
         bridge="https://bridge.xdaichain.com/"
     )
 
+
+def OKChainMainnet() -> Config:
+    return Config(
+        network_name="OKExChainMainnet",
+        rpc_url="https://exchainrpc.okex.org",
+        chain_id=66,
+        symbol="OKT",
+        block_explorer="https://www.oklink.com/okexchain/"
+    )
+
+
+def OKChainTestnet() -> Config:
+    return Config(
+        network_name="OKExChainTestnet",
+        rpc_url="https://exchaintestrpc.okex.org",
+        chain_id=65,
+        symbol="OKT",
+        block_explorer="https://www.oklink.com/okexchain-test/"
+    )
