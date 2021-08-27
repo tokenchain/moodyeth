@@ -378,6 +378,15 @@ class MiliDoS:
 
         return self
 
+    def estimateGas(self, class_name: str) -> int:
+        # estimate_gas
+
+        solc_artifact = SolWeb3Tool()
+        solc_artifact.setBasePath(self.base_path)
+        solc_artifact = solc_artifact.GetCodeClassFromBuild(class_name)
+        nr = self.w3.eth.contract(abi=solc_artifact.abi, bytecode=solc_artifact.bin)
+        return nr.constructor().estimateGas()
+
     def deploy(self, class_name: str,
                params: list = [],
                fee: int = 10 ** 9,

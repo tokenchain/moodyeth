@@ -406,6 +406,15 @@ class MiliDoS:
 
         return self
 
+    def estimateGas(self, class_name: str) -&gt; int:
+        # estimate_gas
+
+        solc_artifact = SolWeb3Tool()
+        solc_artifact.setBasePath(self.base_path)
+        solc_artifact = solc_artifact.GetCodeClassFromBuild(class_name)
+        nr = self.w3.eth.contract(abi=solc_artifact.abi, bytecode=solc_artifact.bin)
+        return nr.constructor().estimateGas()
+
     def deploy(self, class_name: str,
                params: list = [],
                fee: int = 10 ** 9,
@@ -1047,6 +1056,15 @@ implement default like this::</p>
 
         return self
 
+    def estimateGas(self, class_name: str) -&gt; int:
+        # estimate_gas
+
+        solc_artifact = SolWeb3Tool()
+        solc_artifact.setBasePath(self.base_path)
+        solc_artifact = solc_artifact.GetCodeClassFromBuild(class_name)
+        nr = self.w3.eth.contract(abi=solc_artifact.abi, bytecode=solc_artifact.bin)
+        return nr.constructor().estimateGas()
+
     def deploy(self, class_name: str,
                params: list = [],
                fee: int = 10 ** 9,
@@ -1468,6 +1486,25 @@ Note: Be cautions with the range provided, as the logic creates query for each b
     cTool = SolWeb3Tool()
     cTool.setBuildNameSpace(&#34;artifact&#34;).GetCodeClassFromBuild(&#34;ERC20&#34;)
     return self.w3.eth.contract(abi=cTool.abi)</code></pre>
+</details>
+</dd>
+<dt id="moody.libeb.MiliDoS.estimateGas"><code class="name flex">
+<span>def <span class="ident">estimateGas</span></span>(<span>self, class_name: str) ‑> int</span>
+</code></dt>
+<dd>
+<div class="desc"></div>
+<details class="source">
+<summary>
+<span>Expand source code</span>
+</summary>
+<pre><code class="python">def estimateGas(self, class_name: str) -&gt; int:
+    # estimate_gas
+
+    solc_artifact = SolWeb3Tool()
+    solc_artifact.setBasePath(self.base_path)
+    solc_artifact = solc_artifact.GetCodeClassFromBuild(class_name)
+    nr = self.w3.eth.contract(abi=solc_artifact.abi, bytecode=solc_artifact.bin)
+    return nr.constructor().estimateGas()</code></pre>
 </details>
 </dd>
 <dt id="moody.libeb.MiliDoS.estimate_gas_price"><code class="name flex">
@@ -2293,6 +2330,7 @@ all works will be done with the remote server or using the docker</p></div>
 <li><code><a title="moody.libeb.MiliDoS.contract_event_in_range" href="#moody.libeb.MiliDoS.contract_event_in_range">contract_event_in_range</a></code></li>
 <li><code><a title="moody.libeb.MiliDoS.deploy" href="#moody.libeb.MiliDoS.deploy">deploy</a></code></li>
 <li><code><a title="moody.libeb.MiliDoS.erc20_contract" href="#moody.libeb.MiliDoS.erc20_contract">erc20_contract</a></code></li>
+<li><code><a title="moody.libeb.MiliDoS.estimateGas" href="#moody.libeb.MiliDoS.estimateGas">estimateGas</a></code></li>
 <li><code><a title="moody.libeb.MiliDoS.estimate_gas_price" href="#moody.libeb.MiliDoS.estimate_gas_price">estimate_gas_price</a></code></li>
 <li><code><a title="moody.libeb.MiliDoS.getAddr" href="#moody.libeb.MiliDoS.getAddr">getAddr</a></code></li>
 <li><code><a title="moody.libeb.MiliDoS.getAllAddress" href="#moody.libeb.MiliDoS.getAllAddress">getAllAddress</a></code></li>
