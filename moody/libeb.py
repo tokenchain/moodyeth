@@ -223,6 +223,7 @@ class MiliDoS:
         self.list_type = "list_address"
         self.network_cfg = netconfig
         self.w3 = web3_provider(netconfig.rpc_url)
+        self.gas_amount = 0
 
         result = self.w3.isConnected()
         if not result:
@@ -380,12 +381,14 @@ class MiliDoS:
 
     def estimateGas(self, class_name: str) -> int:
         # estimate_gas
-
         solc_artifact = SolWeb3Tool()
         solc_artifact.setBasePath(self.base_path)
         solc_artifact = solc_artifact.GetCodeClassFromBuild(class_name)
         nr = self.w3.eth.contract(abi=solc_artifact.abi, bytecode=solc_artifact.bin)
-        return nr.constructor().estimateGas()
+        self.gas_amount = nr.constructor().estimateGas()
+        price = self.w3.eth.generate_gas_price()
+        print(f"Price: {price}")
+        return self.gas_amount
 
     def deploy(self, class_name: str,
                params: list = [],

@@ -251,6 +251,7 @@ class MiliDoS:
         self.list_type = &#34;list_address&#34;
         self.network_cfg = netconfig
         self.w3 = web3_provider(netconfig.rpc_url)
+        self.gas_amount = 0
 
         result = self.w3.isConnected()
         if not result:
@@ -408,12 +409,14 @@ class MiliDoS:
 
     def estimateGas(self, class_name: str) -&gt; int:
         # estimate_gas
-
         solc_artifact = SolWeb3Tool()
         solc_artifact.setBasePath(self.base_path)
         solc_artifact = solc_artifact.GetCodeClassFromBuild(class_name)
         nr = self.w3.eth.contract(abi=solc_artifact.abi, bytecode=solc_artifact.bin)
-        return nr.constructor().estimateGas()
+        self.gas_amount = nr.constructor().estimateGas()
+        price = self.w3.eth.generate_gas_price()
+        print(f&#34;Price: {price}&#34;)
+        return self.gas_amount
 
     def deploy(self, class_name: str,
                params: list = [],
@@ -901,6 +904,7 @@ implement default like this::</p>
         self.list_type = &#34;list_address&#34;
         self.network_cfg = netconfig
         self.w3 = web3_provider(netconfig.rpc_url)
+        self.gas_amount = 0
 
         result = self.w3.isConnected()
         if not result:
@@ -1058,12 +1062,14 @@ implement default like this::</p>
 
     def estimateGas(self, class_name: str) -&gt; int:
         # estimate_gas
-
         solc_artifact = SolWeb3Tool()
         solc_artifact.setBasePath(self.base_path)
         solc_artifact = solc_artifact.GetCodeClassFromBuild(class_name)
         nr = self.w3.eth.contract(abi=solc_artifact.abi, bytecode=solc_artifact.bin)
-        return nr.constructor().estimateGas()
+        self.gas_amount = nr.constructor().estimateGas()
+        price = self.w3.eth.generate_gas_price()
+        print(f&#34;Price: {price}&#34;)
+        return self.gas_amount
 
     def deploy(self, class_name: str,
                params: list = [],
@@ -1499,12 +1505,14 @@ Note: Be cautions with the range provided, as the logic creates query for each b
 </summary>
 <pre><code class="python">def estimateGas(self, class_name: str) -&gt; int:
     # estimate_gas
-
     solc_artifact = SolWeb3Tool()
     solc_artifact.setBasePath(self.base_path)
     solc_artifact = solc_artifact.GetCodeClassFromBuild(class_name)
     nr = self.w3.eth.contract(abi=solc_artifact.abi, bytecode=solc_artifact.bin)
-    return nr.constructor().estimateGas()</code></pre>
+    self.gas_amount = nr.constructor().estimateGas()
+    price = self.w3.eth.generate_gas_price()
+    print(f&#34;Price: {price}&#34;)
+    return self.gas_amount</code></pre>
 </details>
 </dd>
 <dt id="moody.libeb.MiliDoS.estimate_gas_price"><code class="name flex">

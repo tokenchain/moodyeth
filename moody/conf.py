@@ -34,7 +34,7 @@ def Kovan() -> Config:
 def Ropsten() -> Config:
     return Config(
         network_name="Ropsten",
-        rpc_url="https://ropsten.infura.io/v3/2019a99711c648f8951a640e8031ca33",
+        rpc_url="https://ropsten.infura.io/v3/9aa3d95b3bc440fa88ea12eaa4456161",
         chain_id=3,
         symbol="RETH",
         block_explorer="https://ropsten.etherscan.io/"
