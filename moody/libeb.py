@@ -17,6 +17,7 @@ from web3.middleware import geth_poa_middleware
 from web3.types import BlockData
 
 # ========================== Of course
+from . import Bolors
 from .buildercompile.remotecompile import BuildRemoteLinuxCommand
 from .buildercompile.transpile import BuildLang
 from .conf import Config
@@ -229,11 +230,11 @@ class MiliDoS:
 
         result = self.w3.isConnected()
         if not result:
-            print(f"try to connect {self.network_cfg.network_name} {self.network_cfg.rpc_url}: {result}")
+            print(f"try to connect {self.network_cfg.network_name}  {Bolors.WARNING} {self.network_cfg.rpc_url}: {result} {Bolors.RESET}")
             exit(0)
             return
         else:
-            print(f"You are now connected to {self.network_cfg.network_name} {self.network_cfg.rpc_url}")
+            print(f"You are now connected to {Bolors.OK} {self.network_cfg.network_name} {self.network_cfg.rpc_url} {Bolors.RESET}")
 
     def withPOA(self) -> "MiliDoS":
         self.w3.middleware_onion.inject(geth_poa_middleware, layer=0)
@@ -409,7 +410,7 @@ class MiliDoS:
         _transaction['nonce'] = self.w3.eth.getTransactionCount(self.accountAddr)
         _transaction['to'] = None
         # Get correct transaction nonce for sender from the node
-        print("======== Signing {} ✅ ...".format(class_name))
+        print(f"======== Signing {class_name} ✅ ...")
         signed = self.w3.eth.account.sign_transaction(_transaction)
         try:
             txHash = self.w3.eth.sendRawTransaction(signed.rawTransaction)
@@ -418,7 +419,7 @@ class MiliDoS:
             print("======== TX Result ✅")
             print(tx_receipt)
 
-            print("======== Broadcast Result ✅ -> {}".format(Paths.showCurrentDeployedClass(class_name)))
+            print(f"======== Broadcast Result ✅ -> {Paths.showCurrentDeployedClass(class_name)}")
 
             if "contractAddress" not in tx_receipt:
                 print("error from deploy contract")
@@ -429,7 +430,7 @@ class MiliDoS:
                 owner="",
             )
             print("======== address saved to ✅ {} -> {}".format(tx_receipt.contractAddress, class_name))
-            print("You can check with the explorer for more detail: {}".format(self.network_cfg.block_explorer))
+            print(f"You can check with the explorer for more detail: {Bolors.WARNING} {self.network_cfg.block_explorer}{Bolors.RESET}")
             self.artifact_manager = solc_artifact
             solc_artifact.StoreTxResult(tx_receipt, self.pathfinder.classObject(class_name))
             self.complete_deployment()

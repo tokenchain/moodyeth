@@ -2,7 +2,7 @@
 # coding: utf-8
 from typing import Tuple
 
-from . import Config
+from . import Config, Bolors
 from .libeb import MiliDoS
 
 
@@ -31,14 +31,14 @@ class ContractTool(MiliDoS):
         if "Genesis" in self._contract_dict:
             return self.getAddr("Genesis")
         else:
-            raise ValueError("not Genesis contract address is found")
+            raise ValueError(f"{Bolors.FAIL}not Genesis contract address is found {Bolors.RESET}")
 
     @property
     def GenesisKeyAddress(self) -> str:
         if "GenesisKey" in self._contract_dict:
             return self.getAddr("GenesisKey")
         else:
-            raise ValueError("not GenesisKey address is found")
+            raise ValueError(f"{Bolors.FAIL}not GenesisKey {Bolors.RESET}address is found")
 
     @property
     def TokenCurrencyAddress(self) -> str:
