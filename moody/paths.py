@@ -11,6 +11,7 @@ import os
 
 class Paths:
     """
+    :type statement
     Manage the workspace paths
 
     """
@@ -24,7 +25,7 @@ class Paths:
     DEPLOYMENT_FILE_NAME = "deploy_{}{}.json"
     VERSION_NAME = "v{}"
     NAME_FILE_EXX = "{}/{}.json"
-
+    # ---- sovernior
     TARGET_LOC = "/root/contracts"
     COMPRESSED_NAME = "solc-build.tar.gz"
     SOLC_VER = "0.5.15"
@@ -85,7 +86,7 @@ class Paths:
         return self.__playerAddrsFilePath
 
     """
-    config the network name
+    :type Config the network name
     """
 
     def Network(self, name) -> "Paths":
