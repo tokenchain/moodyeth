@@ -11,7 +11,7 @@ from hexbytes import HexBytes
 from web3 import Web3, HTTPProvider
 from web3.contract import Contract as Web3Contract
 from web3.datastructures import AttributeDict
-from web3.exceptions import TransactionNotFound
+from web3.exceptions import TransactionNotFound, ContractLogicError
 from web3.logs import DISCARD
 from web3.middleware import geth_poa_middleware
 from web3.types import BlockData
@@ -434,6 +434,9 @@ class MiliDoS:
             self.artifact_manager = solc_artifact
             solc_artifact.StoreTxResult(tx_receipt, self.pathfinder.classObject(class_name))
             self.complete_deployment()
+
+        except ContractLogicError as w3ex:
+            print(w3ex)
         except ValueError as te:
             if "code" in te:
                 code = te["code"]
