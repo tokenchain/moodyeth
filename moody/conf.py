@@ -108,3 +108,23 @@ def OKChainTestnet() -> Config:
         symbol="OKT",
         block_explorer="https://www.oklink.com/okexchain-test/"
     )
+
+
+def HSDTTestnet() -> Config:
+    return Config(
+        network_name="HSDTTestnet",
+        rpc_url="http://47.243.141.113:12369",
+        chain_id=1235,
+        symbol="HSDT",
+        block_explorer="http://47.243.123.252/"
+    )
+
+
+def HSDTMainnet() -> Config:
+    return Config(
+        network_name="HSDTMainnet",
+        rpc_url="http://103.244.3.70:12369",
+        chain_id=1236,
+        symbol="HSDT",
+        block_explorer="http://47.243.123.252/"
+    )

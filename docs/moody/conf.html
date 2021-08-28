@@ -135,6 +135,26 @@ def OKChainTestnet() -&gt; Config:
         chain_id=65,
         symbol=&#34;OKT&#34;,
         block_explorer=&#34;https://www.oklink.com/okexchain-test/&#34;
+    )
+
+
+def HSDTTestnet() -&gt; Config:
+    return Config(
+        network_name=&#34;HSDTTestnet&#34;,
+        rpc_url=&#34;http://47.243.141.113:12369&#34;,
+        chain_id=1235,
+        symbol=&#34;HSDT&#34;,
+        block_explorer=&#34;http://47.243.123.252/&#34;
+    )
+
+
+def HSDTMainnet() -&gt; Config:
+    return Config(
+        network_name=&#34;HSDTMainnet&#34;,
+        rpc_url=&#34;http://103.244.3.70:12369&#34;,
+        chain_id=1236,
+        symbol=&#34;HSDT&#34;,
+        block_explorer=&#34;http://47.243.123.252/&#34;
     )</code></pre>
 </details>
 </section>
@@ -180,6 +200,44 @@ def OKChainTestnet() -&gt; Config:
         chain_id=97,
         symbol=&#34;BNB&#34;,
         block_explorer=&#34;https://testnet.bscscan.com/&#34;
+    )</code></pre>
+</details>
+</dd>
+<dt id="moody.conf.HSDTMainnet"><code class="name flex">
+<span>def <span class="ident">HSDTMainnet</span></span>(<span>) ‑> <a title="moody.Config" href="index.html#moody.Config">Config</a></span>
+</code></dt>
+<dd>
+<div class="desc"></div>
+<details class="source">
+<summary>
+<span>Expand source code</span>
+</summary>
+<pre><code class="python">def HSDTMainnet() -&gt; Config:
+    return Config(
+        network_name=&#34;HSDTMainnet&#34;,
+        rpc_url=&#34;http://103.244.3.70:12369&#34;,
+        chain_id=1236,
+        symbol=&#34;HSDT&#34;,
+        block_explorer=&#34;http://47.243.123.252/&#34;
+    )</code></pre>
+</details>
+</dd>
+<dt id="moody.conf.HSDTTestnet"><code class="name flex">
+<span>def <span class="ident">HSDTTestnet</span></span>(<span>) ‑> <a title="moody.Config" href="index.html#moody.Config">Config</a></span>
+</code></dt>
+<dd>
+<div class="desc"></div>
+<details class="source">
+<summary>
+<span>Expand source code</span>
+</summary>
+<pre><code class="python">def HSDTTestnet() -&gt; Config:
+    return Config(
+        network_name=&#34;HSDTTestnet&#34;,
+        rpc_url=&#34;http://47.243.141.113:12369&#34;,
+        chain_id=1235,
+        symbol=&#34;HSDT&#34;,
+        block_explorer=&#34;http://47.243.123.252/&#34;
     )</code></pre>
 </details>
 </dd>
@@ -366,6 +424,8 @@ def OKChainTestnet() -&gt; Config:
 <ul class="two-column">
 <li><code><a title="moody.conf.BSCMain" href="#moody.conf.BSCMain">BSCMain</a></code></li>
 <li><code><a title="moody.conf.BSCTest" href="#moody.conf.BSCTest">BSCTest</a></code></li>
+<li><code><a title="moody.conf.HSDTMainnet" href="#moody.conf.HSDTMainnet">HSDTMainnet</a></code></li>
+<li><code><a title="moody.conf.HSDTTestnet" href="#moody.conf.HSDTTestnet">HSDTTestnet</a></code></li>
 <li><code><a title="moody.conf.HuobiChainMainnet" href="#moody.conf.HuobiChainMainnet">HuobiChainMainnet</a></code></li>
 <li><code><a title="moody.conf.HuobiChainTestnet" href="#moody.conf.HuobiChainTestnet">HuobiChainTestnet</a></code></li>
 <li><code><a title="moody.conf.Kovan" href="#moody.conf.Kovan">Kovan</a></code></li>
