@@ -432,33 +432,40 @@ class MiliDoS:
         solc_artifact = solc_artifact.GetCodeClassFromBuild(class_name)
         nr = self.w3.eth.contract(abi=solc_artifact.abi, bytecode=solc_artifact.bin)
         _transaction = nr.constructor().buildTransaction()
-
         _transaction[&#39;nonce&#39;] = self.w3.eth.getTransactionCount(self.accountAddr)
         _transaction[&#39;to&#39;] = None
         # Get correct transaction nonce for sender from the node
         print(&#34;======== Signing {} ✅ ...&#34;.format(class_name))
         signed = self.w3.eth.account.sign_transaction(_transaction)
-        txHash = self.w3.eth.sendRawTransaction(signed.rawTransaction)
-        # print(f&#34;Contract &#39;{class_name}&#39; deployed; Waiting to transaction receipt&#34;)
-        tx_receipt = self.w3.eth.waitForTransactionReceipt(txHash)
-        print(&#34;======== TX Result ✅&#34;)
-        print(tx_receipt)
+        try:
+            txHash = self.w3.eth.sendRawTransaction(signed.rawTransaction)
+            # print(f&#34;Contract &#39;{class_name}&#39; deployed; Waiting to transaction receipt&#34;)
+            tx_receipt = self.w3.eth.waitForTransactionReceipt(txHash)
+            print(&#34;======== TX Result ✅&#34;)
+            print(tx_receipt)
 
-        print(&#34;======== Broadcast Result ✅ -&gt; {}&#34;.format(Paths.showCurrentDeployedClass(class_name)))
+            print(&#34;======== Broadcast Result ✅ -&gt; {}&#34;.format(Paths.showCurrentDeployedClass(class_name)))
 
-        if &#34;contractAddress&#34; not in tx_receipt:
-            print(&#34;error from deploy contract&#34;)
-            exit(1)
+            if &#34;contractAddress&#34; not in tx_receipt:
+                print(&#34;error from deploy contract&#34;)
+                exit(1)
 
-        self._contract_dict[class_name] = tx_receipt.contractAddress
-        self._contract_dict[&#34;kv_{}&#34;.format(class_name)] = dict(
-            owner=&#34;&#34;,
-        )
-        print(&#34;======== address saved to ✅ {} -&gt; {}&#34;.format(tx_receipt.contractAddress, class_name))
-        print(&#34;You can check with the explorer for more detail: {}&#34;.format(self.network_cfg.block_explorer))
-        self.artifact_manager = solc_artifact
-        solc_artifact.StoreTxResult(tx_receipt, self.pathfinder.classObject(class_name))
-        self.complete_deployment()
+            self._contract_dict[class_name] = tx_receipt.contractAddress
+            self._contract_dict[&#34;kv_{}&#34;.format(class_name)] = dict(
+                owner=&#34;&#34;,
+            )
+            print(&#34;======== address saved to ✅ {} -&gt; {}&#34;.format(tx_receipt.contractAddress, class_name))
+            print(&#34;You can check with the explorer for more detail: {}&#34;.format(self.network_cfg.block_explorer))
+            self.artifact_manager = solc_artifact
+            solc_artifact.StoreTxResult(tx_receipt, self.pathfinder.classObject(class_name))
+            self.complete_deployment()
+        except ValueError as te:
+            if &#34;code&#34; in te:
+                code = te[&#34;code&#34;]
+                if code == -32000:
+                    print(&#34;NOT ENOUGH GAS - insufficient funds for gas&#34;)
+                    return
+            print(te)
 
     @property
     def __list_key_label(self) -&gt; str:
@@ -1085,33 +1092,40 @@ implement default like this::</p>
         solc_artifact = solc_artifact.GetCodeClassFromBuild(class_name)
         nr = self.w3.eth.contract(abi=solc_artifact.abi, bytecode=solc_artifact.bin)
         _transaction = nr.constructor().buildTransaction()
-
         _transaction[&#39;nonce&#39;] = self.w3.eth.getTransactionCount(self.accountAddr)
         _transaction[&#39;to&#39;] = None
         # Get correct transaction nonce for sender from the node
         print(&#34;======== Signing {} ✅ ...&#34;.format(class_name))
         signed = self.w3.eth.account.sign_transaction(_transaction)
-        txHash = self.w3.eth.sendRawTransaction(signed.rawTransaction)
-        # print(f&#34;Contract &#39;{class_name}&#39; deployed; Waiting to transaction receipt&#34;)
-        tx_receipt = self.w3.eth.waitForTransactionReceipt(txHash)
-        print(&#34;======== TX Result ✅&#34;)
-        print(tx_receipt)
+        try:
+            txHash = self.w3.eth.sendRawTransaction(signed.rawTransaction)
+            # print(f&#34;Contract &#39;{class_name}&#39; deployed; Waiting to transaction receipt&#34;)
+            tx_receipt = self.w3.eth.waitForTransactionReceipt(txHash)
+            print(&#34;======== TX Result ✅&#34;)
+            print(tx_receipt)
 
-        print(&#34;======== Broadcast Result ✅ -&gt; {}&#34;.format(Paths.showCurrentDeployedClass(class_name)))
+            print(&#34;======== Broadcast Result ✅ -&gt; {}&#34;.format(Paths.showCurrentDeployedClass(class_name)))
 
-        if &#34;contractAddress&#34; not in tx_receipt:
-            print(&#34;error from deploy contract&#34;)
-            exit(1)
+            if &#34;contractAddress&#34; not in tx_receipt:
+                print(&#34;error from deploy contract&#34;)
+                exit(1)
 
-        self._contract_dict[class_name] = tx_receipt.contractAddress
-        self._contract_dict[&#34;kv_{}&#34;.format(class_name)] = dict(
-            owner=&#34;&#34;,
-        )
-        print(&#34;======== address saved to ✅ {} -&gt; {}&#34;.format(tx_receipt.contractAddress, class_name))
-        print(&#34;You can check with the explorer for more detail: {}&#34;.format(self.network_cfg.block_explorer))
-        self.artifact_manager = solc_artifact
-        solc_artifact.StoreTxResult(tx_receipt, self.pathfinder.classObject(class_name))
-        self.complete_deployment()
+            self._contract_dict[class_name] = tx_receipt.contractAddress
+            self._contract_dict[&#34;kv_{}&#34;.format(class_name)] = dict(
+                owner=&#34;&#34;,
+            )
+            print(&#34;======== address saved to ✅ {} -&gt; {}&#34;.format(tx_receipt.contractAddress, class_name))
+            print(&#34;You can check with the explorer for more detail: {}&#34;.format(self.network_cfg.block_explorer))
+            self.artifact_manager = solc_artifact
+            solc_artifact.StoreTxResult(tx_receipt, self.pathfinder.classObject(class_name))
+            self.complete_deployment()
+        except ValueError as te:
+            if &#34;code&#34; in te:
+                code = te[&#34;code&#34;]
+                if code == -32000:
+                    print(&#34;NOT ENOUGH GAS - insufficient funds for gas&#34;)
+                    return
+            print(te)
 
     @property
     def __list_key_label(self) -&gt; str:
@@ -1450,33 +1464,40 @@ Note: Be cautions with the range provided, as the logic creates query for each b
     solc_artifact = solc_artifact.GetCodeClassFromBuild(class_name)
     nr = self.w3.eth.contract(abi=solc_artifact.abi, bytecode=solc_artifact.bin)
     _transaction = nr.constructor().buildTransaction()
-
     _transaction[&#39;nonce&#39;] = self.w3.eth.getTransactionCount(self.accountAddr)
     _transaction[&#39;to&#39;] = None
     # Get correct transaction nonce for sender from the node
     print(&#34;======== Signing {} ✅ ...&#34;.format(class_name))
     signed = self.w3.eth.account.sign_transaction(_transaction)
-    txHash = self.w3.eth.sendRawTransaction(signed.rawTransaction)
-    # print(f&#34;Contract &#39;{class_name}&#39; deployed; Waiting to transaction receipt&#34;)
-    tx_receipt = self.w3.eth.waitForTransactionReceipt(txHash)
-    print(&#34;======== TX Result ✅&#34;)
-    print(tx_receipt)
+    try:
+        txHash = self.w3.eth.sendRawTransaction(signed.rawTransaction)
+        # print(f&#34;Contract &#39;{class_name}&#39; deployed; Waiting to transaction receipt&#34;)
+        tx_receipt = self.w3.eth.waitForTransactionReceipt(txHash)
+        print(&#34;======== TX Result ✅&#34;)
+        print(tx_receipt)
 
-    print(&#34;======== Broadcast Result ✅ -&gt; {}&#34;.format(Paths.showCurrentDeployedClass(class_name)))
+        print(&#34;======== Broadcast Result ✅ -&gt; {}&#34;.format(Paths.showCurrentDeployedClass(class_name)))
 
-    if &#34;contractAddress&#34; not in tx_receipt:
-        print(&#34;error from deploy contract&#34;)
-        exit(1)
+        if &#34;contractAddress&#34; not in tx_receipt:
+            print(&#34;error from deploy contract&#34;)
+            exit(1)
 
-    self._contract_dict[class_name] = tx_receipt.contractAddress
-    self._contract_dict[&#34;kv_{}&#34;.format(class_name)] = dict(
-        owner=&#34;&#34;,
-    )
-    print(&#34;======== address saved to ✅ {} -&gt; {}&#34;.format(tx_receipt.contractAddress, class_name))
-    print(&#34;You can check with the explorer for more detail: {}&#34;.format(self.network_cfg.block_explorer))
-    self.artifact_manager = solc_artifact
-    solc_artifact.StoreTxResult(tx_receipt, self.pathfinder.classObject(class_name))
-    self.complete_deployment()</code></pre>
+        self._contract_dict[class_name] = tx_receipt.contractAddress
+        self._contract_dict[&#34;kv_{}&#34;.format(class_name)] = dict(
+            owner=&#34;&#34;,
+        )
+        print(&#34;======== address saved to ✅ {} -&gt; {}&#34;.format(tx_receipt.contractAddress, class_name))
+        print(&#34;You can check with the explorer for more detail: {}&#34;.format(self.network_cfg.block_explorer))
+        self.artifact_manager = solc_artifact
+        solc_artifact.StoreTxResult(tx_receipt, self.pathfinder.classObject(class_name))
+        self.complete_deployment()
+    except ValueError as te:
+        if &#34;code&#34; in te:
+            code = te[&#34;code&#34;]
+            if code == -32000:
+                print(&#34;NOT ENOUGH GAS - insufficient funds for gas&#34;)
+                return
+        print(te)</code></pre>
 </details>
 </dd>
 <dt id="moody.libeb.MiliDoS.erc20_contract"><code class="name flex">
