@@ -1,5 +1,10 @@
+import random
+from datetime import datetime
+
+from web3 import Web3
+
 from .libeb import MiliDoS
-from .m.erc20 import Ori20
+from .m.ori20 import Ori20
 
 
 class ERC20H(MiliDoS):
@@ -7,6 +12,12 @@ class ERC20H(MiliDoS):
         super().__init__(network)
         self.TokenContract: Ori20 = None
         self.MasterContract: Ori20 = None
+
+    def generateHash(self) -> bytes:
+        gTime = int(datetime.now().timestamp())
+        rKey = random.randint(15000000, gTime)
+        eHash = Web3.solidityKeccak(["uint256"], [rKey])
+        return eHash
 
     @property
     def TokenAddress(self) -> str:
