@@ -30,7 +30,7 @@ class TxParams:
         default=None, converter=attr.converters.optional(int)
     )
 
-    def as_dict(self)->dict:
+    def as_dict(self) -> dict:
         """Get transaction params as dict appropriate for web3."""
         res = {k: v for k, v in attr.asdict(self).items() if v is not None}
         if "from_" in res:
