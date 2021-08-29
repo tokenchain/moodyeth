@@ -40,6 +40,15 @@ class ContractTool(MiliDoS):
         print(f"You are now using {localAcc.address} and it is a {'valid key' if is_address else 'invalid key'}")
         return self
 
+    def DistributeCoins(self, from_account_index: int, loops: int, exclude: list = []) -> None:
+        ind = 0
+        skip = exclude
+        while ind < loops:
+            if skip.index(ind) > 0:
+                continue
+            self.AuthIndex(from_account_index).Transfer(ind, 0.1)
+            ind += 1
+
     def Transfer(self, w_index: int, amount: float, gwei: int = 50) -> str:
         tx = self.w3.eth.buildTransaction(
             {
