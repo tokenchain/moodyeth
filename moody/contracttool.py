@@ -36,23 +36,28 @@ class ContractTool(MiliDoS):
     def check_fill(self, inset: dict, cls_name: str) -> None:
         if len(inset) > 0:
             if cls_name not in self._contract_dict:
-                print(f"Check class name: {Bolors.WARNING}{cls_name}{Bolors.RESET}")
+                print(f"Check class: {Bolors.WARNING}{cls_name}{Bolors.RESET}->{inset[cls_name]}")
                 self._contract_dict[cls_name] = inset[cls_name]
 
     def FillAddresses(self, deploy_list_input: dict) -> "ContractTool":
         if len(self.deploy_list) == 0 or len(deploy_list_input) == 0:
             print(f"{Bolors.FAIL}deploy list not found {Bolors.RESET}")
+            exit(0)
             return self
-        listuage = []
+
+        listuage = dict()
 
         if len(self.deploy_list) == 0:
             listuage = deploy_list_input
 
         elif len(deploy_list_input) == 0:
             listuage = self.deploy_list
+        else:
+            listuage = deploy_list_input
 
         if len(listuage) == 0:
             print(f"{Bolors.FAIL}deploy list still not found {Bolors.RESET}")
+            exit(0)
             return self
 
         for m in [*self.classes]:

@@ -390,6 +390,7 @@ class MiliDoS:
         nr = self.w3.eth.contract(abi=solc_artifact.abi, bytecode=solc_artifact.bin)
         self.gas_amount = nr.constructor().estimateGas()
         price = self.w3.eth.generate_gas_price()
+        # source: https://ethereum.stackexchange.com/questions/84943/what-is-the-equivalent-of-buildtransaction-of-web3py-in-web3js
         print(f"Price: {price}")
         return self.gas_amount
 
