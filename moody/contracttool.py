@@ -2,6 +2,8 @@
 # coding: utf-8
 from typing import Tuple
 
+from web3 import Web3
+
 from . import Config, Bolors
 from .libeb import MiliDoS
 
@@ -28,6 +30,31 @@ class ContractTool(MiliDoS):
 
     def auth(self, w_index: int) -> Tuple[str, str]:
         return self.wallet_addresses[w_index][0], self.wallet_addresses[w_index][1]
+
+    def AuthIndex(self, w_index: int) -> "ContractTool":
+        (a, c) = self.auth(w_index)
+        localAcc = Web3.eth.account.privateKeyToAccount(c)
+        self.w3.eth.account = localAcc
+        is_address = self.w3.isAddress(localAcc.address)
+        self.accountAddr = localAcc.address
+        print(f"You are now using {localAcc.address} and it is a {'valid key' if is_address else 'invalid key'}")
+        return self
+
+    def Transfer(self, w_index: int, amount: float, gwei: int = 50) -> str:
+        tx = self.w3.eth.buildTransaction(
+            {
+                'to': self.referrer(w_index),
+                # 'chainId': self.w3.eth.chainId,
+                'gas': 2000000,
+                'gasPrice': self.w3.toWei(gwei, 'gwei'),
+                'nonce': self.w3.eth.getTransactionCount(self.w3.eth.account, block_identifier='pending'),
+                'value': self.w3.toWei(amount, "ether")
+            })
+        signed_txn = self.w3.eth.account.sign_transaction(tx)
+        txhash = self.w3.eth.sendRawTransaction(signed_txn.rawTransaction)
+        hashTxStr = self.w3.toHex(txhash)
+        print(f"✅ {Bolors.OK}{hashTxStr}{Bolors.RESET}")
+        return hashTxStr
 
     def ClassList(self, setup_list: list) -> "ContractTool":
         self.classes = setup_list
