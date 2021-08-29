@@ -29,7 +29,7 @@ class ContractTool(MiliDoS):
     def auth(self, w_index: int) -> Tuple[str, str]:
         return self.wallet_addresses[w_index][0], self.wallet_addresses[w_index][1]
 
-    def ClassList(self, setup_list: dict) -> "ContractTool":
+    def ClassList(self, setup_list: list) -> "ContractTool":
         self.classes = setup_list
         return self
 
