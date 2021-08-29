@@ -7,8 +7,11 @@ from .libeb import MiliDoS
 
 
 class ContractTool(MiliDoS):
+    classes = [
+        "Genesis", "Mine", "PriceOracle", "USDT", "Currency"
+    ]
 
-    def __init__(self, netconfig: Config, root_path, deploy_list: list, wallet_addresses: list):
+    def __init__(self, netconfig: Config, root_path, deploy_list: dict, wallet_addresses: list):
         self.ROOT = root_path
         self.wallet_addresses = wallet_addresses
         self.deploy_list = deploy_list
@@ -25,6 +28,38 @@ class ContractTool(MiliDoS):
 
     def auth(self, w_index: int) -> Tuple[str, str]:
         return self.wallet_addresses[w_index][0], self.wallet_addresses[w_index][1]
+
+    def ClassList(self, setup_list: dict) -> "ContractTool":
+        self.classes = setup_list
+        return self
+
+    def check_fill(self, inset: dict, cls_name: str) -> None:
+        if len(inset) > 0:
+            if cls_name not in self._contract_dict:
+                print(f"Check class name: {Bolors.WARNING}{cls_name}{Bolors.RESET}")
+                self._contract_dict[cls_name] = inset[cls_name]
+
+    def FillAddresses(self, deploy_list_input: dict) -> "ContractTool":
+        if len(self.deploy_list) == 0 or len(deploy_list_input) == 0:
+            print(f"{Bolors.FAIL}deploy list not found {Bolors.RESET}")
+            return self
+        listuage = []
+
+        if len(self.deploy_list) == 0:
+            listuage = deploy_list_input
+
+        elif len(deploy_list_input) == 0:
+            listuage = self.deploy_list
+
+        if len(listuage) == 0:
+            print(f"{Bolors.FAIL}deploy list still not found {Bolors.RESET}")
+            return self
+
+        for m in [*self.classes]:
+            self.check_fill(listuage, m)
+        self.SaveConfig()
+
+        return self
 
     @property
     def GenesisAddress(self) -> str:
