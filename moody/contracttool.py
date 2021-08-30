@@ -2,7 +2,7 @@
 # coding: utf-8
 from typing import Tuple
 
-from web3 import Web3
+from eth_account import Account
 
 from . import Config, Bolors
 from .libeb import MiliDoS
@@ -33,11 +33,11 @@ class ContractTool(MiliDoS):
 
     def AuthIndex(self, w_index: int) -> "ContractTool":
         (a, c) = self.auth(w_index)
-        localAcc = Web3.eth.account.privateKeyToAccount(c)
-        self.w3.eth.account = localAcc
-        is_address = self.w3.isAddress(localAcc.address)
-        self.accountAddr = localAcc.address
-        print(f"You are now using {localAcc.address} and it is a {'valid key' if is_address else 'invalid key'}")
+        localAc = Account.from_key(c)
+        self.w3.eth.account = localAc
+        is_address = self.w3.isAddress(localAc.address)
+        self.accountAddr = localAc.address
+        print(f"You are now using {localAc.address} and it is a {'valid key' if is_address else 'invalid key'}")
         return self
 
     def DistributeCoins(self, from_account_index: int, loops: int, exclude: list = []) -> None:
