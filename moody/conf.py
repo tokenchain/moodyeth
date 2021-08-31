@@ -41,6 +41,16 @@ def Ropsten() -> Config:
     )
 
 
+def GoerliTestnet() -> Config:
+    return Config(
+        network_name="Goerli",
+        rpc_url="https://goerli.infura.io/v3/9aa3d95b3bc440fa88ea12eaa4456161",
+        chain_id=5,
+        symbol="ETH",
+        block_explorer="https://goerli.etherscan.io"
+    )
+
+
 def MoonBeamTestnet() -> Config:
     return Config(
         # wss://wss.testnet.moonbeam.network
