@@ -40,31 +40,6 @@ class ContractTool(MiliDoS):
         print(f"You are now using {localAc.address} and it is a {'valid key' if is_address else 'invalid key'}")
         return self
 
-    def DistributeCoins(self, from_account_index: int, loops: int, exclude: list = []) -> None:
-        ind = 0
-        skip = exclude
-        while ind < loops:
-            if skip.index(ind) > 0:
-                continue
-            self.AuthIndex(from_account_index).Transfer(ind, 0.1)
-            ind += 1
-
-    def Transfer(self, w_index: int, amount: float, gwei: int = 50) -> str:
-        tx = self.w3.eth.buildTransaction(
-            {
-                'to': self.referrer(w_index),
-                # 'chainId': self.w3.eth.chainId,
-                'gas': 2000000,
-                'gasPrice': self.w3.toWei(gwei, 'gwei'),
-                'nonce': self.w3.eth.getTransactionCount(self.w3.eth.account, block_identifier='pending'),
-                'value': self.w3.toWei(amount, "ether")
-            })
-        signed_txn = self.w3.eth.account.sign_transaction(tx)
-        txhash = self.w3.eth.sendRawTransaction(signed_txn.rawTransaction)
-        hashTxStr = self.w3.toHex(txhash)
-        print(f"✅ {Bolors.OK}{hashTxStr}{Bolors.RESET}")
-        return hashTxStr
-
     def ClassList(self, setup_list: list) -> "ContractTool":
         self.classes = setup_list
         return self
@@ -180,3 +155,41 @@ class ContractTool(MiliDoS):
             return self.getAddr("USDC")
         else:
             raise ValueError("not USDC contract address is found")
+
+    """
+    
+    This is the ETH transfer functions
+    """
+
+    def Transfer(self, w_index: int, amount: float, gwei: int = 500) -> str:
+        tx = {
+            'to': self.referrer(w_index),
+            'chainId': self.w3.eth.chainId,
+            'gas': 2000000,
+            'gasPrice': self.w3.toWei(gwei, 'gwei'),
+            'nonce': self.w3.eth.getTransactionCount(self.w3.eth.account.address),
+            'value': self.w3.toWei(amount, "ether")
+        }
+        # (a, p) = self.auth(w_index)
+        # print(f"private key get {p}")
+        signed_txn = self.w3.eth.account.sign_transaction(tx)
+        print(f"🚸 Before transaction sending data\n{tx}")
+        txhash = self.w3.eth.sendRawTransaction(signed_txn.rawTransaction)
+        hashTxStr = self.w3.toHex(txhash)
+        print(f"☕️ Waiting for the block confirmation now ...")
+        self.w3.eth.waitForTransactionReceipt(txhash)
+        print(f"✅ {Bolors.OK}{hashTxStr}{Bolors.RESET}")
+        return hashTxStr
+
+    def DistributeCoins(self, from_account_index: int, loops: int, exclude: list = []) -> None:
+        ind = 0
+        # self.AuthIndex(from_account_index)
+        while ind < loops:
+            if ind in exclude:
+                ind += 1
+                continue
+            if from_account_index == ind:
+                ind += 1
+                continue
+            self.Transfer(ind, 0.1)
+            ind += 1
