@@ -161,27 +161,7 @@ class ContractTool(MiliDoS):
     This is the ETH transfer functions
     """
 
-    def Transfer(self, w_index: int, amount: float, gwei: int = 500) -> str:
-        tx = {
-            'to': self.referrer(w_index),
-            'chainId': self.w3.eth.chainId,
-            'gas': 2000000,
-            'gasPrice': self.w3.toWei(gwei, 'gwei'),
-            'nonce': self.w3.eth.getTransactionCount(self.w3.eth.account.address),
-            'value': self.w3.toWei(amount, "ether")
-        }
-        # (a, p) = self.auth(w_index)
-        # print(f"private key get {p}")
-        signed_txn = self.w3.eth.account.sign_transaction(tx)
-        print(f"🚸 Before transaction sending data\n{tx}")
-        txhash = self.w3.eth.sendRawTransaction(signed_txn.rawTransaction)
-        hashTxStr = self.w3.toHex(txhash)
-        print(f"☕️ Waiting for the block confirmation now ...")
-        self.w3.eth.waitForTransactionReceipt(txhash)
-        print(f"✅ {Bolors.OK}{hashTxStr}{Bolors.RESET}")
-        return hashTxStr
-
-    def DistributeCoins(self, from_account_index: int, loops: int, exclude: list = []) -> None:
+    def DistributeCoins(self, from_account_index: int, loops: int, exclude: list, gas: int, price: int) -> None:
         ind = 0
         # self.AuthIndex(from_account_index)
         while ind < loops:
@@ -191,5 +171,25 @@ class ContractTool(MiliDoS):
             if from_account_index == ind:
                 ind += 1
                 continue
-            self.Transfer(ind, 0.1)
+            self.Transfer(ind, 0.1, gas, price)
             ind += 1
+
+    def Transfer(self, w_index: int, amount: float, gas: int = 2000000, price: int = 500000000) -> str:
+        tx = {
+            'to': self.referrer(w_index),
+            'chainId': self.w3.eth.chainId,
+            'gas': gas,
+            'gasPrice': price,
+            'nonce': self.w3.eth.getTransactionCount(self.w3.eth.account.address),
+            'value': self.w3.toWei(amount, "ether")
+        }
+        # (a, p) = self.auth(w_index)
+        # print(f"private key get {p}")
+        signed_txn = self.w3.eth.account.sign_transaction(tx)
+        print(f"🚸 Before transaction sending data\n{tx}")
+        tx_hash = self.w3.eth.sendRawTransaction(signed_txn.rawTransaction)
+        hash_tx_str = self.w3.toHex(tx_hash)
+        print(f"☕️ Waiting for the block confirmation now ...")
+        self.w3.eth.waitForTransactionReceipt(tx_hash)
+        print(f"✅ {Bolors.OK}{hash_tx_str}{Bolors.RESET}")
+        return hash_tx_str
