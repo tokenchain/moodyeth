@@ -55,6 +55,10 @@ class Paths:
     def showCurrentDeployedClass(cls, class_name: str) -> str:
         return cls.NAME_FILE_EXX.format(cls.ACTION_FOLDER, class_name)
 
+    def updateTargetDappFolder(self, folderName: str) -> "Paths":
+        self.WEB_DAPP_SRC = folderName
+        return self
+
     def setSolVersion(self, version: str) -> "Paths":
         self.SOLC_VER = version
         return self

@@ -283,7 +283,8 @@ class MiliDoS:
         BuildRemoteLinuxCommand(self.pathfinder, self._sol_list)
         return self
 
-    def localTranspile(self) -> "MiliDoS":
+    def localTranspile(self, dapp_folder: str = "app") -> "MiliDoS":
+        self.pathfinder.updateTargetDappFolder(dapp_folder)
         BuildLang(self.pathfinder, self._sol_list)
         return self
 
