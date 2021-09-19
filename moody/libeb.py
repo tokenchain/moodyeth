@@ -444,6 +444,27 @@ class MiliDoS:
     def waitSec(self) -> int:
         return self.network_cfg.wait_time
 
+    @property
+    def LinkVRFHashKey(self) -> str:
+        if self.network_cfg.link_keyhash is None:
+            raise ValueError("Link VRF Hash Key is endorsed on this network")
+        else:
+            return self.network_cfg.link_keyhash
+
+    @property
+    def LinkVRFCoordinator(self) -> str:
+        if self.network_cfg.link_vrf_coordinator is None:
+            raise ValueError("Link VRF is endorsed on this network")
+        else:
+            return self.network_cfg.link_vrf_coordinator
+
+    @property
+    def LinkTokenAddress(self) -> str:
+        if self.network_cfg.link_token is None:
+            raise ValueError("Link Token is endorsed on this network")
+        else:
+            return self.network_cfg.link_token
+
     def deploy(self, class_name: str,
                params: list = [],
                gas_price: int = 0,

@@ -37,7 +37,12 @@ class Config:
     gas: int = 6000000,
     gasPrice: int = 1059100000
     one: int = 1000000000000000000
-    wait_time: int = 6
+    wait_time: int = 6,
+    # Oracle from Chainlink
+    # https://docs.chain.link/docs/vrf-contracts/
+    link_token: str = None,
+    link_vrf_coordinator: str = None
+    link_keyhash: str = None
 
 
 @dataclass
