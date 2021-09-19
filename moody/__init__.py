@@ -24,7 +24,6 @@ class Token:
     spender: dict = None
     balance: dict = None
 
-
 @dataclass
 class Config:
     network_name: str

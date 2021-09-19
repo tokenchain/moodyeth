@@ -8,10 +8,10 @@ import time
 import pandas as pd
 from web3 import exceptions, _utils
 
-from .basec import BaseBulk, PrintNetworkName, bcolors
+from .basec import BaseBulk, PrintNetworkName
 from ..libeb import MiliDoS
 from ..m.b_send import BSend
-from ..m.erc20 import Ori20
+from ..m.ori20 import Ori20
 
 
 class LooperBulk(BaseBulk):

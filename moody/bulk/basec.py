@@ -6,14 +6,7 @@ import math
 
 from web3 import Web3
 
-from .. import conf
-
-
-class bcolors:
-    OK = '\033[92m'  # GREEN
-    WARNING = '\033[93m'  # YELLOW
-    FAIL = '\033[91m'  # RED
-    RESET = '\033[0m'  # RESET COLOR
+from .. import conf, Bolors
 
 
 def yes_or_no(question):
@@ -30,7 +23,7 @@ def yes_or_no(question):
 
 
 def PrintNetworkName(network_conf: conf):
-    print(f"You are now using network {bcolors.WARNING}{str(network_conf.network_name).upper()}{bcolors.RESET}")
+    print(f"You are now using network {Bolors.WARNING}{str(network_conf.network_name).upper()}{Bolors.RESET}")
 
 
 def WriteFile(content, filename: str):
@@ -141,7 +134,7 @@ class BaseBulk:
     def ListErrors(self):
         j = 0
         for h in self.err_address:
-            print(f"error {bcolors.FAIL}{h}{bcolors.RESET} -> {bcolors.FAIL}{self.err_amount[j]}{bcolors.RESET}")
+            print(f"error {Bolors.FAIL}{h}{Bolors.RESET} -> {Bolors.FAIL}{self.err_amount[j]}{Bolors.RESET}")
             j = j + 1
 
     def ListErrorsLogger(self):
@@ -161,19 +154,19 @@ class BaseBulk:
             j = j + 1
 
     def _line_invalid_address(self, error_address: str) -> None:
-        print(f">>>> {bcolors.FAIL}{error_address}{bcolors.RESET}")
+        print(f">>>> {Bolors.FAIL}{error_address}{Bolors.RESET}")
 
     def _line_color_invalid_address(self, error_address: str, digit: int, h: any = None) -> None:
         if h is not None:
-            print(f">>>> {bcolors.FAIL}{error_address} > {digit}{bcolors.RESET}, {h}")
+            print(f">>>> {Bolors.FAIL}{error_address} > {digit}{Bolors.RESET}, {h}")
         else:
-            print(f">>>> {bcolors.FAIL}{error_address} > {digit}{bcolors.RESET}")
+            print(f">>>> {Bolors.FAIL}{error_address} > {digit}{Bolors.RESET}")
 
     def _line_read_code(self, address: str, amount: float, digit: int) -> None:
         print(f"{address}, read {amount} decimalcode ~> {digit}")
 
     def _line_color_code(self, address: str, amount: float, digit: int):
-        print(f"{address}, read {bcolors.WARNING}{amount}{bcolors.RESET} decimal code> {digit}")
+        print(f"{address}, read {Bolors.WARNING}{amount}{Bolors.RESET} decimal code> {digit}")
 
     def _is_valid_address(self, h: str) -> bool:
         if not Web3.isAddress(h):
@@ -204,7 +197,7 @@ class BaseBulk:
 
             batchslots.append([addresses, amountcode])
 
-        print(f"===== batch process - {bcolors.OK}{batches}{bcolors.RESET}")
+        print(f"===== batch process - {Bolors.OK}{batches}{Bolors.RESET}")
         self._batch = batchslots
         self._batches_count = batches
 
@@ -240,12 +233,12 @@ class BaseBulk:
 
         if not self._program_override:
             print("===============================================")
-            print(f"Grand total:{bcolors.OK}{self.getPlatformVal()}{bcolors.RESET}, decimal code> {self.total}")
-            print(f"Error total:{bcolors.FAIL}{self.getPlatformErrVal()}{bcolors.RESET}, decimal code> {self.err_total}")
-            print(f"Trn count:{bcolors.OK}{self.transaction_count}{bcolors.RESET}, Est. fee> {bcolors.WARNING}{transaction_reserve}{bcolors.RESET} {self.token_symbol}")
+            print(f"Grand total:{Bolors.OK}{self.getPlatformVal()}{Bolors.RESET}, decimal code> {self.total}")
+            print(f"Error total:{Bolors.FAIL}{self.getPlatformErrVal()}{Bolors.RESET}, decimal code> {self.err_total}")
+            print(f"Trn count:{Bolors.OK}{self.transaction_count}{Bolors.RESET}, Est. fee> {Bolors.WARNING}{transaction_reserve}{Bolors.RESET} {self.token_symbol}")
 
             if self._batch_contract:
-                print(f"Batch count: {bcolors.OK}{self._batches_count}{bcolors.RESET}")
+                print(f"Batch count: {Bolors.OK}{self._batches_count}{Bolors.RESET}")
 
             print("===============================================")
             self.ListErrors()
