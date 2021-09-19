@@ -19,6 +19,10 @@ class Token:
     name: str = None
     code_hash: str = None
     token_contract: str = None
+    decimal: int = 0
+    total_supply: int = 0
+    spender: dict = None
+    balance: dict = None
 
 
 @dataclass
@@ -29,8 +33,11 @@ class Config:
     symbol: str
     block_explorer: str
     bridge: str = "",
-    gas: int = 500000,
-    gasPrice: int = 1000000000
+    faucet: str = "",
+    gas: int = 6000000,
+    gasPrice: int = 1059100000
+    one: int = 1000000000000000000
+    wait_time: int = 6
 
 
 @dataclass
@@ -47,4 +54,3 @@ class Bolors:
     WARNING = '\033[93m'  # YELLOW
     FAIL = '\033[91m'  # RED
     RESET = '\033[0m'  # RESET COLOR
-

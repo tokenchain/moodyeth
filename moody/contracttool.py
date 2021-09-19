@@ -10,7 +10,7 @@ from .libeb import MiliDoS
 
 class ContractTool(MiliDoS):
     classes = [
-        "Genesis", "Mine", "PriceOracle", "USDT", "Currency"
+        "Genesis", "Mine", "Currency"
     ]
 
     def __init__(self, netconfig: Config, root_path, deploy_list: dict, wallet_addresses: list):

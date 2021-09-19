@@ -212,7 +212,7 @@ class MiliDoS:
     @
     """
 
-    def __init__(self, netconfig: Config):
+    def __init__(self, _nodeCfg: Config):
         # the hidden list
         self._contract_dict = dict()
         self._sol_list = list()
@@ -224,9 +224,8 @@ class MiliDoS:
         self.is_deploy = False
         self.last_class = ""
         self.list_type = "list_address"
-        self.network_cfg = netconfig
-        self.w3 = web3_provider(netconfig.rpc_url)
-        self.gas_amount = 0
+        self.network_cfg = _nodeCfg
+        self.w3 = web3_provider(_nodeCfg.rpc_url)
 
         result = self.w3.isConnected()
         if not result:
@@ -269,9 +268,11 @@ class MiliDoS:
         """
         pass
 
-    def setWorkspace(self, path: str) -> "MiliDoS":
+    def setWorkspace(self, path: str, readio: bool = True) -> "MiliDoS":
         self.base_path = path
         self.pathfinder = Paths(path).setDefaultPath().Network(self.network_cfg.network_name)
+        if readio:
+            self.ready_io(True)
         return self
 
     def setClassSolNames(self, to_compile_contract_list: list) -> "MiliDoS":
@@ -279,6 +280,9 @@ class MiliDoS:
         return self
 
     def remoteCompile(self, ver: str) -> "MiliDoS":
+        if ver == "":
+            print("there is no solidity version specified")
+            exit(0)
         self.pathfinder.setSolVersion(ver)
         BuildRemoteLinuxCommand(self.pathfinder, self._sol_list)
         return self
@@ -379,82 +383,126 @@ class MiliDoS:
         # self.w3.isChecksumAddress(keyLo.address)
         # keyLo.
         self.accountAddr = keyLo.address
-        print(f"You are now using {keyLo.address} and it is a {'valid key' if is_address else 'invalid key'}")
+        print(f"🔫 You are now using {keyLo.address} and it is a {'valid key' if is_address else 'invalid key'}")
 
         return self
 
     def estimateGas(self, class_name: str) -> int:
+        """
+        only for testing the contract deploy gas requirement
+        :param class_name:
+        :return:
+        """
         # estimate_gas
         solc_artifact = SolWeb3Tool()
         solc_artifact.setBasePath(self.base_path)
         solc_artifact = solc_artifact.GetCodeClassFromBuild(class_name)
         nr = self.w3.eth.contract(abi=solc_artifact.abi, bytecode=solc_artifact.bin)
-        self.gas_amount = nr.constructor().estimateGas()
+        gas_est_amount = nr.constructor().estimateGas()
         price = self.w3.eth.generate_gas_price()
         # source: https://ethereum.stackexchange.com/questions/84943/what-is-the-equivalent-of-buildtransaction-of-web3py-in-web3js
         print(f"Price: {price}")
-        return self.gas_amount
+        return gas_est_amount
+
+    def OverrideGasConfig(self, gas: int, gas_price: int) -> None:
+        """
+        the override the configuration for the gas amount and the gas price
+        :param gas: int
+        :param gas_price: int
+        :return: NONE
+        """
+        self.network_cfg.gas = gas
+        self.network_cfg.gasPrice = gas_price
+
+    def OverrideChainConfig(self, one: int, wait: int) -> None:
+        """
+        Lets have the configuration done now.
+        :param one: ONE coin to measure
+        :param wait: the waiting time from each block confirmation
+        :return:
+        """
+        self.network_cfg.wait_time = wait
+        self.network_cfg.one = one
+
+    @property
+    def gas(self) -> int:
+        return self.network_cfg.gas
+
+    @property
+    def gasPrice(self) -> int:
+        return self.network_cfg.gasPrice
+
+    @property
+    def one(self) -> int:
+        """
+        ONE platform coin will be decoded to be...
+        :return: int
+        """
+        return self.network_cfg.one
+
+    @property
+    def waitSec(self) -> int:
+        return self.network_cfg.wait_time
 
     def deploy(self, class_name: str,
                params: list = [],
-               gas_price: int = 2000000000,
-               gas_limit: int = 20000000) -> None:
+               gas_price: int = 0,
+               gas_limit: int = 0) -> bool:
         """
         This is using the faster way to deploy files by using the specific abi and bin files
 
         """
-
         solc_artifact = SolWeb3Tool()
         solc_artifact.setBasePath(self.base_path)
         solc_artifact = solc_artifact.GetCodeClassFromBuild(class_name)
         nr = self.w3.eth.contract(abi=solc_artifact.abi, bytecode=solc_artifact.bin)
         if len(params) > 0:
-            _transaction = nr.constructor(params).buildTransaction()
+            _transaction = nr.constructor(args=params).buildTransaction()
         else:
             _transaction = nr.constructor().buildTransaction()
 
         _transaction['nonce'] = self.w3.eth.getTransactionCount(self.accountAddr)
         _transaction['to'] = None
-        _transaction['gas'] = gas_limit
-        _transaction['gasPrice'] = gas_price
+        _transaction['gas'] = self.gas if gas_limit == 0 else gas_limit
+        _transaction['gasPrice'] = self.gasPrice if gas_price == 0 else gas_price
         # _transaction['gas'] = 2200000000,
 
         # Get correct transaction nonce for sender from the node
-        print(f"======== Signing {class_name} ✅ ...")
+        print(f"========🖍 Signing {class_name}, gas:{_transaction['gas']}, price:{_transaction['gasPrice']} ...")
         signed = self.w3.eth.account.sign_transaction(_transaction)
         try:
             txHash = self.w3.eth.sendRawTransaction(signed.rawTransaction)
             # print(f"Contract '{class_name}' deployed; Waiting to transaction receipt")
-            print(f"======== Wait for block confirmation {class_name} 🚸")
+            print(f"========Wait for Block Confirmation {class_name} 🚸")
             tx_receipt = self.w3.eth.waitForTransactionReceipt(txHash)
-            print("======== TX Result ✅")
+            print("========TX Pre-Result ✅")
             print(tx_receipt)
-
-            print(f"======== Broadcast Result ✅ -> {Paths.showCurrentDeployedClass(class_name)}")
-
+            print(f"========Broadcast Result ✅ -> {Paths.showCurrentDeployedClass(class_name)}")
             if "contractAddress" not in tx_receipt:
                 print("error from deploy contract")
                 exit(1)
-
-            self._contract_dict[class_name] = tx_receipt.contractAddress
+            fresh_address = tx_receipt.contractAddress
+            self._contract_dict[class_name] = fresh_address
             self._contract_dict["kv_{}".format(class_name)] = dict(
                 owner="",
             )
-            print("======== address saved to ✅ {} -> {}".format(tx_receipt.contractAddress, class_name))
-            print(f"You can check with the explorer for more detail: {Bolors.WARNING} {self.network_cfg.block_explorer}{Bolors.RESET}")
+            print("📦 Address saved to ✅ {} -> {}".format(fresh_address, class_name))
+            print(f"🔍 You can check with the explorer for more detail: {Bolors.WARNING} {self.network_cfg.block_explorer}{Bolors.RESET}")
             self.artifact_manager = solc_artifact
             solc_artifact.StoreTxResult(tx_receipt, self.pathfinder.classObject(class_name))
             self.complete_deployment()
-
+            return True
         except ContractLogicError as w3ex:
             print(w3ex)
+            return False
         except ValueError as te:
             if "code" in te:
                 code = te["code"]
                 if code == -32000:
                     print("NOT ENOUGH GAS - insufficient funds for gas")
-                    return
+                    return False
             print(te)
+            return False
 
     @property
     def __list_key_label(self) -> str:
@@ -481,7 +529,7 @@ class MiliDoS:
         """try to load up the file from the existing path"""
         try:
             self._contract_dict = self.pathfinder.LoadDeploymentFile()
-            print("==== 🛄 data is prepared and it is ready now.. ")
+            print("📦 Review the loaded deployment data from ... ")
             if show_address:
                 self.preview_all_addresses()
         except ValueError:
@@ -556,6 +604,9 @@ class MiliDoS:
             return False
         else:
             return True
+
+    def hasContractName(self, name: str) -> bool:
+        return name in self._contract_dict
 
     def getString(self, key: str) -> str:
         return str(self.getVal(key))
