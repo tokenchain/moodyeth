@@ -1,6 +1,10 @@
 # Moodyeth
 
-![https://img.shields.io/pypi/v/moodyeth.svg](https://pypi.python.org/pypi/moodyeth)
+[![moodyeth](https://img.shields.io/pypi/v/moodyeth?style=plastic)](https://pypi.org/project/moodyeth/)
+[![moodyeth](https://img.shields.io/pypi/pyversions/moodyeth.svg)](https://pypi.org/project/moodyeth/)
+[![moodyeth](https://api.travis-ci.com/tokenchain/moodyeth.svg?branch=master)](https://pypi.org/project/moodyeth/)
+[![moodyeth](https://img.shields.io/github/issues/tokenchain/moodyeth.svg)](https://pypi.org/project/moodyeth/)
+
 
 Ethereum based all Moody tool chain for smart contract development kit
 
