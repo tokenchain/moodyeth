@@ -1,4 +1,4 @@
-from moody.m.ori20 import Ori20
+from ..m.ori20 import Ori20
 
 
 class TimeLockerMs:

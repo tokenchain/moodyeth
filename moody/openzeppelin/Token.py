@@ -1,6 +1,6 @@
-from moody import Token
-from moody.libeb import MiliDoS
-from moody.m.ori20 import Ori20
+from .. import Token
+from ..libeb import MiliDoS
+from ..m.ori20 import Ori20
 
 
 class TokenActor(Token):

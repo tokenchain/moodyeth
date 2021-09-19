@@ -1,4 +1,4 @@
-from moody.libeb import MiliDoS
+from ..libeb import MiliDoS
 
 
 class ProxyUpgrade:
