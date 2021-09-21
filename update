@@ -73,5 +73,6 @@ git_update() {
   git push
 }
 
+swap_src
 pub_ver
 git_update
