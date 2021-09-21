@@ -96,7 +96,7 @@ install_requires = [
     "web3>=5.20.0",
     "eth-utils==1.10.0",
     "eth-uniswap==0.0.2",
-    "slither-analyzer==0.8.1"
+    "slither-analyzer==0.8.0"
 ]
 
 
