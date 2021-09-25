@@ -473,15 +473,21 @@ class MiliDoS:
         This is using the faster way to deploy files by using the specific abi and bin files
 
         """
-        solc_artifact = SolWeb3Tool()
-        solc_artifact.setBasePath(self.base_path)
-        solc_artifact = solc_artifact.GetCodeClassFromBuild(class_name)
-        nr = self.w3.eth.contract(abi=solc_artifact.abi, bytecode=solc_artifact.bin)
+        contract_nv = None
+        try:
+            solc_artifact = SolWeb3Tool()
+            solc_artifact.setBasePath(self.base_path)
+            solc_artifact = solc_artifact.GetCodeClassFromBuild(class_name)
+            contract_nv = self.w3.eth.contract(abi=solc_artifact.abi, bytecode=solc_artifact.bin)
+        except FileNotFoundError:
+            print("💢 bin or abi file is not found.")
+            exit(0)
+
         if len(params) > 0:
             print("using params now.. ")
-            _transaction = nr.constructor(*params).buildTransaction()
+            _transaction = contract_nv.constructor(*params).buildTransaction()
         else:
-            _transaction = nr.constructor().buildTransaction()
+            _transaction = contract_nv.constructor().buildTransaction()
 
         _transaction['nonce'] = self.w3.eth.getTransactionCount(self.accountAddr)
         _transaction['to'] = None
