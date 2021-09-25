@@ -478,7 +478,8 @@ class MiliDoS:
         solc_artifact = solc_artifact.GetCodeClassFromBuild(class_name)
         nr = self.w3.eth.contract(abi=solc_artifact.abi, bytecode=solc_artifact.bin)
         if len(params) > 0:
-            _transaction = nr.constructor(args=params).buildTransaction()
+            print("using params now.. ")
+            _transaction = nr.constructor(*params).buildTransaction()
         else:
             _transaction = nr.constructor().buildTransaction()
 
@@ -553,8 +554,8 @@ class MiliDoS:
             print("📦 Review the loaded deployment data from ... ")
             if show_address:
                 self.preview_all_addresses()
-        except ValueError:
-            pass
+        except FileNotFoundError:
+            print("💢 Deployment File is not found ...")
         except TypeError as e:
             print(e)
 

@@ -506,7 +506,8 @@ class MiliDoS:
         solc_artifact = solc_artifact.GetCodeClassFromBuild(class_name)
         nr = self.w3.eth.contract(abi=solc_artifact.abi, bytecode=solc_artifact.bin)
         if len(params) &gt; 0:
-            _transaction = nr.constructor(args=params).buildTransaction()
+            print(&#34;using params now.. &#34;)
+            _transaction = nr.constructor(*params).buildTransaction()
         else:
             _transaction = nr.constructor().buildTransaction()
 
@@ -581,8 +582,8 @@ class MiliDoS:
             print(&#34;📦 Review the loaded deployment data from ... &#34;)
             if show_address:
                 self.preview_all_addresses()
-        except ValueError:
-            pass
+        except FileNotFoundError:
+            print(&#34;💢 Deployment File is not found ...&#34;)
         except TypeError as e:
             print(e)
 
@@ -1252,7 +1253,8 @@ implement default like this::</p>
         solc_artifact = solc_artifact.GetCodeClassFromBuild(class_name)
         nr = self.w3.eth.contract(abi=solc_artifact.abi, bytecode=solc_artifact.bin)
         if len(params) &gt; 0:
-            _transaction = nr.constructor(args=params).buildTransaction()
+            print(&#34;using params now.. &#34;)
+            _transaction = nr.constructor(*params).buildTransaction()
         else:
             _transaction = nr.constructor().buildTransaction()
 
@@ -1327,8 +1329,8 @@ implement default like this::</p>
             print(&#34;📦 Review the loaded deployment data from ... &#34;)
             if show_address:
                 self.preview_all_addresses()
-        except ValueError:
-            pass
+        except FileNotFoundError:
+            print(&#34;💢 Deployment File is not found ...&#34;)
         except TypeError as e:
             print(e)
 
@@ -1786,7 +1788,8 @@ Note: Be cautions with the range provided, as the logic creates query for each b
     solc_artifact = solc_artifact.GetCodeClassFromBuild(class_name)
     nr = self.w3.eth.contract(abi=solc_artifact.abi, bytecode=solc_artifact.bin)
     if len(params) &gt; 0:
-        _transaction = nr.constructor(args=params).buildTransaction()
+        print(&#34;using params now.. &#34;)
+        _transaction = nr.constructor(*params).buildTransaction()
     else:
         _transaction = nr.constructor().buildTransaction()
 
@@ -2192,8 +2195,8 @@ Note: Be cautions with the range provided, as the logic creates query for each b
         print(&#34;📦 Review the loaded deployment data from ... &#34;)
         if show_address:
             self.preview_all_addresses()
-    except ValueError:
-        pass
+    except FileNotFoundError:
+        print(&#34;💢 Deployment File is not found ...&#34;)
     except TypeError as e:
         print(e)</code></pre>
 </details>
