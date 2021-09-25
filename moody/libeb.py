@@ -474,6 +474,7 @@ class MiliDoS:
 
         """
         contract_nv = None
+        solc_artifact = None
         try:
             solc_artifact = SolWeb3Tool()
             solc_artifact.setBasePath(self.base_path)
@@ -484,7 +485,6 @@ class MiliDoS:
             exit(0)
 
         if len(params) > 0:
-            print("using params now.. ")
             _transaction = contract_nv.constructor(*params).buildTransaction()
         else:
             _transaction = contract_nv.constructor().buildTransaction()

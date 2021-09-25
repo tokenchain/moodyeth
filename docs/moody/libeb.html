@@ -502,6 +502,7 @@ class MiliDoS:
 
         &#34;&#34;&#34;
         contract_nv = None
+        solc_artifact = None
         try:
             solc_artifact = SolWeb3Tool()
             solc_artifact.setBasePath(self.base_path)
@@ -512,7 +513,6 @@ class MiliDoS:
             exit(0)
 
         if len(params) &gt; 0:
-            print(&#34;using params now.. &#34;)
             _transaction = contract_nv.constructor(*params).buildTransaction()
         else:
             _transaction = contract_nv.constructor().buildTransaction()
@@ -1255,6 +1255,7 @@ implement default like this::</p>
 
         &#34;&#34;&#34;
         contract_nv = None
+        solc_artifact = None
         try:
             solc_artifact = SolWeb3Tool()
             solc_artifact.setBasePath(self.base_path)
@@ -1265,7 +1266,6 @@ implement default like this::</p>
             exit(0)
 
         if len(params) &gt; 0:
-            print(&#34;using params now.. &#34;)
             _transaction = contract_nv.constructor(*params).buildTransaction()
         else:
             _transaction = contract_nv.constructor().buildTransaction()
@@ -1796,6 +1796,7 @@ Note: Be cautions with the range provided, as the logic creates query for each b
 
     &#34;&#34;&#34;
     contract_nv = None
+    solc_artifact = None
     try:
         solc_artifact = SolWeb3Tool()
         solc_artifact.setBasePath(self.base_path)
@@ -1806,7 +1807,6 @@ Note: Be cautions with the range provided, as the logic creates query for each b
         exit(0)
 
     if len(params) &gt; 0:
-        print(&#34;using params now.. &#34;)
         _transaction = contract_nv.constructor(*params).buildTransaction()
     else:
         _transaction = contract_nv.constructor().buildTransaction()
