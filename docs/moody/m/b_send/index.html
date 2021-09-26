@@ -42,14 +42,13 @@ from typing import (  # pylint: disable=unused-import
 
 from eth_utils import to_checksum_address
 from hexbytes import HexBytes
+from moody import Bolors
+from moody.libeb import MiliDoS
+from moody.m.bases import ContractMethod, Validator, ContractBase, Signatures
+from moody.m.tx_params import TxParams
 from web3.contract import ContractFunction
 from web3.datastructures import AttributeDict
 from web3.exceptions import ContractLogicError
-
-from moody import Bolors
-from moody.libeb import MiliDoS
-from moody.m.bases import ContractMethod, Validator, ContractBase
-from moody.m.tx_params import TxParams
 
 # Try to import a custom validator class definition; if there isn&#39;t one,
 # declare one that we can instantiate for the default argument to the
@@ -80,6 +79,7 @@ class AddSignerMethod(ContractMethod):  # pylint: disable=invalid-name
         &#34;&#34;&#34;Persist instance data.&#34;&#34;&#34;
         super().__init__(elib, contract_address, validator)
         self._underlying_method = contract_function
+        self.sign = validator.getSignature(&#34;addSigner&#34;)
 
     def validate_and_normalize_inputs(self, account: str) -&gt; any:
         &#34;&#34;&#34;Validate the inputs to the addSigner method.&#34;&#34;&#34;
@@ -121,17 +121,17 @@ class AddSignerMethod(ContractMethod):  # pylint: disable=invalid-name
                 txHash = self._web3_eth.sendRawTransaction(signed.rawTransaction)
                 tx_receipt = None
                 if receiptListen is True:
-                    print(&#34;======== awaiting Confirmation 🚸️ -add_signer&#34;)
+                    print(f&#34;======== awaiting Confirmation 🚸️ {self.sign}&#34;)
                     tx_receipt = self._web3_eth.waitForTransactionReceipt(txHash)
                     if debug:
                         print(&#34;======== TX Result ✅&#34;)
                         print(tx_receipt)
 
                 print(f&#34;======== TX blockHash ✅&#34;)
-                if receiptListen is True and tx_receipt is not None:
+                if tx_receipt is not None:
                     print(f&#34;{Bolors.OK}{tx_receipt.blockHash.hex()}{Bolors.RESET}&#34;)
                 else:
-                    print(f&#34;{Bolors.WARNING}{txHash.hex()}{Bolors.RESET}&#34;)
+                    print(f&#34;{Bolors.WARNING}{txHash.hex()}{Bolors.RESET} - broadcast hash&#34;)
 
             if receiptListen is False:
                 time.sleep(self._wait)
@@ -176,6 +176,7 @@ class BulkSendTokenMethod(ContractMethod):  # pylint: disable=invalid-name
         &#34;&#34;&#34;Persist instance data.&#34;&#34;&#34;
         super().__init__(elib, contract_address, validator)
         self._underlying_method = contract_function
+        self.sign = validator.getSignature(&#34;bulkSendToken&#34;)
 
     def validate_and_normalize_inputs(self, token_addr: str, addresses: List[str], amounts: List[int]) -&gt; any:
         &#34;&#34;&#34;Validate the inputs to the bulkSendToken method.&#34;&#34;&#34;
@@ -227,17 +228,17 @@ class BulkSendTokenMethod(ContractMethod):  # pylint: disable=invalid-name
                 txHash = self._web3_eth.sendRawTransaction(signed.rawTransaction)
                 tx_receipt = None
                 if receiptListen is True:
-                    print(&#34;======== awaiting Confirmation 🚸️ -bulk_send_token&#34;)
+                    print(f&#34;======== awaiting Confirmation 🚸️ {self.sign}&#34;)
                     tx_receipt = self._web3_eth.waitForTransactionReceipt(txHash)
                     if debug:
                         print(&#34;======== TX Result ✅&#34;)
                         print(tx_receipt)
 
                 print(f&#34;======== TX blockHash ✅&#34;)
-                if receiptListen is True and tx_receipt is not None:
+                if tx_receipt is not None:
                     print(f&#34;{Bolors.OK}{tx_receipt.blockHash.hex()}{Bolors.RESET}&#34;)
                 else:
-                    print(f&#34;{Bolors.WARNING}{txHash.hex()}{Bolors.RESET}&#34;)
+                    print(f&#34;{Bolors.WARNING}{txHash.hex()}{Bolors.RESET} - broadcast hash&#34;)
 
             if receiptListen is False:
                 time.sleep(self._wait)
@@ -282,6 +283,7 @@ class BulkSendTrxMethod(ContractMethod):  # pylint: disable=invalid-name
         &#34;&#34;&#34;Persist instance data.&#34;&#34;&#34;
         super().__init__(elib, contract_address, validator)
         self._underlying_method = contract_function
+        self.sign = validator.getSignature(&#34;bulkSendTrx&#34;)
 
     def validate_and_normalize_inputs(self, addresses: List[str], amounts: List[int]) -&gt; any:
         &#34;&#34;&#34;Validate the inputs to the bulkSendTrx method.&#34;&#34;&#34;
@@ -327,17 +329,17 @@ class BulkSendTrxMethod(ContractMethod):  # pylint: disable=invalid-name
                 txHash = self._web3_eth.sendRawTransaction(signed.rawTransaction)
                 tx_receipt = None
                 if receiptListen is True:
-                    print(&#34;======== awaiting Confirmation 🚸️ -bulk_send_trx&#34;)
+                    print(f&#34;======== awaiting Confirmation 🚸️ {self.sign}&#34;)
                     tx_receipt = self._web3_eth.waitForTransactionReceipt(txHash)
                     if debug:
                         print(&#34;======== TX Result ✅&#34;)
                         print(tx_receipt)
 
                 print(f&#34;======== TX blockHash ✅&#34;)
-                if receiptListen is True and tx_receipt is not None:
+                if tx_receipt is not None:
                     print(f&#34;{Bolors.OK}{tx_receipt.blockHash.hex()}{Bolors.RESET}&#34;)
                 else:
-                    print(f&#34;{Bolors.WARNING}{txHash.hex()}{Bolors.RESET}&#34;)
+                    print(f&#34;{Bolors.WARNING}{txHash.hex()}{Bolors.RESET} - broadcast hash&#34;)
 
             if receiptListen is False:
                 time.sleep(self._wait)
@@ -378,10 +380,11 @@ class BulkSendTrxMethod(ContractMethod):  # pylint: disable=invalid-name
 class DepositMethod(ContractMethod):  # pylint: disable=invalid-name
     &#34;&#34;&#34;Various interfaces to the deposit method.&#34;&#34;&#34;
 
-    def __init__(self, elib: MiliDoS, contract_address: str, contract_function: ContractFunction):
+    def __init__(self, elib: MiliDoS, contract_address: str, contract_function: ContractFunction, validator: Validator = None):
         &#34;&#34;&#34;Persist instance data.&#34;&#34;&#34;
         super().__init__(elib, contract_address)
         self._underlying_method = contract_function
+        self.sign = validator.getSignature(&#34;deposit&#34;)
 
     def block_send(self, gas: int, price: int, val: int = 0, debug: bool = False, receiptListen: bool = False) -&gt; bool:
         &#34;&#34;&#34;Execute underlying contract method via eth_call.
@@ -413,17 +416,17 @@ class DepositMethod(ContractMethod):  # pylint: disable=invalid-name
                 txHash = self._web3_eth.sendRawTransaction(signed.rawTransaction)
                 tx_receipt = None
                 if receiptListen is True:
-                    print(&#34;======== awaiting Confirmation 🚸️ -deposit&#34;)
+                    print(f&#34;======== awaiting Confirmation 🚸️ {self.sign}&#34;)
                     tx_receipt = self._web3_eth.waitForTransactionReceipt(txHash)
                     if debug:
                         print(&#34;======== TX Result ✅&#34;)
                         print(tx_receipt)
 
                 print(f&#34;======== TX blockHash ✅&#34;)
-                if receiptListen is True and tx_receipt is not None:
+                if tx_receipt is not None:
                     print(f&#34;{Bolors.OK}{tx_receipt.blockHash.hex()}{Bolors.RESET}&#34;)
                 else:
-                    print(f&#34;{Bolors.WARNING}{txHash.hex()}{Bolors.RESET}&#34;)
+                    print(f&#34;{Bolors.WARNING}{txHash.hex()}{Bolors.RESET} - broadcast hash&#34;)
 
             if receiptListen is False:
                 time.sleep(self._wait)
@@ -461,10 +464,11 @@ class DepositMethod(ContractMethod):  # pylint: disable=invalid-name
 class EthSendFeeMethod(ContractMethod):  # pylint: disable=invalid-name
     &#34;&#34;&#34;Various interfaces to the ethSendFee method.&#34;&#34;&#34;
 
-    def __init__(self, elib: MiliDoS, contract_address: str, contract_function: ContractFunction):
+    def __init__(self, elib: MiliDoS, contract_address: str, contract_function: ContractFunction, validator: Validator = None):
         &#34;&#34;&#34;Persist instance data.&#34;&#34;&#34;
         super().__init__(elib, contract_address)
         self._underlying_method = contract_function
+        self.sign = validator.getSignature(&#34;ethSendFee&#34;)
 
     def block_call(self, debug: bool = False) -&gt; int:
         _fn = self._underlying_method()
@@ -486,6 +490,7 @@ class GetBalanceMethod(ContractMethod):  # pylint: disable=invalid-name
         &#34;&#34;&#34;Persist instance data.&#34;&#34;&#34;
         super().__init__(elib, contract_address, validator)
         self._underlying_method = contract_function
+        self.sign = validator.getSignature(&#34;getBalance&#34;)
 
     def validate_and_normalize_inputs(self, addr: str) -&gt; any:
         &#34;&#34;&#34;Validate the inputs to the getBalance method.&#34;&#34;&#34;
@@ -518,6 +523,7 @@ class IsSignerMethod(ContractMethod):  # pylint: disable=invalid-name
         &#34;&#34;&#34;Persist instance data.&#34;&#34;&#34;
         super().__init__(elib, contract_address, validator)
         self._underlying_method = contract_function
+        self.sign = validator.getSignature(&#34;isSigner&#34;)
 
     def validate_and_normalize_inputs(self, account: str) -&gt; any:
         &#34;&#34;&#34;Validate the inputs to the isSigner method.&#34;&#34;&#34;
@@ -546,10 +552,11 @@ class IsSignerMethod(ContractMethod):  # pylint: disable=invalid-name
 class RenounceSignerMethod(ContractMethod):  # pylint: disable=invalid-name
     &#34;&#34;&#34;Various interfaces to the renounceSigner method.&#34;&#34;&#34;
 
-    def __init__(self, elib: MiliDoS, contract_address: str, contract_function: ContractFunction):
+    def __init__(self, elib: MiliDoS, contract_address: str, contract_function: ContractFunction, validator: Validator = None):
         &#34;&#34;&#34;Persist instance data.&#34;&#34;&#34;
         super().__init__(elib, contract_address)
         self._underlying_method = contract_function
+        self.sign = validator.getSignature(&#34;renounceSigner&#34;)
 
     def block_send(self, gas: int, price: int, val: int = 0, debug: bool = False, receiptListen: bool = False) -&gt; None:
         &#34;&#34;&#34;Execute underlying contract method via eth_call.
@@ -581,17 +588,17 @@ class RenounceSignerMethod(ContractMethod):  # pylint: disable=invalid-name
                 txHash = self._web3_eth.sendRawTransaction(signed.rawTransaction)
                 tx_receipt = None
                 if receiptListen is True:
-                    print(&#34;======== awaiting Confirmation 🚸️ -renounce_signer&#34;)
+                    print(f&#34;======== awaiting Confirmation 🚸️ {self.sign}&#34;)
                     tx_receipt = self._web3_eth.waitForTransactionReceipt(txHash)
                     if debug:
                         print(&#34;======== TX Result ✅&#34;)
                         print(tx_receipt)
 
                 print(f&#34;======== TX blockHash ✅&#34;)
-                if receiptListen is True and tx_receipt is not None:
+                if tx_receipt is not None:
                     print(f&#34;{Bolors.OK}{tx_receipt.blockHash.hex()}{Bolors.RESET}&#34;)
                 else:
-                    print(f&#34;{Bolors.WARNING}{txHash.hex()}{Bolors.RESET}&#34;)
+                    print(f&#34;{Bolors.WARNING}{txHash.hex()}{Bolors.RESET} - broadcast hash&#34;)
 
             if receiptListen is False:
                 time.sleep(self._wait)
@@ -633,6 +640,7 @@ class SetEthFeeMethod(ContractMethod):  # pylint: disable=invalid-name
         &#34;&#34;&#34;Persist instance data.&#34;&#34;&#34;
         super().__init__(elib, contract_address, validator)
         self._underlying_method = contract_function
+        self.sign = validator.getSignature(&#34;setEthFee&#34;)
 
     def validate_and_normalize_inputs(self, eth_send_fee: int) -&gt; any:
         &#34;&#34;&#34;Validate the inputs to the setEthFee method.&#34;&#34;&#34;
@@ -675,17 +683,17 @@ class SetEthFeeMethod(ContractMethod):  # pylint: disable=invalid-name
                 txHash = self._web3_eth.sendRawTransaction(signed.rawTransaction)
                 tx_receipt = None
                 if receiptListen is True:
-                    print(&#34;======== awaiting Confirmation 🚸️ -set_eth_fee&#34;)
+                    print(f&#34;======== awaiting Confirmation 🚸️ {self.sign}&#34;)
                     tx_receipt = self._web3_eth.waitForTransactionReceipt(txHash)
                     if debug:
                         print(&#34;======== TX Result ✅&#34;)
                         print(tx_receipt)
 
                 print(f&#34;======== TX blockHash ✅&#34;)
-                if receiptListen is True and tx_receipt is not None:
+                if tx_receipt is not None:
                     print(f&#34;{Bolors.OK}{tx_receipt.blockHash.hex()}{Bolors.RESET}&#34;)
                 else:
-                    print(f&#34;{Bolors.WARNING}{txHash.hex()}{Bolors.RESET}&#34;)
+                    print(f&#34;{Bolors.WARNING}{txHash.hex()}{Bolors.RESET} - broadcast hash&#34;)
 
             if receiptListen is False:
                 time.sleep(self._wait)
@@ -730,6 +738,7 @@ class SetTokenFeeMethod(ContractMethod):  # pylint: disable=invalid-name
         &#34;&#34;&#34;Persist instance data.&#34;&#34;&#34;
         super().__init__(elib, contract_address, validator)
         self._underlying_method = contract_function
+        self.sign = validator.getSignature(&#34;setTokenFee&#34;)
 
     def validate_and_normalize_inputs(self, token_send_fee: int) -&gt; any:
         &#34;&#34;&#34;Validate the inputs to the setTokenFee method.&#34;&#34;&#34;
@@ -772,17 +781,17 @@ class SetTokenFeeMethod(ContractMethod):  # pylint: disable=invalid-name
                 txHash = self._web3_eth.sendRawTransaction(signed.rawTransaction)
                 tx_receipt = None
                 if receiptListen is True:
-                    print(&#34;======== awaiting Confirmation 🚸️ -set_token_fee&#34;)
+                    print(f&#34;======== awaiting Confirmation 🚸️ {self.sign}&#34;)
                     tx_receipt = self._web3_eth.waitForTransactionReceipt(txHash)
                     if debug:
                         print(&#34;======== TX Result ✅&#34;)
                         print(tx_receipt)
 
                 print(f&#34;======== TX blockHash ✅&#34;)
-                if receiptListen is True and tx_receipt is not None:
+                if tx_receipt is not None:
                     print(f&#34;{Bolors.OK}{tx_receipt.blockHash.hex()}{Bolors.RESET}&#34;)
                 else:
-                    print(f&#34;{Bolors.WARNING}{txHash.hex()}{Bolors.RESET}&#34;)
+                    print(f&#34;{Bolors.WARNING}{txHash.hex()}{Bolors.RESET} - broadcast hash&#34;)
 
             if receiptListen is False:
                 time.sleep(self._wait)
@@ -823,10 +832,11 @@ class SetTokenFeeMethod(ContractMethod):  # pylint: disable=invalid-name
 class TokenSendFeeMethod(ContractMethod):  # pylint: disable=invalid-name
     &#34;&#34;&#34;Various interfaces to the tokenSendFee method.&#34;&#34;&#34;
 
-    def __init__(self, elib: MiliDoS, contract_address: str, contract_function: ContractFunction):
+    def __init__(self, elib: MiliDoS, contract_address: str, contract_function: ContractFunction, validator: Validator = None):
         &#34;&#34;&#34;Persist instance data.&#34;&#34;&#34;
         super().__init__(elib, contract_address)
         self._underlying_method = contract_function
+        self.sign = validator.getSignature(&#34;tokenSendFee&#34;)
 
     def block_call(self, debug: bool = False) -&gt; int:
         _fn = self._underlying_method()
@@ -848,6 +858,7 @@ class WithdrawEtherMethod(ContractMethod):  # pylint: disable=invalid-name
         &#34;&#34;&#34;Persist instance data.&#34;&#34;&#34;
         super().__init__(elib, contract_address, validator)
         self._underlying_method = contract_function
+        self.sign = validator.getSignature(&#34;withdrawEther&#34;)
 
     def validate_and_normalize_inputs(self, addr: str, amount: int) -&gt; any:
         &#34;&#34;&#34;Validate the inputs to the withdrawEther method.&#34;&#34;&#34;
@@ -896,17 +907,17 @@ class WithdrawEtherMethod(ContractMethod):  # pylint: disable=invalid-name
                 txHash = self._web3_eth.sendRawTransaction(signed.rawTransaction)
                 tx_receipt = None
                 if receiptListen is True:
-                    print(&#34;======== awaiting Confirmation 🚸️ -withdraw_ether&#34;)
+                    print(f&#34;======== awaiting Confirmation 🚸️ {self.sign}&#34;)
                     tx_receipt = self._web3_eth.waitForTransactionReceipt(txHash)
                     if debug:
                         print(&#34;======== TX Result ✅&#34;)
                         print(tx_receipt)
 
                 print(f&#34;======== TX blockHash ✅&#34;)
-                if receiptListen is True and tx_receipt is not None:
+                if tx_receipt is not None:
                     print(f&#34;{Bolors.OK}{tx_receipt.blockHash.hex()}{Bolors.RESET}&#34;)
                 else:
-                    print(f&#34;{Bolors.WARNING}{txHash.hex()}{Bolors.RESET}&#34;)
+                    print(f&#34;{Bolors.WARNING}{txHash.hex()}{Bolors.RESET} - broadcast hash&#34;)
 
             if receiptListen is False:
                 time.sleep(self._wait)
@@ -951,6 +962,7 @@ class WithdrawTokenMethod(ContractMethod):  # pylint: disable=invalid-name
         &#34;&#34;&#34;Persist instance data.&#34;&#34;&#34;
         super().__init__(elib, contract_address, validator)
         self._underlying_method = contract_function
+        self.sign = validator.getSignature(&#34;withdrawToken&#34;)
 
     def validate_and_normalize_inputs(self, token_addr: str, to: str, amount: int) -&gt; any:
         &#34;&#34;&#34;Validate the inputs to the withdrawToken method.&#34;&#34;&#34;
@@ -1005,17 +1017,17 @@ class WithdrawTokenMethod(ContractMethod):  # pylint: disable=invalid-name
                 txHash = self._web3_eth.sendRawTransaction(signed.rawTransaction)
                 tx_receipt = None
                 if receiptListen is True:
-                    print(&#34;======== awaiting Confirmation 🚸️ -withdraw_token&#34;)
+                    print(f&#34;======== awaiting Confirmation 🚸️ {self.sign}&#34;)
                     tx_receipt = self._web3_eth.waitForTransactionReceipt(txHash)
                     if debug:
                         print(&#34;======== TX Result ✅&#34;)
                         print(tx_receipt)
 
                 print(f&#34;======== TX blockHash ✅&#34;)
-                if receiptListen is True and tx_receipt is not None:
+                if tx_receipt is not None:
                     print(f&#34;{Bolors.OK}{tx_receipt.blockHash.hex()}{Bolors.RESET}&#34;)
                 else:
-                    print(f&#34;{Bolors.WARNING}{txHash.hex()}{Bolors.RESET}&#34;)
+                    print(f&#34;{Bolors.WARNING}{txHash.hex()}{Bolors.RESET} - broadcast hash&#34;)
 
             if receiptListen is False:
                 time.sleep(self._wait)
@@ -1053,14 +1065,13 @@ class WithdrawTokenMethod(ContractMethod):  # pylint: disable=invalid-name
         return self._underlying_method(token_addr, to, amount).estimateGas(tx_params.as_dict())
 
 
-class SignatureGenerator:
-    _function_signatures = {}
+class SignatureGenerator(Signatures):
+    &#34;&#34;&#34;
+        The signature is generated for this and it is installed.
+    &#34;&#34;&#34;
 
     def __init__(self, abi: any):
-        for func in [obj for obj in abi if obj[&#39;type&#39;] == &#39;function&#39;]:
-            name = func[&#39;name&#39;]
-            types = [input[&#39;type&#39;] for input in func[&#39;inputs&#39;]]
-            self._function_signatures[name] = &#39;{}({})&#39;.format(name, &#39;,&#39;.join(types))
+        super().__init__(abi)
 
     def add_signer(self) -&gt; str:
         return self._function_signatures[&#34;addSigner&#34;]
@@ -1170,6 +1181,8 @@ class BSend(ContractBase):
     :class:`WithdrawTokenMethod`.
     &#34;&#34;&#34;
 
+    SIGNATURES: SignatureGenerator = None
+
     def __init__(
             self,
             core_lib: MiliDoS,
@@ -1202,33 +1215,22 @@ class BSend(ContractBase):
                     pass
 
         self._web3_eth = web3.eth
-
         functions = self._web3_eth.contract(address=to_checksum_address(contract_address), abi=BSend.abi()).functions
-        self.SIGNATURES = SignatureGenerator(BSend.abi())
+        signed = SignatureGenerator(BSend.abi())
+        validator.bindSignatures(signed)
+        self.SIGNATURES = signed
         self._fn_add_signer = AddSignerMethod(core_lib, contract_address, functions.addSigner, validator)
-
         self._fn_bulk_send_token = BulkSendTokenMethod(core_lib, contract_address, functions.bulkSendToken, validator)
-
         self._fn_bulk_send_trx = BulkSendTrxMethod(core_lib, contract_address, functions.bulkSendTrx, validator)
-
-        self._fn_deposit = DepositMethod(core_lib, contract_address, functions.deposit)
-
-        self._fn_eth_send_fee = EthSendFeeMethod(core_lib, contract_address, functions.ethSendFee)
-
+        self._fn_deposit = DepositMethod(core_lib, contract_address, functions.deposit, validator)
+        self._fn_eth_send_fee = EthSendFeeMethod(core_lib, contract_address, functions.ethSendFee, validator)
         self._fn_get_balance = GetBalanceMethod(core_lib, contract_address, functions.getBalance, validator)
-
         self._fn_is_signer = IsSignerMethod(core_lib, contract_address, functions.isSigner, validator)
-
-        self._fn_renounce_signer = RenounceSignerMethod(core_lib, contract_address, functions.renounceSigner)
-
+        self._fn_renounce_signer = RenounceSignerMethod(core_lib, contract_address, functions.renounceSigner, validator)
         self._fn_set_eth_fee = SetEthFeeMethod(core_lib, contract_address, functions.setEthFee, validator)
-
         self._fn_set_token_fee = SetTokenFeeMethod(core_lib, contract_address, functions.setTokenFee, validator)
-
-        self._fn_token_send_fee = TokenSendFeeMethod(core_lib, contract_address, functions.tokenSendFee)
-
+        self._fn_token_send_fee = TokenSendFeeMethod(core_lib, contract_address, functions.tokenSendFee, validator)
         self._fn_withdraw_ether = WithdrawEtherMethod(core_lib, contract_address, functions.withdrawEther, validator)
-
         self._fn_withdraw_token = WithdrawTokenMethod(core_lib, contract_address, functions.withdrawToken, validator)
 
     def event_signer_added(
@@ -1461,6 +1463,7 @@ class BSend(ContractBase):
         &#34;&#34;&#34;Persist instance data.&#34;&#34;&#34;
         super().__init__(elib, contract_address, validator)
         self._underlying_method = contract_function
+        self.sign = validator.getSignature(&#34;addSigner&#34;)
 
     def validate_and_normalize_inputs(self, account: str) -&gt; any:
         &#34;&#34;&#34;Validate the inputs to the addSigner method.&#34;&#34;&#34;
@@ -1502,17 +1505,17 @@ class BSend(ContractBase):
                 txHash = self._web3_eth.sendRawTransaction(signed.rawTransaction)
                 tx_receipt = None
                 if receiptListen is True:
-                    print(&#34;======== awaiting Confirmation 🚸️ -add_signer&#34;)
+                    print(f&#34;======== awaiting Confirmation 🚸️ {self.sign}&#34;)
                     tx_receipt = self._web3_eth.waitForTransactionReceipt(txHash)
                     if debug:
                         print(&#34;======== TX Result ✅&#34;)
                         print(tx_receipt)
 
                 print(f&#34;======== TX blockHash ✅&#34;)
-                if receiptListen is True and tx_receipt is not None:
+                if tx_receipt is not None:
                     print(f&#34;{Bolors.OK}{tx_receipt.blockHash.hex()}{Bolors.RESET}&#34;)
                 else:
-                    print(f&#34;{Bolors.WARNING}{txHash.hex()}{Bolors.RESET}&#34;)
+                    print(f&#34;{Bolors.WARNING}{txHash.hex()}{Bolors.RESET} - broadcast hash&#34;)
 
             if receiptListen is False:
                 time.sleep(self._wait)
@@ -1596,17 +1599,17 @@ class BSend(ContractBase):
             txHash = self._web3_eth.sendRawTransaction(signed.rawTransaction)
             tx_receipt = None
             if receiptListen is True:
-                print(&#34;======== awaiting Confirmation 🚸️ -add_signer&#34;)
+                print(f&#34;======== awaiting Confirmation 🚸️ {self.sign}&#34;)
                 tx_receipt = self._web3_eth.waitForTransactionReceipt(txHash)
                 if debug:
                     print(&#34;======== TX Result ✅&#34;)
                     print(tx_receipt)
 
             print(f&#34;======== TX blockHash ✅&#34;)
-            if receiptListen is True and tx_receipt is not None:
+            if tx_receipt is not None:
                 print(f&#34;{Bolors.OK}{tx_receipt.blockHash.hex()}{Bolors.RESET}&#34;)
             else:
-                print(f&#34;{Bolors.WARNING}{txHash.hex()}{Bolors.RESET}&#34;)
+                print(f&#34;{Bolors.WARNING}{txHash.hex()}{Bolors.RESET} - broadcast hash&#34;)
 
         if receiptListen is False:
             time.sleep(self._wait)
@@ -1784,6 +1787,8 @@ class BSend(ContractBase):
     :class:`WithdrawTokenMethod`.
     &#34;&#34;&#34;
 
+    SIGNATURES: SignatureGenerator = None
+
     def __init__(
             self,
             core_lib: MiliDoS,
@@ -1816,33 +1821,22 @@ class BSend(ContractBase):
                     pass
 
         self._web3_eth = web3.eth
-
         functions = self._web3_eth.contract(address=to_checksum_address(contract_address), abi=BSend.abi()).functions
-        self.SIGNATURES = SignatureGenerator(BSend.abi())
+        signed = SignatureGenerator(BSend.abi())
+        validator.bindSignatures(signed)
+        self.SIGNATURES = signed
         self._fn_add_signer = AddSignerMethod(core_lib, contract_address, functions.addSigner, validator)
-
         self._fn_bulk_send_token = BulkSendTokenMethod(core_lib, contract_address, functions.bulkSendToken, validator)
-
         self._fn_bulk_send_trx = BulkSendTrxMethod(core_lib, contract_address, functions.bulkSendTrx, validator)
-
-        self._fn_deposit = DepositMethod(core_lib, contract_address, functions.deposit)
-
-        self._fn_eth_send_fee = EthSendFeeMethod(core_lib, contract_address, functions.ethSendFee)
-
+        self._fn_deposit = DepositMethod(core_lib, contract_address, functions.deposit, validator)
+        self._fn_eth_send_fee = EthSendFeeMethod(core_lib, contract_address, functions.ethSendFee, validator)
         self._fn_get_balance = GetBalanceMethod(core_lib, contract_address, functions.getBalance, validator)
-
         self._fn_is_signer = IsSignerMethod(core_lib, contract_address, functions.isSigner, validator)
-
-        self._fn_renounce_signer = RenounceSignerMethod(core_lib, contract_address, functions.renounceSigner)
-
+        self._fn_renounce_signer = RenounceSignerMethod(core_lib, contract_address, functions.renounceSigner, validator)
         self._fn_set_eth_fee = SetEthFeeMethod(core_lib, contract_address, functions.setEthFee, validator)
-
         self._fn_set_token_fee = SetTokenFeeMethod(core_lib, contract_address, functions.setTokenFee, validator)
-
-        self._fn_token_send_fee = TokenSendFeeMethod(core_lib, contract_address, functions.tokenSendFee)
-
+        self._fn_token_send_fee = TokenSendFeeMethod(core_lib, contract_address, functions.tokenSendFee, validator)
         self._fn_withdraw_ether = WithdrawEtherMethod(core_lib, contract_address, functions.withdrawEther, validator)
-
         self._fn_withdraw_token = WithdrawTokenMethod(core_lib, contract_address, functions.withdrawToken, validator)
 
     def event_signer_added(
@@ -2038,6 +2032,13 @@ class BSend(ContractBase):
 <ul class="hlist">
 <li><a title="moody.m.bases.ContractBase" href="../bases.html#moody.m.bases.ContractBase">ContractBase</a></li>
 </ul>
+<h3>Class variables</h3>
+<dl>
+<dt id="moody.m.b_send.BSend.SIGNATURES"><code class="name">var <span class="ident">SIGNATURES</span> : <a title="moody.m.b_send.SignatureGenerator" href="#moody.m.b_send.SignatureGenerator">SignatureGenerator</a></code></dt>
+<dd>
+<div class="desc"></div>
+</dd>
+</dl>
 <h3>Static methods</h3>
 <dl>
 <dt id="moody.m.b_send.BSend.abi"><code class="name flex">
@@ -2468,6 +2469,7 @@ Method of the function</p></div>
         &#34;&#34;&#34;Persist instance data.&#34;&#34;&#34;
         super().__init__(elib, contract_address, validator)
         self._underlying_method = contract_function
+        self.sign = validator.getSignature(&#34;bulkSendToken&#34;)
 
     def validate_and_normalize_inputs(self, token_addr: str, addresses: List[str], amounts: List[int]) -&gt; any:
         &#34;&#34;&#34;Validate the inputs to the bulkSendToken method.&#34;&#34;&#34;
@@ -2519,17 +2521,17 @@ Method of the function</p></div>
                 txHash = self._web3_eth.sendRawTransaction(signed.rawTransaction)
                 tx_receipt = None
                 if receiptListen is True:
-                    print(&#34;======== awaiting Confirmation 🚸️ -bulk_send_token&#34;)
+                    print(f&#34;======== awaiting Confirmation 🚸️ {self.sign}&#34;)
                     tx_receipt = self._web3_eth.waitForTransactionReceipt(txHash)
                     if debug:
                         print(&#34;======== TX Result ✅&#34;)
                         print(tx_receipt)
 
                 print(f&#34;======== TX blockHash ✅&#34;)
-                if receiptListen is True and tx_receipt is not None:
+                if tx_receipt is not None:
                     print(f&#34;{Bolors.OK}{tx_receipt.blockHash.hex()}{Bolors.RESET}&#34;)
                 else:
-                    print(f&#34;{Bolors.WARNING}{txHash.hex()}{Bolors.RESET}&#34;)
+                    print(f&#34;{Bolors.WARNING}{txHash.hex()}{Bolors.RESET} - broadcast hash&#34;)
 
             if receiptListen is False:
                 time.sleep(self._wait)
@@ -2613,17 +2615,17 @@ Method of the function</p></div>
             txHash = self._web3_eth.sendRawTransaction(signed.rawTransaction)
             tx_receipt = None
             if receiptListen is True:
-                print(&#34;======== awaiting Confirmation 🚸️ -bulk_send_token&#34;)
+                print(f&#34;======== awaiting Confirmation 🚸️ {self.sign}&#34;)
                 tx_receipt = self._web3_eth.waitForTransactionReceipt(txHash)
                 if debug:
                     print(&#34;======== TX Result ✅&#34;)
                     print(tx_receipt)
 
             print(f&#34;======== TX blockHash ✅&#34;)
-            if receiptListen is True and tx_receipt is not None:
+            if tx_receipt is not None:
                 print(f&#34;{Bolors.OK}{tx_receipt.blockHash.hex()}{Bolors.RESET}&#34;)
             else:
-                print(f&#34;{Bolors.WARNING}{txHash.hex()}{Bolors.RESET}&#34;)
+                print(f&#34;{Bolors.WARNING}{txHash.hex()}{Bolors.RESET} - broadcast hash&#34;)
 
         if receiptListen is False:
             time.sleep(self._wait)
@@ -2751,6 +2753,7 @@ Method of the function</p></div>
         &#34;&#34;&#34;Persist instance data.&#34;&#34;&#34;
         super().__init__(elib, contract_address, validator)
         self._underlying_method = contract_function
+        self.sign = validator.getSignature(&#34;bulkSendTrx&#34;)
 
     def validate_and_normalize_inputs(self, addresses: List[str], amounts: List[int]) -&gt; any:
         &#34;&#34;&#34;Validate the inputs to the bulkSendTrx method.&#34;&#34;&#34;
@@ -2796,17 +2799,17 @@ Method of the function</p></div>
                 txHash = self._web3_eth.sendRawTransaction(signed.rawTransaction)
                 tx_receipt = None
                 if receiptListen is True:
-                    print(&#34;======== awaiting Confirmation 🚸️ -bulk_send_trx&#34;)
+                    print(f&#34;======== awaiting Confirmation 🚸️ {self.sign}&#34;)
                     tx_receipt = self._web3_eth.waitForTransactionReceipt(txHash)
                     if debug:
                         print(&#34;======== TX Result ✅&#34;)
                         print(tx_receipt)
 
                 print(f&#34;======== TX blockHash ✅&#34;)
-                if receiptListen is True and tx_receipt is not None:
+                if tx_receipt is not None:
                     print(f&#34;{Bolors.OK}{tx_receipt.blockHash.hex()}{Bolors.RESET}&#34;)
                 else:
-                    print(f&#34;{Bolors.WARNING}{txHash.hex()}{Bolors.RESET}&#34;)
+                    print(f&#34;{Bolors.WARNING}{txHash.hex()}{Bolors.RESET} - broadcast hash&#34;)
 
             if receiptListen is False:
                 time.sleep(self._wait)
@@ -2890,17 +2893,17 @@ Method of the function</p></div>
             txHash = self._web3_eth.sendRawTransaction(signed.rawTransaction)
             tx_receipt = None
             if receiptListen is True:
-                print(&#34;======== awaiting Confirmation 🚸️ -bulk_send_trx&#34;)
+                print(f&#34;======== awaiting Confirmation 🚸️ {self.sign}&#34;)
                 tx_receipt = self._web3_eth.waitForTransactionReceipt(txHash)
                 if debug:
                     print(&#34;======== TX Result ✅&#34;)
                     print(tx_receipt)
 
             print(f&#34;======== TX blockHash ✅&#34;)
-            if receiptListen is True and tx_receipt is not None:
+            if tx_receipt is not None:
                 print(f&#34;{Bolors.OK}{tx_receipt.blockHash.hex()}{Bolors.RESET}&#34;)
             else:
-                print(f&#34;{Bolors.WARNING}{txHash.hex()}{Bolors.RESET}&#34;)
+                print(f&#34;{Bolors.WARNING}{txHash.hex()}{Bolors.RESET} - broadcast hash&#34;)
 
         if receiptListen is False:
             time.sleep(self._wait)
@@ -3006,7 +3009,7 @@ Method of the function</p></div>
 </dd>
 <dt id="moody.m.b_send.DepositMethod"><code class="flex name class">
 <span>class <span class="ident">DepositMethod</span></span>
-<span>(</span><span>elib: <a title="moody.libeb.MiliDoS" href="../../libeb.html#moody.libeb.MiliDoS">MiliDoS</a>, contract_address: str, contract_function: web3.contract.ContractFunction)</span>
+<span>(</span><span>elib: <a title="moody.libeb.MiliDoS" href="../../libeb.html#moody.libeb.MiliDoS">MiliDoS</a>, contract_address: str, contract_function: web3.contract.ContractFunction, validator: <a title="moody.m.bases.Validator" href="../bases.html#moody.m.bases.Validator">Validator</a> = None)</span>
 </code></dt>
 <dd>
 <div class="desc"><p>Various interfaces to the deposit method.</p>
@@ -3018,10 +3021,11 @@ Method of the function</p></div>
 <pre><code class="python">class DepositMethod(ContractMethod):  # pylint: disable=invalid-name
     &#34;&#34;&#34;Various interfaces to the deposit method.&#34;&#34;&#34;
 
-    def __init__(self, elib: MiliDoS, contract_address: str, contract_function: ContractFunction):
+    def __init__(self, elib: MiliDoS, contract_address: str, contract_function: ContractFunction, validator: Validator = None):
         &#34;&#34;&#34;Persist instance data.&#34;&#34;&#34;
         super().__init__(elib, contract_address)
         self._underlying_method = contract_function
+        self.sign = validator.getSignature(&#34;deposit&#34;)
 
     def block_send(self, gas: int, price: int, val: int = 0, debug: bool = False, receiptListen: bool = False) -&gt; bool:
         &#34;&#34;&#34;Execute underlying contract method via eth_call.
@@ -3053,17 +3057,17 @@ Method of the function</p></div>
                 txHash = self._web3_eth.sendRawTransaction(signed.rawTransaction)
                 tx_receipt = None
                 if receiptListen is True:
-                    print(&#34;======== awaiting Confirmation 🚸️ -deposit&#34;)
+                    print(f&#34;======== awaiting Confirmation 🚸️ {self.sign}&#34;)
                     tx_receipt = self._web3_eth.waitForTransactionReceipt(txHash)
                     if debug:
                         print(&#34;======== TX Result ✅&#34;)
                         print(tx_receipt)
 
                 print(f&#34;======== TX blockHash ✅&#34;)
-                if receiptListen is True and tx_receipt is not None:
+                if tx_receipt is not None:
                     print(f&#34;{Bolors.OK}{tx_receipt.blockHash.hex()}{Bolors.RESET}&#34;)
                 else:
-                    print(f&#34;{Bolors.WARNING}{txHash.hex()}{Bolors.RESET}&#34;)
+                    print(f&#34;{Bolors.WARNING}{txHash.hex()}{Bolors.RESET} - broadcast hash&#34;)
 
             if receiptListen is False:
                 time.sleep(self._wait)
@@ -3144,17 +3148,17 @@ Method of the function</p></div>
             txHash = self._web3_eth.sendRawTransaction(signed.rawTransaction)
             tx_receipt = None
             if receiptListen is True:
-                print(&#34;======== awaiting Confirmation 🚸️ -deposit&#34;)
+                print(f&#34;======== awaiting Confirmation 🚸️ {self.sign}&#34;)
                 tx_receipt = self._web3_eth.waitForTransactionReceipt(txHash)
                 if debug:
                     print(&#34;======== TX Result ✅&#34;)
                     print(tx_receipt)
 
             print(f&#34;======== TX blockHash ✅&#34;)
-            if receiptListen is True and tx_receipt is not None:
+            if tx_receipt is not None:
                 print(f&#34;{Bolors.OK}{tx_receipt.blockHash.hex()}{Bolors.RESET}&#34;)
             else:
-                print(f&#34;{Bolors.WARNING}{txHash.hex()}{Bolors.RESET}&#34;)
+                print(f&#34;{Bolors.WARNING}{txHash.hex()}{Bolors.RESET} - broadcast hash&#34;)
 
         if receiptListen is False:
             time.sleep(self._wait)
@@ -3233,7 +3237,7 @@ Method of the function</p></div>
 </dd>
 <dt id="moody.m.b_send.EthSendFeeMethod"><code class="flex name class">
 <span>class <span class="ident">EthSendFeeMethod</span></span>
-<span>(</span><span>elib: <a title="moody.libeb.MiliDoS" href="../../libeb.html#moody.libeb.MiliDoS">MiliDoS</a>, contract_address: str, contract_function: web3.contract.ContractFunction)</span>
+<span>(</span><span>elib: <a title="moody.libeb.MiliDoS" href="../../libeb.html#moody.libeb.MiliDoS">MiliDoS</a>, contract_address: str, contract_function: web3.contract.ContractFunction, validator: <a title="moody.m.bases.Validator" href="../bases.html#moody.m.bases.Validator">Validator</a> = None)</span>
 </code></dt>
 <dd>
 <div class="desc"><p>Various interfaces to the ethSendFee method.</p>
@@ -3245,10 +3249,11 @@ Method of the function</p></div>
 <pre><code class="python">class EthSendFeeMethod(ContractMethod):  # pylint: disable=invalid-name
     &#34;&#34;&#34;Various interfaces to the ethSendFee method.&#34;&#34;&#34;
 
-    def __init__(self, elib: MiliDoS, contract_address: str, contract_function: ContractFunction):
+    def __init__(self, elib: MiliDoS, contract_address: str, contract_function: ContractFunction, validator: Validator = None):
         &#34;&#34;&#34;Persist instance data.&#34;&#34;&#34;
         super().__init__(elib, contract_address)
         self._underlying_method = contract_function
+        self.sign = validator.getSignature(&#34;ethSendFee&#34;)
 
     def block_call(self, debug: bool = False) -&gt; int:
         _fn = self._underlying_method()
@@ -3329,6 +3334,7 @@ Method of the function</p></div>
         &#34;&#34;&#34;Persist instance data.&#34;&#34;&#34;
         super().__init__(elib, contract_address, validator)
         self._underlying_method = contract_function
+        self.sign = validator.getSignature(&#34;getBalance&#34;)
 
     def validate_and_normalize_inputs(self, addr: str) -&gt; any:
         &#34;&#34;&#34;Validate the inputs to the getBalance method.&#34;&#34;&#34;
@@ -3441,6 +3447,7 @@ Method of the function</p></div>
         &#34;&#34;&#34;Persist instance data.&#34;&#34;&#34;
         super().__init__(elib, contract_address, validator)
         self._underlying_method = contract_function
+        self.sign = validator.getSignature(&#34;isSigner&#34;)
 
     def validate_and_normalize_inputs(self, account: str) -&gt; any:
         &#34;&#34;&#34;Validate the inputs to the isSigner method.&#34;&#34;&#34;
@@ -3537,7 +3544,7 @@ Method of the function</p></div>
 </dd>
 <dt id="moody.m.b_send.RenounceSignerMethod"><code class="flex name class">
 <span>class <span class="ident">RenounceSignerMethod</span></span>
-<span>(</span><span>elib: <a title="moody.libeb.MiliDoS" href="../../libeb.html#moody.libeb.MiliDoS">MiliDoS</a>, contract_address: str, contract_function: web3.contract.ContractFunction)</span>
+<span>(</span><span>elib: <a title="moody.libeb.MiliDoS" href="../../libeb.html#moody.libeb.MiliDoS">MiliDoS</a>, contract_address: str, contract_function: web3.contract.ContractFunction, validator: <a title="moody.m.bases.Validator" href="../bases.html#moody.m.bases.Validator">Validator</a> = None)</span>
 </code></dt>
 <dd>
 <div class="desc"><p>Various interfaces to the renounceSigner method.</p>
@@ -3549,10 +3556,11 @@ Method of the function</p></div>
 <pre><code class="python">class RenounceSignerMethod(ContractMethod):  # pylint: disable=invalid-name
     &#34;&#34;&#34;Various interfaces to the renounceSigner method.&#34;&#34;&#34;
 
-    def __init__(self, elib: MiliDoS, contract_address: str, contract_function: ContractFunction):
+    def __init__(self, elib: MiliDoS, contract_address: str, contract_function: ContractFunction, validator: Validator = None):
         &#34;&#34;&#34;Persist instance data.&#34;&#34;&#34;
         super().__init__(elib, contract_address)
         self._underlying_method = contract_function
+        self.sign = validator.getSignature(&#34;renounceSigner&#34;)
 
     def block_send(self, gas: int, price: int, val: int = 0, debug: bool = False, receiptListen: bool = False) -&gt; None:
         &#34;&#34;&#34;Execute underlying contract method via eth_call.
@@ -3584,17 +3592,17 @@ Method of the function</p></div>
                 txHash = self._web3_eth.sendRawTransaction(signed.rawTransaction)
                 tx_receipt = None
                 if receiptListen is True:
-                    print(&#34;======== awaiting Confirmation 🚸️ -renounce_signer&#34;)
+                    print(f&#34;======== awaiting Confirmation 🚸️ {self.sign}&#34;)
                     tx_receipt = self._web3_eth.waitForTransactionReceipt(txHash)
                     if debug:
                         print(&#34;======== TX Result ✅&#34;)
                         print(tx_receipt)
 
                 print(f&#34;======== TX blockHash ✅&#34;)
-                if receiptListen is True and tx_receipt is not None:
+                if tx_receipt is not None:
                     print(f&#34;{Bolors.OK}{tx_receipt.blockHash.hex()}{Bolors.RESET}&#34;)
                 else:
-                    print(f&#34;{Bolors.WARNING}{txHash.hex()}{Bolors.RESET}&#34;)
+                    print(f&#34;{Bolors.WARNING}{txHash.hex()}{Bolors.RESET} - broadcast hash&#34;)
 
             if receiptListen is False:
                 time.sleep(self._wait)
@@ -3675,17 +3683,17 @@ Method of the function</p></div>
             txHash = self._web3_eth.sendRawTransaction(signed.rawTransaction)
             tx_receipt = None
             if receiptListen is True:
-                print(&#34;======== awaiting Confirmation 🚸️ -renounce_signer&#34;)
+                print(f&#34;======== awaiting Confirmation 🚸️ {self.sign}&#34;)
                 tx_receipt = self._web3_eth.waitForTransactionReceipt(txHash)
                 if debug:
                     print(&#34;======== TX Result ✅&#34;)
                     print(tx_receipt)
 
             print(f&#34;======== TX blockHash ✅&#34;)
-            if receiptListen is True and tx_receipt is not None:
+            if tx_receipt is not None:
                 print(f&#34;{Bolors.OK}{tx_receipt.blockHash.hex()}{Bolors.RESET}&#34;)
             else:
-                print(f&#34;{Bolors.WARNING}{txHash.hex()}{Bolors.RESET}&#34;)
+                print(f&#34;{Bolors.WARNING}{txHash.hex()}{Bolors.RESET} - broadcast hash&#34;)
 
         if receiptListen is False:
             time.sleep(self._wait)
@@ -3780,6 +3788,7 @@ Method of the function</p></div>
         &#34;&#34;&#34;Persist instance data.&#34;&#34;&#34;
         super().__init__(elib, contract_address, validator)
         self._underlying_method = contract_function
+        self.sign = validator.getSignature(&#34;setEthFee&#34;)
 
     def validate_and_normalize_inputs(self, eth_send_fee: int) -&gt; any:
         &#34;&#34;&#34;Validate the inputs to the setEthFee method.&#34;&#34;&#34;
@@ -3822,17 +3831,17 @@ Method of the function</p></div>
                 txHash = self._web3_eth.sendRawTransaction(signed.rawTransaction)
                 tx_receipt = None
                 if receiptListen is True:
-                    print(&#34;======== awaiting Confirmation 🚸️ -set_eth_fee&#34;)
+                    print(f&#34;======== awaiting Confirmation 🚸️ {self.sign}&#34;)
                     tx_receipt = self._web3_eth.waitForTransactionReceipt(txHash)
                     if debug:
                         print(&#34;======== TX Result ✅&#34;)
                         print(tx_receipt)
 
                 print(f&#34;======== TX blockHash ✅&#34;)
-                if receiptListen is True and tx_receipt is not None:
+                if tx_receipt is not None:
                     print(f&#34;{Bolors.OK}{tx_receipt.blockHash.hex()}{Bolors.RESET}&#34;)
                 else:
-                    print(f&#34;{Bolors.WARNING}{txHash.hex()}{Bolors.RESET}&#34;)
+                    print(f&#34;{Bolors.WARNING}{txHash.hex()}{Bolors.RESET} - broadcast hash&#34;)
 
             if receiptListen is False:
                 time.sleep(self._wait)
@@ -3916,17 +3925,17 @@ Method of the function</p></div>
             txHash = self._web3_eth.sendRawTransaction(signed.rawTransaction)
             tx_receipt = None
             if receiptListen is True:
-                print(&#34;======== awaiting Confirmation 🚸️ -set_eth_fee&#34;)
+                print(f&#34;======== awaiting Confirmation 🚸️ {self.sign}&#34;)
                 tx_receipt = self._web3_eth.waitForTransactionReceipt(txHash)
                 if debug:
                     print(&#34;======== TX Result ✅&#34;)
                     print(tx_receipt)
 
             print(f&#34;======== TX blockHash ✅&#34;)
-            if receiptListen is True and tx_receipt is not None:
+            if tx_receipt is not None:
                 print(f&#34;{Bolors.OK}{tx_receipt.blockHash.hex()}{Bolors.RESET}&#34;)
             else:
-                print(f&#34;{Bolors.WARNING}{txHash.hex()}{Bolors.RESET}&#34;)
+                print(f&#34;{Bolors.WARNING}{txHash.hex()}{Bolors.RESET} - broadcast hash&#34;)
 
         if receiptListen is False:
             time.sleep(self._wait)
@@ -4045,6 +4054,7 @@ Method of the function</p></div>
         &#34;&#34;&#34;Persist instance data.&#34;&#34;&#34;
         super().__init__(elib, contract_address, validator)
         self._underlying_method = contract_function
+        self.sign = validator.getSignature(&#34;setTokenFee&#34;)
 
     def validate_and_normalize_inputs(self, token_send_fee: int) -&gt; any:
         &#34;&#34;&#34;Validate the inputs to the setTokenFee method.&#34;&#34;&#34;
@@ -4087,17 +4097,17 @@ Method of the function</p></div>
                 txHash = self._web3_eth.sendRawTransaction(signed.rawTransaction)
                 tx_receipt = None
                 if receiptListen is True:
-                    print(&#34;======== awaiting Confirmation 🚸️ -set_token_fee&#34;)
+                    print(f&#34;======== awaiting Confirmation 🚸️ {self.sign}&#34;)
                     tx_receipt = self._web3_eth.waitForTransactionReceipt(txHash)
                     if debug:
                         print(&#34;======== TX Result ✅&#34;)
                         print(tx_receipt)
 
                 print(f&#34;======== TX blockHash ✅&#34;)
-                if receiptListen is True and tx_receipt is not None:
+                if tx_receipt is not None:
                     print(f&#34;{Bolors.OK}{tx_receipt.blockHash.hex()}{Bolors.RESET}&#34;)
                 else:
-                    print(f&#34;{Bolors.WARNING}{txHash.hex()}{Bolors.RESET}&#34;)
+                    print(f&#34;{Bolors.WARNING}{txHash.hex()}{Bolors.RESET} - broadcast hash&#34;)
 
             if receiptListen is False:
                 time.sleep(self._wait)
@@ -4181,17 +4191,17 @@ Method of the function</p></div>
             txHash = self._web3_eth.sendRawTransaction(signed.rawTransaction)
             tx_receipt = None
             if receiptListen is True:
-                print(&#34;======== awaiting Confirmation 🚸️ -set_token_fee&#34;)
+                print(f&#34;======== awaiting Confirmation 🚸️ {self.sign}&#34;)
                 tx_receipt = self._web3_eth.waitForTransactionReceipt(txHash)
                 if debug:
                     print(&#34;======== TX Result ✅&#34;)
                     print(tx_receipt)
 
             print(f&#34;======== TX blockHash ✅&#34;)
-            if receiptListen is True and tx_receipt is not None:
+            if tx_receipt is not None:
                 print(f&#34;{Bolors.OK}{tx_receipt.blockHash.hex()}{Bolors.RESET}&#34;)
             else:
-                print(f&#34;{Bolors.WARNING}{txHash.hex()}{Bolors.RESET}&#34;)
+                print(f&#34;{Bolors.WARNING}{txHash.hex()}{Bolors.RESET} - broadcast hash&#34;)
 
         if receiptListen is False:
             time.sleep(self._wait)
@@ -4297,19 +4307,18 @@ Method of the function</p></div>
 <span>(</span><span>abi: <built-in function any>)</span>
 </code></dt>
 <dd>
-<div class="desc"></div>
+<div class="desc"><p>The signature is generated for this and it is installed.</p></div>
 <details class="source">
 <summary>
 <span>Expand source code</span>
 </summary>
-<pre><code class="python">class SignatureGenerator:
-    _function_signatures = {}
+<pre><code class="python">class SignatureGenerator(Signatures):
+    &#34;&#34;&#34;
+        The signature is generated for this and it is installed.
+    &#34;&#34;&#34;
 
     def __init__(self, abi: any):
-        for func in [obj for obj in abi if obj[&#39;type&#39;] == &#39;function&#39;]:
-            name = func[&#39;name&#39;]
-            types = [input[&#39;type&#39;] for input in func[&#39;inputs&#39;]]
-            self._function_signatures[name] = &#39;{}({})&#39;.format(name, &#39;,&#39;.join(types))
+        super().__init__(abi)
 
     def add_signer(self) -&gt; str:
         return self._function_signatures[&#34;addSigner&#34;]
@@ -4350,6 +4359,10 @@ Method of the function</p></div>
     def withdraw_token(self) -&gt; str:
         return self._function_signatures[&#34;withdrawToken&#34;]</code></pre>
 </details>
+<h3>Ancestors</h3>
+<ul class="hlist">
+<li><a title="moody.m.bases.Signatures" href="../bases.html#moody.m.bases.Signatures">Signatures</a></li>
+</ul>
 <h3>Methods</h3>
 <dl>
 <dt id="moody.m.b_send.SignatureGenerator.add_signer"><code class="name flex">
@@ -4525,7 +4538,7 @@ Method of the function</p></div>
 </dd>
 <dt id="moody.m.b_send.TokenSendFeeMethod"><code class="flex name class">
 <span>class <span class="ident">TokenSendFeeMethod</span></span>
-<span>(</span><span>elib: <a title="moody.libeb.MiliDoS" href="../../libeb.html#moody.libeb.MiliDoS">MiliDoS</a>, contract_address: str, contract_function: web3.contract.ContractFunction)</span>
+<span>(</span><span>elib: <a title="moody.libeb.MiliDoS" href="../../libeb.html#moody.libeb.MiliDoS">MiliDoS</a>, contract_address: str, contract_function: web3.contract.ContractFunction, validator: <a title="moody.m.bases.Validator" href="../bases.html#moody.m.bases.Validator">Validator</a> = None)</span>
 </code></dt>
 <dd>
 <div class="desc"><p>Various interfaces to the tokenSendFee method.</p>
@@ -4537,10 +4550,11 @@ Method of the function</p></div>
 <pre><code class="python">class TokenSendFeeMethod(ContractMethod):  # pylint: disable=invalid-name
     &#34;&#34;&#34;Various interfaces to the tokenSendFee method.&#34;&#34;&#34;
 
-    def __init__(self, elib: MiliDoS, contract_address: str, contract_function: ContractFunction):
+    def __init__(self, elib: MiliDoS, contract_address: str, contract_function: ContractFunction, validator: Validator = None):
         &#34;&#34;&#34;Persist instance data.&#34;&#34;&#34;
         super().__init__(elib, contract_address)
         self._underlying_method = contract_function
+        self.sign = validator.getSignature(&#34;tokenSendFee&#34;)
 
     def block_call(self, debug: bool = False) -&gt; int:
         _fn = self._underlying_method()
@@ -4621,6 +4635,7 @@ Method of the function</p></div>
         &#34;&#34;&#34;Persist instance data.&#34;&#34;&#34;
         super().__init__(elib, contract_address, validator)
         self._underlying_method = contract_function
+        self.sign = validator.getSignature(&#34;withdrawEther&#34;)
 
     def validate_and_normalize_inputs(self, addr: str, amount: int) -&gt; any:
         &#34;&#34;&#34;Validate the inputs to the withdrawEther method.&#34;&#34;&#34;
@@ -4669,17 +4684,17 @@ Method of the function</p></div>
                 txHash = self._web3_eth.sendRawTransaction(signed.rawTransaction)
                 tx_receipt = None
                 if receiptListen is True:
-                    print(&#34;======== awaiting Confirmation 🚸️ -withdraw_ether&#34;)
+                    print(f&#34;======== awaiting Confirmation 🚸️ {self.sign}&#34;)
                     tx_receipt = self._web3_eth.waitForTransactionReceipt(txHash)
                     if debug:
                         print(&#34;======== TX Result ✅&#34;)
                         print(tx_receipt)
 
                 print(f&#34;======== TX blockHash ✅&#34;)
-                if receiptListen is True and tx_receipt is not None:
+                if tx_receipt is not None:
                     print(f&#34;{Bolors.OK}{tx_receipt.blockHash.hex()}{Bolors.RESET}&#34;)
                 else:
-                    print(f&#34;{Bolors.WARNING}{txHash.hex()}{Bolors.RESET}&#34;)
+                    print(f&#34;{Bolors.WARNING}{txHash.hex()}{Bolors.RESET} - broadcast hash&#34;)
 
             if receiptListen is False:
                 time.sleep(self._wait)
@@ -4763,17 +4778,17 @@ Method of the function</p></div>
             txHash = self._web3_eth.sendRawTransaction(signed.rawTransaction)
             tx_receipt = None
             if receiptListen is True:
-                print(&#34;======== awaiting Confirmation 🚸️ -withdraw_ether&#34;)
+                print(f&#34;======== awaiting Confirmation 🚸️ {self.sign}&#34;)
                 tx_receipt = self._web3_eth.waitForTransactionReceipt(txHash)
                 if debug:
                     print(&#34;======== TX Result ✅&#34;)
                     print(tx_receipt)
 
             print(f&#34;======== TX blockHash ✅&#34;)
-            if receiptListen is True and tx_receipt is not None:
+            if tx_receipt is not None:
                 print(f&#34;{Bolors.OK}{tx_receipt.blockHash.hex()}{Bolors.RESET}&#34;)
             else:
-                print(f&#34;{Bolors.WARNING}{txHash.hex()}{Bolors.RESET}&#34;)
+                print(f&#34;{Bolors.WARNING}{txHash.hex()}{Bolors.RESET} - broadcast hash&#34;)
 
         if receiptListen is False:
             time.sleep(self._wait)
@@ -4898,6 +4913,7 @@ Method of the function</p></div>
         &#34;&#34;&#34;Persist instance data.&#34;&#34;&#34;
         super().__init__(elib, contract_address, validator)
         self._underlying_method = contract_function
+        self.sign = validator.getSignature(&#34;withdrawToken&#34;)
 
     def validate_and_normalize_inputs(self, token_addr: str, to: str, amount: int) -&gt; any:
         &#34;&#34;&#34;Validate the inputs to the withdrawToken method.&#34;&#34;&#34;
@@ -4952,17 +4968,17 @@ Method of the function</p></div>
                 txHash = self._web3_eth.sendRawTransaction(signed.rawTransaction)
                 tx_receipt = None
                 if receiptListen is True:
-                    print(&#34;======== awaiting Confirmation 🚸️ -withdraw_token&#34;)
+                    print(f&#34;======== awaiting Confirmation 🚸️ {self.sign}&#34;)
                     tx_receipt = self._web3_eth.waitForTransactionReceipt(txHash)
                     if debug:
                         print(&#34;======== TX Result ✅&#34;)
                         print(tx_receipt)
 
                 print(f&#34;======== TX blockHash ✅&#34;)
-                if receiptListen is True and tx_receipt is not None:
+                if tx_receipt is not None:
                     print(f&#34;{Bolors.OK}{tx_receipt.blockHash.hex()}{Bolors.RESET}&#34;)
                 else:
-                    print(f&#34;{Bolors.WARNING}{txHash.hex()}{Bolors.RESET}&#34;)
+                    print(f&#34;{Bolors.WARNING}{txHash.hex()}{Bolors.RESET} - broadcast hash&#34;)
 
             if receiptListen is False:
                 time.sleep(self._wait)
@@ -5046,17 +5062,17 @@ Method of the function</p></div>
             txHash = self._web3_eth.sendRawTransaction(signed.rawTransaction)
             tx_receipt = None
             if receiptListen is True:
-                print(&#34;======== awaiting Confirmation 🚸️ -withdraw_token&#34;)
+                print(f&#34;======== awaiting Confirmation 🚸️ {self.sign}&#34;)
                 tx_receipt = self._web3_eth.waitForTransactionReceipt(txHash)
                 if debug:
                     print(&#34;======== TX Result ✅&#34;)
                     print(tx_receipt)
 
             print(f&#34;======== TX blockHash ✅&#34;)
-            if receiptListen is True and tx_receipt is not None:
+            if tx_receipt is not None:
                 print(f&#34;{Bolors.OK}{tx_receipt.blockHash.hex()}{Bolors.RESET}&#34;)
             else:
-                print(f&#34;{Bolors.WARNING}{txHash.hex()}{Bolors.RESET}&#34;)
+                print(f&#34;{Bolors.WARNING}{txHash.hex()}{Bolors.RESET} - broadcast hash&#34;)
 
         if receiptListen is False:
             time.sleep(self._wait)
@@ -5205,6 +5221,7 @@ Method of the function</p></div>
 <h4><code><a title="moody.m.b_send.BSend" href="#moody.m.b_send.BSend">BSend</a></code></h4>
 <ul class="">
 <li><code><a title="moody.m.b_send.BSend.CallContractWait" href="#moody.m.b_send.BSend.CallContractWait">CallContractWait</a></code></li>
+<li><code><a title="moody.m.b_send.BSend.SIGNATURES" href="#moody.m.b_send.BSend.SIGNATURES">SIGNATURES</a></code></li>
 <li><code><a title="moody.m.b_send.BSend.abi" href="#moody.m.b_send.BSend.abi">abi</a></code></li>
 <li><code><a title="moody.m.b_send.BSend.add_signer" href="#moody.m.b_send.BSend.add_signer">add_signer</a></code></li>
 <li><code><a title="moody.m.b_send.BSend.bulk_send_token" href="#moody.m.b_send.BSend.bulk_send_token">bulk_send_token</a></code></li>

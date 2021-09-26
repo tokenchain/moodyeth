@@ -41,14 +41,13 @@ from typing import (  # pylint: disable=unused-import
 
 from eth_utils import to_checksum_address
 from hexbytes import HexBytes
-from web3.contract import ContractFunction
-from web3.datastructures import AttributeDict
-from web3.exceptions import ContractLogicError
-
 from moody import Bolors
 from moody.libeb import MiliDoS
 from moody.m.bases import ContractMethod, Validator, ContractBase, Signatures
 from moody.m.tx_params import TxParams
+from web3.contract import ContractFunction
+from web3.datastructures import AttributeDict
+from web3.exceptions import ContractLogicError
 
 # Try to import a custom validator class definition; if there isn&#39;t one,
 # declare one that we can instantiate for the default argument to the
@@ -79,6 +78,7 @@ class AddMinterMethod(ContractMethod):  # pylint: disable=invalid-name
         &#34;&#34;&#34;Persist instance data.&#34;&#34;&#34;
         super().__init__(elib, contract_address, validator)
         self._underlying_method = contract_function
+        self.sign = validator.getSignature(&#34;addMinter&#34;)
 
     def validate_and_normalize_inputs(self, account: str) -&gt; any:
         &#34;&#34;&#34;Validate the inputs to the addMinter method.&#34;&#34;&#34;
@@ -120,17 +120,17 @@ class AddMinterMethod(ContractMethod):  # pylint: disable=invalid-name
                 txHash = self._web3_eth.sendRawTransaction(signed.rawTransaction)
                 tx_receipt = None
                 if receiptListen is True:
-                    print(&#34;======== awaiting Confirmation 🚸️ -add_minter&#34;)
+                    print(f&#34;======== awaiting Confirmation 🚸️ {self.sign}&#34;)
                     tx_receipt = self._web3_eth.waitForTransactionReceipt(txHash)
                     if debug:
                         print(&#34;======== TX Result ✅&#34;)
                         print(tx_receipt)
 
                 print(f&#34;======== TX blockHash ✅&#34;)
-                if receiptListen is True and tx_receipt is not None:
+                if tx_receipt is not None:
                     print(f&#34;{Bolors.OK}{tx_receipt.blockHash.hex()}{Bolors.RESET}&#34;)
                 else:
-                    print(f&#34;{Bolors.WARNING}{txHash.hex()}{Bolors.RESET}&#34;)
+                    print(f&#34;{Bolors.WARNING}{txHash.hex()}{Bolors.RESET} - broadcast hash&#34;)
 
             if receiptListen is False:
                 time.sleep(self._wait)
@@ -175,6 +175,7 @@ class AllowanceMethod(ContractMethod):  # pylint: disable=invalid-name
         &#34;&#34;&#34;Persist instance data.&#34;&#34;&#34;
         super().__init__(elib, contract_address, validator)
         self._underlying_method = contract_function
+        self.sign = validator.getSignature(&#34;allowance&#34;)
 
     def validate_and_normalize_inputs(self, owner: str, spender: str) -&gt; any:
         &#34;&#34;&#34;Validate the inputs to the allowance method.&#34;&#34;&#34;
@@ -213,6 +214,7 @@ class ApproveMethod(ContractMethod):  # pylint: disable=invalid-name
         &#34;&#34;&#34;Persist instance data.&#34;&#34;&#34;
         super().__init__(elib, contract_address, validator)
         self._underlying_method = contract_function
+        self.sign = validator.getSignature(&#34;approve&#34;)
 
     def validate_and_normalize_inputs(self, spender: str, amount: int) -&gt; any:
         &#34;&#34;&#34;Validate the inputs to the approve method.&#34;&#34;&#34;
@@ -261,17 +263,17 @@ class ApproveMethod(ContractMethod):  # pylint: disable=invalid-name
                 txHash = self._web3_eth.sendRawTransaction(signed.rawTransaction)
                 tx_receipt = None
                 if receiptListen is True:
-                    print(&#34;======== awaiting Confirmation 🚸️ -approve&#34;)
+                    print(f&#34;======== awaiting Confirmation 🚸️ {self.sign}&#34;)
                     tx_receipt = self._web3_eth.waitForTransactionReceipt(txHash)
                     if debug:
                         print(&#34;======== TX Result ✅&#34;)
                         print(tx_receipt)
 
                 print(f&#34;======== TX blockHash ✅&#34;)
-                if receiptListen is True and tx_receipt is not None:
+                if tx_receipt is not None:
                     print(f&#34;{Bolors.OK}{tx_receipt.blockHash.hex()}{Bolors.RESET}&#34;)
                 else:
-                    print(f&#34;{Bolors.WARNING}{txHash.hex()}{Bolors.RESET}&#34;)
+                    print(f&#34;{Bolors.WARNING}{txHash.hex()}{Bolors.RESET} - broadcast hash&#34;)
 
             if receiptListen is False:
                 time.sleep(self._wait)
@@ -316,6 +318,7 @@ class BalanceOfMethod(ContractMethod):  # pylint: disable=invalid-name
         &#34;&#34;&#34;Persist instance data.&#34;&#34;&#34;
         super().__init__(elib, contract_address, validator)
         self._underlying_method = contract_function
+        self.sign = validator.getSignature(&#34;balanceOf&#34;)
 
     def validate_and_normalize_inputs(self, account: str) -&gt; any:
         &#34;&#34;&#34;Validate the inputs to the balanceOf method.&#34;&#34;&#34;
@@ -348,6 +351,7 @@ class BurnMethod(ContractMethod):  # pylint: disable=invalid-name
         &#34;&#34;&#34;Persist instance data.&#34;&#34;&#34;
         super().__init__(elib, contract_address, validator)
         self._underlying_method = contract_function
+        self.sign = validator.getSignature(&#34;burn&#34;)
 
     def validate_and_normalize_inputs(self, amount: int) -&gt; any:
         &#34;&#34;&#34;Validate the inputs to the burn method.&#34;&#34;&#34;
@@ -390,17 +394,17 @@ class BurnMethod(ContractMethod):  # pylint: disable=invalid-name
                 txHash = self._web3_eth.sendRawTransaction(signed.rawTransaction)
                 tx_receipt = None
                 if receiptListen is True:
-                    print(&#34;======== awaiting Confirmation 🚸️ -burn&#34;)
+                    print(f&#34;======== awaiting Confirmation 🚸️ {self.sign}&#34;)
                     tx_receipt = self._web3_eth.waitForTransactionReceipt(txHash)
                     if debug:
                         print(&#34;======== TX Result ✅&#34;)
                         print(tx_receipt)
 
                 print(f&#34;======== TX blockHash ✅&#34;)
-                if receiptListen is True and tx_receipt is not None:
+                if tx_receipt is not None:
                     print(f&#34;{Bolors.OK}{tx_receipt.blockHash.hex()}{Bolors.RESET}&#34;)
                 else:
-                    print(f&#34;{Bolors.WARNING}{txHash.hex()}{Bolors.RESET}&#34;)
+                    print(f&#34;{Bolors.WARNING}{txHash.hex()}{Bolors.RESET} - broadcast hash&#34;)
 
             if receiptListen is False:
                 time.sleep(self._wait)
@@ -445,6 +449,7 @@ class BurnFromMethod(ContractMethod):  # pylint: disable=invalid-name
         &#34;&#34;&#34;Persist instance data.&#34;&#34;&#34;
         super().__init__(elib, contract_address, validator)
         self._underlying_method = contract_function
+        self.sign = validator.getSignature(&#34;burnFrom&#34;)
 
     def validate_and_normalize_inputs(self, account: str, amount: int) -&gt; any:
         &#34;&#34;&#34;Validate the inputs to the burnFrom method.&#34;&#34;&#34;
@@ -493,17 +498,17 @@ class BurnFromMethod(ContractMethod):  # pylint: disable=invalid-name
                 txHash = self._web3_eth.sendRawTransaction(signed.rawTransaction)
                 tx_receipt = None
                 if receiptListen is True:
-                    print(&#34;======== awaiting Confirmation 🚸️ -burn_from&#34;)
+                    print(f&#34;======== awaiting Confirmation 🚸️ {self.sign}&#34;)
                     tx_receipt = self._web3_eth.waitForTransactionReceipt(txHash)
                     if debug:
                         print(&#34;======== TX Result ✅&#34;)
                         print(tx_receipt)
 
                 print(f&#34;======== TX blockHash ✅&#34;)
-                if receiptListen is True and tx_receipt is not None:
+                if tx_receipt is not None:
                     print(f&#34;{Bolors.OK}{tx_receipt.blockHash.hex()}{Bolors.RESET}&#34;)
                 else:
-                    print(f&#34;{Bolors.WARNING}{txHash.hex()}{Bolors.RESET}&#34;)
+                    print(f&#34;{Bolors.WARNING}{txHash.hex()}{Bolors.RESET} - broadcast hash&#34;)
 
             if receiptListen is False:
                 time.sleep(self._wait)
@@ -544,10 +549,11 @@ class BurnFromMethod(ContractMethod):  # pylint: disable=invalid-name
 class CapMethod(ContractMethod):  # pylint: disable=invalid-name
     &#34;&#34;&#34;Various interfaces to the cap method.&#34;&#34;&#34;
 
-    def __init__(self, elib: MiliDoS, contract_address: str, contract_function: ContractFunction):
+    def __init__(self, elib: MiliDoS, contract_address: str, contract_function: ContractFunction, validator: Validator = None):
         &#34;&#34;&#34;Persist instance data.&#34;&#34;&#34;
         super().__init__(elib, contract_address)
         self._underlying_method = contract_function
+        self.sign = validator.getSignature(&#34;cap&#34;)
 
     def block_call(self, debug: bool = False) -&gt; int:
         _fn = self._underlying_method()
@@ -565,10 +571,11 @@ class CapMethod(ContractMethod):  # pylint: disable=invalid-name
 class DecimalsMethod(ContractMethod):  # pylint: disable=invalid-name
     &#34;&#34;&#34;Various interfaces to the decimals method.&#34;&#34;&#34;
 
-    def __init__(self, elib: MiliDoS, contract_address: str, contract_function: ContractFunction):
+    def __init__(self, elib: MiliDoS, contract_address: str, contract_function: ContractFunction, validator: Validator = None):
         &#34;&#34;&#34;Persist instance data.&#34;&#34;&#34;
         super().__init__(elib, contract_address)
         self._underlying_method = contract_function
+        self.sign = validator.getSignature(&#34;decimals&#34;)
 
     def block_call(self, debug: bool = False) -&gt; int:
         _fn = self._underlying_method()
@@ -590,6 +597,7 @@ class DecreaseAllowanceMethod(ContractMethod):  # pylint: disable=invalid-name
         &#34;&#34;&#34;Persist instance data.&#34;&#34;&#34;
         super().__init__(elib, contract_address, validator)
         self._underlying_method = contract_function
+        self.sign = validator.getSignature(&#34;decreaseAllowance&#34;)
 
     def validate_and_normalize_inputs(self, spender: str, subtracted_value: int) -&gt; any:
         &#34;&#34;&#34;Validate the inputs to the decreaseAllowance method.&#34;&#34;&#34;
@@ -638,17 +646,17 @@ class DecreaseAllowanceMethod(ContractMethod):  # pylint: disable=invalid-name
                 txHash = self._web3_eth.sendRawTransaction(signed.rawTransaction)
                 tx_receipt = None
                 if receiptListen is True:
-                    print(&#34;======== awaiting Confirmation 🚸️ -decrease_allowance&#34;)
+                    print(f&#34;======== awaiting Confirmation 🚸️ {self.sign}&#34;)
                     tx_receipt = self._web3_eth.waitForTransactionReceipt(txHash)
                     if debug:
                         print(&#34;======== TX Result ✅&#34;)
                         print(tx_receipt)
 
                 print(f&#34;======== TX blockHash ✅&#34;)
-                if receiptListen is True and tx_receipt is not None:
+                if tx_receipt is not None:
                     print(f&#34;{Bolors.OK}{tx_receipt.blockHash.hex()}{Bolors.RESET}&#34;)
                 else:
-                    print(f&#34;{Bolors.WARNING}{txHash.hex()}{Bolors.RESET}&#34;)
+                    print(f&#34;{Bolors.WARNING}{txHash.hex()}{Bolors.RESET} - broadcast hash&#34;)
 
             if receiptListen is False:
                 time.sleep(self._wait)
@@ -689,10 +697,11 @@ class DecreaseAllowanceMethod(ContractMethod):  # pylint: disable=invalid-name
 class GetDecimalsMethod(ContractMethod):  # pylint: disable=invalid-name
     &#34;&#34;&#34;Various interfaces to the getDecimals method.&#34;&#34;&#34;
 
-    def __init__(self, elib: MiliDoS, contract_address: str, contract_function: ContractFunction):
+    def __init__(self, elib: MiliDoS, contract_address: str, contract_function: ContractFunction, validator: Validator = None):
         &#34;&#34;&#34;Persist instance data.&#34;&#34;&#34;
         super().__init__(elib, contract_address)
         self._underlying_method = contract_function
+        self.sign = validator.getSignature(&#34;getDecimals&#34;)
 
     def block_call(self, debug: bool = False) -&gt; int:
         _fn = self._underlying_method()
@@ -707,6 +716,28 @@ class GetDecimalsMethod(ContractMethod):  # pylint: disable=invalid-name
         return self._underlying_method().estimateGas(tx_params.as_dict())
 
 
+class GovMethod(ContractMethod):  # pylint: disable=invalid-name
+    &#34;&#34;&#34;Various interfaces to the gov method.&#34;&#34;&#34;
+
+    def __init__(self, elib: MiliDoS, contract_address: str, contract_function: ContractFunction, validator: Validator = None):
+        &#34;&#34;&#34;Persist instance data.&#34;&#34;&#34;
+        super().__init__(elib, contract_address)
+        self._underlying_method = contract_function
+        self.sign = validator.getSignature(&#34;gov&#34;)
+
+    def block_call(self, debug: bool = False) -&gt; str:
+        _fn = self._underlying_method()
+        returned = _fn.call({
+            &#39;from&#39;: self._operate
+        })
+        return str(returned)
+
+    def estimate_gas(self, tx_params: Optional[TxParams] = None) -&gt; int:
+        &#34;&#34;&#34;Estimate gas consumption of method call.&#34;&#34;&#34;
+        tx_params = super().normalize_tx_params(tx_params)
+        return self._underlying_method().estimateGas(tx_params.as_dict())
+
+
 class IncreaseAllowanceMethod(ContractMethod):  # pylint: disable=invalid-name
     &#34;&#34;&#34;Various interfaces to the increaseAllowance method.&#34;&#34;&#34;
 
@@ -714,6 +745,7 @@ class IncreaseAllowanceMethod(ContractMethod):  # pylint: disable=invalid-name
         &#34;&#34;&#34;Persist instance data.&#34;&#34;&#34;
         super().__init__(elib, contract_address, validator)
         self._underlying_method = contract_function
+        self.sign = validator.getSignature(&#34;increaseAllowance&#34;)
 
     def validate_and_normalize_inputs(self, spender: str, added_value: int) -&gt; any:
         &#34;&#34;&#34;Validate the inputs to the increaseAllowance method.&#34;&#34;&#34;
@@ -762,17 +794,17 @@ class IncreaseAllowanceMethod(ContractMethod):  # pylint: disable=invalid-name
                 txHash = self._web3_eth.sendRawTransaction(signed.rawTransaction)
                 tx_receipt = None
                 if receiptListen is True:
-                    print(&#34;======== awaiting Confirmation 🚸️ -increase_allowance&#34;)
+                    print(f&#34;======== awaiting Confirmation 🚸️ {self.sign}&#34;)
                     tx_receipt = self._web3_eth.waitForTransactionReceipt(txHash)
                     if debug:
                         print(&#34;======== TX Result ✅&#34;)
                         print(tx_receipt)
 
                 print(f&#34;======== TX blockHash ✅&#34;)
-                if receiptListen is True and tx_receipt is not None:
+                if tx_receipt is not None:
                     print(f&#34;{Bolors.OK}{tx_receipt.blockHash.hex()}{Bolors.RESET}&#34;)
                 else:
-                    print(f&#34;{Bolors.WARNING}{txHash.hex()}{Bolors.RESET}&#34;)
+                    print(f&#34;{Bolors.WARNING}{txHash.hex()}{Bolors.RESET} - broadcast hash&#34;)
 
             if receiptListen is False:
                 time.sleep(self._wait)
@@ -817,6 +849,7 @@ class IsMinterMethod(ContractMethod):  # pylint: disable=invalid-name
         &#34;&#34;&#34;Persist instance data.&#34;&#34;&#34;
         super().__init__(elib, contract_address, validator)
         self._underlying_method = contract_function
+        self.sign = validator.getSignature(&#34;isMinter&#34;)
 
     def validate_and_normalize_inputs(self, account: str) -&gt; any:
         &#34;&#34;&#34;Validate the inputs to the isMinter method.&#34;&#34;&#34;
@@ -849,6 +882,7 @@ class MintMethod(ContractMethod):  # pylint: disable=invalid-name
         &#34;&#34;&#34;Persist instance data.&#34;&#34;&#34;
         super().__init__(elib, contract_address, validator)
         self._underlying_method = contract_function
+        self.sign = validator.getSignature(&#34;mint&#34;)
 
     def validate_and_normalize_inputs(self, account: str, amount: int) -&gt; any:
         &#34;&#34;&#34;Validate the inputs to the mint method.&#34;&#34;&#34;
@@ -897,17 +931,17 @@ class MintMethod(ContractMethod):  # pylint: disable=invalid-name
                 txHash = self._web3_eth.sendRawTransaction(signed.rawTransaction)
                 tx_receipt = None
                 if receiptListen is True:
-                    print(&#34;======== awaiting Confirmation 🚸️ -mint&#34;)
+                    print(f&#34;======== awaiting Confirmation 🚸️ {self.sign}&#34;)
                     tx_receipt = self._web3_eth.waitForTransactionReceipt(txHash)
                     if debug:
                         print(&#34;======== TX Result ✅&#34;)
                         print(tx_receipt)
 
                 print(f&#34;======== TX blockHash ✅&#34;)
-                if receiptListen is True and tx_receipt is not None:
+                if tx_receipt is not None:
                     print(f&#34;{Bolors.OK}{tx_receipt.blockHash.hex()}{Bolors.RESET}&#34;)
                 else:
-                    print(f&#34;{Bolors.WARNING}{txHash.hex()}{Bolors.RESET}&#34;)
+                    print(f&#34;{Bolors.WARNING}{txHash.hex()}{Bolors.RESET} - broadcast hash&#34;)
 
             if receiptListen is False:
                 time.sleep(self._wait)
@@ -948,10 +982,11 @@ class MintMethod(ContractMethod):  # pylint: disable=invalid-name
 class NameMethod(ContractMethod):  # pylint: disable=invalid-name
     &#34;&#34;&#34;Various interfaces to the name method.&#34;&#34;&#34;
 
-    def __init__(self, elib: MiliDoS, contract_address: str, contract_function: ContractFunction):
+    def __init__(self, elib: MiliDoS, contract_address: str, contract_function: ContractFunction, validator: Validator = None):
         &#34;&#34;&#34;Persist instance data.&#34;&#34;&#34;
         super().__init__(elib, contract_address)
         self._underlying_method = contract_function
+        self.sign = validator.getSignature(&#34;name&#34;)
 
     def block_call(self, debug: bool = False) -&gt; str:
         _fn = self._underlying_method()
@@ -966,13 +1001,111 @@ class NameMethod(ContractMethod):  # pylint: disable=invalid-name
         return self._underlying_method().estimateGas(tx_params.as_dict())
 
 
+class RemoveMinterMethod(ContractMethod):  # pylint: disable=invalid-name
+    &#34;&#34;&#34;Various interfaces to the removeMinter method.&#34;&#34;&#34;
+
+    def __init__(self, elib: MiliDoS, contract_address: str, contract_function: ContractFunction, validator: Validator = None):
+        &#34;&#34;&#34;Persist instance data.&#34;&#34;&#34;
+        super().__init__(elib, contract_address, validator)
+        self._underlying_method = contract_function
+        self.sign = validator.getSignature(&#34;removeMinter&#34;)
+
+    def validate_and_normalize_inputs(self, account: str) -&gt; any:
+        &#34;&#34;&#34;Validate the inputs to the removeMinter method.&#34;&#34;&#34;
+        self.validator.assert_valid(
+            method_name=&#39;removeMinter&#39;,
+            parameter_name=&#39;account&#39;,
+            argument_value=account,
+        )
+        account = self.validate_and_checksum_address(account)
+        return (account)
+
+    def block_send(self, account: str, gas: int, price: int, val: int = 0, debug: bool = False, receiptListen: bool = False) -&gt; None:
+        &#34;&#34;&#34;Execute underlying contract method via eth_call.
+
+        :param tx_params: transaction parameters
+        :returns: the return value of the underlying method.
+        &#34;&#34;&#34;
+        _fn = self._underlying_method(account)
+        try:
+
+            _t = _fn.buildTransaction({
+                &#39;from&#39;: self._operate,
+                &#39;gas&#39;: gas,
+                &#39;gasPrice&#39;: price
+            })
+            _t[&#39;nonce&#39;] = self._web3_eth.getTransactionCount(self._operate)
+
+            if val &gt; 0:
+                _t[&#39;value&#39;] = val
+
+            if debug:
+                print(f&#34;======== Signing ✅ by {self._operate}&#34;)
+                print(f&#34;======== Transaction ✅ check&#34;)
+                print(_t)
+
+            if &#39;data&#39; in _t:
+
+                signed = self._web3_eth.account.sign_transaction(_t)
+                txHash = self._web3_eth.sendRawTransaction(signed.rawTransaction)
+                tx_receipt = None
+                if receiptListen is True:
+                    print(f&#34;======== awaiting Confirmation 🚸️ {self.sign}&#34;)
+                    tx_receipt = self._web3_eth.waitForTransactionReceipt(txHash)
+                    if debug:
+                        print(&#34;======== TX Result ✅&#34;)
+                        print(tx_receipt)
+
+                print(f&#34;======== TX blockHash ✅&#34;)
+                if tx_receipt is not None:
+                    print(f&#34;{Bolors.OK}{tx_receipt.blockHash.hex()}{Bolors.RESET}&#34;)
+                else:
+                    print(f&#34;{Bolors.WARNING}{txHash.hex()}{Bolors.RESET} - broadcast hash&#34;)
+
+            if receiptListen is False:
+                time.sleep(self._wait)
+
+
+        except ContractLogicError as er:
+            print(f&#34;{Bolors.FAIL}Error {er} {Bolors.RESET}: remove_minter&#34;)
+
+        except ValueError as err:
+            if &#34;message&#34; in err.args[0]:
+                message = err.args[0][&#34;message&#34;]
+                print(f&#34;{Bolors.FAIL}Error Revert {Bolors.RESET} on set_asset_token: {message}&#34;)
+            else:
+                print(f&#34;{Bolors.FAIL}Error Revert {Bolors.RESET}: set_asset_token&#34;)
+
+    def send_transaction(self, account: str, tx_params: Optional[TxParams] = None) -&gt; Union[HexBytes, bytes]:
+        &#34;&#34;&#34;Execute underlying contract method via eth_sendTransaction.
+
+        :param tx_params: transaction parameters
+        &#34;&#34;&#34;
+        (account) = self.validate_and_normalize_inputs(account)
+        tx_params = super().normalize_tx_params(tx_params)
+        return self._underlying_method(account).transact(tx_params.as_dict())
+
+    def build_transaction(self, account: str, tx_params: Optional[TxParams] = None) -&gt; dict:
+        &#34;&#34;&#34;Construct calldata to be used as input to the method.&#34;&#34;&#34;
+        (account) = self.validate_and_normalize_inputs(account)
+        tx_params = super().normalize_tx_params(tx_params)
+        return self._underlying_method(account).buildTransaction(tx_params.as_dict())
+
+    def estimate_gas(self, account: str, tx_params: Optional[TxParams] = None) -&gt; int:
+        &#34;&#34;&#34;Estimate gas consumption of method call.&#34;&#34;&#34;
+        (account) = self.validate_and_normalize_inputs(account)
+        tx_params = super().normalize_tx_params(tx_params)
+        return self._underlying_method(account).estimateGas(tx_params.as_dict())
+
+
 class RenounceMinterMethod(ContractMethod):  # pylint: disable=invalid-name
     &#34;&#34;&#34;Various interfaces to the renounceMinter method.&#34;&#34;&#34;
 
-    def __init__(self, elib: MiliDoS, contract_address: str, contract_function: ContractFunction):
+    def __init__(self, elib: MiliDoS, contract_address: str, contract_function: ContractFunction, validator: Validator = None):
         &#34;&#34;&#34;Persist instance data.&#34;&#34;&#34;
         super().__init__(elib, contract_address)
         self._underlying_method = contract_function
+        self.sign = validator.getSignature(&#34;renounceMinter&#34;)
 
     def block_send(self, gas: int, price: int, val: int = 0, debug: bool = False, receiptListen: bool = False) -&gt; None:
         &#34;&#34;&#34;Execute underlying contract method via eth_call.
@@ -1004,17 +1137,17 @@ class RenounceMinterMethod(ContractMethod):  # pylint: disable=invalid-name
                 txHash = self._web3_eth.sendRawTransaction(signed.rawTransaction)
                 tx_receipt = None
                 if receiptListen is True:
-                    print(&#34;======== awaiting Confirmation 🚸️ -renounce_minter&#34;)
+                    print(f&#34;======== awaiting Confirmation 🚸️ {self.sign}&#34;)
                     tx_receipt = self._web3_eth.waitForTransactionReceipt(txHash)
                     if debug:
                         print(&#34;======== TX Result ✅&#34;)
                         print(tx_receipt)
 
                 print(f&#34;======== TX blockHash ✅&#34;)
-                if receiptListen is True and tx_receipt is not None:
+                if tx_receipt is not None:
                     print(f&#34;{Bolors.OK}{tx_receipt.blockHash.hex()}{Bolors.RESET}&#34;)
                 else:
-                    print(f&#34;{Bolors.WARNING}{txHash.hex()}{Bolors.RESET}&#34;)
+                    print(f&#34;{Bolors.WARNING}{txHash.hex()}{Bolors.RESET} - broadcast hash&#34;)
 
             if receiptListen is False:
                 time.sleep(self._wait)
@@ -1052,10 +1185,11 @@ class RenounceMinterMethod(ContractMethod):  # pylint: disable=invalid-name
 class SymbolMethod(ContractMethod):  # pylint: disable=invalid-name
     &#34;&#34;&#34;Various interfaces to the symbol method.&#34;&#34;&#34;
 
-    def __init__(self, elib: MiliDoS, contract_address: str, contract_function: ContractFunction):
+    def __init__(self, elib: MiliDoS, contract_address: str, contract_function: ContractFunction, validator: Validator = None):
         &#34;&#34;&#34;Persist instance data.&#34;&#34;&#34;
         super().__init__(elib, contract_address)
         self._underlying_method = contract_function
+        self.sign = validator.getSignature(&#34;symbol&#34;)
 
     def block_call(self, debug: bool = False) -&gt; str:
         _fn = self._underlying_method()
@@ -1073,10 +1207,11 @@ class SymbolMethod(ContractMethod):  # pylint: disable=invalid-name
 class TokenNameMethod(ContractMethod):  # pylint: disable=invalid-name
     &#34;&#34;&#34;Various interfaces to the tokenName method.&#34;&#34;&#34;
 
-    def __init__(self, elib: MiliDoS, contract_address: str, contract_function: ContractFunction):
+    def __init__(self, elib: MiliDoS, contract_address: str, contract_function: ContractFunction, validator: Validator = None):
         &#34;&#34;&#34;Persist instance data.&#34;&#34;&#34;
         super().__init__(elib, contract_address)
         self._underlying_method = contract_function
+        self.sign = validator.getSignature(&#34;tokenName&#34;)
 
     def block_call(self, debug: bool = False) -&gt; str:
         _fn = self._underlying_method()
@@ -1094,10 +1229,11 @@ class TokenNameMethod(ContractMethod):  # pylint: disable=invalid-name
 class TokenSymbolMethod(ContractMethod):  # pylint: disable=invalid-name
     &#34;&#34;&#34;Various interfaces to the tokenSymbol method.&#34;&#34;&#34;
 
-    def __init__(self, elib: MiliDoS, contract_address: str, contract_function: ContractFunction):
+    def __init__(self, elib: MiliDoS, contract_address: str, contract_function: ContractFunction, validator: Validator = None):
         &#34;&#34;&#34;Persist instance data.&#34;&#34;&#34;
         super().__init__(elib, contract_address)
         self._underlying_method = contract_function
+        self.sign = validator.getSignature(&#34;tokenSymbol&#34;)
 
     def block_call(self, debug: bool = False) -&gt; str:
         _fn = self._underlying_method()
@@ -1115,10 +1251,11 @@ class TokenSymbolMethod(ContractMethod):  # pylint: disable=invalid-name
 class TotalSupplyMethod(ContractMethod):  # pylint: disable=invalid-name
     &#34;&#34;&#34;Various interfaces to the totalSupply method.&#34;&#34;&#34;
 
-    def __init__(self, elib: MiliDoS, contract_address: str, contract_function: ContractFunction):
+    def __init__(self, elib: MiliDoS, contract_address: str, contract_function: ContractFunction, validator: Validator = None):
         &#34;&#34;&#34;Persist instance data.&#34;&#34;&#34;
         super().__init__(elib, contract_address)
         self._underlying_method = contract_function
+        self.sign = validator.getSignature(&#34;totalSupply&#34;)
 
     def block_call(self, debug: bool = False) -&gt; int:
         _fn = self._underlying_method()
@@ -1140,6 +1277,7 @@ class TransferMethod(ContractMethod):  # pylint: disable=invalid-name
         &#34;&#34;&#34;Persist instance data.&#34;&#34;&#34;
         super().__init__(elib, contract_address, validator)
         self._underlying_method = contract_function
+        self.sign = validator.getSignature(&#34;transfer&#34;)
 
     def validate_and_normalize_inputs(self, recipient: str, amount: int) -&gt; any:
         &#34;&#34;&#34;Validate the inputs to the transfer method.&#34;&#34;&#34;
@@ -1188,17 +1326,17 @@ class TransferMethod(ContractMethod):  # pylint: disable=invalid-name
                 txHash = self._web3_eth.sendRawTransaction(signed.rawTransaction)
                 tx_receipt = None
                 if receiptListen is True:
-                    print(&#34;======== awaiting Confirmation 🚸️ -transfer&#34;)
+                    print(f&#34;======== awaiting Confirmation 🚸️ {self.sign}&#34;)
                     tx_receipt = self._web3_eth.waitForTransactionReceipt(txHash)
                     if debug:
                         print(&#34;======== TX Result ✅&#34;)
                         print(tx_receipt)
 
                 print(f&#34;======== TX blockHash ✅&#34;)
-                if receiptListen is True and tx_receipt is not None:
+                if tx_receipt is not None:
                     print(f&#34;{Bolors.OK}{tx_receipt.blockHash.hex()}{Bolors.RESET}&#34;)
                 else:
-                    print(f&#34;{Bolors.WARNING}{txHash.hex()}{Bolors.RESET}&#34;)
+                    print(f&#34;{Bolors.WARNING}{txHash.hex()}{Bolors.RESET} - broadcast hash&#34;)
 
             if receiptListen is False:
                 time.sleep(self._wait)
@@ -1243,6 +1381,7 @@ class TransferFromMethod(ContractMethod):  # pylint: disable=invalid-name
         &#34;&#34;&#34;Persist instance data.&#34;&#34;&#34;
         super().__init__(elib, contract_address, validator)
         self._underlying_method = contract_function
+        self.sign = validator.getSignature(&#34;transferFrom&#34;)
 
     def validate_and_normalize_inputs(self, sender: str, recipient: str, amount: int) -&gt; any:
         &#34;&#34;&#34;Validate the inputs to the transferFrom method.&#34;&#34;&#34;
@@ -1297,17 +1436,17 @@ class TransferFromMethod(ContractMethod):  # pylint: disable=invalid-name
                 txHash = self._web3_eth.sendRawTransaction(signed.rawTransaction)
                 tx_receipt = None
                 if receiptListen is True:
-                    print(&#34;======== awaiting Confirmation 🚸️ -transfer_from&#34;)
+                    print(f&#34;======== awaiting Confirmation 🚸️ {self.sign}&#34;)
                     tx_receipt = self._web3_eth.waitForTransactionReceipt(txHash)
                     if debug:
                         print(&#34;======== TX Result ✅&#34;)
                         print(tx_receipt)
 
                 print(f&#34;======== TX blockHash ✅&#34;)
-                if receiptListen is True and tx_receipt is not None:
+                if tx_receipt is not None:
                     print(f&#34;{Bolors.OK}{tx_receipt.blockHash.hex()}{Bolors.RESET}&#34;)
                 else:
-                    print(f&#34;{Bolors.WARNING}{txHash.hex()}{Bolors.RESET}&#34;)
+                    print(f&#34;{Bolors.WARNING}{txHash.hex()}{Bolors.RESET} - broadcast hash&#34;)
 
             if receiptListen is False:
                 time.sleep(self._wait)
@@ -1346,6 +1485,9 @@ class TransferFromMethod(ContractMethod):  # pylint: disable=invalid-name
 
 
 class SignatureGenerator(Signatures):
+    &#34;&#34;&#34;
+        The signature is generated for this and it is installed.
+    &#34;&#34;&#34;
 
     def __init__(self, abi: any):
         super().__init__(abi)
@@ -1380,6 +1522,9 @@ class SignatureGenerator(Signatures):
     def get_decimals(self) -&gt; str:
         return self._function_signatures[&#34;getDecimals&#34;]
 
+    def gov(self) -&gt; str:
+        return self._function_signatures[&#34;gov&#34;]
+
     def increase_allowance(self) -&gt; str:
         return self._function_signatures[&#34;increaseAllowance&#34;]
 
@@ -1391,6 +1536,9 @@ class SignatureGenerator(Signatures):
 
     def name(self) -&gt; str:
         return self._function_signatures[&#34;name&#34;]
+
+    def remove_minter(self) -&gt; str:
+        return self._function_signatures[&#34;removeMinter&#34;]
 
     def renounce_minter(self) -&gt; str:
         return self._function_signatures[&#34;renounceMinter&#34;]
@@ -1467,6 +1615,11 @@ class Ori20(ContractBase):
     :class:`GetDecimalsMethod`.
     &#34;&#34;&#34;
 
+    _fn_gov: GovMethod
+    &#34;&#34;&#34;Constructor-initialized instance of
+    :class:`GovMethod`.
+    &#34;&#34;&#34;
+
     _fn_increase_allowance: IncreaseAllowanceMethod
     &#34;&#34;&#34;Constructor-initialized instance of
     :class:`IncreaseAllowanceMethod`.
@@ -1485,6 +1638,11 @@ class Ori20(ContractBase):
     _fn_name: NameMethod
     &#34;&#34;&#34;Constructor-initialized instance of
     :class:`NameMethod`.
+    &#34;&#34;&#34;
+
+    _fn_remove_minter: RemoveMinterMethod
+    &#34;&#34;&#34;Constructor-initialized instance of
+    :class:`RemoveMinterMethod`.
     &#34;&#34;&#34;
 
     _fn_renounce_minter: RenounceMinterMethod
@@ -1522,6 +1680,8 @@ class Ori20(ContractBase):
     :class:`TransferFromMethod`.
     &#34;&#34;&#34;
 
+    SIGNATURES: SignatureGenerator = None
+
     def __init__(
             self,
             core_lib: MiliDoS,
@@ -1554,49 +1714,32 @@ class Ori20(ContractBase):
                     pass
 
         self._web3_eth = web3.eth
-
         functions = self._web3_eth.contract(address=to_checksum_address(contract_address), abi=Ori20.abi()).functions
-        self.SIGNATURES = SignatureGenerator(Ori20.abi())
+        signed = SignatureGenerator(Ori20.abi())
+        validator.bindSignatures(signed)
+        self.SIGNATURES = signed
         self._fn_add_minter = AddMinterMethod(core_lib, contract_address, functions.addMinter, validator)
-
         self._fn_allowance = AllowanceMethod(core_lib, contract_address, functions.allowance, validator)
-
         self._fn_approve = ApproveMethod(core_lib, contract_address, functions.approve, validator)
-
         self._fn_balance_of = BalanceOfMethod(core_lib, contract_address, functions.balanceOf, validator)
-
         self._fn_burn = BurnMethod(core_lib, contract_address, functions.burn, validator)
-
         self._fn_burn_from = BurnFromMethod(core_lib, contract_address, functions.burnFrom, validator)
-
-        self._fn_cap = CapMethod(core_lib, contract_address, functions.cap)
-
-        self._fn_decimals = DecimalsMethod(core_lib, contract_address, functions.decimals)
-
+        self._fn_cap = CapMethod(core_lib, contract_address, functions.cap, validator)
+        self._fn_decimals = DecimalsMethod(core_lib, contract_address, functions.decimals, validator)
         self._fn_decrease_allowance = DecreaseAllowanceMethod(core_lib, contract_address, functions.decreaseAllowance, validator)
-
-        self._fn_get_decimals = GetDecimalsMethod(core_lib, contract_address, functions.getDecimals)
-
+        self._fn_get_decimals = GetDecimalsMethod(core_lib, contract_address, functions.getDecimals, validator)
+        self._fn_gov = GovMethod(core_lib, contract_address, functions.gov, validator)
         self._fn_increase_allowance = IncreaseAllowanceMethod(core_lib, contract_address, functions.increaseAllowance, validator)
-
         self._fn_is_minter = IsMinterMethod(core_lib, contract_address, functions.isMinter, validator)
-
         self._fn_mint = MintMethod(core_lib, contract_address, functions.mint, validator)
-
-        self._fn_name = NameMethod(core_lib, contract_address, functions.name)
-
-        self._fn_renounce_minter = RenounceMinterMethod(core_lib, contract_address, functions.renounceMinter)
-
-        self._fn_symbol = SymbolMethod(core_lib, contract_address, functions.symbol)
-
-        self._fn_token_name = TokenNameMethod(core_lib, contract_address, functions.tokenName)
-
-        self._fn_token_symbol = TokenSymbolMethod(core_lib, contract_address, functions.tokenSymbol)
-
-        self._fn_total_supply = TotalSupplyMethod(core_lib, contract_address, functions.totalSupply)
-
+        self._fn_name = NameMethod(core_lib, contract_address, functions.name, validator)
+        self._fn_remove_minter = RemoveMinterMethod(core_lib, contract_address, functions.removeMinter, validator)
+        self._fn_renounce_minter = RenounceMinterMethod(core_lib, contract_address, functions.renounceMinter, validator)
+        self._fn_symbol = SymbolMethod(core_lib, contract_address, functions.symbol, validator)
+        self._fn_token_name = TokenNameMethod(core_lib, contract_address, functions.tokenName, validator)
+        self._fn_token_symbol = TokenSymbolMethod(core_lib, contract_address, functions.tokenSymbol, validator)
+        self._fn_total_supply = TotalSupplyMethod(core_lib, contract_address, functions.totalSupply, validator)
         self._fn_transfer = TransferMethod(core_lib, contract_address, functions.transfer, validator)
-
         self._fn_transfer_from = TransferFromMethod(core_lib, contract_address, functions.transferFrom, validator)
 
     def event_approval(
@@ -1753,6 +1896,17 @@ class Ori20(ContractBase):
 
         return self._fn_get_decimals.block_call()
 
+    def gov(self) -&gt; str:
+        &#34;&#34;&#34;
+        Implementation of gov in contract Ori20
+        Method of the function
+
+
+
+        &#34;&#34;&#34;
+
+        return self._fn_gov.block_call()
+
     def increase_allowance(self, spender: str, added_value: int) -&gt; bool:
         &#34;&#34;&#34;
         Implementation of increase_allowance in contract Ori20
@@ -1796,6 +1950,17 @@ class Ori20(ContractBase):
         &#34;&#34;&#34;
 
         return self._fn_name.block_call()
+
+    def remove_minter(self, account: str) -&gt; None:
+        &#34;&#34;&#34;
+        Implementation of remove_minter in contract Ori20
+        Method of the function
+
+
+
+        &#34;&#34;&#34;
+
+        return self._fn_remove_minter.block_send(account, self.call_contract_fee_amount, self.call_contract_fee_price, 0, self.call_contract_debug_flag, self.call_contract_enforce_tx_receipt)
 
     def renounce_minter(self) -&gt; None:
         &#34;&#34;&#34;
@@ -1885,10 +2050,12 @@ class Ori20(ContractBase):
         self._fn_decimals.setWait(t_long)
         self._fn_decrease_allowance.setWait(t_long)
         self._fn_get_decimals.setWait(t_long)
+        self._fn_gov.setWait(t_long)
         self._fn_increase_allowance.setWait(t_long)
         self._fn_is_minter.setWait(t_long)
         self._fn_mint.setWait(t_long)
         self._fn_name.setWait(t_long)
+        self._fn_remove_minter.setWait(t_long)
         self._fn_renounce_minter.setWait(t_long)
         self._fn_symbol.setWait(t_long)
         self._fn_token_name.setWait(t_long)
@@ -1902,7 +2069,7 @@ class Ori20(ContractBase):
     def abi():
         &#34;&#34;&#34;Return the ABI to the underlying contract.&#34;&#34;&#34;
         return json.loads(
-            &#39;[{&#34;inputs&#34;:[],&#34;payable&#34;:false,&#34;stateMutability&#34;:&#34;nonpayable&#34;,&#34;type&#34;:&#34;constructor&#34;},{&#34;anonymous&#34;:false,&#34;inputs&#34;:[{&#34;indexed&#34;:true,&#34;internalType&#34;:&#34;address&#34;,&#34;name&#34;:&#34;owner&#34;,&#34;type&#34;:&#34;address&#34;},{&#34;indexed&#34;:true,&#34;internalType&#34;:&#34;address&#34;,&#34;name&#34;:&#34;spender&#34;,&#34;type&#34;:&#34;address&#34;},{&#34;indexed&#34;:false,&#34;internalType&#34;:&#34;uint256&#34;,&#34;name&#34;:&#34;value&#34;,&#34;type&#34;:&#34;uint256&#34;}],&#34;name&#34;:&#34;Approval&#34;,&#34;type&#34;:&#34;event&#34;},{&#34;anonymous&#34;:false,&#34;inputs&#34;:[{&#34;indexed&#34;:true,&#34;internalType&#34;:&#34;address&#34;,&#34;name&#34;:&#34;account&#34;,&#34;type&#34;:&#34;address&#34;}],&#34;name&#34;:&#34;MinterAdded&#34;,&#34;type&#34;:&#34;event&#34;},{&#34;anonymous&#34;:false,&#34;inputs&#34;:[{&#34;indexed&#34;:true,&#34;internalType&#34;:&#34;address&#34;,&#34;name&#34;:&#34;account&#34;,&#34;type&#34;:&#34;address&#34;}],&#34;name&#34;:&#34;MinterRemoved&#34;,&#34;type&#34;:&#34;event&#34;},{&#34;anonymous&#34;:false,&#34;inputs&#34;:[{&#34;indexed&#34;:true,&#34;internalType&#34;:&#34;address&#34;,&#34;name&#34;:&#34;from&#34;,&#34;type&#34;:&#34;address&#34;},{&#34;indexed&#34;:true,&#34;internalType&#34;:&#34;address&#34;,&#34;name&#34;:&#34;to&#34;,&#34;type&#34;:&#34;address&#34;},{&#34;indexed&#34;:false,&#34;internalType&#34;:&#34;uint256&#34;,&#34;name&#34;:&#34;value&#34;,&#34;type&#34;:&#34;uint256&#34;}],&#34;name&#34;:&#34;Transfer&#34;,&#34;type&#34;:&#34;event&#34;},{&#34;constant&#34;:false,&#34;inputs&#34;:[{&#34;internalType&#34;:&#34;address&#34;,&#34;name&#34;:&#34;account&#34;,&#34;type&#34;:&#34;address&#34;}],&#34;name&#34;:&#34;addMinter&#34;,&#34;outputs&#34;:[],&#34;payable&#34;:false,&#34;stateMutability&#34;:&#34;nonpayable&#34;,&#34;type&#34;:&#34;function&#34;},{&#34;constant&#34;:true,&#34;inputs&#34;:[{&#34;internalType&#34;:&#34;address&#34;,&#34;name&#34;:&#34;owner&#34;,&#34;type&#34;:&#34;address&#34;},{&#34;internalType&#34;:&#34;address&#34;,&#34;name&#34;:&#34;spender&#34;,&#34;type&#34;:&#34;address&#34;}],&#34;name&#34;:&#34;allowance&#34;,&#34;outputs&#34;:[{&#34;internalType&#34;:&#34;uint256&#34;,&#34;name&#34;:&#34;&#34;,&#34;type&#34;:&#34;uint256&#34;}],&#34;payable&#34;:false,&#34;stateMutability&#34;:&#34;view&#34;,&#34;type&#34;:&#34;function&#34;},{&#34;constant&#34;:false,&#34;inputs&#34;:[{&#34;internalType&#34;:&#34;address&#34;,&#34;name&#34;:&#34;spender&#34;,&#34;type&#34;:&#34;address&#34;},{&#34;internalType&#34;:&#34;uint256&#34;,&#34;name&#34;:&#34;amount&#34;,&#34;type&#34;:&#34;uint256&#34;}],&#34;name&#34;:&#34;approve&#34;,&#34;outputs&#34;:[{&#34;internalType&#34;:&#34;bool&#34;,&#34;name&#34;:&#34;&#34;,&#34;type&#34;:&#34;bool&#34;}],&#34;payable&#34;:false,&#34;stateMutability&#34;:&#34;nonpayable&#34;,&#34;type&#34;:&#34;function&#34;},{&#34;constant&#34;:true,&#34;inputs&#34;:[{&#34;internalType&#34;:&#34;address&#34;,&#34;name&#34;:&#34;account&#34;,&#34;type&#34;:&#34;address&#34;}],&#34;name&#34;:&#34;balanceOf&#34;,&#34;outputs&#34;:[{&#34;internalType&#34;:&#34;uint256&#34;,&#34;name&#34;:&#34;&#34;,&#34;type&#34;:&#34;uint256&#34;}],&#34;payable&#34;:false,&#34;stateMutability&#34;:&#34;view&#34;,&#34;type&#34;:&#34;function&#34;},{&#34;constant&#34;:false,&#34;inputs&#34;:[{&#34;internalType&#34;:&#34;uint256&#34;,&#34;name&#34;:&#34;amount&#34;,&#34;type&#34;:&#34;uint256&#34;}],&#34;name&#34;:&#34;burn&#34;,&#34;outputs&#34;:[],&#34;payable&#34;:false,&#34;stateMutability&#34;:&#34;nonpayable&#34;,&#34;type&#34;:&#34;function&#34;},{&#34;constant&#34;:false,&#34;inputs&#34;:[{&#34;internalType&#34;:&#34;address&#34;,&#34;name&#34;:&#34;account&#34;,&#34;type&#34;:&#34;address&#34;},{&#34;internalType&#34;:&#34;uint256&#34;,&#34;name&#34;:&#34;amount&#34;,&#34;type&#34;:&#34;uint256&#34;}],&#34;name&#34;:&#34;burnFrom&#34;,&#34;outputs&#34;:[],&#34;payable&#34;:false,&#34;stateMutability&#34;:&#34;nonpayable&#34;,&#34;type&#34;:&#34;function&#34;},{&#34;constant&#34;:true,&#34;inputs&#34;:[],&#34;name&#34;:&#34;cap&#34;,&#34;outputs&#34;:[{&#34;internalType&#34;:&#34;uint256&#34;,&#34;name&#34;:&#34;&#34;,&#34;type&#34;:&#34;uint256&#34;}],&#34;payable&#34;:false,&#34;stateMutability&#34;:&#34;view&#34;,&#34;type&#34;:&#34;function&#34;},{&#34;constant&#34;:true,&#34;inputs&#34;:[],&#34;name&#34;:&#34;decimals&#34;,&#34;outputs&#34;:[{&#34;internalType&#34;:&#34;uint8&#34;,&#34;name&#34;:&#34;&#34;,&#34;type&#34;:&#34;uint8&#34;}],&#34;payable&#34;:false,&#34;stateMutability&#34;:&#34;view&#34;,&#34;type&#34;:&#34;function&#34;},{&#34;constant&#34;:false,&#34;inputs&#34;:[{&#34;internalType&#34;:&#34;address&#34;,&#34;name&#34;:&#34;spender&#34;,&#34;type&#34;:&#34;address&#34;},{&#34;internalType&#34;:&#34;uint256&#34;,&#34;name&#34;:&#34;subtractedValue&#34;,&#34;type&#34;:&#34;uint256&#34;}],&#34;name&#34;:&#34;decreaseAllowance&#34;,&#34;outputs&#34;:[{&#34;internalType&#34;:&#34;bool&#34;,&#34;name&#34;:&#34;&#34;,&#34;type&#34;:&#34;bool&#34;}],&#34;payable&#34;:false,&#34;stateMutability&#34;:&#34;nonpayable&#34;,&#34;type&#34;:&#34;function&#34;},{&#34;constant&#34;:true,&#34;inputs&#34;:[],&#34;name&#34;:&#34;getDecimals&#34;,&#34;outputs&#34;:[{&#34;internalType&#34;:&#34;uint8&#34;,&#34;name&#34;:&#34;&#34;,&#34;type&#34;:&#34;uint8&#34;}],&#34;payable&#34;:false,&#34;stateMutability&#34;:&#34;view&#34;,&#34;type&#34;:&#34;function&#34;},{&#34;constant&#34;:false,&#34;inputs&#34;:[{&#34;internalType&#34;:&#34;address&#34;,&#34;name&#34;:&#34;spender&#34;,&#34;type&#34;:&#34;address&#34;},{&#34;internalType&#34;:&#34;uint256&#34;,&#34;name&#34;:&#34;addedValue&#34;,&#34;type&#34;:&#34;uint256&#34;}],&#34;name&#34;:&#34;increaseAllowance&#34;,&#34;outputs&#34;:[{&#34;internalType&#34;:&#34;bool&#34;,&#34;name&#34;:&#34;&#34;,&#34;type&#34;:&#34;bool&#34;}],&#34;payable&#34;:false,&#34;stateMutability&#34;:&#34;nonpayable&#34;,&#34;type&#34;:&#34;function&#34;},{&#34;constant&#34;:true,&#34;inputs&#34;:[{&#34;internalType&#34;:&#34;address&#34;,&#34;name&#34;:&#34;account&#34;,&#34;type&#34;:&#34;address&#34;}],&#34;name&#34;:&#34;isMinter&#34;,&#34;outputs&#34;:[{&#34;internalType&#34;:&#34;bool&#34;,&#34;name&#34;:&#34;&#34;,&#34;type&#34;:&#34;bool&#34;}],&#34;payable&#34;:false,&#34;stateMutability&#34;:&#34;view&#34;,&#34;type&#34;:&#34;function&#34;},{&#34;constant&#34;:false,&#34;inputs&#34;:[{&#34;internalType&#34;:&#34;address&#34;,&#34;name&#34;:&#34;account&#34;,&#34;type&#34;:&#34;address&#34;},{&#34;internalType&#34;:&#34;uint256&#34;,&#34;name&#34;:&#34;amount&#34;,&#34;type&#34;:&#34;uint256&#34;}],&#34;name&#34;:&#34;mint&#34;,&#34;outputs&#34;:[{&#34;internalType&#34;:&#34;bool&#34;,&#34;name&#34;:&#34;&#34;,&#34;type&#34;:&#34;bool&#34;}],&#34;payable&#34;:false,&#34;stateMutability&#34;:&#34;nonpayable&#34;,&#34;type&#34;:&#34;function&#34;},{&#34;constant&#34;:true,&#34;inputs&#34;:[],&#34;name&#34;:&#34;name&#34;,&#34;outputs&#34;:[{&#34;internalType&#34;:&#34;string&#34;,&#34;name&#34;:&#34;&#34;,&#34;type&#34;:&#34;string&#34;}],&#34;payable&#34;:false,&#34;stateMutability&#34;:&#34;view&#34;,&#34;type&#34;:&#34;function&#34;},{&#34;constant&#34;:false,&#34;inputs&#34;:[],&#34;name&#34;:&#34;renounceMinter&#34;,&#34;outputs&#34;:[],&#34;payable&#34;:false,&#34;stateMutability&#34;:&#34;nonpayable&#34;,&#34;type&#34;:&#34;function&#34;},{&#34;constant&#34;:true,&#34;inputs&#34;:[],&#34;name&#34;:&#34;symbol&#34;,&#34;outputs&#34;:[{&#34;internalType&#34;:&#34;string&#34;,&#34;name&#34;:&#34;&#34;,&#34;type&#34;:&#34;string&#34;}],&#34;payable&#34;:false,&#34;stateMutability&#34;:&#34;view&#34;,&#34;type&#34;:&#34;function&#34;},{&#34;constant&#34;:true,&#34;inputs&#34;:[],&#34;name&#34;:&#34;tokenName&#34;,&#34;outputs&#34;:[{&#34;internalType&#34;:&#34;string&#34;,&#34;name&#34;:&#34;&#34;,&#34;type&#34;:&#34;string&#34;}],&#34;payable&#34;:false,&#34;stateMutability&#34;:&#34;view&#34;,&#34;type&#34;:&#34;function&#34;},{&#34;constant&#34;:true,&#34;inputs&#34;:[],&#34;name&#34;:&#34;tokenSymbol&#34;,&#34;outputs&#34;:[{&#34;internalType&#34;:&#34;string&#34;,&#34;name&#34;:&#34;&#34;,&#34;type&#34;:&#34;string&#34;}],&#34;payable&#34;:false,&#34;stateMutability&#34;:&#34;view&#34;,&#34;type&#34;:&#34;function&#34;},{&#34;constant&#34;:true,&#34;inputs&#34;:[],&#34;name&#34;:&#34;totalSupply&#34;,&#34;outputs&#34;:[{&#34;internalType&#34;:&#34;uint256&#34;,&#34;name&#34;:&#34;&#34;,&#34;type&#34;:&#34;uint256&#34;}],&#34;payable&#34;:false,&#34;stateMutability&#34;:&#34;view&#34;,&#34;type&#34;:&#34;function&#34;},{&#34;constant&#34;:false,&#34;inputs&#34;:[{&#34;internalType&#34;:&#34;address&#34;,&#34;name&#34;:&#34;recipient&#34;,&#34;type&#34;:&#34;address&#34;},{&#34;internalType&#34;:&#34;uint256&#34;,&#34;name&#34;:&#34;amount&#34;,&#34;type&#34;:&#34;uint256&#34;}],&#34;name&#34;:&#34;transfer&#34;,&#34;outputs&#34;:[{&#34;internalType&#34;:&#34;bool&#34;,&#34;name&#34;:&#34;&#34;,&#34;type&#34;:&#34;bool&#34;}],&#34;payable&#34;:false,&#34;stateMutability&#34;:&#34;nonpayable&#34;,&#34;type&#34;:&#34;function&#34;},{&#34;constant&#34;:false,&#34;inputs&#34;:[{&#34;internalType&#34;:&#34;address&#34;,&#34;name&#34;:&#34;sender&#34;,&#34;type&#34;:&#34;address&#34;},{&#34;internalType&#34;:&#34;address&#34;,&#34;name&#34;:&#34;recipient&#34;,&#34;type&#34;:&#34;address&#34;},{&#34;internalType&#34;:&#34;uint256&#34;,&#34;name&#34;:&#34;amount&#34;,&#34;type&#34;:&#34;uint256&#34;}],&#34;name&#34;:&#34;transferFrom&#34;,&#34;outputs&#34;:[{&#34;internalType&#34;:&#34;bool&#34;,&#34;name&#34;:&#34;&#34;,&#34;type&#34;:&#34;bool&#34;}],&#34;payable&#34;:false,&#34;stateMutability&#34;:&#34;nonpayable&#34;,&#34;type&#34;:&#34;function&#34;}]&#39;
+            &#39;[{&#34;inputs&#34;:[],&#34;payable&#34;:false,&#34;stateMutability&#34;:&#34;nonpayable&#34;,&#34;type&#34;:&#34;constructor&#34;},{&#34;anonymous&#34;:false,&#34;inputs&#34;:[{&#34;indexed&#34;:true,&#34;internalType&#34;:&#34;address&#34;,&#34;name&#34;:&#34;owner&#34;,&#34;type&#34;:&#34;address&#34;},{&#34;indexed&#34;:true,&#34;internalType&#34;:&#34;address&#34;,&#34;name&#34;:&#34;spender&#34;,&#34;type&#34;:&#34;address&#34;},{&#34;indexed&#34;:false,&#34;internalType&#34;:&#34;uint256&#34;,&#34;name&#34;:&#34;value&#34;,&#34;type&#34;:&#34;uint256&#34;}],&#34;name&#34;:&#34;Approval&#34;,&#34;type&#34;:&#34;event&#34;},{&#34;anonymous&#34;:false,&#34;inputs&#34;:[{&#34;indexed&#34;:true,&#34;internalType&#34;:&#34;address&#34;,&#34;name&#34;:&#34;account&#34;,&#34;type&#34;:&#34;address&#34;}],&#34;name&#34;:&#34;MinterAdded&#34;,&#34;type&#34;:&#34;event&#34;},{&#34;anonymous&#34;:false,&#34;inputs&#34;:[{&#34;indexed&#34;:true,&#34;internalType&#34;:&#34;address&#34;,&#34;name&#34;:&#34;account&#34;,&#34;type&#34;:&#34;address&#34;}],&#34;name&#34;:&#34;MinterRemoved&#34;,&#34;type&#34;:&#34;event&#34;},{&#34;anonymous&#34;:false,&#34;inputs&#34;:[{&#34;indexed&#34;:true,&#34;internalType&#34;:&#34;address&#34;,&#34;name&#34;:&#34;from&#34;,&#34;type&#34;:&#34;address&#34;},{&#34;indexed&#34;:true,&#34;internalType&#34;:&#34;address&#34;,&#34;name&#34;:&#34;to&#34;,&#34;type&#34;:&#34;address&#34;},{&#34;indexed&#34;:false,&#34;internalType&#34;:&#34;uint256&#34;,&#34;name&#34;:&#34;value&#34;,&#34;type&#34;:&#34;uint256&#34;}],&#34;name&#34;:&#34;Transfer&#34;,&#34;type&#34;:&#34;event&#34;},{&#34;constant&#34;:false,&#34;inputs&#34;:[{&#34;internalType&#34;:&#34;address&#34;,&#34;name&#34;:&#34;account&#34;,&#34;type&#34;:&#34;address&#34;}],&#34;name&#34;:&#34;addMinter&#34;,&#34;outputs&#34;:[],&#34;payable&#34;:false,&#34;stateMutability&#34;:&#34;nonpayable&#34;,&#34;type&#34;:&#34;function&#34;},{&#34;constant&#34;:true,&#34;inputs&#34;:[{&#34;internalType&#34;:&#34;address&#34;,&#34;name&#34;:&#34;owner&#34;,&#34;type&#34;:&#34;address&#34;},{&#34;internalType&#34;:&#34;address&#34;,&#34;name&#34;:&#34;spender&#34;,&#34;type&#34;:&#34;address&#34;}],&#34;name&#34;:&#34;allowance&#34;,&#34;outputs&#34;:[{&#34;internalType&#34;:&#34;uint256&#34;,&#34;name&#34;:&#34;&#34;,&#34;type&#34;:&#34;uint256&#34;}],&#34;payable&#34;:false,&#34;stateMutability&#34;:&#34;view&#34;,&#34;type&#34;:&#34;function&#34;},{&#34;constant&#34;:false,&#34;inputs&#34;:[{&#34;internalType&#34;:&#34;address&#34;,&#34;name&#34;:&#34;spender&#34;,&#34;type&#34;:&#34;address&#34;},{&#34;internalType&#34;:&#34;uint256&#34;,&#34;name&#34;:&#34;amount&#34;,&#34;type&#34;:&#34;uint256&#34;}],&#34;name&#34;:&#34;approve&#34;,&#34;outputs&#34;:[{&#34;internalType&#34;:&#34;bool&#34;,&#34;name&#34;:&#34;&#34;,&#34;type&#34;:&#34;bool&#34;}],&#34;payable&#34;:false,&#34;stateMutability&#34;:&#34;nonpayable&#34;,&#34;type&#34;:&#34;function&#34;},{&#34;constant&#34;:true,&#34;inputs&#34;:[{&#34;internalType&#34;:&#34;address&#34;,&#34;name&#34;:&#34;account&#34;,&#34;type&#34;:&#34;address&#34;}],&#34;name&#34;:&#34;balanceOf&#34;,&#34;outputs&#34;:[{&#34;internalType&#34;:&#34;uint256&#34;,&#34;name&#34;:&#34;&#34;,&#34;type&#34;:&#34;uint256&#34;}],&#34;payable&#34;:false,&#34;stateMutability&#34;:&#34;view&#34;,&#34;type&#34;:&#34;function&#34;},{&#34;constant&#34;:false,&#34;inputs&#34;:[{&#34;internalType&#34;:&#34;uint256&#34;,&#34;name&#34;:&#34;amount&#34;,&#34;type&#34;:&#34;uint256&#34;}],&#34;name&#34;:&#34;burn&#34;,&#34;outputs&#34;:[],&#34;payable&#34;:false,&#34;stateMutability&#34;:&#34;nonpayable&#34;,&#34;type&#34;:&#34;function&#34;},{&#34;constant&#34;:false,&#34;inputs&#34;:[{&#34;internalType&#34;:&#34;address&#34;,&#34;name&#34;:&#34;account&#34;,&#34;type&#34;:&#34;address&#34;},{&#34;internalType&#34;:&#34;uint256&#34;,&#34;name&#34;:&#34;amount&#34;,&#34;type&#34;:&#34;uint256&#34;}],&#34;name&#34;:&#34;burnFrom&#34;,&#34;outputs&#34;:[],&#34;payable&#34;:false,&#34;stateMutability&#34;:&#34;nonpayable&#34;,&#34;type&#34;:&#34;function&#34;},{&#34;constant&#34;:true,&#34;inputs&#34;:[],&#34;name&#34;:&#34;cap&#34;,&#34;outputs&#34;:[{&#34;internalType&#34;:&#34;uint256&#34;,&#34;name&#34;:&#34;&#34;,&#34;type&#34;:&#34;uint256&#34;}],&#34;payable&#34;:false,&#34;stateMutability&#34;:&#34;view&#34;,&#34;type&#34;:&#34;function&#34;},{&#34;constant&#34;:true,&#34;inputs&#34;:[],&#34;name&#34;:&#34;decimals&#34;,&#34;outputs&#34;:[{&#34;internalType&#34;:&#34;uint8&#34;,&#34;name&#34;:&#34;&#34;,&#34;type&#34;:&#34;uint8&#34;}],&#34;payable&#34;:false,&#34;stateMutability&#34;:&#34;view&#34;,&#34;type&#34;:&#34;function&#34;},{&#34;constant&#34;:false,&#34;inputs&#34;:[{&#34;internalType&#34;:&#34;address&#34;,&#34;name&#34;:&#34;spender&#34;,&#34;type&#34;:&#34;address&#34;},{&#34;internalType&#34;:&#34;uint256&#34;,&#34;name&#34;:&#34;subtractedValue&#34;,&#34;type&#34;:&#34;uint256&#34;}],&#34;name&#34;:&#34;decreaseAllowance&#34;,&#34;outputs&#34;:[{&#34;internalType&#34;:&#34;bool&#34;,&#34;name&#34;:&#34;&#34;,&#34;type&#34;:&#34;bool&#34;}],&#34;payable&#34;:false,&#34;stateMutability&#34;:&#34;nonpayable&#34;,&#34;type&#34;:&#34;function&#34;},{&#34;constant&#34;:true,&#34;inputs&#34;:[],&#34;name&#34;:&#34;getDecimals&#34;,&#34;outputs&#34;:[{&#34;internalType&#34;:&#34;uint8&#34;,&#34;name&#34;:&#34;&#34;,&#34;type&#34;:&#34;uint8&#34;}],&#34;payable&#34;:false,&#34;stateMutability&#34;:&#34;view&#34;,&#34;type&#34;:&#34;function&#34;},{&#34;constant&#34;:true,&#34;inputs&#34;:[],&#34;name&#34;:&#34;gov&#34;,&#34;outputs&#34;:[{&#34;internalType&#34;:&#34;address&#34;,&#34;name&#34;:&#34;&#34;,&#34;type&#34;:&#34;address&#34;}],&#34;payable&#34;:false,&#34;stateMutability&#34;:&#34;view&#34;,&#34;type&#34;:&#34;function&#34;},{&#34;constant&#34;:false,&#34;inputs&#34;:[{&#34;internalType&#34;:&#34;address&#34;,&#34;name&#34;:&#34;spender&#34;,&#34;type&#34;:&#34;address&#34;},{&#34;internalType&#34;:&#34;uint256&#34;,&#34;name&#34;:&#34;addedValue&#34;,&#34;type&#34;:&#34;uint256&#34;}],&#34;name&#34;:&#34;increaseAllowance&#34;,&#34;outputs&#34;:[{&#34;internalType&#34;:&#34;bool&#34;,&#34;name&#34;:&#34;&#34;,&#34;type&#34;:&#34;bool&#34;}],&#34;payable&#34;:false,&#34;stateMutability&#34;:&#34;nonpayable&#34;,&#34;type&#34;:&#34;function&#34;},{&#34;constant&#34;:true,&#34;inputs&#34;:[{&#34;internalType&#34;:&#34;address&#34;,&#34;name&#34;:&#34;account&#34;,&#34;type&#34;:&#34;address&#34;}],&#34;name&#34;:&#34;isMinter&#34;,&#34;outputs&#34;:[{&#34;internalType&#34;:&#34;bool&#34;,&#34;name&#34;:&#34;&#34;,&#34;type&#34;:&#34;bool&#34;}],&#34;payable&#34;:false,&#34;stateMutability&#34;:&#34;view&#34;,&#34;type&#34;:&#34;function&#34;},{&#34;constant&#34;:false,&#34;inputs&#34;:[{&#34;internalType&#34;:&#34;address&#34;,&#34;name&#34;:&#34;account&#34;,&#34;type&#34;:&#34;address&#34;},{&#34;internalType&#34;:&#34;uint256&#34;,&#34;name&#34;:&#34;amount&#34;,&#34;type&#34;:&#34;uint256&#34;}],&#34;name&#34;:&#34;mint&#34;,&#34;outputs&#34;:[{&#34;internalType&#34;:&#34;bool&#34;,&#34;name&#34;:&#34;&#34;,&#34;type&#34;:&#34;bool&#34;}],&#34;payable&#34;:false,&#34;stateMutability&#34;:&#34;nonpayable&#34;,&#34;type&#34;:&#34;function&#34;},{&#34;constant&#34;:true,&#34;inputs&#34;:[],&#34;name&#34;:&#34;name&#34;,&#34;outputs&#34;:[{&#34;internalType&#34;:&#34;string&#34;,&#34;name&#34;:&#34;&#34;,&#34;type&#34;:&#34;string&#34;}],&#34;payable&#34;:false,&#34;stateMutability&#34;:&#34;view&#34;,&#34;type&#34;:&#34;function&#34;},{&#34;constant&#34;:false,&#34;inputs&#34;:[{&#34;internalType&#34;:&#34;address&#34;,&#34;name&#34;:&#34;account&#34;,&#34;type&#34;:&#34;address&#34;}],&#34;name&#34;:&#34;removeMinter&#34;,&#34;outputs&#34;:[],&#34;payable&#34;:false,&#34;stateMutability&#34;:&#34;nonpayable&#34;,&#34;type&#34;:&#34;function&#34;},{&#34;constant&#34;:false,&#34;inputs&#34;:[],&#34;name&#34;:&#34;renounceMinter&#34;,&#34;outputs&#34;:[],&#34;payable&#34;:false,&#34;stateMutability&#34;:&#34;nonpayable&#34;,&#34;type&#34;:&#34;function&#34;},{&#34;constant&#34;:true,&#34;inputs&#34;:[],&#34;name&#34;:&#34;symbol&#34;,&#34;outputs&#34;:[{&#34;internalType&#34;:&#34;string&#34;,&#34;name&#34;:&#34;&#34;,&#34;type&#34;:&#34;string&#34;}],&#34;payable&#34;:false,&#34;stateMutability&#34;:&#34;view&#34;,&#34;type&#34;:&#34;function&#34;},{&#34;constant&#34;:true,&#34;inputs&#34;:[],&#34;name&#34;:&#34;tokenName&#34;,&#34;outputs&#34;:[{&#34;internalType&#34;:&#34;string&#34;,&#34;name&#34;:&#34;&#34;,&#34;type&#34;:&#34;string&#34;}],&#34;payable&#34;:false,&#34;stateMutability&#34;:&#34;view&#34;,&#34;type&#34;:&#34;function&#34;},{&#34;constant&#34;:true,&#34;inputs&#34;:[],&#34;name&#34;:&#34;tokenSymbol&#34;,&#34;outputs&#34;:[{&#34;internalType&#34;:&#34;string&#34;,&#34;name&#34;:&#34;&#34;,&#34;type&#34;:&#34;string&#34;}],&#34;payable&#34;:false,&#34;stateMutability&#34;:&#34;view&#34;,&#34;type&#34;:&#34;function&#34;},{&#34;constant&#34;:true,&#34;inputs&#34;:[],&#34;name&#34;:&#34;totalSupply&#34;,&#34;outputs&#34;:[{&#34;internalType&#34;:&#34;uint256&#34;,&#34;name&#34;:&#34;&#34;,&#34;type&#34;:&#34;uint256&#34;}],&#34;payable&#34;:false,&#34;stateMutability&#34;:&#34;view&#34;,&#34;type&#34;:&#34;function&#34;},{&#34;constant&#34;:false,&#34;inputs&#34;:[{&#34;internalType&#34;:&#34;address&#34;,&#34;name&#34;:&#34;recipient&#34;,&#34;type&#34;:&#34;address&#34;},{&#34;internalType&#34;:&#34;uint256&#34;,&#34;name&#34;:&#34;amount&#34;,&#34;type&#34;:&#34;uint256&#34;}],&#34;name&#34;:&#34;transfer&#34;,&#34;outputs&#34;:[{&#34;internalType&#34;:&#34;bool&#34;,&#34;name&#34;:&#34;&#34;,&#34;type&#34;:&#34;bool&#34;}],&#34;payable&#34;:false,&#34;stateMutability&#34;:&#34;nonpayable&#34;,&#34;type&#34;:&#34;function&#34;},{&#34;constant&#34;:false,&#34;inputs&#34;:[{&#34;internalType&#34;:&#34;address&#34;,&#34;name&#34;:&#34;sender&#34;,&#34;type&#34;:&#34;address&#34;},{&#34;internalType&#34;:&#34;address&#34;,&#34;name&#34;:&#34;recipient&#34;,&#34;type&#34;:&#34;address&#34;},{&#34;internalType&#34;:&#34;uint256&#34;,&#34;name&#34;:&#34;amount&#34;,&#34;type&#34;:&#34;uint256&#34;}],&#34;name&#34;:&#34;transferFrom&#34;,&#34;outputs&#34;:[{&#34;internalType&#34;:&#34;bool&#34;,&#34;name&#34;:&#34;&#34;,&#34;type&#34;:&#34;bool&#34;}],&#34;payable&#34;:false,&#34;stateMutability&#34;:&#34;nonpayable&#34;,&#34;type&#34;:&#34;function&#34;}]&#39;
             # noqa: E501 (line-too-long)
         )
 
@@ -1936,6 +2103,7 @@ class Ori20(ContractBase):
         &#34;&#34;&#34;Persist instance data.&#34;&#34;&#34;
         super().__init__(elib, contract_address, validator)
         self._underlying_method = contract_function
+        self.sign = validator.getSignature(&#34;addMinter&#34;)
 
     def validate_and_normalize_inputs(self, account: str) -&gt; any:
         &#34;&#34;&#34;Validate the inputs to the addMinter method.&#34;&#34;&#34;
@@ -1977,17 +2145,17 @@ class Ori20(ContractBase):
                 txHash = self._web3_eth.sendRawTransaction(signed.rawTransaction)
                 tx_receipt = None
                 if receiptListen is True:
-                    print(&#34;======== awaiting Confirmation 🚸️ -add_minter&#34;)
+                    print(f&#34;======== awaiting Confirmation 🚸️ {self.sign}&#34;)
                     tx_receipt = self._web3_eth.waitForTransactionReceipt(txHash)
                     if debug:
                         print(&#34;======== TX Result ✅&#34;)
                         print(tx_receipt)
 
                 print(f&#34;======== TX blockHash ✅&#34;)
-                if receiptListen is True and tx_receipt is not None:
+                if tx_receipt is not None:
                     print(f&#34;{Bolors.OK}{tx_receipt.blockHash.hex()}{Bolors.RESET}&#34;)
                 else:
-                    print(f&#34;{Bolors.WARNING}{txHash.hex()}{Bolors.RESET}&#34;)
+                    print(f&#34;{Bolors.WARNING}{txHash.hex()}{Bolors.RESET} - broadcast hash&#34;)
 
             if receiptListen is False:
                 time.sleep(self._wait)
@@ -2071,17 +2239,17 @@ class Ori20(ContractBase):
             txHash = self._web3_eth.sendRawTransaction(signed.rawTransaction)
             tx_receipt = None
             if receiptListen is True:
-                print(&#34;======== awaiting Confirmation 🚸️ -add_minter&#34;)
+                print(f&#34;======== awaiting Confirmation 🚸️ {self.sign}&#34;)
                 tx_receipt = self._web3_eth.waitForTransactionReceipt(txHash)
                 if debug:
                     print(&#34;======== TX Result ✅&#34;)
                     print(tx_receipt)
 
             print(f&#34;======== TX blockHash ✅&#34;)
-            if receiptListen is True and tx_receipt is not None:
+            if tx_receipt is not None:
                 print(f&#34;{Bolors.OK}{tx_receipt.blockHash.hex()}{Bolors.RESET}&#34;)
             else:
-                print(f&#34;{Bolors.WARNING}{txHash.hex()}{Bolors.RESET}&#34;)
+                print(f&#34;{Bolors.WARNING}{txHash.hex()}{Bolors.RESET} - broadcast hash&#34;)
 
         if receiptListen is False:
             time.sleep(self._wait)
@@ -2199,6 +2367,7 @@ class Ori20(ContractBase):
         &#34;&#34;&#34;Persist instance data.&#34;&#34;&#34;
         super().__init__(elib, contract_address, validator)
         self._underlying_method = contract_function
+        self.sign = validator.getSignature(&#34;allowance&#34;)
 
     def validate_and_normalize_inputs(self, owner: str, spender: str) -&gt; any:
         &#34;&#34;&#34;Validate the inputs to the allowance method.&#34;&#34;&#34;
@@ -2323,6 +2492,7 @@ class Ori20(ContractBase):
         &#34;&#34;&#34;Persist instance data.&#34;&#34;&#34;
         super().__init__(elib, contract_address, validator)
         self._underlying_method = contract_function
+        self.sign = validator.getSignature(&#34;approve&#34;)
 
     def validate_and_normalize_inputs(self, spender: str, amount: int) -&gt; any:
         &#34;&#34;&#34;Validate the inputs to the approve method.&#34;&#34;&#34;
@@ -2371,17 +2541,17 @@ class Ori20(ContractBase):
                 txHash = self._web3_eth.sendRawTransaction(signed.rawTransaction)
                 tx_receipt = None
                 if receiptListen is True:
-                    print(&#34;======== awaiting Confirmation 🚸️ -approve&#34;)
+                    print(f&#34;======== awaiting Confirmation 🚸️ {self.sign}&#34;)
                     tx_receipt = self._web3_eth.waitForTransactionReceipt(txHash)
                     if debug:
                         print(&#34;======== TX Result ✅&#34;)
                         print(tx_receipt)
 
                 print(f&#34;======== TX blockHash ✅&#34;)
-                if receiptListen is True and tx_receipt is not None:
+                if tx_receipt is not None:
                     print(f&#34;{Bolors.OK}{tx_receipt.blockHash.hex()}{Bolors.RESET}&#34;)
                 else:
-                    print(f&#34;{Bolors.WARNING}{txHash.hex()}{Bolors.RESET}&#34;)
+                    print(f&#34;{Bolors.WARNING}{txHash.hex()}{Bolors.RESET} - broadcast hash&#34;)
 
             if receiptListen is False:
                 time.sleep(self._wait)
@@ -2465,17 +2635,17 @@ class Ori20(ContractBase):
             txHash = self._web3_eth.sendRawTransaction(signed.rawTransaction)
             tx_receipt = None
             if receiptListen is True:
-                print(&#34;======== awaiting Confirmation 🚸️ -approve&#34;)
+                print(f&#34;======== awaiting Confirmation 🚸️ {self.sign}&#34;)
                 tx_receipt = self._web3_eth.waitForTransactionReceipt(txHash)
                 if debug:
                     print(&#34;======== TX Result ✅&#34;)
                     print(tx_receipt)
 
             print(f&#34;======== TX blockHash ✅&#34;)
-            if receiptListen is True and tx_receipt is not None:
+            if tx_receipt is not None:
                 print(f&#34;{Bolors.OK}{tx_receipt.blockHash.hex()}{Bolors.RESET}&#34;)
             else:
-                print(f&#34;{Bolors.WARNING}{txHash.hex()}{Bolors.RESET}&#34;)
+                print(f&#34;{Bolors.WARNING}{txHash.hex()}{Bolors.RESET} - broadcast hash&#34;)
 
         if receiptListen is False:
             time.sleep(self._wait)
@@ -2600,6 +2770,7 @@ class Ori20(ContractBase):
         &#34;&#34;&#34;Persist instance data.&#34;&#34;&#34;
         super().__init__(elib, contract_address, validator)
         self._underlying_method = contract_function
+        self.sign = validator.getSignature(&#34;balanceOf&#34;)
 
     def validate_and_normalize_inputs(self, account: str) -&gt; any:
         &#34;&#34;&#34;Validate the inputs to the balanceOf method.&#34;&#34;&#34;
@@ -2712,6 +2883,7 @@ class Ori20(ContractBase):
         &#34;&#34;&#34;Persist instance data.&#34;&#34;&#34;
         super().__init__(elib, contract_address, validator)
         self._underlying_method = contract_function
+        self.sign = validator.getSignature(&#34;burnFrom&#34;)
 
     def validate_and_normalize_inputs(self, account: str, amount: int) -&gt; any:
         &#34;&#34;&#34;Validate the inputs to the burnFrom method.&#34;&#34;&#34;
@@ -2760,17 +2932,17 @@ class Ori20(ContractBase):
                 txHash = self._web3_eth.sendRawTransaction(signed.rawTransaction)
                 tx_receipt = None
                 if receiptListen is True:
-                    print(&#34;======== awaiting Confirmation 🚸️ -burn_from&#34;)
+                    print(f&#34;======== awaiting Confirmation 🚸️ {self.sign}&#34;)
                     tx_receipt = self._web3_eth.waitForTransactionReceipt(txHash)
                     if debug:
                         print(&#34;======== TX Result ✅&#34;)
                         print(tx_receipt)
 
                 print(f&#34;======== TX blockHash ✅&#34;)
-                if receiptListen is True and tx_receipt is not None:
+                if tx_receipt is not None:
                     print(f&#34;{Bolors.OK}{tx_receipt.blockHash.hex()}{Bolors.RESET}&#34;)
                 else:
-                    print(f&#34;{Bolors.WARNING}{txHash.hex()}{Bolors.RESET}&#34;)
+                    print(f&#34;{Bolors.WARNING}{txHash.hex()}{Bolors.RESET} - broadcast hash&#34;)
 
             if receiptListen is False:
                 time.sleep(self._wait)
@@ -2854,17 +3026,17 @@ class Ori20(ContractBase):
             txHash = self._web3_eth.sendRawTransaction(signed.rawTransaction)
             tx_receipt = None
             if receiptListen is True:
-                print(&#34;======== awaiting Confirmation 🚸️ -burn_from&#34;)
+                print(f&#34;======== awaiting Confirmation 🚸️ {self.sign}&#34;)
                 tx_receipt = self._web3_eth.waitForTransactionReceipt(txHash)
                 if debug:
                     print(&#34;======== TX Result ✅&#34;)
                     print(tx_receipt)
 
             print(f&#34;======== TX blockHash ✅&#34;)
-            if receiptListen is True and tx_receipt is not None:
+            if tx_receipt is not None:
                 print(f&#34;{Bolors.OK}{tx_receipt.blockHash.hex()}{Bolors.RESET}&#34;)
             else:
-                print(f&#34;{Bolors.WARNING}{txHash.hex()}{Bolors.RESET}&#34;)
+                print(f&#34;{Bolors.WARNING}{txHash.hex()}{Bolors.RESET} - broadcast hash&#34;)
 
         if receiptListen is False:
             time.sleep(self._wait)
@@ -2989,6 +3161,7 @@ class Ori20(ContractBase):
         &#34;&#34;&#34;Persist instance data.&#34;&#34;&#34;
         super().__init__(elib, contract_address, validator)
         self._underlying_method = contract_function
+        self.sign = validator.getSignature(&#34;burn&#34;)
 
     def validate_and_normalize_inputs(self, amount: int) -&gt; any:
         &#34;&#34;&#34;Validate the inputs to the burn method.&#34;&#34;&#34;
@@ -3031,17 +3204,17 @@ class Ori20(ContractBase):
                 txHash = self._web3_eth.sendRawTransaction(signed.rawTransaction)
                 tx_receipt = None
                 if receiptListen is True:
-                    print(&#34;======== awaiting Confirmation 🚸️ -burn&#34;)
+                    print(f&#34;======== awaiting Confirmation 🚸️ {self.sign}&#34;)
                     tx_receipt = self._web3_eth.waitForTransactionReceipt(txHash)
                     if debug:
                         print(&#34;======== TX Result ✅&#34;)
                         print(tx_receipt)
 
                 print(f&#34;======== TX blockHash ✅&#34;)
-                if receiptListen is True and tx_receipt is not None:
+                if tx_receipt is not None:
                     print(f&#34;{Bolors.OK}{tx_receipt.blockHash.hex()}{Bolors.RESET}&#34;)
                 else:
-                    print(f&#34;{Bolors.WARNING}{txHash.hex()}{Bolors.RESET}&#34;)
+                    print(f&#34;{Bolors.WARNING}{txHash.hex()}{Bolors.RESET} - broadcast hash&#34;)
 
             if receiptListen is False:
                 time.sleep(self._wait)
@@ -3125,17 +3298,17 @@ class Ori20(ContractBase):
             txHash = self._web3_eth.sendRawTransaction(signed.rawTransaction)
             tx_receipt = None
             if receiptListen is True:
-                print(&#34;======== awaiting Confirmation 🚸️ -burn&#34;)
+                print(f&#34;======== awaiting Confirmation 🚸️ {self.sign}&#34;)
                 tx_receipt = self._web3_eth.waitForTransactionReceipt(txHash)
                 if debug:
                     print(&#34;======== TX Result ✅&#34;)
                     print(tx_receipt)
 
             print(f&#34;======== TX blockHash ✅&#34;)
-            if receiptListen is True and tx_receipt is not None:
+            if tx_receipt is not None:
                 print(f&#34;{Bolors.OK}{tx_receipt.blockHash.hex()}{Bolors.RESET}&#34;)
             else:
-                print(f&#34;{Bolors.WARNING}{txHash.hex()}{Bolors.RESET}&#34;)
+                print(f&#34;{Bolors.WARNING}{txHash.hex()}{Bolors.RESET} - broadcast hash&#34;)
 
         if receiptListen is False:
             time.sleep(self._wait)
@@ -3238,7 +3411,7 @@ class Ori20(ContractBase):
 </dd>
 <dt id="moody.m.ori20.CapMethod"><code class="flex name class">
 <span>class <span class="ident">CapMethod</span></span>
-<span>(</span><span>elib: <a title="moody.libeb.MiliDoS" href="../../libeb.html#moody.libeb.MiliDoS">MiliDoS</a>, contract_address: str, contract_function: web3.contract.ContractFunction)</span>
+<span>(</span><span>elib: <a title="moody.libeb.MiliDoS" href="../../libeb.html#moody.libeb.MiliDoS">MiliDoS</a>, contract_address: str, contract_function: web3.contract.ContractFunction, validator: <a title="moody.m.bases.Validator" href="../bases.html#moody.m.bases.Validator">Validator</a> = None)</span>
 </code></dt>
 <dd>
 <div class="desc"><p>Various interfaces to the cap method.</p>
@@ -3250,10 +3423,11 @@ class Ori20(ContractBase):
 <pre><code class="python">class CapMethod(ContractMethod):  # pylint: disable=invalid-name
     &#34;&#34;&#34;Various interfaces to the cap method.&#34;&#34;&#34;
 
-    def __init__(self, elib: MiliDoS, contract_address: str, contract_function: ContractFunction):
+    def __init__(self, elib: MiliDoS, contract_address: str, contract_function: ContractFunction, validator: Validator = None):
         &#34;&#34;&#34;Persist instance data.&#34;&#34;&#34;
         super().__init__(elib, contract_address)
         self._underlying_method = contract_function
+        self.sign = validator.getSignature(&#34;cap&#34;)
 
     def block_call(self, debug: bool = False) -&gt; int:
         _fn = self._underlying_method()
@@ -3318,7 +3492,7 @@ class Ori20(ContractBase):
 </dd>
 <dt id="moody.m.ori20.DecimalsMethod"><code class="flex name class">
 <span>class <span class="ident">DecimalsMethod</span></span>
-<span>(</span><span>elib: <a title="moody.libeb.MiliDoS" href="../../libeb.html#moody.libeb.MiliDoS">MiliDoS</a>, contract_address: str, contract_function: web3.contract.ContractFunction)</span>
+<span>(</span><span>elib: <a title="moody.libeb.MiliDoS" href="../../libeb.html#moody.libeb.MiliDoS">MiliDoS</a>, contract_address: str, contract_function: web3.contract.ContractFunction, validator: <a title="moody.m.bases.Validator" href="../bases.html#moody.m.bases.Validator">Validator</a> = None)</span>
 </code></dt>
 <dd>
 <div class="desc"><p>Various interfaces to the decimals method.</p>
@@ -3330,10 +3504,11 @@ class Ori20(ContractBase):
 <pre><code class="python">class DecimalsMethod(ContractMethod):  # pylint: disable=invalid-name
     &#34;&#34;&#34;Various interfaces to the decimals method.&#34;&#34;&#34;
 
-    def __init__(self, elib: MiliDoS, contract_address: str, contract_function: ContractFunction):
+    def __init__(self, elib: MiliDoS, contract_address: str, contract_function: ContractFunction, validator: Validator = None):
         &#34;&#34;&#34;Persist instance data.&#34;&#34;&#34;
         super().__init__(elib, contract_address)
         self._underlying_method = contract_function
+        self.sign = validator.getSignature(&#34;decimals&#34;)
 
     def block_call(self, debug: bool = False) -&gt; int:
         _fn = self._underlying_method()
@@ -3414,6 +3589,7 @@ class Ori20(ContractBase):
         &#34;&#34;&#34;Persist instance data.&#34;&#34;&#34;
         super().__init__(elib, contract_address, validator)
         self._underlying_method = contract_function
+        self.sign = validator.getSignature(&#34;decreaseAllowance&#34;)
 
     def validate_and_normalize_inputs(self, spender: str, subtracted_value: int) -&gt; any:
         &#34;&#34;&#34;Validate the inputs to the decreaseAllowance method.&#34;&#34;&#34;
@@ -3462,17 +3638,17 @@ class Ori20(ContractBase):
                 txHash = self._web3_eth.sendRawTransaction(signed.rawTransaction)
                 tx_receipt = None
                 if receiptListen is True:
-                    print(&#34;======== awaiting Confirmation 🚸️ -decrease_allowance&#34;)
+                    print(f&#34;======== awaiting Confirmation 🚸️ {self.sign}&#34;)
                     tx_receipt = self._web3_eth.waitForTransactionReceipt(txHash)
                     if debug:
                         print(&#34;======== TX Result ✅&#34;)
                         print(tx_receipt)
 
                 print(f&#34;======== TX blockHash ✅&#34;)
-                if receiptListen is True and tx_receipt is not None:
+                if tx_receipt is not None:
                     print(f&#34;{Bolors.OK}{tx_receipt.blockHash.hex()}{Bolors.RESET}&#34;)
                 else:
-                    print(f&#34;{Bolors.WARNING}{txHash.hex()}{Bolors.RESET}&#34;)
+                    print(f&#34;{Bolors.WARNING}{txHash.hex()}{Bolors.RESET} - broadcast hash&#34;)
 
             if receiptListen is False:
                 time.sleep(self._wait)
@@ -3556,17 +3732,17 @@ class Ori20(ContractBase):
             txHash = self._web3_eth.sendRawTransaction(signed.rawTransaction)
             tx_receipt = None
             if receiptListen is True:
-                print(&#34;======== awaiting Confirmation 🚸️ -decrease_allowance&#34;)
+                print(f&#34;======== awaiting Confirmation 🚸️ {self.sign}&#34;)
                 tx_receipt = self._web3_eth.waitForTransactionReceipt(txHash)
                 if debug:
                     print(&#34;======== TX Result ✅&#34;)
                     print(tx_receipt)
 
             print(f&#34;======== TX blockHash ✅&#34;)
-            if receiptListen is True and tx_receipt is not None:
+            if tx_receipt is not None:
                 print(f&#34;{Bolors.OK}{tx_receipt.blockHash.hex()}{Bolors.RESET}&#34;)
             else:
-                print(f&#34;{Bolors.WARNING}{txHash.hex()}{Bolors.RESET}&#34;)
+                print(f&#34;{Bolors.WARNING}{txHash.hex()}{Bolors.RESET} - broadcast hash&#34;)
 
         if receiptListen is False:
             time.sleep(self._wait)
@@ -3675,7 +3851,7 @@ class Ori20(ContractBase):
 </dd>
 <dt id="moody.m.ori20.GetDecimalsMethod"><code class="flex name class">
 <span>class <span class="ident">GetDecimalsMethod</span></span>
-<span>(</span><span>elib: <a title="moody.libeb.MiliDoS" href="../../libeb.html#moody.libeb.MiliDoS">MiliDoS</a>, contract_address: str, contract_function: web3.contract.ContractFunction)</span>
+<span>(</span><span>elib: <a title="moody.libeb.MiliDoS" href="../../libeb.html#moody.libeb.MiliDoS">MiliDoS</a>, contract_address: str, contract_function: web3.contract.ContractFunction, validator: <a title="moody.m.bases.Validator" href="../bases.html#moody.m.bases.Validator">Validator</a> = None)</span>
 </code></dt>
 <dd>
 <div class="desc"><p>Various interfaces to the getDecimals method.</p>
@@ -3687,10 +3863,11 @@ class Ori20(ContractBase):
 <pre><code class="python">class GetDecimalsMethod(ContractMethod):  # pylint: disable=invalid-name
     &#34;&#34;&#34;Various interfaces to the getDecimals method.&#34;&#34;&#34;
 
-    def __init__(self, elib: MiliDoS, contract_address: str, contract_function: ContractFunction):
+    def __init__(self, elib: MiliDoS, contract_address: str, contract_function: ContractFunction, validator: Validator = None):
         &#34;&#34;&#34;Persist instance data.&#34;&#34;&#34;
         super().__init__(elib, contract_address)
         self._underlying_method = contract_function
+        self.sign = validator.getSignature(&#34;getDecimals&#34;)
 
     def block_call(self, debug: bool = False) -&gt; int:
         _fn = self._underlying_method()
@@ -3753,6 +3930,87 @@ class Ori20(ContractBase):
 </li>
 </ul>
 </dd>
+<dt id="moody.m.ori20.GovMethod"><code class="flex name class">
+<span>class <span class="ident">GovMethod</span></span>
+<span>(</span><span>elib: <a title="moody.libeb.MiliDoS" href="../../libeb.html#moody.libeb.MiliDoS">MiliDoS</a>, contract_address: str, contract_function: web3.contract.ContractFunction, validator: <a title="moody.m.bases.Validator" href="../bases.html#moody.m.bases.Validator">Validator</a> = None)</span>
+</code></dt>
+<dd>
+<div class="desc"><p>Various interfaces to the gov method.</p>
+<p>Persist instance data.</p></div>
+<details class="source">
+<summary>
+<span>Expand source code</span>
+</summary>
+<pre><code class="python">class GovMethod(ContractMethod):  # pylint: disable=invalid-name
+    &#34;&#34;&#34;Various interfaces to the gov method.&#34;&#34;&#34;
+
+    def __init__(self, elib: MiliDoS, contract_address: str, contract_function: ContractFunction, validator: Validator = None):
+        &#34;&#34;&#34;Persist instance data.&#34;&#34;&#34;
+        super().__init__(elib, contract_address)
+        self._underlying_method = contract_function
+        self.sign = validator.getSignature(&#34;gov&#34;)
+
+    def block_call(self, debug: bool = False) -&gt; str:
+        _fn = self._underlying_method()
+        returned = _fn.call({
+            &#39;from&#39;: self._operate
+        })
+        return str(returned)
+
+    def estimate_gas(self, tx_params: Optional[TxParams] = None) -&gt; int:
+        &#34;&#34;&#34;Estimate gas consumption of method call.&#34;&#34;&#34;
+        tx_params = super().normalize_tx_params(tx_params)
+        return self._underlying_method().estimateGas(tx_params.as_dict())</code></pre>
+</details>
+<h3>Ancestors</h3>
+<ul class="hlist">
+<li><a title="moody.m.bases.ContractMethod" href="../bases.html#moody.m.bases.ContractMethod">ContractMethod</a></li>
+</ul>
+<h3>Methods</h3>
+<dl>
+<dt id="moody.m.ori20.GovMethod.block_call"><code class="name flex">
+<span>def <span class="ident">block_call</span></span>(<span>self, debug: bool = False) ‑> str</span>
+</code></dt>
+<dd>
+<div class="desc"></div>
+<details class="source">
+<summary>
+<span>Expand source code</span>
+</summary>
+<pre><code class="python">def block_call(self, debug: bool = False) -&gt; str:
+    _fn = self._underlying_method()
+    returned = _fn.call({
+        &#39;from&#39;: self._operate
+    })
+    return str(returned)</code></pre>
+</details>
+</dd>
+<dt id="moody.m.ori20.GovMethod.estimate_gas"><code class="name flex">
+<span>def <span class="ident">estimate_gas</span></span>(<span>self, tx_params: Union[<a title="moody.m.tx_params.TxParams" href="../tx_params.html#moody.m.tx_params.TxParams">TxParams</a>, NoneType] = None) ‑> int</span>
+</code></dt>
+<dd>
+<div class="desc"><p>Estimate gas consumption of method call.</p></div>
+<details class="source">
+<summary>
+<span>Expand source code</span>
+</summary>
+<pre><code class="python">def estimate_gas(self, tx_params: Optional[TxParams] = None) -&gt; int:
+    &#34;&#34;&#34;Estimate gas consumption of method call.&#34;&#34;&#34;
+    tx_params = super().normalize_tx_params(tx_params)
+    return self._underlying_method().estimateGas(tx_params.as_dict())</code></pre>
+</details>
+</dd>
+</dl>
+<h3>Inherited members</h3>
+<ul class="hlist">
+<li><code><b><a title="moody.m.bases.ContractMethod" href="../bases.html#moody.m.bases.ContractMethod">ContractMethod</a></b></code>:
+<ul class="hlist">
+<li><code><a title="moody.m.bases.ContractMethod.normalize_tx_params" href="../bases.html#moody.m.bases.ContractMethod.normalize_tx_params">normalize_tx_params</a></code></li>
+<li><code><a title="moody.m.bases.ContractMethod.validate_and_checksum_address" href="../bases.html#moody.m.bases.ContractMethod.validate_and_checksum_address">validate_and_checksum_address</a></code></li>
+</ul>
+</li>
+</ul>
+</dd>
 <dt id="moody.m.ori20.IncreaseAllowanceMethod"><code class="flex name class">
 <span>class <span class="ident">IncreaseAllowanceMethod</span></span>
 <span>(</span><span>elib: <a title="moody.libeb.MiliDoS" href="../../libeb.html#moody.libeb.MiliDoS">MiliDoS</a>, contract_address: str, contract_function: web3.contract.ContractFunction, validator: <a title="moody.m.bases.Validator" href="../bases.html#moody.m.bases.Validator">Validator</a> = None)</span>
@@ -3771,6 +4029,7 @@ class Ori20(ContractBase):
         &#34;&#34;&#34;Persist instance data.&#34;&#34;&#34;
         super().__init__(elib, contract_address, validator)
         self._underlying_method = contract_function
+        self.sign = validator.getSignature(&#34;increaseAllowance&#34;)
 
     def validate_and_normalize_inputs(self, spender: str, added_value: int) -&gt; any:
         &#34;&#34;&#34;Validate the inputs to the increaseAllowance method.&#34;&#34;&#34;
@@ -3819,17 +4078,17 @@ class Ori20(ContractBase):
                 txHash = self._web3_eth.sendRawTransaction(signed.rawTransaction)
                 tx_receipt = None
                 if receiptListen is True:
-                    print(&#34;======== awaiting Confirmation 🚸️ -increase_allowance&#34;)
+                    print(f&#34;======== awaiting Confirmation 🚸️ {self.sign}&#34;)
                     tx_receipt = self._web3_eth.waitForTransactionReceipt(txHash)
                     if debug:
                         print(&#34;======== TX Result ✅&#34;)
                         print(tx_receipt)
 
                 print(f&#34;======== TX blockHash ✅&#34;)
-                if receiptListen is True and tx_receipt is not None:
+                if tx_receipt is not None:
                     print(f&#34;{Bolors.OK}{tx_receipt.blockHash.hex()}{Bolors.RESET}&#34;)
                 else:
-                    print(f&#34;{Bolors.WARNING}{txHash.hex()}{Bolors.RESET}&#34;)
+                    print(f&#34;{Bolors.WARNING}{txHash.hex()}{Bolors.RESET} - broadcast hash&#34;)
 
             if receiptListen is False:
                 time.sleep(self._wait)
@@ -3913,17 +4172,17 @@ class Ori20(ContractBase):
             txHash = self._web3_eth.sendRawTransaction(signed.rawTransaction)
             tx_receipt = None
             if receiptListen is True:
-                print(&#34;======== awaiting Confirmation 🚸️ -increase_allowance&#34;)
+                print(f&#34;======== awaiting Confirmation 🚸️ {self.sign}&#34;)
                 tx_receipt = self._web3_eth.waitForTransactionReceipt(txHash)
                 if debug:
                     print(&#34;======== TX Result ✅&#34;)
                     print(tx_receipt)
 
             print(f&#34;======== TX blockHash ✅&#34;)
-            if receiptListen is True and tx_receipt is not None:
+            if tx_receipt is not None:
                 print(f&#34;{Bolors.OK}{tx_receipt.blockHash.hex()}{Bolors.RESET}&#34;)
             else:
-                print(f&#34;{Bolors.WARNING}{txHash.hex()}{Bolors.RESET}&#34;)
+                print(f&#34;{Bolors.WARNING}{txHash.hex()}{Bolors.RESET} - broadcast hash&#34;)
 
         if receiptListen is False:
             time.sleep(self._wait)
@@ -4048,6 +4307,7 @@ class Ori20(ContractBase):
         &#34;&#34;&#34;Persist instance data.&#34;&#34;&#34;
         super().__init__(elib, contract_address, validator)
         self._underlying_method = contract_function
+        self.sign = validator.getSignature(&#34;isMinter&#34;)
 
     def validate_and_normalize_inputs(self, account: str) -&gt; any:
         &#34;&#34;&#34;Validate the inputs to the isMinter method.&#34;&#34;&#34;
@@ -4160,6 +4420,7 @@ class Ori20(ContractBase):
         &#34;&#34;&#34;Persist instance data.&#34;&#34;&#34;
         super().__init__(elib, contract_address, validator)
         self._underlying_method = contract_function
+        self.sign = validator.getSignature(&#34;mint&#34;)
 
     def validate_and_normalize_inputs(self, account: str, amount: int) -&gt; any:
         &#34;&#34;&#34;Validate the inputs to the mint method.&#34;&#34;&#34;
@@ -4208,17 +4469,17 @@ class Ori20(ContractBase):
                 txHash = self._web3_eth.sendRawTransaction(signed.rawTransaction)
                 tx_receipt = None
                 if receiptListen is True:
-                    print(&#34;======== awaiting Confirmation 🚸️ -mint&#34;)
+                    print(f&#34;======== awaiting Confirmation 🚸️ {self.sign}&#34;)
                     tx_receipt = self._web3_eth.waitForTransactionReceipt(txHash)
                     if debug:
                         print(&#34;======== TX Result ✅&#34;)
                         print(tx_receipt)
 
                 print(f&#34;======== TX blockHash ✅&#34;)
-                if receiptListen is True and tx_receipt is not None:
+                if tx_receipt is not None:
                     print(f&#34;{Bolors.OK}{tx_receipt.blockHash.hex()}{Bolors.RESET}&#34;)
                 else:
-                    print(f&#34;{Bolors.WARNING}{txHash.hex()}{Bolors.RESET}&#34;)
+                    print(f&#34;{Bolors.WARNING}{txHash.hex()}{Bolors.RESET} - broadcast hash&#34;)
 
             if receiptListen is False:
                 time.sleep(self._wait)
@@ -4302,17 +4563,17 @@ class Ori20(ContractBase):
             txHash = self._web3_eth.sendRawTransaction(signed.rawTransaction)
             tx_receipt = None
             if receiptListen is True:
-                print(&#34;======== awaiting Confirmation 🚸️ -mint&#34;)
+                print(f&#34;======== awaiting Confirmation 🚸️ {self.sign}&#34;)
                 tx_receipt = self._web3_eth.waitForTransactionReceipt(txHash)
                 if debug:
                     print(&#34;======== TX Result ✅&#34;)
                     print(tx_receipt)
 
             print(f&#34;======== TX blockHash ✅&#34;)
-            if receiptListen is True and tx_receipt is not None:
+            if tx_receipt is not None:
                 print(f&#34;{Bolors.OK}{tx_receipt.blockHash.hex()}{Bolors.RESET}&#34;)
             else:
-                print(f&#34;{Bolors.WARNING}{txHash.hex()}{Bolors.RESET}&#34;)
+                print(f&#34;{Bolors.WARNING}{txHash.hex()}{Bolors.RESET} - broadcast hash&#34;)
 
         if receiptListen is False:
             time.sleep(self._wait)
@@ -4421,7 +4682,7 @@ class Ori20(ContractBase):
 </dd>
 <dt id="moody.m.ori20.NameMethod"><code class="flex name class">
 <span>class <span class="ident">NameMethod</span></span>
-<span>(</span><span>elib: <a title="moody.libeb.MiliDoS" href="../../libeb.html#moody.libeb.MiliDoS">MiliDoS</a>, contract_address: str, contract_function: web3.contract.ContractFunction)</span>
+<span>(</span><span>elib: <a title="moody.libeb.MiliDoS" href="../../libeb.html#moody.libeb.MiliDoS">MiliDoS</a>, contract_address: str, contract_function: web3.contract.ContractFunction, validator: <a title="moody.m.bases.Validator" href="../bases.html#moody.m.bases.Validator">Validator</a> = None)</span>
 </code></dt>
 <dd>
 <div class="desc"><p>Various interfaces to the name method.</p>
@@ -4433,10 +4694,11 @@ class Ori20(ContractBase):
 <pre><code class="python">class NameMethod(ContractMethod):  # pylint: disable=invalid-name
     &#34;&#34;&#34;Various interfaces to the name method.&#34;&#34;&#34;
 
-    def __init__(self, elib: MiliDoS, contract_address: str, contract_function: ContractFunction):
+    def __init__(self, elib: MiliDoS, contract_address: str, contract_function: ContractFunction, validator: Validator = None):
         &#34;&#34;&#34;Persist instance data.&#34;&#34;&#34;
         super().__init__(elib, contract_address)
         self._underlying_method = contract_function
+        self.sign = validator.getSignature(&#34;name&#34;)
 
     def block_call(self, debug: bool = False) -&gt; str:
         _fn = self._underlying_method()
@@ -4562,6 +4824,11 @@ class Ori20(ContractBase):
     :class:`GetDecimalsMethod`.
     &#34;&#34;&#34;
 
+    _fn_gov: GovMethod
+    &#34;&#34;&#34;Constructor-initialized instance of
+    :class:`GovMethod`.
+    &#34;&#34;&#34;
+
     _fn_increase_allowance: IncreaseAllowanceMethod
     &#34;&#34;&#34;Constructor-initialized instance of
     :class:`IncreaseAllowanceMethod`.
@@ -4580,6 +4847,11 @@ class Ori20(ContractBase):
     _fn_name: NameMethod
     &#34;&#34;&#34;Constructor-initialized instance of
     :class:`NameMethod`.
+    &#34;&#34;&#34;
+
+    _fn_remove_minter: RemoveMinterMethod
+    &#34;&#34;&#34;Constructor-initialized instance of
+    :class:`RemoveMinterMethod`.
     &#34;&#34;&#34;
 
     _fn_renounce_minter: RenounceMinterMethod
@@ -4617,6 +4889,8 @@ class Ori20(ContractBase):
     :class:`TransferFromMethod`.
     &#34;&#34;&#34;
 
+    SIGNATURES: SignatureGenerator = None
+
     def __init__(
             self,
             core_lib: MiliDoS,
@@ -4649,49 +4923,32 @@ class Ori20(ContractBase):
                     pass
 
         self._web3_eth = web3.eth
-
         functions = self._web3_eth.contract(address=to_checksum_address(contract_address), abi=Ori20.abi()).functions
-        self.SIGNATURES = SignatureGenerator(Ori20.abi())
+        signed = SignatureGenerator(Ori20.abi())
+        validator.bindSignatures(signed)
+        self.SIGNATURES = signed
         self._fn_add_minter = AddMinterMethod(core_lib, contract_address, functions.addMinter, validator)
-
         self._fn_allowance = AllowanceMethod(core_lib, contract_address, functions.allowance, validator)
-
         self._fn_approve = ApproveMethod(core_lib, contract_address, functions.approve, validator)
-
         self._fn_balance_of = BalanceOfMethod(core_lib, contract_address, functions.balanceOf, validator)
-
         self._fn_burn = BurnMethod(core_lib, contract_address, functions.burn, validator)
-
         self._fn_burn_from = BurnFromMethod(core_lib, contract_address, functions.burnFrom, validator)
-
-        self._fn_cap = CapMethod(core_lib, contract_address, functions.cap)
-
-        self._fn_decimals = DecimalsMethod(core_lib, contract_address, functions.decimals)
-
+        self._fn_cap = CapMethod(core_lib, contract_address, functions.cap, validator)
+        self._fn_decimals = DecimalsMethod(core_lib, contract_address, functions.decimals, validator)
         self._fn_decrease_allowance = DecreaseAllowanceMethod(core_lib, contract_address, functions.decreaseAllowance, validator)
-
-        self._fn_get_decimals = GetDecimalsMethod(core_lib, contract_address, functions.getDecimals)
-
+        self._fn_get_decimals = GetDecimalsMethod(core_lib, contract_address, functions.getDecimals, validator)
+        self._fn_gov = GovMethod(core_lib, contract_address, functions.gov, validator)
         self._fn_increase_allowance = IncreaseAllowanceMethod(core_lib, contract_address, functions.increaseAllowance, validator)
-
         self._fn_is_minter = IsMinterMethod(core_lib, contract_address, functions.isMinter, validator)
-
         self._fn_mint = MintMethod(core_lib, contract_address, functions.mint, validator)
-
-        self._fn_name = NameMethod(core_lib, contract_address, functions.name)
-
-        self._fn_renounce_minter = RenounceMinterMethod(core_lib, contract_address, functions.renounceMinter)
-
-        self._fn_symbol = SymbolMethod(core_lib, contract_address, functions.symbol)
-
-        self._fn_token_name = TokenNameMethod(core_lib, contract_address, functions.tokenName)
-
-        self._fn_token_symbol = TokenSymbolMethod(core_lib, contract_address, functions.tokenSymbol)
-
-        self._fn_total_supply = TotalSupplyMethod(core_lib, contract_address, functions.totalSupply)
-
+        self._fn_name = NameMethod(core_lib, contract_address, functions.name, validator)
+        self._fn_remove_minter = RemoveMinterMethod(core_lib, contract_address, functions.removeMinter, validator)
+        self._fn_renounce_minter = RenounceMinterMethod(core_lib, contract_address, functions.renounceMinter, validator)
+        self._fn_symbol = SymbolMethod(core_lib, contract_address, functions.symbol, validator)
+        self._fn_token_name = TokenNameMethod(core_lib, contract_address, functions.tokenName, validator)
+        self._fn_token_symbol = TokenSymbolMethod(core_lib, contract_address, functions.tokenSymbol, validator)
+        self._fn_total_supply = TotalSupplyMethod(core_lib, contract_address, functions.totalSupply, validator)
         self._fn_transfer = TransferMethod(core_lib, contract_address, functions.transfer, validator)
-
         self._fn_transfer_from = TransferFromMethod(core_lib, contract_address, functions.transferFrom, validator)
 
     def event_approval(
@@ -4848,6 +5105,17 @@ class Ori20(ContractBase):
 
         return self._fn_get_decimals.block_call()
 
+    def gov(self) -&gt; str:
+        &#34;&#34;&#34;
+        Implementation of gov in contract Ori20
+        Method of the function
+
+
+
+        &#34;&#34;&#34;
+
+        return self._fn_gov.block_call()
+
     def increase_allowance(self, spender: str, added_value: int) -&gt; bool:
         &#34;&#34;&#34;
         Implementation of increase_allowance in contract Ori20
@@ -4891,6 +5159,17 @@ class Ori20(ContractBase):
         &#34;&#34;&#34;
 
         return self._fn_name.block_call()
+
+    def remove_minter(self, account: str) -&gt; None:
+        &#34;&#34;&#34;
+        Implementation of remove_minter in contract Ori20
+        Method of the function
+
+
+
+        &#34;&#34;&#34;
+
+        return self._fn_remove_minter.block_send(account, self.call_contract_fee_amount, self.call_contract_fee_price, 0, self.call_contract_debug_flag, self.call_contract_enforce_tx_receipt)
 
     def renounce_minter(self) -&gt; None:
         &#34;&#34;&#34;
@@ -4980,10 +5259,12 @@ class Ori20(ContractBase):
         self._fn_decimals.setWait(t_long)
         self._fn_decrease_allowance.setWait(t_long)
         self._fn_get_decimals.setWait(t_long)
+        self._fn_gov.setWait(t_long)
         self._fn_increase_allowance.setWait(t_long)
         self._fn_is_minter.setWait(t_long)
         self._fn_mint.setWait(t_long)
         self._fn_name.setWait(t_long)
+        self._fn_remove_minter.setWait(t_long)
         self._fn_renounce_minter.setWait(t_long)
         self._fn_symbol.setWait(t_long)
         self._fn_token_name.setWait(t_long)
@@ -4997,7 +5278,7 @@ class Ori20(ContractBase):
     def abi():
         &#34;&#34;&#34;Return the ABI to the underlying contract.&#34;&#34;&#34;
         return json.loads(
-            &#39;[{&#34;inputs&#34;:[],&#34;payable&#34;:false,&#34;stateMutability&#34;:&#34;nonpayable&#34;,&#34;type&#34;:&#34;constructor&#34;},{&#34;anonymous&#34;:false,&#34;inputs&#34;:[{&#34;indexed&#34;:true,&#34;internalType&#34;:&#34;address&#34;,&#34;name&#34;:&#34;owner&#34;,&#34;type&#34;:&#34;address&#34;},{&#34;indexed&#34;:true,&#34;internalType&#34;:&#34;address&#34;,&#34;name&#34;:&#34;spender&#34;,&#34;type&#34;:&#34;address&#34;},{&#34;indexed&#34;:false,&#34;internalType&#34;:&#34;uint256&#34;,&#34;name&#34;:&#34;value&#34;,&#34;type&#34;:&#34;uint256&#34;}],&#34;name&#34;:&#34;Approval&#34;,&#34;type&#34;:&#34;event&#34;},{&#34;anonymous&#34;:false,&#34;inputs&#34;:[{&#34;indexed&#34;:true,&#34;internalType&#34;:&#34;address&#34;,&#34;name&#34;:&#34;account&#34;,&#34;type&#34;:&#34;address&#34;}],&#34;name&#34;:&#34;MinterAdded&#34;,&#34;type&#34;:&#34;event&#34;},{&#34;anonymous&#34;:false,&#34;inputs&#34;:[{&#34;indexed&#34;:true,&#34;internalType&#34;:&#34;address&#34;,&#34;name&#34;:&#34;account&#34;,&#34;type&#34;:&#34;address&#34;}],&#34;name&#34;:&#34;MinterRemoved&#34;,&#34;type&#34;:&#34;event&#34;},{&#34;anonymous&#34;:false,&#34;inputs&#34;:[{&#34;indexed&#34;:true,&#34;internalType&#34;:&#34;address&#34;,&#34;name&#34;:&#34;from&#34;,&#34;type&#34;:&#34;address&#34;},{&#34;indexed&#34;:true,&#34;internalType&#34;:&#34;address&#34;,&#34;name&#34;:&#34;to&#34;,&#34;type&#34;:&#34;address&#34;},{&#34;indexed&#34;:false,&#34;internalType&#34;:&#34;uint256&#34;,&#34;name&#34;:&#34;value&#34;,&#34;type&#34;:&#34;uint256&#34;}],&#34;name&#34;:&#34;Transfer&#34;,&#34;type&#34;:&#34;event&#34;},{&#34;constant&#34;:false,&#34;inputs&#34;:[{&#34;internalType&#34;:&#34;address&#34;,&#34;name&#34;:&#34;account&#34;,&#34;type&#34;:&#34;address&#34;}],&#34;name&#34;:&#34;addMinter&#34;,&#34;outputs&#34;:[],&#34;payable&#34;:false,&#34;stateMutability&#34;:&#34;nonpayable&#34;,&#34;type&#34;:&#34;function&#34;},{&#34;constant&#34;:true,&#34;inputs&#34;:[{&#34;internalType&#34;:&#34;address&#34;,&#34;name&#34;:&#34;owner&#34;,&#34;type&#34;:&#34;address&#34;},{&#34;internalType&#34;:&#34;address&#34;,&#34;name&#34;:&#34;spender&#34;,&#34;type&#34;:&#34;address&#34;}],&#34;name&#34;:&#34;allowance&#34;,&#34;outputs&#34;:[{&#34;internalType&#34;:&#34;uint256&#34;,&#34;name&#34;:&#34;&#34;,&#34;type&#34;:&#34;uint256&#34;}],&#34;payable&#34;:false,&#34;stateMutability&#34;:&#34;view&#34;,&#34;type&#34;:&#34;function&#34;},{&#34;constant&#34;:false,&#34;inputs&#34;:[{&#34;internalType&#34;:&#34;address&#34;,&#34;name&#34;:&#34;spender&#34;,&#34;type&#34;:&#34;address&#34;},{&#34;internalType&#34;:&#34;uint256&#34;,&#34;name&#34;:&#34;amount&#34;,&#34;type&#34;:&#34;uint256&#34;}],&#34;name&#34;:&#34;approve&#34;,&#34;outputs&#34;:[{&#34;internalType&#34;:&#34;bool&#34;,&#34;name&#34;:&#34;&#34;,&#34;type&#34;:&#34;bool&#34;}],&#34;payable&#34;:false,&#34;stateMutability&#34;:&#34;nonpayable&#34;,&#34;type&#34;:&#34;function&#34;},{&#34;constant&#34;:true,&#34;inputs&#34;:[{&#34;internalType&#34;:&#34;address&#34;,&#34;name&#34;:&#34;account&#34;,&#34;type&#34;:&#34;address&#34;}],&#34;name&#34;:&#34;balanceOf&#34;,&#34;outputs&#34;:[{&#34;internalType&#34;:&#34;uint256&#34;,&#34;name&#34;:&#34;&#34;,&#34;type&#34;:&#34;uint256&#34;}],&#34;payable&#34;:false,&#34;stateMutability&#34;:&#34;view&#34;,&#34;type&#34;:&#34;function&#34;},{&#34;constant&#34;:false,&#34;inputs&#34;:[{&#34;internalType&#34;:&#34;uint256&#34;,&#34;name&#34;:&#34;amount&#34;,&#34;type&#34;:&#34;uint256&#34;}],&#34;name&#34;:&#34;burn&#34;,&#34;outputs&#34;:[],&#34;payable&#34;:false,&#34;stateMutability&#34;:&#34;nonpayable&#34;,&#34;type&#34;:&#34;function&#34;},{&#34;constant&#34;:false,&#34;inputs&#34;:[{&#34;internalType&#34;:&#34;address&#34;,&#34;name&#34;:&#34;account&#34;,&#34;type&#34;:&#34;address&#34;},{&#34;internalType&#34;:&#34;uint256&#34;,&#34;name&#34;:&#34;amount&#34;,&#34;type&#34;:&#34;uint256&#34;}],&#34;name&#34;:&#34;burnFrom&#34;,&#34;outputs&#34;:[],&#34;payable&#34;:false,&#34;stateMutability&#34;:&#34;nonpayable&#34;,&#34;type&#34;:&#34;function&#34;},{&#34;constant&#34;:true,&#34;inputs&#34;:[],&#34;name&#34;:&#34;cap&#34;,&#34;outputs&#34;:[{&#34;internalType&#34;:&#34;uint256&#34;,&#34;name&#34;:&#34;&#34;,&#34;type&#34;:&#34;uint256&#34;}],&#34;payable&#34;:false,&#34;stateMutability&#34;:&#34;view&#34;,&#34;type&#34;:&#34;function&#34;},{&#34;constant&#34;:true,&#34;inputs&#34;:[],&#34;name&#34;:&#34;decimals&#34;,&#34;outputs&#34;:[{&#34;internalType&#34;:&#34;uint8&#34;,&#34;name&#34;:&#34;&#34;,&#34;type&#34;:&#34;uint8&#34;}],&#34;payable&#34;:false,&#34;stateMutability&#34;:&#34;view&#34;,&#34;type&#34;:&#34;function&#34;},{&#34;constant&#34;:false,&#34;inputs&#34;:[{&#34;internalType&#34;:&#34;address&#34;,&#34;name&#34;:&#34;spender&#34;,&#34;type&#34;:&#34;address&#34;},{&#34;internalType&#34;:&#34;uint256&#34;,&#34;name&#34;:&#34;subtractedValue&#34;,&#34;type&#34;:&#34;uint256&#34;}],&#34;name&#34;:&#34;decreaseAllowance&#34;,&#34;outputs&#34;:[{&#34;internalType&#34;:&#34;bool&#34;,&#34;name&#34;:&#34;&#34;,&#34;type&#34;:&#34;bool&#34;}],&#34;payable&#34;:false,&#34;stateMutability&#34;:&#34;nonpayable&#34;,&#34;type&#34;:&#34;function&#34;},{&#34;constant&#34;:true,&#34;inputs&#34;:[],&#34;name&#34;:&#34;getDecimals&#34;,&#34;outputs&#34;:[{&#34;internalType&#34;:&#34;uint8&#34;,&#34;name&#34;:&#34;&#34;,&#34;type&#34;:&#34;uint8&#34;}],&#34;payable&#34;:false,&#34;stateMutability&#34;:&#34;view&#34;,&#34;type&#34;:&#34;function&#34;},{&#34;constant&#34;:false,&#34;inputs&#34;:[{&#34;internalType&#34;:&#34;address&#34;,&#34;name&#34;:&#34;spender&#34;,&#34;type&#34;:&#34;address&#34;},{&#34;internalType&#34;:&#34;uint256&#34;,&#34;name&#34;:&#34;addedValue&#34;,&#34;type&#34;:&#34;uint256&#34;}],&#34;name&#34;:&#34;increaseAllowance&#34;,&#34;outputs&#34;:[{&#34;internalType&#34;:&#34;bool&#34;,&#34;name&#34;:&#34;&#34;,&#34;type&#34;:&#34;bool&#34;}],&#34;payable&#34;:false,&#34;stateMutability&#34;:&#34;nonpayable&#34;,&#34;type&#34;:&#34;function&#34;},{&#34;constant&#34;:true,&#34;inputs&#34;:[{&#34;internalType&#34;:&#34;address&#34;,&#34;name&#34;:&#34;account&#34;,&#34;type&#34;:&#34;address&#34;}],&#34;name&#34;:&#34;isMinter&#34;,&#34;outputs&#34;:[{&#34;internalType&#34;:&#34;bool&#34;,&#34;name&#34;:&#34;&#34;,&#34;type&#34;:&#34;bool&#34;}],&#34;payable&#34;:false,&#34;stateMutability&#34;:&#34;view&#34;,&#34;type&#34;:&#34;function&#34;},{&#34;constant&#34;:false,&#34;inputs&#34;:[{&#34;internalType&#34;:&#34;address&#34;,&#34;name&#34;:&#34;account&#34;,&#34;type&#34;:&#34;address&#34;},{&#34;internalType&#34;:&#34;uint256&#34;,&#34;name&#34;:&#34;amount&#34;,&#34;type&#34;:&#34;uint256&#34;}],&#34;name&#34;:&#34;mint&#34;,&#34;outputs&#34;:[{&#34;internalType&#34;:&#34;bool&#34;,&#34;name&#34;:&#34;&#34;,&#34;type&#34;:&#34;bool&#34;}],&#34;payable&#34;:false,&#34;stateMutability&#34;:&#34;nonpayable&#34;,&#34;type&#34;:&#34;function&#34;},{&#34;constant&#34;:true,&#34;inputs&#34;:[],&#34;name&#34;:&#34;name&#34;,&#34;outputs&#34;:[{&#34;internalType&#34;:&#34;string&#34;,&#34;name&#34;:&#34;&#34;,&#34;type&#34;:&#34;string&#34;}],&#34;payable&#34;:false,&#34;stateMutability&#34;:&#34;view&#34;,&#34;type&#34;:&#34;function&#34;},{&#34;constant&#34;:false,&#34;inputs&#34;:[],&#34;name&#34;:&#34;renounceMinter&#34;,&#34;outputs&#34;:[],&#34;payable&#34;:false,&#34;stateMutability&#34;:&#34;nonpayable&#34;,&#34;type&#34;:&#34;function&#34;},{&#34;constant&#34;:true,&#34;inputs&#34;:[],&#34;name&#34;:&#34;symbol&#34;,&#34;outputs&#34;:[{&#34;internalType&#34;:&#34;string&#34;,&#34;name&#34;:&#34;&#34;,&#34;type&#34;:&#34;string&#34;}],&#34;payable&#34;:false,&#34;stateMutability&#34;:&#34;view&#34;,&#34;type&#34;:&#34;function&#34;},{&#34;constant&#34;:true,&#34;inputs&#34;:[],&#34;name&#34;:&#34;tokenName&#34;,&#34;outputs&#34;:[{&#34;internalType&#34;:&#34;string&#34;,&#34;name&#34;:&#34;&#34;,&#34;type&#34;:&#34;string&#34;}],&#34;payable&#34;:false,&#34;stateMutability&#34;:&#34;view&#34;,&#34;type&#34;:&#34;function&#34;},{&#34;constant&#34;:true,&#34;inputs&#34;:[],&#34;name&#34;:&#34;tokenSymbol&#34;,&#34;outputs&#34;:[{&#34;internalType&#34;:&#34;string&#34;,&#34;name&#34;:&#34;&#34;,&#34;type&#34;:&#34;string&#34;}],&#34;payable&#34;:false,&#34;stateMutability&#34;:&#34;view&#34;,&#34;type&#34;:&#34;function&#34;},{&#34;constant&#34;:true,&#34;inputs&#34;:[],&#34;name&#34;:&#34;totalSupply&#34;,&#34;outputs&#34;:[{&#34;internalType&#34;:&#34;uint256&#34;,&#34;name&#34;:&#34;&#34;,&#34;type&#34;:&#34;uint256&#34;}],&#34;payable&#34;:false,&#34;stateMutability&#34;:&#34;view&#34;,&#34;type&#34;:&#34;function&#34;},{&#34;constant&#34;:false,&#34;inputs&#34;:[{&#34;internalType&#34;:&#34;address&#34;,&#34;name&#34;:&#34;recipient&#34;,&#34;type&#34;:&#34;address&#34;},{&#34;internalType&#34;:&#34;uint256&#34;,&#34;name&#34;:&#34;amount&#34;,&#34;type&#34;:&#34;uint256&#34;}],&#34;name&#34;:&#34;transfer&#34;,&#34;outputs&#34;:[{&#34;internalType&#34;:&#34;bool&#34;,&#34;name&#34;:&#34;&#34;,&#34;type&#34;:&#34;bool&#34;}],&#34;payable&#34;:false,&#34;stateMutability&#34;:&#34;nonpayable&#34;,&#34;type&#34;:&#34;function&#34;},{&#34;constant&#34;:false,&#34;inputs&#34;:[{&#34;internalType&#34;:&#34;address&#34;,&#34;name&#34;:&#34;sender&#34;,&#34;type&#34;:&#34;address&#34;},{&#34;internalType&#34;:&#34;address&#34;,&#34;name&#34;:&#34;recipient&#34;,&#34;type&#34;:&#34;address&#34;},{&#34;internalType&#34;:&#34;uint256&#34;,&#34;name&#34;:&#34;amount&#34;,&#34;type&#34;:&#34;uint256&#34;}],&#34;name&#34;:&#34;transferFrom&#34;,&#34;outputs&#34;:[{&#34;internalType&#34;:&#34;bool&#34;,&#34;name&#34;:&#34;&#34;,&#34;type&#34;:&#34;bool&#34;}],&#34;payable&#34;:false,&#34;stateMutability&#34;:&#34;nonpayable&#34;,&#34;type&#34;:&#34;function&#34;}]&#39;
+            &#39;[{&#34;inputs&#34;:[],&#34;payable&#34;:false,&#34;stateMutability&#34;:&#34;nonpayable&#34;,&#34;type&#34;:&#34;constructor&#34;},{&#34;anonymous&#34;:false,&#34;inputs&#34;:[{&#34;indexed&#34;:true,&#34;internalType&#34;:&#34;address&#34;,&#34;name&#34;:&#34;owner&#34;,&#34;type&#34;:&#34;address&#34;},{&#34;indexed&#34;:true,&#34;internalType&#34;:&#34;address&#34;,&#34;name&#34;:&#34;spender&#34;,&#34;type&#34;:&#34;address&#34;},{&#34;indexed&#34;:false,&#34;internalType&#34;:&#34;uint256&#34;,&#34;name&#34;:&#34;value&#34;,&#34;type&#34;:&#34;uint256&#34;}],&#34;name&#34;:&#34;Approval&#34;,&#34;type&#34;:&#34;event&#34;},{&#34;anonymous&#34;:false,&#34;inputs&#34;:[{&#34;indexed&#34;:true,&#34;internalType&#34;:&#34;address&#34;,&#34;name&#34;:&#34;account&#34;,&#34;type&#34;:&#34;address&#34;}],&#34;name&#34;:&#34;MinterAdded&#34;,&#34;type&#34;:&#34;event&#34;},{&#34;anonymous&#34;:false,&#34;inputs&#34;:[{&#34;indexed&#34;:true,&#34;internalType&#34;:&#34;address&#34;,&#34;name&#34;:&#34;account&#34;,&#34;type&#34;:&#34;address&#34;}],&#34;name&#34;:&#34;MinterRemoved&#34;,&#34;type&#34;:&#34;event&#34;},{&#34;anonymous&#34;:false,&#34;inputs&#34;:[{&#34;indexed&#34;:true,&#34;internalType&#34;:&#34;address&#34;,&#34;name&#34;:&#34;from&#34;,&#34;type&#34;:&#34;address&#34;},{&#34;indexed&#34;:true,&#34;internalType&#34;:&#34;address&#34;,&#34;name&#34;:&#34;to&#34;,&#34;type&#34;:&#34;address&#34;},{&#34;indexed&#34;:false,&#34;internalType&#34;:&#34;uint256&#34;,&#34;name&#34;:&#34;value&#34;,&#34;type&#34;:&#34;uint256&#34;}],&#34;name&#34;:&#34;Transfer&#34;,&#34;type&#34;:&#34;event&#34;},{&#34;constant&#34;:false,&#34;inputs&#34;:[{&#34;internalType&#34;:&#34;address&#34;,&#34;name&#34;:&#34;account&#34;,&#34;type&#34;:&#34;address&#34;}],&#34;name&#34;:&#34;addMinter&#34;,&#34;outputs&#34;:[],&#34;payable&#34;:false,&#34;stateMutability&#34;:&#34;nonpayable&#34;,&#34;type&#34;:&#34;function&#34;},{&#34;constant&#34;:true,&#34;inputs&#34;:[{&#34;internalType&#34;:&#34;address&#34;,&#34;name&#34;:&#34;owner&#34;,&#34;type&#34;:&#34;address&#34;},{&#34;internalType&#34;:&#34;address&#34;,&#34;name&#34;:&#34;spender&#34;,&#34;type&#34;:&#34;address&#34;}],&#34;name&#34;:&#34;allowance&#34;,&#34;outputs&#34;:[{&#34;internalType&#34;:&#34;uint256&#34;,&#34;name&#34;:&#34;&#34;,&#34;type&#34;:&#34;uint256&#34;}],&#34;payable&#34;:false,&#34;stateMutability&#34;:&#34;view&#34;,&#34;type&#34;:&#34;function&#34;},{&#34;constant&#34;:false,&#34;inputs&#34;:[{&#34;internalType&#34;:&#34;address&#34;,&#34;name&#34;:&#34;spender&#34;,&#34;type&#34;:&#34;address&#34;},{&#34;internalType&#34;:&#34;uint256&#34;,&#34;name&#34;:&#34;amount&#34;,&#34;type&#34;:&#34;uint256&#34;}],&#34;name&#34;:&#34;approve&#34;,&#34;outputs&#34;:[{&#34;internalType&#34;:&#34;bool&#34;,&#34;name&#34;:&#34;&#34;,&#34;type&#34;:&#34;bool&#34;}],&#34;payable&#34;:false,&#34;stateMutability&#34;:&#34;nonpayable&#34;,&#34;type&#34;:&#34;function&#34;},{&#34;constant&#34;:true,&#34;inputs&#34;:[{&#34;internalType&#34;:&#34;address&#34;,&#34;name&#34;:&#34;account&#34;,&#34;type&#34;:&#34;address&#34;}],&#34;name&#34;:&#34;balanceOf&#34;,&#34;outputs&#34;:[{&#34;internalType&#34;:&#34;uint256&#34;,&#34;name&#34;:&#34;&#34;,&#34;type&#34;:&#34;uint256&#34;}],&#34;payable&#34;:false,&#34;stateMutability&#34;:&#34;view&#34;,&#34;type&#34;:&#34;function&#34;},{&#34;constant&#34;:false,&#34;inputs&#34;:[{&#34;internalType&#34;:&#34;uint256&#34;,&#34;name&#34;:&#34;amount&#34;,&#34;type&#34;:&#34;uint256&#34;}],&#34;name&#34;:&#34;burn&#34;,&#34;outputs&#34;:[],&#34;payable&#34;:false,&#34;stateMutability&#34;:&#34;nonpayable&#34;,&#34;type&#34;:&#34;function&#34;},{&#34;constant&#34;:false,&#34;inputs&#34;:[{&#34;internalType&#34;:&#34;address&#34;,&#34;name&#34;:&#34;account&#34;,&#34;type&#34;:&#34;address&#34;},{&#34;internalType&#34;:&#34;uint256&#34;,&#34;name&#34;:&#34;amount&#34;,&#34;type&#34;:&#34;uint256&#34;}],&#34;name&#34;:&#34;burnFrom&#34;,&#34;outputs&#34;:[],&#34;payable&#34;:false,&#34;stateMutability&#34;:&#34;nonpayable&#34;,&#34;type&#34;:&#34;function&#34;},{&#34;constant&#34;:true,&#34;inputs&#34;:[],&#34;name&#34;:&#34;cap&#34;,&#34;outputs&#34;:[{&#34;internalType&#34;:&#34;uint256&#34;,&#34;name&#34;:&#34;&#34;,&#34;type&#34;:&#34;uint256&#34;}],&#34;payable&#34;:false,&#34;stateMutability&#34;:&#34;view&#34;,&#34;type&#34;:&#34;function&#34;},{&#34;constant&#34;:true,&#34;inputs&#34;:[],&#34;name&#34;:&#34;decimals&#34;,&#34;outputs&#34;:[{&#34;internalType&#34;:&#34;uint8&#34;,&#34;name&#34;:&#34;&#34;,&#34;type&#34;:&#34;uint8&#34;}],&#34;payable&#34;:false,&#34;stateMutability&#34;:&#34;view&#34;,&#34;type&#34;:&#34;function&#34;},{&#34;constant&#34;:false,&#34;inputs&#34;:[{&#34;internalType&#34;:&#34;address&#34;,&#34;name&#34;:&#34;spender&#34;,&#34;type&#34;:&#34;address&#34;},{&#34;internalType&#34;:&#34;uint256&#34;,&#34;name&#34;:&#34;subtractedValue&#34;,&#34;type&#34;:&#34;uint256&#34;}],&#34;name&#34;:&#34;decreaseAllowance&#34;,&#34;outputs&#34;:[{&#34;internalType&#34;:&#34;bool&#34;,&#34;name&#34;:&#34;&#34;,&#34;type&#34;:&#34;bool&#34;}],&#34;payable&#34;:false,&#34;stateMutability&#34;:&#34;nonpayable&#34;,&#34;type&#34;:&#34;function&#34;},{&#34;constant&#34;:true,&#34;inputs&#34;:[],&#34;name&#34;:&#34;getDecimals&#34;,&#34;outputs&#34;:[{&#34;internalType&#34;:&#34;uint8&#34;,&#34;name&#34;:&#34;&#34;,&#34;type&#34;:&#34;uint8&#34;}],&#34;payable&#34;:false,&#34;stateMutability&#34;:&#34;view&#34;,&#34;type&#34;:&#34;function&#34;},{&#34;constant&#34;:true,&#34;inputs&#34;:[],&#34;name&#34;:&#34;gov&#34;,&#34;outputs&#34;:[{&#34;internalType&#34;:&#34;address&#34;,&#34;name&#34;:&#34;&#34;,&#34;type&#34;:&#34;address&#34;}],&#34;payable&#34;:false,&#34;stateMutability&#34;:&#34;view&#34;,&#34;type&#34;:&#34;function&#34;},{&#34;constant&#34;:false,&#34;inputs&#34;:[{&#34;internalType&#34;:&#34;address&#34;,&#34;name&#34;:&#34;spender&#34;,&#34;type&#34;:&#34;address&#34;},{&#34;internalType&#34;:&#34;uint256&#34;,&#34;name&#34;:&#34;addedValue&#34;,&#34;type&#34;:&#34;uint256&#34;}],&#34;name&#34;:&#34;increaseAllowance&#34;,&#34;outputs&#34;:[{&#34;internalType&#34;:&#34;bool&#34;,&#34;name&#34;:&#34;&#34;,&#34;type&#34;:&#34;bool&#34;}],&#34;payable&#34;:false,&#34;stateMutability&#34;:&#34;nonpayable&#34;,&#34;type&#34;:&#34;function&#34;},{&#34;constant&#34;:true,&#34;inputs&#34;:[{&#34;internalType&#34;:&#34;address&#34;,&#34;name&#34;:&#34;account&#34;,&#34;type&#34;:&#34;address&#34;}],&#34;name&#34;:&#34;isMinter&#34;,&#34;outputs&#34;:[{&#34;internalType&#34;:&#34;bool&#34;,&#34;name&#34;:&#34;&#34;,&#34;type&#34;:&#34;bool&#34;}],&#34;payable&#34;:false,&#34;stateMutability&#34;:&#34;view&#34;,&#34;type&#34;:&#34;function&#34;},{&#34;constant&#34;:false,&#34;inputs&#34;:[{&#34;internalType&#34;:&#34;address&#34;,&#34;name&#34;:&#34;account&#34;,&#34;type&#34;:&#34;address&#34;},{&#34;internalType&#34;:&#34;uint256&#34;,&#34;name&#34;:&#34;amount&#34;,&#34;type&#34;:&#34;uint256&#34;}],&#34;name&#34;:&#34;mint&#34;,&#34;outputs&#34;:[{&#34;internalType&#34;:&#34;bool&#34;,&#34;name&#34;:&#34;&#34;,&#34;type&#34;:&#34;bool&#34;}],&#34;payable&#34;:false,&#34;stateMutability&#34;:&#34;nonpayable&#34;,&#34;type&#34;:&#34;function&#34;},{&#34;constant&#34;:true,&#34;inputs&#34;:[],&#34;name&#34;:&#34;name&#34;,&#34;outputs&#34;:[{&#34;internalType&#34;:&#34;string&#34;,&#34;name&#34;:&#34;&#34;,&#34;type&#34;:&#34;string&#34;}],&#34;payable&#34;:false,&#34;stateMutability&#34;:&#34;view&#34;,&#34;type&#34;:&#34;function&#34;},{&#34;constant&#34;:false,&#34;inputs&#34;:[{&#34;internalType&#34;:&#34;address&#34;,&#34;name&#34;:&#34;account&#34;,&#34;type&#34;:&#34;address&#34;}],&#34;name&#34;:&#34;removeMinter&#34;,&#34;outputs&#34;:[],&#34;payable&#34;:false,&#34;stateMutability&#34;:&#34;nonpayable&#34;,&#34;type&#34;:&#34;function&#34;},{&#34;constant&#34;:false,&#34;inputs&#34;:[],&#34;name&#34;:&#34;renounceMinter&#34;,&#34;outputs&#34;:[],&#34;payable&#34;:false,&#34;stateMutability&#34;:&#34;nonpayable&#34;,&#34;type&#34;:&#34;function&#34;},{&#34;constant&#34;:true,&#34;inputs&#34;:[],&#34;name&#34;:&#34;symbol&#34;,&#34;outputs&#34;:[{&#34;internalType&#34;:&#34;string&#34;,&#34;name&#34;:&#34;&#34;,&#34;type&#34;:&#34;string&#34;}],&#34;payable&#34;:false,&#34;stateMutability&#34;:&#34;view&#34;,&#34;type&#34;:&#34;function&#34;},{&#34;constant&#34;:true,&#34;inputs&#34;:[],&#34;name&#34;:&#34;tokenName&#34;,&#34;outputs&#34;:[{&#34;internalType&#34;:&#34;string&#34;,&#34;name&#34;:&#34;&#34;,&#34;type&#34;:&#34;string&#34;}],&#34;payable&#34;:false,&#34;stateMutability&#34;:&#34;view&#34;,&#34;type&#34;:&#34;function&#34;},{&#34;constant&#34;:true,&#34;inputs&#34;:[],&#34;name&#34;:&#34;tokenSymbol&#34;,&#34;outputs&#34;:[{&#34;internalType&#34;:&#34;string&#34;,&#34;name&#34;:&#34;&#34;,&#34;type&#34;:&#34;string&#34;}],&#34;payable&#34;:false,&#34;stateMutability&#34;:&#34;view&#34;,&#34;type&#34;:&#34;function&#34;},{&#34;constant&#34;:true,&#34;inputs&#34;:[],&#34;name&#34;:&#34;totalSupply&#34;,&#34;outputs&#34;:[{&#34;internalType&#34;:&#34;uint256&#34;,&#34;name&#34;:&#34;&#34;,&#34;type&#34;:&#34;uint256&#34;}],&#34;payable&#34;:false,&#34;stateMutability&#34;:&#34;view&#34;,&#34;type&#34;:&#34;function&#34;},{&#34;constant&#34;:false,&#34;inputs&#34;:[{&#34;internalType&#34;:&#34;address&#34;,&#34;name&#34;:&#34;recipient&#34;,&#34;type&#34;:&#34;address&#34;},{&#34;internalType&#34;:&#34;uint256&#34;,&#34;name&#34;:&#34;amount&#34;,&#34;type&#34;:&#34;uint256&#34;}],&#34;name&#34;:&#34;transfer&#34;,&#34;outputs&#34;:[{&#34;internalType&#34;:&#34;bool&#34;,&#34;name&#34;:&#34;&#34;,&#34;type&#34;:&#34;bool&#34;}],&#34;payable&#34;:false,&#34;stateMutability&#34;:&#34;nonpayable&#34;,&#34;type&#34;:&#34;function&#34;},{&#34;constant&#34;:false,&#34;inputs&#34;:[{&#34;internalType&#34;:&#34;address&#34;,&#34;name&#34;:&#34;sender&#34;,&#34;type&#34;:&#34;address&#34;},{&#34;internalType&#34;:&#34;address&#34;,&#34;name&#34;:&#34;recipient&#34;,&#34;type&#34;:&#34;address&#34;},{&#34;internalType&#34;:&#34;uint256&#34;,&#34;name&#34;:&#34;amount&#34;,&#34;type&#34;:&#34;uint256&#34;}],&#34;name&#34;:&#34;transferFrom&#34;,&#34;outputs&#34;:[{&#34;internalType&#34;:&#34;bool&#34;,&#34;name&#34;:&#34;&#34;,&#34;type&#34;:&#34;bool&#34;}],&#34;payable&#34;:false,&#34;stateMutability&#34;:&#34;nonpayable&#34;,&#34;type&#34;:&#34;function&#34;}]&#39;
             # noqa: E501 (line-too-long)
         )</code></pre>
 </details>
@@ -5005,6 +5286,13 @@ class Ori20(ContractBase):
 <ul class="hlist">
 <li><a title="moody.m.bases.ContractBase" href="../bases.html#moody.m.bases.ContractBase">ContractBase</a></li>
 </ul>
+<h3>Class variables</h3>
+<dl>
+<dt id="moody.m.ori20.Ori20.SIGNATURES"><code class="name">var <span class="ident">SIGNATURES</span> : <a title="moody.m.ori20.SignatureGenerator" href="#moody.m.ori20.SignatureGenerator">SignatureGenerator</a></code></dt>
+<dd>
+<div class="desc"></div>
+</dd>
+</dl>
 <h3>Static methods</h3>
 <dl>
 <dt id="moody.m.ori20.Ori20.abi"><code class="name flex">
@@ -5020,7 +5308,7 @@ class Ori20(ContractBase):
 def abi():
     &#34;&#34;&#34;Return the ABI to the underlying contract.&#34;&#34;&#34;
     return json.loads(
-        &#39;[{&#34;inputs&#34;:[],&#34;payable&#34;:false,&#34;stateMutability&#34;:&#34;nonpayable&#34;,&#34;type&#34;:&#34;constructor&#34;},{&#34;anonymous&#34;:false,&#34;inputs&#34;:[{&#34;indexed&#34;:true,&#34;internalType&#34;:&#34;address&#34;,&#34;name&#34;:&#34;owner&#34;,&#34;type&#34;:&#34;address&#34;},{&#34;indexed&#34;:true,&#34;internalType&#34;:&#34;address&#34;,&#34;name&#34;:&#34;spender&#34;,&#34;type&#34;:&#34;address&#34;},{&#34;indexed&#34;:false,&#34;internalType&#34;:&#34;uint256&#34;,&#34;name&#34;:&#34;value&#34;,&#34;type&#34;:&#34;uint256&#34;}],&#34;name&#34;:&#34;Approval&#34;,&#34;type&#34;:&#34;event&#34;},{&#34;anonymous&#34;:false,&#34;inputs&#34;:[{&#34;indexed&#34;:true,&#34;internalType&#34;:&#34;address&#34;,&#34;name&#34;:&#34;account&#34;,&#34;type&#34;:&#34;address&#34;}],&#34;name&#34;:&#34;MinterAdded&#34;,&#34;type&#34;:&#34;event&#34;},{&#34;anonymous&#34;:false,&#34;inputs&#34;:[{&#34;indexed&#34;:true,&#34;internalType&#34;:&#34;address&#34;,&#34;name&#34;:&#34;account&#34;,&#34;type&#34;:&#34;address&#34;}],&#34;name&#34;:&#34;MinterRemoved&#34;,&#34;type&#34;:&#34;event&#34;},{&#34;anonymous&#34;:false,&#34;inputs&#34;:[{&#34;indexed&#34;:true,&#34;internalType&#34;:&#34;address&#34;,&#34;name&#34;:&#34;from&#34;,&#34;type&#34;:&#34;address&#34;},{&#34;indexed&#34;:true,&#34;internalType&#34;:&#34;address&#34;,&#34;name&#34;:&#34;to&#34;,&#34;type&#34;:&#34;address&#34;},{&#34;indexed&#34;:false,&#34;internalType&#34;:&#34;uint256&#34;,&#34;name&#34;:&#34;value&#34;,&#34;type&#34;:&#34;uint256&#34;}],&#34;name&#34;:&#34;Transfer&#34;,&#34;type&#34;:&#34;event&#34;},{&#34;constant&#34;:false,&#34;inputs&#34;:[{&#34;internalType&#34;:&#34;address&#34;,&#34;name&#34;:&#34;account&#34;,&#34;type&#34;:&#34;address&#34;}],&#34;name&#34;:&#34;addMinter&#34;,&#34;outputs&#34;:[],&#34;payable&#34;:false,&#34;stateMutability&#34;:&#34;nonpayable&#34;,&#34;type&#34;:&#34;function&#34;},{&#34;constant&#34;:true,&#34;inputs&#34;:[{&#34;internalType&#34;:&#34;address&#34;,&#34;name&#34;:&#34;owner&#34;,&#34;type&#34;:&#34;address&#34;},{&#34;internalType&#34;:&#34;address&#34;,&#34;name&#34;:&#34;spender&#34;,&#34;type&#34;:&#34;address&#34;}],&#34;name&#34;:&#34;allowance&#34;,&#34;outputs&#34;:[{&#34;internalType&#34;:&#34;uint256&#34;,&#34;name&#34;:&#34;&#34;,&#34;type&#34;:&#34;uint256&#34;}],&#34;payable&#34;:false,&#34;stateMutability&#34;:&#34;view&#34;,&#34;type&#34;:&#34;function&#34;},{&#34;constant&#34;:false,&#34;inputs&#34;:[{&#34;internalType&#34;:&#34;address&#34;,&#34;name&#34;:&#34;spender&#34;,&#34;type&#34;:&#34;address&#34;},{&#34;internalType&#34;:&#34;uint256&#34;,&#34;name&#34;:&#34;amount&#34;,&#34;type&#34;:&#34;uint256&#34;}],&#34;name&#34;:&#34;approve&#34;,&#34;outputs&#34;:[{&#34;internalType&#34;:&#34;bool&#34;,&#34;name&#34;:&#34;&#34;,&#34;type&#34;:&#34;bool&#34;}],&#34;payable&#34;:false,&#34;stateMutability&#34;:&#34;nonpayable&#34;,&#34;type&#34;:&#34;function&#34;},{&#34;constant&#34;:true,&#34;inputs&#34;:[{&#34;internalType&#34;:&#34;address&#34;,&#34;name&#34;:&#34;account&#34;,&#34;type&#34;:&#34;address&#34;}],&#34;name&#34;:&#34;balanceOf&#34;,&#34;outputs&#34;:[{&#34;internalType&#34;:&#34;uint256&#34;,&#34;name&#34;:&#34;&#34;,&#34;type&#34;:&#34;uint256&#34;}],&#34;payable&#34;:false,&#34;stateMutability&#34;:&#34;view&#34;,&#34;type&#34;:&#34;function&#34;},{&#34;constant&#34;:false,&#34;inputs&#34;:[{&#34;internalType&#34;:&#34;uint256&#34;,&#34;name&#34;:&#34;amount&#34;,&#34;type&#34;:&#34;uint256&#34;}],&#34;name&#34;:&#34;burn&#34;,&#34;outputs&#34;:[],&#34;payable&#34;:false,&#34;stateMutability&#34;:&#34;nonpayable&#34;,&#34;type&#34;:&#34;function&#34;},{&#34;constant&#34;:false,&#34;inputs&#34;:[{&#34;internalType&#34;:&#34;address&#34;,&#34;name&#34;:&#34;account&#34;,&#34;type&#34;:&#34;address&#34;},{&#34;internalType&#34;:&#34;uint256&#34;,&#34;name&#34;:&#34;amount&#34;,&#34;type&#34;:&#34;uint256&#34;}],&#34;name&#34;:&#34;burnFrom&#34;,&#34;outputs&#34;:[],&#34;payable&#34;:false,&#34;stateMutability&#34;:&#34;nonpayable&#34;,&#34;type&#34;:&#34;function&#34;},{&#34;constant&#34;:true,&#34;inputs&#34;:[],&#34;name&#34;:&#34;cap&#34;,&#34;outputs&#34;:[{&#34;internalType&#34;:&#34;uint256&#34;,&#34;name&#34;:&#34;&#34;,&#34;type&#34;:&#34;uint256&#34;}],&#34;payable&#34;:false,&#34;stateMutability&#34;:&#34;view&#34;,&#34;type&#34;:&#34;function&#34;},{&#34;constant&#34;:true,&#34;inputs&#34;:[],&#34;name&#34;:&#34;decimals&#34;,&#34;outputs&#34;:[{&#34;internalType&#34;:&#34;uint8&#34;,&#34;name&#34;:&#34;&#34;,&#34;type&#34;:&#34;uint8&#34;}],&#34;payable&#34;:false,&#34;stateMutability&#34;:&#34;view&#34;,&#34;type&#34;:&#34;function&#34;},{&#34;constant&#34;:false,&#34;inputs&#34;:[{&#34;internalType&#34;:&#34;address&#34;,&#34;name&#34;:&#34;spender&#34;,&#34;type&#34;:&#34;address&#34;},{&#34;internalType&#34;:&#34;uint256&#34;,&#34;name&#34;:&#34;subtractedValue&#34;,&#34;type&#34;:&#34;uint256&#34;}],&#34;name&#34;:&#34;decreaseAllowance&#34;,&#34;outputs&#34;:[{&#34;internalType&#34;:&#34;bool&#34;,&#34;name&#34;:&#34;&#34;,&#34;type&#34;:&#34;bool&#34;}],&#34;payable&#34;:false,&#34;stateMutability&#34;:&#34;nonpayable&#34;,&#34;type&#34;:&#34;function&#34;},{&#34;constant&#34;:true,&#34;inputs&#34;:[],&#34;name&#34;:&#34;getDecimals&#34;,&#34;outputs&#34;:[{&#34;internalType&#34;:&#34;uint8&#34;,&#34;name&#34;:&#34;&#34;,&#34;type&#34;:&#34;uint8&#34;}],&#34;payable&#34;:false,&#34;stateMutability&#34;:&#34;view&#34;,&#34;type&#34;:&#34;function&#34;},{&#34;constant&#34;:false,&#34;inputs&#34;:[{&#34;internalType&#34;:&#34;address&#34;,&#34;name&#34;:&#34;spender&#34;,&#34;type&#34;:&#34;address&#34;},{&#34;internalType&#34;:&#34;uint256&#34;,&#34;name&#34;:&#34;addedValue&#34;,&#34;type&#34;:&#34;uint256&#34;}],&#34;name&#34;:&#34;increaseAllowance&#34;,&#34;outputs&#34;:[{&#34;internalType&#34;:&#34;bool&#34;,&#34;name&#34;:&#34;&#34;,&#34;type&#34;:&#34;bool&#34;}],&#34;payable&#34;:false,&#34;stateMutability&#34;:&#34;nonpayable&#34;,&#34;type&#34;:&#34;function&#34;},{&#34;constant&#34;:true,&#34;inputs&#34;:[{&#34;internalType&#34;:&#34;address&#34;,&#34;name&#34;:&#34;account&#34;,&#34;type&#34;:&#34;address&#34;}],&#34;name&#34;:&#34;isMinter&#34;,&#34;outputs&#34;:[{&#34;internalType&#34;:&#34;bool&#34;,&#34;name&#34;:&#34;&#34;,&#34;type&#34;:&#34;bool&#34;}],&#34;payable&#34;:false,&#34;stateMutability&#34;:&#34;view&#34;,&#34;type&#34;:&#34;function&#34;},{&#34;constant&#34;:false,&#34;inputs&#34;:[{&#34;internalType&#34;:&#34;address&#34;,&#34;name&#34;:&#34;account&#34;,&#34;type&#34;:&#34;address&#34;},{&#34;internalType&#34;:&#34;uint256&#34;,&#34;name&#34;:&#34;amount&#34;,&#34;type&#34;:&#34;uint256&#34;}],&#34;name&#34;:&#34;mint&#34;,&#34;outputs&#34;:[{&#34;internalType&#34;:&#34;bool&#34;,&#34;name&#34;:&#34;&#34;,&#34;type&#34;:&#34;bool&#34;}],&#34;payable&#34;:false,&#34;stateMutability&#34;:&#34;nonpayable&#34;,&#34;type&#34;:&#34;function&#34;},{&#34;constant&#34;:true,&#34;inputs&#34;:[],&#34;name&#34;:&#34;name&#34;,&#34;outputs&#34;:[{&#34;internalType&#34;:&#34;string&#34;,&#34;name&#34;:&#34;&#34;,&#34;type&#34;:&#34;string&#34;}],&#34;payable&#34;:false,&#34;stateMutability&#34;:&#34;view&#34;,&#34;type&#34;:&#34;function&#34;},{&#34;constant&#34;:false,&#34;inputs&#34;:[],&#34;name&#34;:&#34;renounceMinter&#34;,&#34;outputs&#34;:[],&#34;payable&#34;:false,&#34;stateMutability&#34;:&#34;nonpayable&#34;,&#34;type&#34;:&#34;function&#34;},{&#34;constant&#34;:true,&#34;inputs&#34;:[],&#34;name&#34;:&#34;symbol&#34;,&#34;outputs&#34;:[{&#34;internalType&#34;:&#34;string&#34;,&#34;name&#34;:&#34;&#34;,&#34;type&#34;:&#34;string&#34;}],&#34;payable&#34;:false,&#34;stateMutability&#34;:&#34;view&#34;,&#34;type&#34;:&#34;function&#34;},{&#34;constant&#34;:true,&#34;inputs&#34;:[],&#34;name&#34;:&#34;tokenName&#34;,&#34;outputs&#34;:[{&#34;internalType&#34;:&#34;string&#34;,&#34;name&#34;:&#34;&#34;,&#34;type&#34;:&#34;string&#34;}],&#34;payable&#34;:false,&#34;stateMutability&#34;:&#34;view&#34;,&#34;type&#34;:&#34;function&#34;},{&#34;constant&#34;:true,&#34;inputs&#34;:[],&#34;name&#34;:&#34;tokenSymbol&#34;,&#34;outputs&#34;:[{&#34;internalType&#34;:&#34;string&#34;,&#34;name&#34;:&#34;&#34;,&#34;type&#34;:&#34;string&#34;}],&#34;payable&#34;:false,&#34;stateMutability&#34;:&#34;view&#34;,&#34;type&#34;:&#34;function&#34;},{&#34;constant&#34;:true,&#34;inputs&#34;:[],&#34;name&#34;:&#34;totalSupply&#34;,&#34;outputs&#34;:[{&#34;internalType&#34;:&#34;uint256&#34;,&#34;name&#34;:&#34;&#34;,&#34;type&#34;:&#34;uint256&#34;}],&#34;payable&#34;:false,&#34;stateMutability&#34;:&#34;view&#34;,&#34;type&#34;:&#34;function&#34;},{&#34;constant&#34;:false,&#34;inputs&#34;:[{&#34;internalType&#34;:&#34;address&#34;,&#34;name&#34;:&#34;recipient&#34;,&#34;type&#34;:&#34;address&#34;},{&#34;internalType&#34;:&#34;uint256&#34;,&#34;name&#34;:&#34;amount&#34;,&#34;type&#34;:&#34;uint256&#34;}],&#34;name&#34;:&#34;transfer&#34;,&#34;outputs&#34;:[{&#34;internalType&#34;:&#34;bool&#34;,&#34;name&#34;:&#34;&#34;,&#34;type&#34;:&#34;bool&#34;}],&#34;payable&#34;:false,&#34;stateMutability&#34;:&#34;nonpayable&#34;,&#34;type&#34;:&#34;function&#34;},{&#34;constant&#34;:false,&#34;inputs&#34;:[{&#34;internalType&#34;:&#34;address&#34;,&#34;name&#34;:&#34;sender&#34;,&#34;type&#34;:&#34;address&#34;},{&#34;internalType&#34;:&#34;address&#34;,&#34;name&#34;:&#34;recipient&#34;,&#34;type&#34;:&#34;address&#34;},{&#34;internalType&#34;:&#34;uint256&#34;,&#34;name&#34;:&#34;amount&#34;,&#34;type&#34;:&#34;uint256&#34;}],&#34;name&#34;:&#34;transferFrom&#34;,&#34;outputs&#34;:[{&#34;internalType&#34;:&#34;bool&#34;,&#34;name&#34;:&#34;&#34;,&#34;type&#34;:&#34;bool&#34;}],&#34;payable&#34;:false,&#34;stateMutability&#34;:&#34;nonpayable&#34;,&#34;type&#34;:&#34;function&#34;}]&#39;
+        &#39;[{&#34;inputs&#34;:[],&#34;payable&#34;:false,&#34;stateMutability&#34;:&#34;nonpayable&#34;,&#34;type&#34;:&#34;constructor&#34;},{&#34;anonymous&#34;:false,&#34;inputs&#34;:[{&#34;indexed&#34;:true,&#34;internalType&#34;:&#34;address&#34;,&#34;name&#34;:&#34;owner&#34;,&#34;type&#34;:&#34;address&#34;},{&#34;indexed&#34;:true,&#34;internalType&#34;:&#34;address&#34;,&#34;name&#34;:&#34;spender&#34;,&#34;type&#34;:&#34;address&#34;},{&#34;indexed&#34;:false,&#34;internalType&#34;:&#34;uint256&#34;,&#34;name&#34;:&#34;value&#34;,&#34;type&#34;:&#34;uint256&#34;}],&#34;name&#34;:&#34;Approval&#34;,&#34;type&#34;:&#34;event&#34;},{&#34;anonymous&#34;:false,&#34;inputs&#34;:[{&#34;indexed&#34;:true,&#34;internalType&#34;:&#34;address&#34;,&#34;name&#34;:&#34;account&#34;,&#34;type&#34;:&#34;address&#34;}],&#34;name&#34;:&#34;MinterAdded&#34;,&#34;type&#34;:&#34;event&#34;},{&#34;anonymous&#34;:false,&#34;inputs&#34;:[{&#34;indexed&#34;:true,&#34;internalType&#34;:&#34;address&#34;,&#34;name&#34;:&#34;account&#34;,&#34;type&#34;:&#34;address&#34;}],&#34;name&#34;:&#34;MinterRemoved&#34;,&#34;type&#34;:&#34;event&#34;},{&#34;anonymous&#34;:false,&#34;inputs&#34;:[{&#34;indexed&#34;:true,&#34;internalType&#34;:&#34;address&#34;,&#34;name&#34;:&#34;from&#34;,&#34;type&#34;:&#34;address&#34;},{&#34;indexed&#34;:true,&#34;internalType&#34;:&#34;address&#34;,&#34;name&#34;:&#34;to&#34;,&#34;type&#34;:&#34;address&#34;},{&#34;indexed&#34;:false,&#34;internalType&#34;:&#34;uint256&#34;,&#34;name&#34;:&#34;value&#34;,&#34;type&#34;:&#34;uint256&#34;}],&#34;name&#34;:&#34;Transfer&#34;,&#34;type&#34;:&#34;event&#34;},{&#34;constant&#34;:false,&#34;inputs&#34;:[{&#34;internalType&#34;:&#34;address&#34;,&#34;name&#34;:&#34;account&#34;,&#34;type&#34;:&#34;address&#34;}],&#34;name&#34;:&#34;addMinter&#34;,&#34;outputs&#34;:[],&#34;payable&#34;:false,&#34;stateMutability&#34;:&#34;nonpayable&#34;,&#34;type&#34;:&#34;function&#34;},{&#34;constant&#34;:true,&#34;inputs&#34;:[{&#34;internalType&#34;:&#34;address&#34;,&#34;name&#34;:&#34;owner&#34;,&#34;type&#34;:&#34;address&#34;},{&#34;internalType&#34;:&#34;address&#34;,&#34;name&#34;:&#34;spender&#34;,&#34;type&#34;:&#34;address&#34;}],&#34;name&#34;:&#34;allowance&#34;,&#34;outputs&#34;:[{&#34;internalType&#34;:&#34;uint256&#34;,&#34;name&#34;:&#34;&#34;,&#34;type&#34;:&#34;uint256&#34;}],&#34;payable&#34;:false,&#34;stateMutability&#34;:&#34;view&#34;,&#34;type&#34;:&#34;function&#34;},{&#34;constant&#34;:false,&#34;inputs&#34;:[{&#34;internalType&#34;:&#34;address&#34;,&#34;name&#34;:&#34;spender&#34;,&#34;type&#34;:&#34;address&#34;},{&#34;internalType&#34;:&#34;uint256&#34;,&#34;name&#34;:&#34;amount&#34;,&#34;type&#34;:&#34;uint256&#34;}],&#34;name&#34;:&#34;approve&#34;,&#34;outputs&#34;:[{&#34;internalType&#34;:&#34;bool&#34;,&#34;name&#34;:&#34;&#34;,&#34;type&#34;:&#34;bool&#34;}],&#34;payable&#34;:false,&#34;stateMutability&#34;:&#34;nonpayable&#34;,&#34;type&#34;:&#34;function&#34;},{&#34;constant&#34;:true,&#34;inputs&#34;:[{&#34;internalType&#34;:&#34;address&#34;,&#34;name&#34;:&#34;account&#34;,&#34;type&#34;:&#34;address&#34;}],&#34;name&#34;:&#34;balanceOf&#34;,&#34;outputs&#34;:[{&#34;internalType&#34;:&#34;uint256&#34;,&#34;name&#34;:&#34;&#34;,&#34;type&#34;:&#34;uint256&#34;}],&#34;payable&#34;:false,&#34;stateMutability&#34;:&#34;view&#34;,&#34;type&#34;:&#34;function&#34;},{&#34;constant&#34;:false,&#34;inputs&#34;:[{&#34;internalType&#34;:&#34;uint256&#34;,&#34;name&#34;:&#34;amount&#34;,&#34;type&#34;:&#34;uint256&#34;}],&#34;name&#34;:&#34;burn&#34;,&#34;outputs&#34;:[],&#34;payable&#34;:false,&#34;stateMutability&#34;:&#34;nonpayable&#34;,&#34;type&#34;:&#34;function&#34;},{&#34;constant&#34;:false,&#34;inputs&#34;:[{&#34;internalType&#34;:&#34;address&#34;,&#34;name&#34;:&#34;account&#34;,&#34;type&#34;:&#34;address&#34;},{&#34;internalType&#34;:&#34;uint256&#34;,&#34;name&#34;:&#34;amount&#34;,&#34;type&#34;:&#34;uint256&#34;}],&#34;name&#34;:&#34;burnFrom&#34;,&#34;outputs&#34;:[],&#34;payable&#34;:false,&#34;stateMutability&#34;:&#34;nonpayable&#34;,&#34;type&#34;:&#34;function&#34;},{&#34;constant&#34;:true,&#34;inputs&#34;:[],&#34;name&#34;:&#34;cap&#34;,&#34;outputs&#34;:[{&#34;internalType&#34;:&#34;uint256&#34;,&#34;name&#34;:&#34;&#34;,&#34;type&#34;:&#34;uint256&#34;}],&#34;payable&#34;:false,&#34;stateMutability&#34;:&#34;view&#34;,&#34;type&#34;:&#34;function&#34;},{&#34;constant&#34;:true,&#34;inputs&#34;:[],&#34;name&#34;:&#34;decimals&#34;,&#34;outputs&#34;:[{&#34;internalType&#34;:&#34;uint8&#34;,&#34;name&#34;:&#34;&#34;,&#34;type&#34;:&#34;uint8&#34;}],&#34;payable&#34;:false,&#34;stateMutability&#34;:&#34;view&#34;,&#34;type&#34;:&#34;function&#34;},{&#34;constant&#34;:false,&#34;inputs&#34;:[{&#34;internalType&#34;:&#34;address&#34;,&#34;name&#34;:&#34;spender&#34;,&#34;type&#34;:&#34;address&#34;},{&#34;internalType&#34;:&#34;uint256&#34;,&#34;name&#34;:&#34;subtractedValue&#34;,&#34;type&#34;:&#34;uint256&#34;}],&#34;name&#34;:&#34;decreaseAllowance&#34;,&#34;outputs&#34;:[{&#34;internalType&#34;:&#34;bool&#34;,&#34;name&#34;:&#34;&#34;,&#34;type&#34;:&#34;bool&#34;}],&#34;payable&#34;:false,&#34;stateMutability&#34;:&#34;nonpayable&#34;,&#34;type&#34;:&#34;function&#34;},{&#34;constant&#34;:true,&#34;inputs&#34;:[],&#34;name&#34;:&#34;getDecimals&#34;,&#34;outputs&#34;:[{&#34;internalType&#34;:&#34;uint8&#34;,&#34;name&#34;:&#34;&#34;,&#34;type&#34;:&#34;uint8&#34;}],&#34;payable&#34;:false,&#34;stateMutability&#34;:&#34;view&#34;,&#34;type&#34;:&#34;function&#34;},{&#34;constant&#34;:true,&#34;inputs&#34;:[],&#34;name&#34;:&#34;gov&#34;,&#34;outputs&#34;:[{&#34;internalType&#34;:&#34;address&#34;,&#34;name&#34;:&#34;&#34;,&#34;type&#34;:&#34;address&#34;}],&#34;payable&#34;:false,&#34;stateMutability&#34;:&#34;view&#34;,&#34;type&#34;:&#34;function&#34;},{&#34;constant&#34;:false,&#34;inputs&#34;:[{&#34;internalType&#34;:&#34;address&#34;,&#34;name&#34;:&#34;spender&#34;,&#34;type&#34;:&#34;address&#34;},{&#34;internalType&#34;:&#34;uint256&#34;,&#34;name&#34;:&#34;addedValue&#34;,&#34;type&#34;:&#34;uint256&#34;}],&#34;name&#34;:&#34;increaseAllowance&#34;,&#34;outputs&#34;:[{&#34;internalType&#34;:&#34;bool&#34;,&#34;name&#34;:&#34;&#34;,&#34;type&#34;:&#34;bool&#34;}],&#34;payable&#34;:false,&#34;stateMutability&#34;:&#34;nonpayable&#34;,&#34;type&#34;:&#34;function&#34;},{&#34;constant&#34;:true,&#34;inputs&#34;:[{&#34;internalType&#34;:&#34;address&#34;,&#34;name&#34;:&#34;account&#34;,&#34;type&#34;:&#34;address&#34;}],&#34;name&#34;:&#34;isMinter&#34;,&#34;outputs&#34;:[{&#34;internalType&#34;:&#34;bool&#34;,&#34;name&#34;:&#34;&#34;,&#34;type&#34;:&#34;bool&#34;}],&#34;payable&#34;:false,&#34;stateMutability&#34;:&#34;view&#34;,&#34;type&#34;:&#34;function&#34;},{&#34;constant&#34;:false,&#34;inputs&#34;:[{&#34;internalType&#34;:&#34;address&#34;,&#34;name&#34;:&#34;account&#34;,&#34;type&#34;:&#34;address&#34;},{&#34;internalType&#34;:&#34;uint256&#34;,&#34;name&#34;:&#34;amount&#34;,&#34;type&#34;:&#34;uint256&#34;}],&#34;name&#34;:&#34;mint&#34;,&#34;outputs&#34;:[{&#34;internalType&#34;:&#34;bool&#34;,&#34;name&#34;:&#34;&#34;,&#34;type&#34;:&#34;bool&#34;}],&#34;payable&#34;:false,&#34;stateMutability&#34;:&#34;nonpayable&#34;,&#34;type&#34;:&#34;function&#34;},{&#34;constant&#34;:true,&#34;inputs&#34;:[],&#34;name&#34;:&#34;name&#34;,&#34;outputs&#34;:[{&#34;internalType&#34;:&#34;string&#34;,&#34;name&#34;:&#34;&#34;,&#34;type&#34;:&#34;string&#34;}],&#34;payable&#34;:false,&#34;stateMutability&#34;:&#34;view&#34;,&#34;type&#34;:&#34;function&#34;},{&#34;constant&#34;:false,&#34;inputs&#34;:[{&#34;internalType&#34;:&#34;address&#34;,&#34;name&#34;:&#34;account&#34;,&#34;type&#34;:&#34;address&#34;}],&#34;name&#34;:&#34;removeMinter&#34;,&#34;outputs&#34;:[],&#34;payable&#34;:false,&#34;stateMutability&#34;:&#34;nonpayable&#34;,&#34;type&#34;:&#34;function&#34;},{&#34;constant&#34;:false,&#34;inputs&#34;:[],&#34;name&#34;:&#34;renounceMinter&#34;,&#34;outputs&#34;:[],&#34;payable&#34;:false,&#34;stateMutability&#34;:&#34;nonpayable&#34;,&#34;type&#34;:&#34;function&#34;},{&#34;constant&#34;:true,&#34;inputs&#34;:[],&#34;name&#34;:&#34;symbol&#34;,&#34;outputs&#34;:[{&#34;internalType&#34;:&#34;string&#34;,&#34;name&#34;:&#34;&#34;,&#34;type&#34;:&#34;string&#34;}],&#34;payable&#34;:false,&#34;stateMutability&#34;:&#34;view&#34;,&#34;type&#34;:&#34;function&#34;},{&#34;constant&#34;:true,&#34;inputs&#34;:[],&#34;name&#34;:&#34;tokenName&#34;,&#34;outputs&#34;:[{&#34;internalType&#34;:&#34;string&#34;,&#34;name&#34;:&#34;&#34;,&#34;type&#34;:&#34;string&#34;}],&#34;payable&#34;:false,&#34;stateMutability&#34;:&#34;view&#34;,&#34;type&#34;:&#34;function&#34;},{&#34;constant&#34;:true,&#34;inputs&#34;:[],&#34;name&#34;:&#34;tokenSymbol&#34;,&#34;outputs&#34;:[{&#34;internalType&#34;:&#34;string&#34;,&#34;name&#34;:&#34;&#34;,&#34;type&#34;:&#34;string&#34;}],&#34;payable&#34;:false,&#34;stateMutability&#34;:&#34;view&#34;,&#34;type&#34;:&#34;function&#34;},{&#34;constant&#34;:true,&#34;inputs&#34;:[],&#34;name&#34;:&#34;totalSupply&#34;,&#34;outputs&#34;:[{&#34;internalType&#34;:&#34;uint256&#34;,&#34;name&#34;:&#34;&#34;,&#34;type&#34;:&#34;uint256&#34;}],&#34;payable&#34;:false,&#34;stateMutability&#34;:&#34;view&#34;,&#34;type&#34;:&#34;function&#34;},{&#34;constant&#34;:false,&#34;inputs&#34;:[{&#34;internalType&#34;:&#34;address&#34;,&#34;name&#34;:&#34;recipient&#34;,&#34;type&#34;:&#34;address&#34;},{&#34;internalType&#34;:&#34;uint256&#34;,&#34;name&#34;:&#34;amount&#34;,&#34;type&#34;:&#34;uint256&#34;}],&#34;name&#34;:&#34;transfer&#34;,&#34;outputs&#34;:[{&#34;internalType&#34;:&#34;bool&#34;,&#34;name&#34;:&#34;&#34;,&#34;type&#34;:&#34;bool&#34;}],&#34;payable&#34;:false,&#34;stateMutability&#34;:&#34;nonpayable&#34;,&#34;type&#34;:&#34;function&#34;},{&#34;constant&#34;:false,&#34;inputs&#34;:[{&#34;internalType&#34;:&#34;address&#34;,&#34;name&#34;:&#34;sender&#34;,&#34;type&#34;:&#34;address&#34;},{&#34;internalType&#34;:&#34;address&#34;,&#34;name&#34;:&#34;recipient&#34;,&#34;type&#34;:&#34;address&#34;},{&#34;internalType&#34;:&#34;uint256&#34;,&#34;name&#34;:&#34;amount&#34;,&#34;type&#34;:&#34;uint256&#34;}],&#34;name&#34;:&#34;transferFrom&#34;,&#34;outputs&#34;:[{&#34;internalType&#34;:&#34;bool&#34;,&#34;name&#34;:&#34;&#34;,&#34;type&#34;:&#34;bool&#34;}],&#34;payable&#34;:false,&#34;stateMutability&#34;:&#34;nonpayable&#34;,&#34;type&#34;:&#34;function&#34;}]&#39;
         # noqa: E501 (line-too-long)
     )</code></pre>
 </details>
@@ -5048,10 +5336,12 @@ def abi():
     self._fn_decimals.setWait(t_long)
     self._fn_decrease_allowance.setWait(t_long)
     self._fn_get_decimals.setWait(t_long)
+    self._fn_gov.setWait(t_long)
     self._fn_increase_allowance.setWait(t_long)
     self._fn_is_minter.setWait(t_long)
     self._fn_mint.setWait(t_long)
     self._fn_name.setWait(t_long)
+    self._fn_remove_minter.setWait(t_long)
     self._fn_renounce_minter.setWait(t_long)
     self._fn_symbol.setWait(t_long)
     self._fn_token_name.setWait(t_long)
@@ -5374,6 +5664,28 @@ Method of the function</p></div>
     return self._fn_get_decimals.block_call()</code></pre>
 </details>
 </dd>
+<dt id="moody.m.ori20.Ori20.gov"><code class="name flex">
+<span>def <span class="ident">gov</span></span>(<span>self) ‑> str</span>
+</code></dt>
+<dd>
+<div class="desc"><p>Implementation of gov in contract Ori20
+Method of the function</p></div>
+<details class="source">
+<summary>
+<span>Expand source code</span>
+</summary>
+<pre><code class="python">def gov(self) -&gt; str:
+    &#34;&#34;&#34;
+    Implementation of gov in contract Ori20
+    Method of the function
+
+
+
+    &#34;&#34;&#34;
+
+    return self._fn_gov.block_call()</code></pre>
+</details>
+</dd>
 <dt id="moody.m.ori20.Ori20.increase_allowance"><code class="name flex">
 <span>def <span class="ident">increase_allowance</span></span>(<span>self, spender: str, added_value: int) ‑> bool</span>
 </code></dt>
@@ -5460,6 +5772,28 @@ Method of the function</p></div>
     &#34;&#34;&#34;
 
     return self._fn_name.block_call()</code></pre>
+</details>
+</dd>
+<dt id="moody.m.ori20.Ori20.remove_minter"><code class="name flex">
+<span>def <span class="ident">remove_minter</span></span>(<span>self, account: str) ‑> NoneType</span>
+</code></dt>
+<dd>
+<div class="desc"><p>Implementation of remove_minter in contract Ori20
+Method of the function</p></div>
+<details class="source">
+<summary>
+<span>Expand source code</span>
+</summary>
+<pre><code class="python">def remove_minter(self, account: str) -&gt; None:
+    &#34;&#34;&#34;
+    Implementation of remove_minter in contract Ori20
+    Method of the function
+
+
+
+    &#34;&#34;&#34;
+
+    return self._fn_remove_minter.block_send(account, self.call_contract_fee_amount, self.call_contract_fee_price, 0, self.call_contract_debug_flag, self.call_contract_enforce_tx_receipt)</code></pre>
 </details>
 </dd>
 <dt id="moody.m.ori20.Ori20.renounce_minter"><code class="name flex">
@@ -5647,9 +5981,273 @@ Method of the function</p></div>
 </li>
 </ul>
 </dd>
+<dt id="moody.m.ori20.RemoveMinterMethod"><code class="flex name class">
+<span>class <span class="ident">RemoveMinterMethod</span></span>
+<span>(</span><span>elib: <a title="moody.libeb.MiliDoS" href="../../libeb.html#moody.libeb.MiliDoS">MiliDoS</a>, contract_address: str, contract_function: web3.contract.ContractFunction, validator: <a title="moody.m.bases.Validator" href="../bases.html#moody.m.bases.Validator">Validator</a> = None)</span>
+</code></dt>
+<dd>
+<div class="desc"><p>Various interfaces to the removeMinter method.</p>
+<p>Persist instance data.</p></div>
+<details class="source">
+<summary>
+<span>Expand source code</span>
+</summary>
+<pre><code class="python">class RemoveMinterMethod(ContractMethod):  # pylint: disable=invalid-name
+    &#34;&#34;&#34;Various interfaces to the removeMinter method.&#34;&#34;&#34;
+
+    def __init__(self, elib: MiliDoS, contract_address: str, contract_function: ContractFunction, validator: Validator = None):
+        &#34;&#34;&#34;Persist instance data.&#34;&#34;&#34;
+        super().__init__(elib, contract_address, validator)
+        self._underlying_method = contract_function
+        self.sign = validator.getSignature(&#34;removeMinter&#34;)
+
+    def validate_and_normalize_inputs(self, account: str) -&gt; any:
+        &#34;&#34;&#34;Validate the inputs to the removeMinter method.&#34;&#34;&#34;
+        self.validator.assert_valid(
+            method_name=&#39;removeMinter&#39;,
+            parameter_name=&#39;account&#39;,
+            argument_value=account,
+        )
+        account = self.validate_and_checksum_address(account)
+        return (account)
+
+    def block_send(self, account: str, gas: int, price: int, val: int = 0, debug: bool = False, receiptListen: bool = False) -&gt; None:
+        &#34;&#34;&#34;Execute underlying contract method via eth_call.
+
+        :param tx_params: transaction parameters
+        :returns: the return value of the underlying method.
+        &#34;&#34;&#34;
+        _fn = self._underlying_method(account)
+        try:
+
+            _t = _fn.buildTransaction({
+                &#39;from&#39;: self._operate,
+                &#39;gas&#39;: gas,
+                &#39;gasPrice&#39;: price
+            })
+            _t[&#39;nonce&#39;] = self._web3_eth.getTransactionCount(self._operate)
+
+            if val &gt; 0:
+                _t[&#39;value&#39;] = val
+
+            if debug:
+                print(f&#34;======== Signing ✅ by {self._operate}&#34;)
+                print(f&#34;======== Transaction ✅ check&#34;)
+                print(_t)
+
+            if &#39;data&#39; in _t:
+
+                signed = self._web3_eth.account.sign_transaction(_t)
+                txHash = self._web3_eth.sendRawTransaction(signed.rawTransaction)
+                tx_receipt = None
+                if receiptListen is True:
+                    print(f&#34;======== awaiting Confirmation 🚸️ {self.sign}&#34;)
+                    tx_receipt = self._web3_eth.waitForTransactionReceipt(txHash)
+                    if debug:
+                        print(&#34;======== TX Result ✅&#34;)
+                        print(tx_receipt)
+
+                print(f&#34;======== TX blockHash ✅&#34;)
+                if tx_receipt is not None:
+                    print(f&#34;{Bolors.OK}{tx_receipt.blockHash.hex()}{Bolors.RESET}&#34;)
+                else:
+                    print(f&#34;{Bolors.WARNING}{txHash.hex()}{Bolors.RESET} - broadcast hash&#34;)
+
+            if receiptListen is False:
+                time.sleep(self._wait)
+
+
+        except ContractLogicError as er:
+            print(f&#34;{Bolors.FAIL}Error {er} {Bolors.RESET}: remove_minter&#34;)
+
+        except ValueError as err:
+            if &#34;message&#34; in err.args[0]:
+                message = err.args[0][&#34;message&#34;]
+                print(f&#34;{Bolors.FAIL}Error Revert {Bolors.RESET} on set_asset_token: {message}&#34;)
+            else:
+                print(f&#34;{Bolors.FAIL}Error Revert {Bolors.RESET}: set_asset_token&#34;)
+
+    def send_transaction(self, account: str, tx_params: Optional[TxParams] = None) -&gt; Union[HexBytes, bytes]:
+        &#34;&#34;&#34;Execute underlying contract method via eth_sendTransaction.
+
+        :param tx_params: transaction parameters
+        &#34;&#34;&#34;
+        (account) = self.validate_and_normalize_inputs(account)
+        tx_params = super().normalize_tx_params(tx_params)
+        return self._underlying_method(account).transact(tx_params.as_dict())
+
+    def build_transaction(self, account: str, tx_params: Optional[TxParams] = None) -&gt; dict:
+        &#34;&#34;&#34;Construct calldata to be used as input to the method.&#34;&#34;&#34;
+        (account) = self.validate_and_normalize_inputs(account)
+        tx_params = super().normalize_tx_params(tx_params)
+        return self._underlying_method(account).buildTransaction(tx_params.as_dict())
+
+    def estimate_gas(self, account: str, tx_params: Optional[TxParams] = None) -&gt; int:
+        &#34;&#34;&#34;Estimate gas consumption of method call.&#34;&#34;&#34;
+        (account) = self.validate_and_normalize_inputs(account)
+        tx_params = super().normalize_tx_params(tx_params)
+        return self._underlying_method(account).estimateGas(tx_params.as_dict())</code></pre>
+</details>
+<h3>Ancestors</h3>
+<ul class="hlist">
+<li><a title="moody.m.bases.ContractMethod" href="../bases.html#moody.m.bases.ContractMethod">ContractMethod</a></li>
+</ul>
+<h3>Methods</h3>
+<dl>
+<dt id="moody.m.ori20.RemoveMinterMethod.block_send"><code class="name flex">
+<span>def <span class="ident">block_send</span></span>(<span>self, account: str, gas: int, price: int, val: int = 0, debug: bool = False, receiptListen: bool = False) ‑> NoneType</span>
+</code></dt>
+<dd>
+<div class="desc"><p>Execute underlying contract method via eth_call.</p>
+<p>:param tx_params: transaction parameters
+:returns: the return value of the underlying method.</p></div>
+<details class="source">
+<summary>
+<span>Expand source code</span>
+</summary>
+<pre><code class="python">def block_send(self, account: str, gas: int, price: int, val: int = 0, debug: bool = False, receiptListen: bool = False) -&gt; None:
+    &#34;&#34;&#34;Execute underlying contract method via eth_call.
+
+    :param tx_params: transaction parameters
+    :returns: the return value of the underlying method.
+    &#34;&#34;&#34;
+    _fn = self._underlying_method(account)
+    try:
+
+        _t = _fn.buildTransaction({
+            &#39;from&#39;: self._operate,
+            &#39;gas&#39;: gas,
+            &#39;gasPrice&#39;: price
+        })
+        _t[&#39;nonce&#39;] = self._web3_eth.getTransactionCount(self._operate)
+
+        if val &gt; 0:
+            _t[&#39;value&#39;] = val
+
+        if debug:
+            print(f&#34;======== Signing ✅ by {self._operate}&#34;)
+            print(f&#34;======== Transaction ✅ check&#34;)
+            print(_t)
+
+        if &#39;data&#39; in _t:
+
+            signed = self._web3_eth.account.sign_transaction(_t)
+            txHash = self._web3_eth.sendRawTransaction(signed.rawTransaction)
+            tx_receipt = None
+            if receiptListen is True:
+                print(f&#34;======== awaiting Confirmation 🚸️ {self.sign}&#34;)
+                tx_receipt = self._web3_eth.waitForTransactionReceipt(txHash)
+                if debug:
+                    print(&#34;======== TX Result ✅&#34;)
+                    print(tx_receipt)
+
+            print(f&#34;======== TX blockHash ✅&#34;)
+            if tx_receipt is not None:
+                print(f&#34;{Bolors.OK}{tx_receipt.blockHash.hex()}{Bolors.RESET}&#34;)
+            else:
+                print(f&#34;{Bolors.WARNING}{txHash.hex()}{Bolors.RESET} - broadcast hash&#34;)
+
+        if receiptListen is False:
+            time.sleep(self._wait)
+
+
+    except ContractLogicError as er:
+        print(f&#34;{Bolors.FAIL}Error {er} {Bolors.RESET}: remove_minter&#34;)
+
+    except ValueError as err:
+        if &#34;message&#34; in err.args[0]:
+            message = err.args[0][&#34;message&#34;]
+            print(f&#34;{Bolors.FAIL}Error Revert {Bolors.RESET} on set_asset_token: {message}&#34;)
+        else:
+            print(f&#34;{Bolors.FAIL}Error Revert {Bolors.RESET}: set_asset_token&#34;)</code></pre>
+</details>
+</dd>
+<dt id="moody.m.ori20.RemoveMinterMethod.build_transaction"><code class="name flex">
+<span>def <span class="ident">build_transaction</span></span>(<span>self, account: str, tx_params: Union[<a title="moody.m.tx_params.TxParams" href="../tx_params.html#moody.m.tx_params.TxParams">TxParams</a>, NoneType] = None) ‑> dict</span>
+</code></dt>
+<dd>
+<div class="desc"><p>Construct calldata to be used as input to the method.</p></div>
+<details class="source">
+<summary>
+<span>Expand source code</span>
+</summary>
+<pre><code class="python">def build_transaction(self, account: str, tx_params: Optional[TxParams] = None) -&gt; dict:
+    &#34;&#34;&#34;Construct calldata to be used as input to the method.&#34;&#34;&#34;
+    (account) = self.validate_and_normalize_inputs(account)
+    tx_params = super().normalize_tx_params(tx_params)
+    return self._underlying_method(account).buildTransaction(tx_params.as_dict())</code></pre>
+</details>
+</dd>
+<dt id="moody.m.ori20.RemoveMinterMethod.estimate_gas"><code class="name flex">
+<span>def <span class="ident">estimate_gas</span></span>(<span>self, account: str, tx_params: Union[<a title="moody.m.tx_params.TxParams" href="../tx_params.html#moody.m.tx_params.TxParams">TxParams</a>, NoneType] = None) ‑> int</span>
+</code></dt>
+<dd>
+<div class="desc"><p>Estimate gas consumption of method call.</p></div>
+<details class="source">
+<summary>
+<span>Expand source code</span>
+</summary>
+<pre><code class="python">def estimate_gas(self, account: str, tx_params: Optional[TxParams] = None) -&gt; int:
+    &#34;&#34;&#34;Estimate gas consumption of method call.&#34;&#34;&#34;
+    (account) = self.validate_and_normalize_inputs(account)
+    tx_params = super().normalize_tx_params(tx_params)
+    return self._underlying_method(account).estimateGas(tx_params.as_dict())</code></pre>
+</details>
+</dd>
+<dt id="moody.m.ori20.RemoveMinterMethod.send_transaction"><code class="name flex">
+<span>def <span class="ident">send_transaction</span></span>(<span>self, account: str, tx_params: Union[<a title="moody.m.tx_params.TxParams" href="../tx_params.html#moody.m.tx_params.TxParams">TxParams</a>, NoneType] = None) ‑> Union[hexbytes.main.HexBytes, bytes]</span>
+</code></dt>
+<dd>
+<div class="desc"><p>Execute underlying contract method via eth_sendTransaction.</p>
+<p>:param tx_params: transaction parameters</p></div>
+<details class="source">
+<summary>
+<span>Expand source code</span>
+</summary>
+<pre><code class="python">def send_transaction(self, account: str, tx_params: Optional[TxParams] = None) -&gt; Union[HexBytes, bytes]:
+    &#34;&#34;&#34;Execute underlying contract method via eth_sendTransaction.
+
+    :param tx_params: transaction parameters
+    &#34;&#34;&#34;
+    (account) = self.validate_and_normalize_inputs(account)
+    tx_params = super().normalize_tx_params(tx_params)
+    return self._underlying_method(account).transact(tx_params.as_dict())</code></pre>
+</details>
+</dd>
+<dt id="moody.m.ori20.RemoveMinterMethod.validate_and_normalize_inputs"><code class="name flex">
+<span>def <span class="ident">validate_and_normalize_inputs</span></span>(<span>self, account: str) ‑> <built-in function any></span>
+</code></dt>
+<dd>
+<div class="desc"><p>Validate the inputs to the removeMinter method.</p></div>
+<details class="source">
+<summary>
+<span>Expand source code</span>
+</summary>
+<pre><code class="python">def validate_and_normalize_inputs(self, account: str) -&gt; any:
+    &#34;&#34;&#34;Validate the inputs to the removeMinter method.&#34;&#34;&#34;
+    self.validator.assert_valid(
+        method_name=&#39;removeMinter&#39;,
+        parameter_name=&#39;account&#39;,
+        argument_value=account,
+    )
+    account = self.validate_and_checksum_address(account)
+    return (account)</code></pre>
+</details>
+</dd>
+</dl>
+<h3>Inherited members</h3>
+<ul class="hlist">
+<li><code><b><a title="moody.m.bases.ContractMethod" href="../bases.html#moody.m.bases.ContractMethod">ContractMethod</a></b></code>:
+<ul class="hlist">
+<li><code><a title="moody.m.bases.ContractMethod.normalize_tx_params" href="../bases.html#moody.m.bases.ContractMethod.normalize_tx_params">normalize_tx_params</a></code></li>
+<li><code><a title="moody.m.bases.ContractMethod.validate_and_checksum_address" href="../bases.html#moody.m.bases.ContractMethod.validate_and_checksum_address">validate_and_checksum_address</a></code></li>
+</ul>
+</li>
+</ul>
+</dd>
 <dt id="moody.m.ori20.RenounceMinterMethod"><code class="flex name class">
 <span>class <span class="ident">RenounceMinterMethod</span></span>
-<span>(</span><span>elib: <a title="moody.libeb.MiliDoS" href="../../libeb.html#moody.libeb.MiliDoS">MiliDoS</a>, contract_address: str, contract_function: web3.contract.ContractFunction)</span>
+<span>(</span><span>elib: <a title="moody.libeb.MiliDoS" href="../../libeb.html#moody.libeb.MiliDoS">MiliDoS</a>, contract_address: str, contract_function: web3.contract.ContractFunction, validator: <a title="moody.m.bases.Validator" href="../bases.html#moody.m.bases.Validator">Validator</a> = None)</span>
 </code></dt>
 <dd>
 <div class="desc"><p>Various interfaces to the renounceMinter method.</p>
@@ -5661,10 +6259,11 @@ Method of the function</p></div>
 <pre><code class="python">class RenounceMinterMethod(ContractMethod):  # pylint: disable=invalid-name
     &#34;&#34;&#34;Various interfaces to the renounceMinter method.&#34;&#34;&#34;
 
-    def __init__(self, elib: MiliDoS, contract_address: str, contract_function: ContractFunction):
+    def __init__(self, elib: MiliDoS, contract_address: str, contract_function: ContractFunction, validator: Validator = None):
         &#34;&#34;&#34;Persist instance data.&#34;&#34;&#34;
         super().__init__(elib, contract_address)
         self._underlying_method = contract_function
+        self.sign = validator.getSignature(&#34;renounceMinter&#34;)
 
     def block_send(self, gas: int, price: int, val: int = 0, debug: bool = False, receiptListen: bool = False) -&gt; None:
         &#34;&#34;&#34;Execute underlying contract method via eth_call.
@@ -5696,17 +6295,17 @@ Method of the function</p></div>
                 txHash = self._web3_eth.sendRawTransaction(signed.rawTransaction)
                 tx_receipt = None
                 if receiptListen is True:
-                    print(&#34;======== awaiting Confirmation 🚸️ -renounce_minter&#34;)
+                    print(f&#34;======== awaiting Confirmation 🚸️ {self.sign}&#34;)
                     tx_receipt = self._web3_eth.waitForTransactionReceipt(txHash)
                     if debug:
                         print(&#34;======== TX Result ✅&#34;)
                         print(tx_receipt)
 
                 print(f&#34;======== TX blockHash ✅&#34;)
-                if receiptListen is True and tx_receipt is not None:
+                if tx_receipt is not None:
                     print(f&#34;{Bolors.OK}{tx_receipt.blockHash.hex()}{Bolors.RESET}&#34;)
                 else:
-                    print(f&#34;{Bolors.WARNING}{txHash.hex()}{Bolors.RESET}&#34;)
+                    print(f&#34;{Bolors.WARNING}{txHash.hex()}{Bolors.RESET} - broadcast hash&#34;)
 
             if receiptListen is False:
                 time.sleep(self._wait)
@@ -5787,17 +6386,17 @@ Method of the function</p></div>
             txHash = self._web3_eth.sendRawTransaction(signed.rawTransaction)
             tx_receipt = None
             if receiptListen is True:
-                print(&#34;======== awaiting Confirmation 🚸️ -renounce_minter&#34;)
+                print(f&#34;======== awaiting Confirmation 🚸️ {self.sign}&#34;)
                 tx_receipt = self._web3_eth.waitForTransactionReceipt(txHash)
                 if debug:
                     print(&#34;======== TX Result ✅&#34;)
                     print(tx_receipt)
 
             print(f&#34;======== TX blockHash ✅&#34;)
-            if receiptListen is True and tx_receipt is not None:
+            if tx_receipt is not None:
                 print(f&#34;{Bolors.OK}{tx_receipt.blockHash.hex()}{Bolors.RESET}&#34;)
             else:
-                print(f&#34;{Bolors.WARNING}{txHash.hex()}{Bolors.RESET}&#34;)
+                print(f&#34;{Bolors.WARNING}{txHash.hex()}{Bolors.RESET} - broadcast hash&#34;)
 
         if receiptListen is False:
             time.sleep(self._wait)
@@ -5879,12 +6478,15 @@ Method of the function</p></div>
 <span>(</span><span>abi: <built-in function any>)</span>
 </code></dt>
 <dd>
-<div class="desc"></div>
+<div class="desc"><p>The signature is generated for this and it is installed.</p></div>
 <details class="source">
 <summary>
 <span>Expand source code</span>
 </summary>
 <pre><code class="python">class SignatureGenerator(Signatures):
+    &#34;&#34;&#34;
+        The signature is generated for this and it is installed.
+    &#34;&#34;&#34;
 
     def __init__(self, abi: any):
         super().__init__(abi)
@@ -5919,6 +6521,9 @@ Method of the function</p></div>
     def get_decimals(self) -&gt; str:
         return self._function_signatures[&#34;getDecimals&#34;]
 
+    def gov(self) -&gt; str:
+        return self._function_signatures[&#34;gov&#34;]
+
     def increase_allowance(self) -&gt; str:
         return self._function_signatures[&#34;increaseAllowance&#34;]
 
@@ -5930,6 +6535,9 @@ Method of the function</p></div>
 
     def name(self) -&gt; str:
         return self._function_signatures[&#34;name&#34;]
+
+    def remove_minter(self) -&gt; str:
+        return self._function_signatures[&#34;removeMinter&#34;]
 
     def renounce_minter(self) -&gt; str:
         return self._function_signatures[&#34;renounceMinter&#34;]
@@ -6088,6 +6696,19 @@ Method of the function</p></div>
     return self._function_signatures[&#34;getDecimals&#34;]</code></pre>
 </details>
 </dd>
+<dt id="moody.m.ori20.SignatureGenerator.gov"><code class="name flex">
+<span>def <span class="ident">gov</span></span>(<span>self) ‑> str</span>
+</code></dt>
+<dd>
+<div class="desc"></div>
+<details class="source">
+<summary>
+<span>Expand source code</span>
+</summary>
+<pre><code class="python">def gov(self) -&gt; str:
+    return self._function_signatures[&#34;gov&#34;]</code></pre>
+</details>
+</dd>
 <dt id="moody.m.ori20.SignatureGenerator.increase_allowance"><code class="name flex">
 <span>def <span class="ident">increase_allowance</span></span>(<span>self) ‑> str</span>
 </code></dt>
@@ -6138,6 +6759,19 @@ Method of the function</p></div>
 </summary>
 <pre><code class="python">def name(self) -&gt; str:
     return self._function_signatures[&#34;name&#34;]</code></pre>
+</details>
+</dd>
+<dt id="moody.m.ori20.SignatureGenerator.remove_minter"><code class="name flex">
+<span>def <span class="ident">remove_minter</span></span>(<span>self) ‑> str</span>
+</code></dt>
+<dd>
+<div class="desc"></div>
+<details class="source">
+<summary>
+<span>Expand source code</span>
+</summary>
+<pre><code class="python">def remove_minter(self) -&gt; str:
+    return self._function_signatures[&#34;removeMinter&#34;]</code></pre>
 </details>
 </dd>
 <dt id="moody.m.ori20.SignatureGenerator.renounce_minter"><code class="name flex">
@@ -6235,7 +6869,7 @@ Method of the function</p></div>
 </dd>
 <dt id="moody.m.ori20.SymbolMethod"><code class="flex name class">
 <span>class <span class="ident">SymbolMethod</span></span>
-<span>(</span><span>elib: <a title="moody.libeb.MiliDoS" href="../../libeb.html#moody.libeb.MiliDoS">MiliDoS</a>, contract_address: str, contract_function: web3.contract.ContractFunction)</span>
+<span>(</span><span>elib: <a title="moody.libeb.MiliDoS" href="../../libeb.html#moody.libeb.MiliDoS">MiliDoS</a>, contract_address: str, contract_function: web3.contract.ContractFunction, validator: <a title="moody.m.bases.Validator" href="../bases.html#moody.m.bases.Validator">Validator</a> = None)</span>
 </code></dt>
 <dd>
 <div class="desc"><p>Various interfaces to the symbol method.</p>
@@ -6247,10 +6881,11 @@ Method of the function</p></div>
 <pre><code class="python">class SymbolMethod(ContractMethod):  # pylint: disable=invalid-name
     &#34;&#34;&#34;Various interfaces to the symbol method.&#34;&#34;&#34;
 
-    def __init__(self, elib: MiliDoS, contract_address: str, contract_function: ContractFunction):
+    def __init__(self, elib: MiliDoS, contract_address: str, contract_function: ContractFunction, validator: Validator = None):
         &#34;&#34;&#34;Persist instance data.&#34;&#34;&#34;
         super().__init__(elib, contract_address)
         self._underlying_method = contract_function
+        self.sign = validator.getSignature(&#34;symbol&#34;)
 
     def block_call(self, debug: bool = False) -&gt; str:
         _fn = self._underlying_method()
@@ -6315,7 +6950,7 @@ Method of the function</p></div>
 </dd>
 <dt id="moody.m.ori20.TokenNameMethod"><code class="flex name class">
 <span>class <span class="ident">TokenNameMethod</span></span>
-<span>(</span><span>elib: <a title="moody.libeb.MiliDoS" href="../../libeb.html#moody.libeb.MiliDoS">MiliDoS</a>, contract_address: str, contract_function: web3.contract.ContractFunction)</span>
+<span>(</span><span>elib: <a title="moody.libeb.MiliDoS" href="../../libeb.html#moody.libeb.MiliDoS">MiliDoS</a>, contract_address: str, contract_function: web3.contract.ContractFunction, validator: <a title="moody.m.bases.Validator" href="../bases.html#moody.m.bases.Validator">Validator</a> = None)</span>
 </code></dt>
 <dd>
 <div class="desc"><p>Various interfaces to the tokenName method.</p>
@@ -6327,10 +6962,11 @@ Method of the function</p></div>
 <pre><code class="python">class TokenNameMethod(ContractMethod):  # pylint: disable=invalid-name
     &#34;&#34;&#34;Various interfaces to the tokenName method.&#34;&#34;&#34;
 
-    def __init__(self, elib: MiliDoS, contract_address: str, contract_function: ContractFunction):
+    def __init__(self, elib: MiliDoS, contract_address: str, contract_function: ContractFunction, validator: Validator = None):
         &#34;&#34;&#34;Persist instance data.&#34;&#34;&#34;
         super().__init__(elib, contract_address)
         self._underlying_method = contract_function
+        self.sign = validator.getSignature(&#34;tokenName&#34;)
 
     def block_call(self, debug: bool = False) -&gt; str:
         _fn = self._underlying_method()
@@ -6395,7 +7031,7 @@ Method of the function</p></div>
 </dd>
 <dt id="moody.m.ori20.TokenSymbolMethod"><code class="flex name class">
 <span>class <span class="ident">TokenSymbolMethod</span></span>
-<span>(</span><span>elib: <a title="moody.libeb.MiliDoS" href="../../libeb.html#moody.libeb.MiliDoS">MiliDoS</a>, contract_address: str, contract_function: web3.contract.ContractFunction)</span>
+<span>(</span><span>elib: <a title="moody.libeb.MiliDoS" href="../../libeb.html#moody.libeb.MiliDoS">MiliDoS</a>, contract_address: str, contract_function: web3.contract.ContractFunction, validator: <a title="moody.m.bases.Validator" href="../bases.html#moody.m.bases.Validator">Validator</a> = None)</span>
 </code></dt>
 <dd>
 <div class="desc"><p>Various interfaces to the tokenSymbol method.</p>
@@ -6407,10 +7043,11 @@ Method of the function</p></div>
 <pre><code class="python">class TokenSymbolMethod(ContractMethod):  # pylint: disable=invalid-name
     &#34;&#34;&#34;Various interfaces to the tokenSymbol method.&#34;&#34;&#34;
 
-    def __init__(self, elib: MiliDoS, contract_address: str, contract_function: ContractFunction):
+    def __init__(self, elib: MiliDoS, contract_address: str, contract_function: ContractFunction, validator: Validator = None):
         &#34;&#34;&#34;Persist instance data.&#34;&#34;&#34;
         super().__init__(elib, contract_address)
         self._underlying_method = contract_function
+        self.sign = validator.getSignature(&#34;tokenSymbol&#34;)
 
     def block_call(self, debug: bool = False) -&gt; str:
         _fn = self._underlying_method()
@@ -6475,7 +7112,7 @@ Method of the function</p></div>
 </dd>
 <dt id="moody.m.ori20.TotalSupplyMethod"><code class="flex name class">
 <span>class <span class="ident">TotalSupplyMethod</span></span>
-<span>(</span><span>elib: <a title="moody.libeb.MiliDoS" href="../../libeb.html#moody.libeb.MiliDoS">MiliDoS</a>, contract_address: str, contract_function: web3.contract.ContractFunction)</span>
+<span>(</span><span>elib: <a title="moody.libeb.MiliDoS" href="../../libeb.html#moody.libeb.MiliDoS">MiliDoS</a>, contract_address: str, contract_function: web3.contract.ContractFunction, validator: <a title="moody.m.bases.Validator" href="../bases.html#moody.m.bases.Validator">Validator</a> = None)</span>
 </code></dt>
 <dd>
 <div class="desc"><p>Various interfaces to the totalSupply method.</p>
@@ -6487,10 +7124,11 @@ Method of the function</p></div>
 <pre><code class="python">class TotalSupplyMethod(ContractMethod):  # pylint: disable=invalid-name
     &#34;&#34;&#34;Various interfaces to the totalSupply method.&#34;&#34;&#34;
 
-    def __init__(self, elib: MiliDoS, contract_address: str, contract_function: ContractFunction):
+    def __init__(self, elib: MiliDoS, contract_address: str, contract_function: ContractFunction, validator: Validator = None):
         &#34;&#34;&#34;Persist instance data.&#34;&#34;&#34;
         super().__init__(elib, contract_address)
         self._underlying_method = contract_function
+        self.sign = validator.getSignature(&#34;totalSupply&#34;)
 
     def block_call(self, debug: bool = False) -&gt; int:
         _fn = self._underlying_method()
@@ -6571,6 +7209,7 @@ Method of the function</p></div>
         &#34;&#34;&#34;Persist instance data.&#34;&#34;&#34;
         super().__init__(elib, contract_address, validator)
         self._underlying_method = contract_function
+        self.sign = validator.getSignature(&#34;transferFrom&#34;)
 
     def validate_and_normalize_inputs(self, sender: str, recipient: str, amount: int) -&gt; any:
         &#34;&#34;&#34;Validate the inputs to the transferFrom method.&#34;&#34;&#34;
@@ -6625,17 +7264,17 @@ Method of the function</p></div>
                 txHash = self._web3_eth.sendRawTransaction(signed.rawTransaction)
                 tx_receipt = None
                 if receiptListen is True:
-                    print(&#34;======== awaiting Confirmation 🚸️ -transfer_from&#34;)
+                    print(f&#34;======== awaiting Confirmation 🚸️ {self.sign}&#34;)
                     tx_receipt = self._web3_eth.waitForTransactionReceipt(txHash)
                     if debug:
                         print(&#34;======== TX Result ✅&#34;)
                         print(tx_receipt)
 
                 print(f&#34;======== TX blockHash ✅&#34;)
-                if receiptListen is True and tx_receipt is not None:
+                if tx_receipt is not None:
                     print(f&#34;{Bolors.OK}{tx_receipt.blockHash.hex()}{Bolors.RESET}&#34;)
                 else:
-                    print(f&#34;{Bolors.WARNING}{txHash.hex()}{Bolors.RESET}&#34;)
+                    print(f&#34;{Bolors.WARNING}{txHash.hex()}{Bolors.RESET} - broadcast hash&#34;)
 
             if receiptListen is False:
                 time.sleep(self._wait)
@@ -6719,17 +7358,17 @@ Method of the function</p></div>
             txHash = self._web3_eth.sendRawTransaction(signed.rawTransaction)
             tx_receipt = None
             if receiptListen is True:
-                print(&#34;======== awaiting Confirmation 🚸️ -transfer_from&#34;)
+                print(f&#34;======== awaiting Confirmation 🚸️ {self.sign}&#34;)
                 tx_receipt = self._web3_eth.waitForTransactionReceipt(txHash)
                 if debug:
                     print(&#34;======== TX Result ✅&#34;)
                     print(tx_receipt)
 
             print(f&#34;======== TX blockHash ✅&#34;)
-            if receiptListen is True and tx_receipt is not None:
+            if tx_receipt is not None:
                 print(f&#34;{Bolors.OK}{tx_receipt.blockHash.hex()}{Bolors.RESET}&#34;)
             else:
-                print(f&#34;{Bolors.WARNING}{txHash.hex()}{Bolors.RESET}&#34;)
+                print(f&#34;{Bolors.WARNING}{txHash.hex()}{Bolors.RESET} - broadcast hash&#34;)
 
         if receiptListen is False:
             time.sleep(self._wait)
@@ -6860,6 +7499,7 @@ Method of the function</p></div>
         &#34;&#34;&#34;Persist instance data.&#34;&#34;&#34;
         super().__init__(elib, contract_address, validator)
         self._underlying_method = contract_function
+        self.sign = validator.getSignature(&#34;transfer&#34;)
 
     def validate_and_normalize_inputs(self, recipient: str, amount: int) -&gt; any:
         &#34;&#34;&#34;Validate the inputs to the transfer method.&#34;&#34;&#34;
@@ -6908,17 +7548,17 @@ Method of the function</p></div>
                 txHash = self._web3_eth.sendRawTransaction(signed.rawTransaction)
                 tx_receipt = None
                 if receiptListen is True:
-                    print(&#34;======== awaiting Confirmation 🚸️ -transfer&#34;)
+                    print(f&#34;======== awaiting Confirmation 🚸️ {self.sign}&#34;)
                     tx_receipt = self._web3_eth.waitForTransactionReceipt(txHash)
                     if debug:
                         print(&#34;======== TX Result ✅&#34;)
                         print(tx_receipt)
 
                 print(f&#34;======== TX blockHash ✅&#34;)
-                if receiptListen is True and tx_receipt is not None:
+                if tx_receipt is not None:
                     print(f&#34;{Bolors.OK}{tx_receipt.blockHash.hex()}{Bolors.RESET}&#34;)
                 else:
-                    print(f&#34;{Bolors.WARNING}{txHash.hex()}{Bolors.RESET}&#34;)
+                    print(f&#34;{Bolors.WARNING}{txHash.hex()}{Bolors.RESET} - broadcast hash&#34;)
 
             if receiptListen is False:
                 time.sleep(self._wait)
@@ -7002,17 +7642,17 @@ Method of the function</p></div>
             txHash = self._web3_eth.sendRawTransaction(signed.rawTransaction)
             tx_receipt = None
             if receiptListen is True:
-                print(&#34;======== awaiting Confirmation 🚸️ -transfer&#34;)
+                print(f&#34;======== awaiting Confirmation 🚸️ {self.sign}&#34;)
                 tx_receipt = self._web3_eth.waitForTransactionReceipt(txHash)
                 if debug:
                     print(&#34;======== TX Result ✅&#34;)
                     print(tx_receipt)
 
             print(f&#34;======== TX blockHash ✅&#34;)
-            if receiptListen is True and tx_receipt is not None:
+            if tx_receipt is not None:
                 print(f&#34;{Bolors.OK}{tx_receipt.blockHash.hex()}{Bolors.RESET}&#34;)
             else:
-                print(f&#34;{Bolors.WARNING}{txHash.hex()}{Bolors.RESET}&#34;)
+                print(f&#34;{Bolors.WARNING}{txHash.hex()}{Bolors.RESET} - broadcast hash&#34;)
 
         if receiptListen is False:
             time.sleep(self._wait)
@@ -7223,6 +7863,13 @@ Method of the function</p></div>
 </ul>
 </li>
 <li>
+<h4><code><a title="moody.m.ori20.GovMethod" href="#moody.m.ori20.GovMethod">GovMethod</a></code></h4>
+<ul class="">
+<li><code><a title="moody.m.ori20.GovMethod.block_call" href="#moody.m.ori20.GovMethod.block_call">block_call</a></code></li>
+<li><code><a title="moody.m.ori20.GovMethod.estimate_gas" href="#moody.m.ori20.GovMethod.estimate_gas">estimate_gas</a></code></li>
+</ul>
+</li>
+<li>
 <h4><code><a title="moody.m.ori20.IncreaseAllowanceMethod" href="#moody.m.ori20.IncreaseAllowanceMethod">IncreaseAllowanceMethod</a></code></h4>
 <ul class="">
 <li><code><a title="moody.m.ori20.IncreaseAllowanceMethod.block_send" href="#moody.m.ori20.IncreaseAllowanceMethod.block_send">block_send</a></code></li>
@@ -7261,6 +7908,7 @@ Method of the function</p></div>
 <h4><code><a title="moody.m.ori20.Ori20" href="#moody.m.ori20.Ori20">Ori20</a></code></h4>
 <ul class="">
 <li><code><a title="moody.m.ori20.Ori20.CallContractWait" href="#moody.m.ori20.Ori20.CallContractWait">CallContractWait</a></code></li>
+<li><code><a title="moody.m.ori20.Ori20.SIGNATURES" href="#moody.m.ori20.Ori20.SIGNATURES">SIGNATURES</a></code></li>
 <li><code><a title="moody.m.ori20.Ori20.abi" href="#moody.m.ori20.Ori20.abi">abi</a></code></li>
 <li><code><a title="moody.m.ori20.Ori20.add_minter" href="#moody.m.ori20.Ori20.add_minter">add_minter</a></code></li>
 <li><code><a title="moody.m.ori20.Ori20.allowance" href="#moody.m.ori20.Ori20.allowance">allowance</a></code></li>
@@ -7276,10 +7924,12 @@ Method of the function</p></div>
 <li><code><a title="moody.m.ori20.Ori20.event_minter_removed" href="#moody.m.ori20.Ori20.event_minter_removed">event_minter_removed</a></code></li>
 <li><code><a title="moody.m.ori20.Ori20.event_transfer" href="#moody.m.ori20.Ori20.event_transfer">event_transfer</a></code></li>
 <li><code><a title="moody.m.ori20.Ori20.get_decimals" href="#moody.m.ori20.Ori20.get_decimals">get_decimals</a></code></li>
+<li><code><a title="moody.m.ori20.Ori20.gov" href="#moody.m.ori20.Ori20.gov">gov</a></code></li>
 <li><code><a title="moody.m.ori20.Ori20.increase_allowance" href="#moody.m.ori20.Ori20.increase_allowance">increase_allowance</a></code></li>
 <li><code><a title="moody.m.ori20.Ori20.is_minter" href="#moody.m.ori20.Ori20.is_minter">is_minter</a></code></li>
 <li><code><a title="moody.m.ori20.Ori20.mint" href="#moody.m.ori20.Ori20.mint">mint</a></code></li>
 <li><code><a title="moody.m.ori20.Ori20.name" href="#moody.m.ori20.Ori20.name">name</a></code></li>
+<li><code><a title="moody.m.ori20.Ori20.remove_minter" href="#moody.m.ori20.Ori20.remove_minter">remove_minter</a></code></li>
 <li><code><a title="moody.m.ori20.Ori20.renounce_minter" href="#moody.m.ori20.Ori20.renounce_minter">renounce_minter</a></code></li>
 <li><code><a title="moody.m.ori20.Ori20.symbol" href="#moody.m.ori20.Ori20.symbol">symbol</a></code></li>
 <li><code><a title="moody.m.ori20.Ori20.token_name" href="#moody.m.ori20.Ori20.token_name">token_name</a></code></li>
@@ -7291,6 +7941,16 @@ Method of the function</p></div>
 </li>
 <li>
 <h4><code><a title="moody.m.ori20.Ori20Validator" href="#moody.m.ori20.Ori20Validator">Ori20Validator</a></code></h4>
+</li>
+<li>
+<h4><code><a title="moody.m.ori20.RemoveMinterMethod" href="#moody.m.ori20.RemoveMinterMethod">RemoveMinterMethod</a></code></h4>
+<ul class="">
+<li><code><a title="moody.m.ori20.RemoveMinterMethod.block_send" href="#moody.m.ori20.RemoveMinterMethod.block_send">block_send</a></code></li>
+<li><code><a title="moody.m.ori20.RemoveMinterMethod.build_transaction" href="#moody.m.ori20.RemoveMinterMethod.build_transaction">build_transaction</a></code></li>
+<li><code><a title="moody.m.ori20.RemoveMinterMethod.estimate_gas" href="#moody.m.ori20.RemoveMinterMethod.estimate_gas">estimate_gas</a></code></li>
+<li><code><a title="moody.m.ori20.RemoveMinterMethod.send_transaction" href="#moody.m.ori20.RemoveMinterMethod.send_transaction">send_transaction</a></code></li>
+<li><code><a title="moody.m.ori20.RemoveMinterMethod.validate_and_normalize_inputs" href="#moody.m.ori20.RemoveMinterMethod.validate_and_normalize_inputs">validate_and_normalize_inputs</a></code></li>
+</ul>
 </li>
 <li>
 <h4><code><a title="moody.m.ori20.RenounceMinterMethod" href="#moody.m.ori20.RenounceMinterMethod">RenounceMinterMethod</a></code></h4>
@@ -7314,10 +7974,12 @@ Method of the function</p></div>
 <li><code><a title="moody.m.ori20.SignatureGenerator.decimals" href="#moody.m.ori20.SignatureGenerator.decimals">decimals</a></code></li>
 <li><code><a title="moody.m.ori20.SignatureGenerator.decrease_allowance" href="#moody.m.ori20.SignatureGenerator.decrease_allowance">decrease_allowance</a></code></li>
 <li><code><a title="moody.m.ori20.SignatureGenerator.get_decimals" href="#moody.m.ori20.SignatureGenerator.get_decimals">get_decimals</a></code></li>
+<li><code><a title="moody.m.ori20.SignatureGenerator.gov" href="#moody.m.ori20.SignatureGenerator.gov">gov</a></code></li>
 <li><code><a title="moody.m.ori20.SignatureGenerator.increase_allowance" href="#moody.m.ori20.SignatureGenerator.increase_allowance">increase_allowance</a></code></li>
 <li><code><a title="moody.m.ori20.SignatureGenerator.is_minter" href="#moody.m.ori20.SignatureGenerator.is_minter">is_minter</a></code></li>
 <li><code><a title="moody.m.ori20.SignatureGenerator.mint" href="#moody.m.ori20.SignatureGenerator.mint">mint</a></code></li>
 <li><code><a title="moody.m.ori20.SignatureGenerator.name" href="#moody.m.ori20.SignatureGenerator.name">name</a></code></li>
+<li><code><a title="moody.m.ori20.SignatureGenerator.remove_minter" href="#moody.m.ori20.SignatureGenerator.remove_minter">remove_minter</a></code></li>
 <li><code><a title="moody.m.ori20.SignatureGenerator.renounce_minter" href="#moody.m.ori20.SignatureGenerator.renounce_minter">renounce_minter</a></code></li>
 <li><code><a title="moody.m.ori20.SignatureGenerator.symbol" href="#moody.m.ori20.SignatureGenerator.symbol">symbol</a></code></li>
 <li><code><a title="moody.m.ori20.SignatureGenerator.token_name" href="#moody.m.ori20.SignatureGenerator.token_name">token_name</a></code></li>

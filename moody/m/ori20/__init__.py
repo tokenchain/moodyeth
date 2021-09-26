@@ -12,14 +12,13 @@ from typing import (  # pylint: disable=unused-import
 
 from eth_utils import to_checksum_address
 from hexbytes import HexBytes
-from web3.contract import ContractFunction
-from web3.datastructures import AttributeDict
-from web3.exceptions import ContractLogicError
-
 from moody import Bolors
 from moody.libeb import MiliDoS
 from moody.m.bases import ContractMethod, Validator, ContractBase, Signatures
 from moody.m.tx_params import TxParams
+from web3.contract import ContractFunction
+from web3.datastructures import AttributeDict
+from web3.exceptions import ContractLogicError
 
 # Try to import a custom validator class definition; if there isn't one,
 # declare one that we can instantiate for the default argument to the
@@ -50,6 +49,7 @@ class AddMinterMethod(ContractMethod):  # pylint: disable=invalid-name
         """Persist instance data."""
         super().__init__(elib, contract_address, validator)
         self._underlying_method = contract_function
+        self.sign = validator.getSignature("addMinter")
 
     def validate_and_normalize_inputs(self, account: str) -> any:
         """Validate the inputs to the addMinter method."""
@@ -91,17 +91,17 @@ class AddMinterMethod(ContractMethod):  # pylint: disable=invalid-name
                 txHash = self._web3_eth.sendRawTransaction(signed.rawTransaction)
                 tx_receipt = None
                 if receiptListen is True:
-                    print("======== awaiting Confirmation 🚸️ -add_minter")
+                    print(f"======== awaiting Confirmation 🚸️ {self.sign}")
                     tx_receipt = self._web3_eth.waitForTransactionReceipt(txHash)
                     if debug:
                         print("======== TX Result ✅")
                         print(tx_receipt)
 
                 print(f"======== TX blockHash ✅")
-                if receiptListen is True and tx_receipt is not None:
+                if tx_receipt is not None:
                     print(f"{Bolors.OK}{tx_receipt.blockHash.hex()}{Bolors.RESET}")
                 else:
-                    print(f"{Bolors.WARNING}{txHash.hex()}{Bolors.RESET}")
+                    print(f"{Bolors.WARNING}{txHash.hex()}{Bolors.RESET} - broadcast hash")
 
             if receiptListen is False:
                 time.sleep(self._wait)
@@ -146,6 +146,7 @@ class AllowanceMethod(ContractMethod):  # pylint: disable=invalid-name
         """Persist instance data."""
         super().__init__(elib, contract_address, validator)
         self._underlying_method = contract_function
+        self.sign = validator.getSignature("allowance")
 
     def validate_and_normalize_inputs(self, owner: str, spender: str) -> any:
         """Validate the inputs to the allowance method."""
@@ -184,6 +185,7 @@ class ApproveMethod(ContractMethod):  # pylint: disable=invalid-name
         """Persist instance data."""
         super().__init__(elib, contract_address, validator)
         self._underlying_method = contract_function
+        self.sign = validator.getSignature("approve")
 
     def validate_and_normalize_inputs(self, spender: str, amount: int) -> any:
         """Validate the inputs to the approve method."""
@@ -232,17 +234,17 @@ class ApproveMethod(ContractMethod):  # pylint: disable=invalid-name
                 txHash = self._web3_eth.sendRawTransaction(signed.rawTransaction)
                 tx_receipt = None
                 if receiptListen is True:
-                    print("======== awaiting Confirmation 🚸️ -approve")
+                    print(f"======== awaiting Confirmation 🚸️ {self.sign}")
                     tx_receipt = self._web3_eth.waitForTransactionReceipt(txHash)
                     if debug:
                         print("======== TX Result ✅")
                         print(tx_receipt)
 
                 print(f"======== TX blockHash ✅")
-                if receiptListen is True and tx_receipt is not None:
+                if tx_receipt is not None:
                     print(f"{Bolors.OK}{tx_receipt.blockHash.hex()}{Bolors.RESET}")
                 else:
-                    print(f"{Bolors.WARNING}{txHash.hex()}{Bolors.RESET}")
+                    print(f"{Bolors.WARNING}{txHash.hex()}{Bolors.RESET} - broadcast hash")
 
             if receiptListen is False:
                 time.sleep(self._wait)
@@ -287,6 +289,7 @@ class BalanceOfMethod(ContractMethod):  # pylint: disable=invalid-name
         """Persist instance data."""
         super().__init__(elib, contract_address, validator)
         self._underlying_method = contract_function
+        self.sign = validator.getSignature("balanceOf")
 
     def validate_and_normalize_inputs(self, account: str) -> any:
         """Validate the inputs to the balanceOf method."""
@@ -319,6 +322,7 @@ class BurnMethod(ContractMethod):  # pylint: disable=invalid-name
         """Persist instance data."""
         super().__init__(elib, contract_address, validator)
         self._underlying_method = contract_function
+        self.sign = validator.getSignature("burn")
 
     def validate_and_normalize_inputs(self, amount: int) -> any:
         """Validate the inputs to the burn method."""
@@ -361,17 +365,17 @@ class BurnMethod(ContractMethod):  # pylint: disable=invalid-name
                 txHash = self._web3_eth.sendRawTransaction(signed.rawTransaction)
                 tx_receipt = None
                 if receiptListen is True:
-                    print("======== awaiting Confirmation 🚸️ -burn")
+                    print(f"======== awaiting Confirmation 🚸️ {self.sign}")
                     tx_receipt = self._web3_eth.waitForTransactionReceipt(txHash)
                     if debug:
                         print("======== TX Result ✅")
                         print(tx_receipt)
 
                 print(f"======== TX blockHash ✅")
-                if receiptListen is True and tx_receipt is not None:
+                if tx_receipt is not None:
                     print(f"{Bolors.OK}{tx_receipt.blockHash.hex()}{Bolors.RESET}")
                 else:
-                    print(f"{Bolors.WARNING}{txHash.hex()}{Bolors.RESET}")
+                    print(f"{Bolors.WARNING}{txHash.hex()}{Bolors.RESET} - broadcast hash")
 
             if receiptListen is False:
                 time.sleep(self._wait)
@@ -416,6 +420,7 @@ class BurnFromMethod(ContractMethod):  # pylint: disable=invalid-name
         """Persist instance data."""
         super().__init__(elib, contract_address, validator)
         self._underlying_method = contract_function
+        self.sign = validator.getSignature("burnFrom")
 
     def validate_and_normalize_inputs(self, account: str, amount: int) -> any:
         """Validate the inputs to the burnFrom method."""
@@ -464,17 +469,17 @@ class BurnFromMethod(ContractMethod):  # pylint: disable=invalid-name
                 txHash = self._web3_eth.sendRawTransaction(signed.rawTransaction)
                 tx_receipt = None
                 if receiptListen is True:
-                    print("======== awaiting Confirmation 🚸️ -burn_from")
+                    print(f"======== awaiting Confirmation 🚸️ {self.sign}")
                     tx_receipt = self._web3_eth.waitForTransactionReceipt(txHash)
                     if debug:
                         print("======== TX Result ✅")
                         print(tx_receipt)
 
                 print(f"======== TX blockHash ✅")
-                if receiptListen is True and tx_receipt is not None:
+                if tx_receipt is not None:
                     print(f"{Bolors.OK}{tx_receipt.blockHash.hex()}{Bolors.RESET}")
                 else:
-                    print(f"{Bolors.WARNING}{txHash.hex()}{Bolors.RESET}")
+                    print(f"{Bolors.WARNING}{txHash.hex()}{Bolors.RESET} - broadcast hash")
 
             if receiptListen is False:
                 time.sleep(self._wait)
@@ -515,10 +520,11 @@ class BurnFromMethod(ContractMethod):  # pylint: disable=invalid-name
 class CapMethod(ContractMethod):  # pylint: disable=invalid-name
     """Various interfaces to the cap method."""
 
-    def __init__(self, elib: MiliDoS, contract_address: str, contract_function: ContractFunction):
+    def __init__(self, elib: MiliDoS, contract_address: str, contract_function: ContractFunction, validator: Validator = None):
         """Persist instance data."""
         super().__init__(elib, contract_address)
         self._underlying_method = contract_function
+        self.sign = validator.getSignature("cap")
 
     def block_call(self, debug: bool = False) -> int:
         _fn = self._underlying_method()
@@ -536,10 +542,11 @@ class CapMethod(ContractMethod):  # pylint: disable=invalid-name
 class DecimalsMethod(ContractMethod):  # pylint: disable=invalid-name
     """Various interfaces to the decimals method."""
 
-    def __init__(self, elib: MiliDoS, contract_address: str, contract_function: ContractFunction):
+    def __init__(self, elib: MiliDoS, contract_address: str, contract_function: ContractFunction, validator: Validator = None):
         """Persist instance data."""
         super().__init__(elib, contract_address)
         self._underlying_method = contract_function
+        self.sign = validator.getSignature("decimals")
 
     def block_call(self, debug: bool = False) -> int:
         _fn = self._underlying_method()
@@ -561,6 +568,7 @@ class DecreaseAllowanceMethod(ContractMethod):  # pylint: disable=invalid-name
         """Persist instance data."""
         super().__init__(elib, contract_address, validator)
         self._underlying_method = contract_function
+        self.sign = validator.getSignature("decreaseAllowance")
 
     def validate_and_normalize_inputs(self, spender: str, subtracted_value: int) -> any:
         """Validate the inputs to the decreaseAllowance method."""
@@ -609,17 +617,17 @@ class DecreaseAllowanceMethod(ContractMethod):  # pylint: disable=invalid-name
                 txHash = self._web3_eth.sendRawTransaction(signed.rawTransaction)
                 tx_receipt = None
                 if receiptListen is True:
-                    print("======== awaiting Confirmation 🚸️ -decrease_allowance")
+                    print(f"======== awaiting Confirmation 🚸️ {self.sign}")
                     tx_receipt = self._web3_eth.waitForTransactionReceipt(txHash)
                     if debug:
                         print("======== TX Result ✅")
                         print(tx_receipt)
 
                 print(f"======== TX blockHash ✅")
-                if receiptListen is True and tx_receipt is not None:
+                if tx_receipt is not None:
                     print(f"{Bolors.OK}{tx_receipt.blockHash.hex()}{Bolors.RESET}")
                 else:
-                    print(f"{Bolors.WARNING}{txHash.hex()}{Bolors.RESET}")
+                    print(f"{Bolors.WARNING}{txHash.hex()}{Bolors.RESET} - broadcast hash")
 
             if receiptListen is False:
                 time.sleep(self._wait)
@@ -660,10 +668,11 @@ class DecreaseAllowanceMethod(ContractMethod):  # pylint: disable=invalid-name
 class GetDecimalsMethod(ContractMethod):  # pylint: disable=invalid-name
     """Various interfaces to the getDecimals method."""
 
-    def __init__(self, elib: MiliDoS, contract_address: str, contract_function: ContractFunction):
+    def __init__(self, elib: MiliDoS, contract_address: str, contract_function: ContractFunction, validator: Validator = None):
         """Persist instance data."""
         super().__init__(elib, contract_address)
         self._underlying_method = contract_function
+        self.sign = validator.getSignature("getDecimals")
 
     def block_call(self, debug: bool = False) -> int:
         _fn = self._underlying_method()
@@ -678,6 +687,28 @@ class GetDecimalsMethod(ContractMethod):  # pylint: disable=invalid-name
         return self._underlying_method().estimateGas(tx_params.as_dict())
 
 
+class GovMethod(ContractMethod):  # pylint: disable=invalid-name
+    """Various interfaces to the gov method."""
+
+    def __init__(self, elib: MiliDoS, contract_address: str, contract_function: ContractFunction, validator: Validator = None):
+        """Persist instance data."""
+        super().__init__(elib, contract_address)
+        self._underlying_method = contract_function
+        self.sign = validator.getSignature("gov")
+
+    def block_call(self, debug: bool = False) -> str:
+        _fn = self._underlying_method()
+        returned = _fn.call({
+            'from': self._operate
+        })
+        return str(returned)
+
+    def estimate_gas(self, tx_params: Optional[TxParams] = None) -> int:
+        """Estimate gas consumption of method call."""
+        tx_params = super().normalize_tx_params(tx_params)
+        return self._underlying_method().estimateGas(tx_params.as_dict())
+
+
 class IncreaseAllowanceMethod(ContractMethod):  # pylint: disable=invalid-name
     """Various interfaces to the increaseAllowance method."""
 
@@ -685,6 +716,7 @@ class IncreaseAllowanceMethod(ContractMethod):  # pylint: disable=invalid-name
         """Persist instance data."""
         super().__init__(elib, contract_address, validator)
         self._underlying_method = contract_function
+        self.sign = validator.getSignature("increaseAllowance")
 
     def validate_and_normalize_inputs(self, spender: str, added_value: int) -> any:
         """Validate the inputs to the increaseAllowance method."""
@@ -733,17 +765,17 @@ class IncreaseAllowanceMethod(ContractMethod):  # pylint: disable=invalid-name
                 txHash = self._web3_eth.sendRawTransaction(signed.rawTransaction)
                 tx_receipt = None
                 if receiptListen is True:
-                    print("======== awaiting Confirmation 🚸️ -increase_allowance")
+                    print(f"======== awaiting Confirmation 🚸️ {self.sign}")
                     tx_receipt = self._web3_eth.waitForTransactionReceipt(txHash)
                     if debug:
                         print("======== TX Result ✅")
                         print(tx_receipt)
 
                 print(f"======== TX blockHash ✅")
-                if receiptListen is True and tx_receipt is not None:
+                if tx_receipt is not None:
                     print(f"{Bolors.OK}{tx_receipt.blockHash.hex()}{Bolors.RESET}")
                 else:
-                    print(f"{Bolors.WARNING}{txHash.hex()}{Bolors.RESET}")
+                    print(f"{Bolors.WARNING}{txHash.hex()}{Bolors.RESET} - broadcast hash")
 
             if receiptListen is False:
                 time.sleep(self._wait)
@@ -788,6 +820,7 @@ class IsMinterMethod(ContractMethod):  # pylint: disable=invalid-name
         """Persist instance data."""
         super().__init__(elib, contract_address, validator)
         self._underlying_method = contract_function
+        self.sign = validator.getSignature("isMinter")
 
     def validate_and_normalize_inputs(self, account: str) -> any:
         """Validate the inputs to the isMinter method."""
@@ -820,6 +853,7 @@ class MintMethod(ContractMethod):  # pylint: disable=invalid-name
         """Persist instance data."""
         super().__init__(elib, contract_address, validator)
         self._underlying_method = contract_function
+        self.sign = validator.getSignature("mint")
 
     def validate_and_normalize_inputs(self, account: str, amount: int) -> any:
         """Validate the inputs to the mint method."""
@@ -868,17 +902,17 @@ class MintMethod(ContractMethod):  # pylint: disable=invalid-name
                 txHash = self._web3_eth.sendRawTransaction(signed.rawTransaction)
                 tx_receipt = None
                 if receiptListen is True:
-                    print("======== awaiting Confirmation 🚸️ -mint")
+                    print(f"======== awaiting Confirmation 🚸️ {self.sign}")
                     tx_receipt = self._web3_eth.waitForTransactionReceipt(txHash)
                     if debug:
                         print("======== TX Result ✅")
                         print(tx_receipt)
 
                 print(f"======== TX blockHash ✅")
-                if receiptListen is True and tx_receipt is not None:
+                if tx_receipt is not None:
                     print(f"{Bolors.OK}{tx_receipt.blockHash.hex()}{Bolors.RESET}")
                 else:
-                    print(f"{Bolors.WARNING}{txHash.hex()}{Bolors.RESET}")
+                    print(f"{Bolors.WARNING}{txHash.hex()}{Bolors.RESET} - broadcast hash")
 
             if receiptListen is False:
                 time.sleep(self._wait)
@@ -919,10 +953,11 @@ class MintMethod(ContractMethod):  # pylint: disable=invalid-name
 class NameMethod(ContractMethod):  # pylint: disable=invalid-name
     """Various interfaces to the name method."""
 
-    def __init__(self, elib: MiliDoS, contract_address: str, contract_function: ContractFunction):
+    def __init__(self, elib: MiliDoS, contract_address: str, contract_function: ContractFunction, validator: Validator = None):
         """Persist instance data."""
         super().__init__(elib, contract_address)
         self._underlying_method = contract_function
+        self.sign = validator.getSignature("name")
 
     def block_call(self, debug: bool = False) -> str:
         _fn = self._underlying_method()
@@ -937,13 +972,111 @@ class NameMethod(ContractMethod):  # pylint: disable=invalid-name
         return self._underlying_method().estimateGas(tx_params.as_dict())
 
 
+class RemoveMinterMethod(ContractMethod):  # pylint: disable=invalid-name
+    """Various interfaces to the removeMinter method."""
+
+    def __init__(self, elib: MiliDoS, contract_address: str, contract_function: ContractFunction, validator: Validator = None):
+        """Persist instance data."""
+        super().__init__(elib, contract_address, validator)
+        self._underlying_method = contract_function
+        self.sign = validator.getSignature("removeMinter")
+
+    def validate_and_normalize_inputs(self, account: str) -> any:
+        """Validate the inputs to the removeMinter method."""
+        self.validator.assert_valid(
+            method_name='removeMinter',
+            parameter_name='account',
+            argument_value=account,
+        )
+        account = self.validate_and_checksum_address(account)
+        return (account)
+
+    def block_send(self, account: str, gas: int, price: int, val: int = 0, debug: bool = False, receiptListen: bool = False) -> None:
+        """Execute underlying contract method via eth_call.
+
+        :param tx_params: transaction parameters
+        :returns: the return value of the underlying method.
+        """
+        _fn = self._underlying_method(account)
+        try:
+
+            _t = _fn.buildTransaction({
+                'from': self._operate,
+                'gas': gas,
+                'gasPrice': price
+            })
+            _t['nonce'] = self._web3_eth.getTransactionCount(self._operate)
+
+            if val > 0:
+                _t['value'] = val
+
+            if debug:
+                print(f"======== Signing ✅ by {self._operate}")
+                print(f"======== Transaction ✅ check")
+                print(_t)
+
+            if 'data' in _t:
+
+                signed = self._web3_eth.account.sign_transaction(_t)
+                txHash = self._web3_eth.sendRawTransaction(signed.rawTransaction)
+                tx_receipt = None
+                if receiptListen is True:
+                    print(f"======== awaiting Confirmation 🚸️ {self.sign}")
+                    tx_receipt = self._web3_eth.waitForTransactionReceipt(txHash)
+                    if debug:
+                        print("======== TX Result ✅")
+                        print(tx_receipt)
+
+                print(f"======== TX blockHash ✅")
+                if tx_receipt is not None:
+                    print(f"{Bolors.OK}{tx_receipt.blockHash.hex()}{Bolors.RESET}")
+                else:
+                    print(f"{Bolors.WARNING}{txHash.hex()}{Bolors.RESET} - broadcast hash")
+
+            if receiptListen is False:
+                time.sleep(self._wait)
+
+
+        except ContractLogicError as er:
+            print(f"{Bolors.FAIL}Error {er} {Bolors.RESET}: remove_minter")
+
+        except ValueError as err:
+            if "message" in err.args[0]:
+                message = err.args[0]["message"]
+                print(f"{Bolors.FAIL}Error Revert {Bolors.RESET} on set_asset_token: {message}")
+            else:
+                print(f"{Bolors.FAIL}Error Revert {Bolors.RESET}: set_asset_token")
+
+    def send_transaction(self, account: str, tx_params: Optional[TxParams] = None) -> Union[HexBytes, bytes]:
+        """Execute underlying contract method via eth_sendTransaction.
+
+        :param tx_params: transaction parameters
+        """
+        (account) = self.validate_and_normalize_inputs(account)
+        tx_params = super().normalize_tx_params(tx_params)
+        return self._underlying_method(account).transact(tx_params.as_dict())
+
+    def build_transaction(self, account: str, tx_params: Optional[TxParams] = None) -> dict:
+        """Construct calldata to be used as input to the method."""
+        (account) = self.validate_and_normalize_inputs(account)
+        tx_params = super().normalize_tx_params(tx_params)
+        return self._underlying_method(account).buildTransaction(tx_params.as_dict())
+
+    def estimate_gas(self, account: str, tx_params: Optional[TxParams] = None) -> int:
+        """Estimate gas consumption of method call."""
+        (account) = self.validate_and_normalize_inputs(account)
+        tx_params = super().normalize_tx_params(tx_params)
+        return self._underlying_method(account).estimateGas(tx_params.as_dict())
+
+
 class RenounceMinterMethod(ContractMethod):  # pylint: disable=invalid-name
     """Various interfaces to the renounceMinter method."""
 
-    def __init__(self, elib: MiliDoS, contract_address: str, contract_function: ContractFunction):
+    def __init__(self, elib: MiliDoS, contract_address: str, contract_function: ContractFunction, validator: Validator = None):
         """Persist instance data."""
         super().__init__(elib, contract_address)
         self._underlying_method = contract_function
+        self.sign = validator.getSignature("renounceMinter")
 
     def block_send(self, gas: int, price: int, val: int = 0, debug: bool = False, receiptListen: bool = False) -> None:
         """Execute underlying contract method via eth_call.
@@ -975,17 +1108,17 @@ class RenounceMinterMethod(ContractMethod):  # pylint: disable=invalid-name
                 txHash = self._web3_eth.sendRawTransaction(signed.rawTransaction)
                 tx_receipt = None
                 if receiptListen is True:
-                    print("======== awaiting Confirmation 🚸️ -renounce_minter")
+                    print(f"======== awaiting Confirmation 🚸️ {self.sign}")
                     tx_receipt = self._web3_eth.waitForTransactionReceipt(txHash)
                     if debug:
                         print("======== TX Result ✅")
                         print(tx_receipt)
 
                 print(f"======== TX blockHash ✅")
-                if receiptListen is True and tx_receipt is not None:
+                if tx_receipt is not None:
                     print(f"{Bolors.OK}{tx_receipt.blockHash.hex()}{Bolors.RESET}")
                 else:
-                    print(f"{Bolors.WARNING}{txHash.hex()}{Bolors.RESET}")
+                    print(f"{Bolors.WARNING}{txHash.hex()}{Bolors.RESET} - broadcast hash")
 
             if receiptListen is False:
                 time.sleep(self._wait)
@@ -1023,10 +1156,11 @@ class RenounceMinterMethod(ContractMethod):  # pylint: disable=invalid-name
 class SymbolMethod(ContractMethod):  # pylint: disable=invalid-name
     """Various interfaces to the symbol method."""
 
-    def __init__(self, elib: MiliDoS, contract_address: str, contract_function: ContractFunction):
+    def __init__(self, elib: MiliDoS, contract_address: str, contract_function: ContractFunction, validator: Validator = None):
         """Persist instance data."""
         super().__init__(elib, contract_address)
         self._underlying_method = contract_function
+        self.sign = validator.getSignature("symbol")
 
     def block_call(self, debug: bool = False) -> str:
         _fn = self._underlying_method()
@@ -1044,10 +1178,11 @@ class SymbolMethod(ContractMethod):  # pylint: disable=invalid-name
 class TokenNameMethod(ContractMethod):  # pylint: disable=invalid-name
     """Various interfaces to the tokenName method."""
 
-    def __init__(self, elib: MiliDoS, contract_address: str, contract_function: ContractFunction):
+    def __init__(self, elib: MiliDoS, contract_address: str, contract_function: ContractFunction, validator: Validator = None):
         """Persist instance data."""
         super().__init__(elib, contract_address)
         self._underlying_method = contract_function
+        self.sign = validator.getSignature("tokenName")
 
     def block_call(self, debug: bool = False) -> str:
         _fn = self._underlying_method()
@@ -1065,10 +1200,11 @@ class TokenNameMethod(ContractMethod):  # pylint: disable=invalid-name
 class TokenSymbolMethod(ContractMethod):  # pylint: disable=invalid-name
     """Various interfaces to the tokenSymbol method."""
 
-    def __init__(self, elib: MiliDoS, contract_address: str, contract_function: ContractFunction):
+    def __init__(self, elib: MiliDoS, contract_address: str, contract_function: ContractFunction, validator: Validator = None):
         """Persist instance data."""
         super().__init__(elib, contract_address)
         self._underlying_method = contract_function
+        self.sign = validator.getSignature("tokenSymbol")
 
     def block_call(self, debug: bool = False) -> str:
         _fn = self._underlying_method()
@@ -1086,10 +1222,11 @@ class TokenSymbolMethod(ContractMethod):  # pylint: disable=invalid-name
 class TotalSupplyMethod(ContractMethod):  # pylint: disable=invalid-name
     """Various interfaces to the totalSupply method."""
 
-    def __init__(self, elib: MiliDoS, contract_address: str, contract_function: ContractFunction):
+    def __init__(self, elib: MiliDoS, contract_address: str, contract_function: ContractFunction, validator: Validator = None):
         """Persist instance data."""
         super().__init__(elib, contract_address)
         self._underlying_method = contract_function
+        self.sign = validator.getSignature("totalSupply")
 
     def block_call(self, debug: bool = False) -> int:
         _fn = self._underlying_method()
@@ -1111,6 +1248,7 @@ class TransferMethod(ContractMethod):  # pylint: disable=invalid-name
         """Persist instance data."""
         super().__init__(elib, contract_address, validator)
         self._underlying_method = contract_function
+        self.sign = validator.getSignature("transfer")
 
     def validate_and_normalize_inputs(self, recipient: str, amount: int) -> any:
         """Validate the inputs to the transfer method."""
@@ -1159,17 +1297,17 @@ class TransferMethod(ContractMethod):  # pylint: disable=invalid-name
                 txHash = self._web3_eth.sendRawTransaction(signed.rawTransaction)
                 tx_receipt = None
                 if receiptListen is True:
-                    print("======== awaiting Confirmation 🚸️ -transfer")
+                    print(f"======== awaiting Confirmation 🚸️ {self.sign}")
                     tx_receipt = self._web3_eth.waitForTransactionReceipt(txHash)
                     if debug:
                         print("======== TX Result ✅")
                         print(tx_receipt)
 
                 print(f"======== TX blockHash ✅")
-                if receiptListen is True and tx_receipt is not None:
+                if tx_receipt is not None:
                     print(f"{Bolors.OK}{tx_receipt.blockHash.hex()}{Bolors.RESET}")
                 else:
-                    print(f"{Bolors.WARNING}{txHash.hex()}{Bolors.RESET}")
+                    print(f"{Bolors.WARNING}{txHash.hex()}{Bolors.RESET} - broadcast hash")
 
             if receiptListen is False:
                 time.sleep(self._wait)
@@ -1214,6 +1352,7 @@ class TransferFromMethod(ContractMethod):  # pylint: disable=invalid-name
         """Persist instance data."""
         super().__init__(elib, contract_address, validator)
         self._underlying_method = contract_function
+        self.sign = validator.getSignature("transferFrom")
 
     def validate_and_normalize_inputs(self, sender: str, recipient: str, amount: int) -> any:
         """Validate the inputs to the transferFrom method."""
@@ -1268,17 +1407,17 @@ class TransferFromMethod(ContractMethod):  # pylint: disable=invalid-name
                 txHash = self._web3_eth.sendRawTransaction(signed.rawTransaction)
                 tx_receipt = None
                 if receiptListen is True:
-                    print("======== awaiting Confirmation 🚸️ -transfer_from")
+                    print(f"======== awaiting Confirmation 🚸️ {self.sign}")
                     tx_receipt = self._web3_eth.waitForTransactionReceipt(txHash)
                     if debug:
                         print("======== TX Result ✅")
                         print(tx_receipt)
 
                 print(f"======== TX blockHash ✅")
-                if receiptListen is True and tx_receipt is not None:
+                if tx_receipt is not None:
                     print(f"{Bolors.OK}{tx_receipt.blockHash.hex()}{Bolors.RESET}")
                 else:
-                    print(f"{Bolors.WARNING}{txHash.hex()}{Bolors.RESET}")
+                    print(f"{Bolors.WARNING}{txHash.hex()}{Bolors.RESET} - broadcast hash")
 
             if receiptListen is False:
                 time.sleep(self._wait)
@@ -1317,6 +1456,9 @@ class TransferFromMethod(ContractMethod):  # pylint: disable=invalid-name
 
 
 class SignatureGenerator(Signatures):
+    """
+        The signature is generated for this and it is installed.
+    """
 
     def __init__(self, abi: any):
         super().__init__(abi)
@@ -1351,6 +1493,9 @@ class SignatureGenerator(Signatures):
     def get_decimals(self) -> str:
         return self._function_signatures["getDecimals"]
 
+    def gov(self) -> str:
+        return self._function_signatures["gov"]
+
     def increase_allowance(self) -> str:
         return self._function_signatures["increaseAllowance"]
 
@@ -1362,6 +1507,9 @@ class SignatureGenerator(Signatures):
 
     def name(self) -> str:
         return self._function_signatures["name"]
+
+    def remove_minter(self) -> str:
+        return self._function_signatures["removeMinter"]
 
     def renounce_minter(self) -> str:
         return self._function_signatures["renounceMinter"]
@@ -1438,6 +1586,11 @@ class Ori20(ContractBase):
     :class:`GetDecimalsMethod`.
     """
 
+    _fn_gov: GovMethod
+    """Constructor-initialized instance of
+    :class:`GovMethod`.
+    """
+
     _fn_increase_allowance: IncreaseAllowanceMethod
     """Constructor-initialized instance of
     :class:`IncreaseAllowanceMethod`.
@@ -1456,6 +1609,11 @@ class Ori20(ContractBase):
     _fn_name: NameMethod
     """Constructor-initialized instance of
     :class:`NameMethod`.
+    """
+
+    _fn_remove_minter: RemoveMinterMethod
+    """Constructor-initialized instance of
+    :class:`RemoveMinterMethod`.
     """
 
     _fn_renounce_minter: RenounceMinterMethod
@@ -1493,6 +1651,8 @@ class Ori20(ContractBase):
     :class:`TransferFromMethod`.
     """
 
+    SIGNATURES: SignatureGenerator = None
+
     def __init__(
             self,
             core_lib: MiliDoS,
@@ -1525,49 +1685,32 @@ class Ori20(ContractBase):
                     pass
 
         self._web3_eth = web3.eth
-
         functions = self._web3_eth.contract(address=to_checksum_address(contract_address), abi=Ori20.abi()).functions
-        self.SIGNATURES = SignatureGenerator(Ori20.abi())
+        signed = SignatureGenerator(Ori20.abi())
+        validator.bindSignatures(signed)
+        self.SIGNATURES = signed
         self._fn_add_minter = AddMinterMethod(core_lib, contract_address, functions.addMinter, validator)
-
         self._fn_allowance = AllowanceMethod(core_lib, contract_address, functions.allowance, validator)
-
         self._fn_approve = ApproveMethod(core_lib, contract_address, functions.approve, validator)
-
         self._fn_balance_of = BalanceOfMethod(core_lib, contract_address, functions.balanceOf, validator)
-
         self._fn_burn = BurnMethod(core_lib, contract_address, functions.burn, validator)
-
         self._fn_burn_from = BurnFromMethod(core_lib, contract_address, functions.burnFrom, validator)
-
-        self._fn_cap = CapMethod(core_lib, contract_address, functions.cap)
-
-        self._fn_decimals = DecimalsMethod(core_lib, contract_address, functions.decimals)
-
+        self._fn_cap = CapMethod(core_lib, contract_address, functions.cap, validator)
+        self._fn_decimals = DecimalsMethod(core_lib, contract_address, functions.decimals, validator)
         self._fn_decrease_allowance = DecreaseAllowanceMethod(core_lib, contract_address, functions.decreaseAllowance, validator)
-
-        self._fn_get_decimals = GetDecimalsMethod(core_lib, contract_address, functions.getDecimals)
-
+        self._fn_get_decimals = GetDecimalsMethod(core_lib, contract_address, functions.getDecimals, validator)
+        self._fn_gov = GovMethod(core_lib, contract_address, functions.gov, validator)
         self._fn_increase_allowance = IncreaseAllowanceMethod(core_lib, contract_address, functions.increaseAllowance, validator)
-
         self._fn_is_minter = IsMinterMethod(core_lib, contract_address, functions.isMinter, validator)
-
         self._fn_mint = MintMethod(core_lib, contract_address, functions.mint, validator)
-
-        self._fn_name = NameMethod(core_lib, contract_address, functions.name)
-
-        self._fn_renounce_minter = RenounceMinterMethod(core_lib, contract_address, functions.renounceMinter)
-
-        self._fn_symbol = SymbolMethod(core_lib, contract_address, functions.symbol)
-
-        self._fn_token_name = TokenNameMethod(core_lib, contract_address, functions.tokenName)
-
-        self._fn_token_symbol = TokenSymbolMethod(core_lib, contract_address, functions.tokenSymbol)
-
-        self._fn_total_supply = TotalSupplyMethod(core_lib, contract_address, functions.totalSupply)
-
+        self._fn_name = NameMethod(core_lib, contract_address, functions.name, validator)
+        self._fn_remove_minter = RemoveMinterMethod(core_lib, contract_address, functions.removeMinter, validator)
+        self._fn_renounce_minter = RenounceMinterMethod(core_lib, contract_address, functions.renounceMinter, validator)
+        self._fn_symbol = SymbolMethod(core_lib, contract_address, functions.symbol, validator)
+        self._fn_token_name = TokenNameMethod(core_lib, contract_address, functions.tokenName, validator)
+        self._fn_token_symbol = TokenSymbolMethod(core_lib, contract_address, functions.tokenSymbol, validator)
+        self._fn_total_supply = TotalSupplyMethod(core_lib, contract_address, functions.totalSupply, validator)
         self._fn_transfer = TransferMethod(core_lib, contract_address, functions.transfer, validator)
-
         self._fn_transfer_from = TransferFromMethod(core_lib, contract_address, functions.transferFrom, validator)
 
     def event_approval(
@@ -1724,6 +1867,17 @@ class Ori20(ContractBase):
 
         return self._fn_get_decimals.block_call()
 
+    def gov(self) -> str:
+        """
+        Implementation of gov in contract Ori20
+        Method of the function
+
+
+
+        """
+
+        return self._fn_gov.block_call()
+
     def increase_allowance(self, spender: str, added_value: int) -> bool:
         """
         Implementation of increase_allowance in contract Ori20
@@ -1767,6 +1921,17 @@ class Ori20(ContractBase):
         """
 
         return self._fn_name.block_call()
+
+    def remove_minter(self, account: str) -> None:
+        """
+        Implementation of remove_minter in contract Ori20
+        Method of the function
+
+
+
+        """
+
+        return self._fn_remove_minter.block_send(account, self.call_contract_fee_amount, self.call_contract_fee_price, 0, self.call_contract_debug_flag, self.call_contract_enforce_tx_receipt)
 
     def renounce_minter(self) -> None:
         """
@@ -1856,10 +2021,12 @@ class Ori20(ContractBase):
         self._fn_decimals.setWait(t_long)
         self._fn_decrease_allowance.setWait(t_long)
         self._fn_get_decimals.setWait(t_long)
+        self._fn_gov.setWait(t_long)
         self._fn_increase_allowance.setWait(t_long)
         self._fn_is_minter.setWait(t_long)
         self._fn_mint.setWait(t_long)
         self._fn_name.setWait(t_long)
+        self._fn_remove_minter.setWait(t_long)
         self._fn_renounce_minter.setWait(t_long)
         self._fn_symbol.setWait(t_long)
         self._fn_token_name.setWait(t_long)
@@ -1873,7 +2040,7 @@ class Ori20(ContractBase):
     def abi():
         """Return the ABI to the underlying contract."""
         return json.loads(
-            '[{"inputs":[],"payable":false,"stateMutability":"nonpayable","type":"constructor"},{"anonymous":false,"inputs":[{"indexed":true,"internalType":"address","name":"owner","type":"address"},{"indexed":true,"internalType":"address","name":"spender","type":"address"},{"indexed":false,"internalType":"uint256","name":"value","type":"uint256"}],"name":"Approval","type":"event"},{"anonymous":false,"inputs":[{"indexed":true,"internalType":"address","name":"account","type":"address"}],"name":"MinterAdded","type":"event"},{"anonymous":false,"inputs":[{"indexed":true,"internalType":"address","name":"account","type":"address"}],"name":"MinterRemoved","type":"event"},{"anonymous":false,"inputs":[{"indexed":true,"internalType":"address","name":"from","type":"address"},{"indexed":true,"internalType":"address","name":"to","type":"address"},{"indexed":false,"internalType":"uint256","name":"value","type":"uint256"}],"name":"Transfer","type":"event"},{"constant":false,"inputs":[{"internalType":"address","name":"account","type":"address"}],"name":"addMinter","outputs":[],"payable":false,"stateMutability":"nonpayable","type":"function"},{"constant":true,"inputs":[{"internalType":"address","name":"owner","type":"address"},{"internalType":"address","name":"spender","type":"address"}],"name":"allowance","outputs":[{"internalType":"uint256","name":"","type":"uint256"}],"payable":false,"stateMutability":"view","type":"function"},{"constant":false,"inputs":[{"internalType":"address","name":"spender","type":"address"},{"internalType":"uint256","name":"amount","type":"uint256"}],"name":"approve","outputs":[{"internalType":"bool","name":"","type":"bool"}],"payable":false,"stateMutability":"nonpayable","type":"function"},{"constant":true,"inputs":[{"internalType":"address","name":"account","type":"address"}],"name":"balanceOf","outputs":[{"internalType":"uint256","name":"","type":"uint256"}],"payable":false,"stateMutability":"view","type":"function"},{"constant":false,"inputs":[{"internalType":"uint256","name":"amount","type":"uint256"}],"name":"burn","outputs":[],"payable":false,"stateMutability":"nonpayable","type":"function"},{"constant":false,"inputs":[{"internalType":"address","name":"account","type":"address"},{"internalType":"uint256","name":"amount","type":"uint256"}],"name":"burnFrom","outputs":[],"payable":false,"stateMutability":"nonpayable","type":"function"},{"constant":true,"inputs":[],"name":"cap","outputs":[{"internalType":"uint256","name":"","type":"uint256"}],"payable":false,"stateMutability":"view","type":"function"},{"constant":true,"inputs":[],"name":"decimals","outputs":[{"internalType":"uint8","name":"","type":"uint8"}],"payable":false,"stateMutability":"view","type":"function"},{"constant":false,"inputs":[{"internalType":"address","name":"spender","type":"address"},{"internalType":"uint256","name":"subtractedValue","type":"uint256"}],"name":"decreaseAllowance","outputs":[{"internalType":"bool","name":"","type":"bool"}],"payable":false,"stateMutability":"nonpayable","type":"function"},{"constant":true,"inputs":[],"name":"getDecimals","outputs":[{"internalType":"uint8","name":"","type":"uint8"}],"payable":false,"stateMutability":"view","type":"function"},{"constant":false,"inputs":[{"internalType":"address","name":"spender","type":"address"},{"internalType":"uint256","name":"addedValue","type":"uint256"}],"name":"increaseAllowance","outputs":[{"internalType":"bool","name":"","type":"bool"}],"payable":false,"stateMutability":"nonpayable","type":"function"},{"constant":true,"inputs":[{"internalType":"address","name":"account","type":"address"}],"name":"isMinter","outputs":[{"internalType":"bool","name":"","type":"bool"}],"payable":false,"stateMutability":"view","type":"function"},{"constant":false,"inputs":[{"internalType":"address","name":"account","type":"address"},{"internalType":"uint256","name":"amount","type":"uint256"}],"name":"mint","outputs":[{"internalType":"bool","name":"","type":"bool"}],"payable":false,"stateMutability":"nonpayable","type":"function"},{"constant":true,"inputs":[],"name":"name","outputs":[{"internalType":"string","name":"","type":"string"}],"payable":false,"stateMutability":"view","type":"function"},{"constant":false,"inputs":[],"name":"renounceMinter","outputs":[],"payable":false,"stateMutability":"nonpayable","type":"function"},{"constant":true,"inputs":[],"name":"symbol","outputs":[{"internalType":"string","name":"","type":"string"}],"payable":false,"stateMutability":"view","type":"function"},{"constant":true,"inputs":[],"name":"tokenName","outputs":[{"internalType":"string","name":"","type":"string"}],"payable":false,"stateMutability":"view","type":"function"},{"constant":true,"inputs":[],"name":"tokenSymbol","outputs":[{"internalType":"string","name":"","type":"string"}],"payable":false,"stateMutability":"view","type":"function"},{"constant":true,"inputs":[],"name":"totalSupply","outputs":[{"internalType":"uint256","name":"","type":"uint256"}],"payable":false,"stateMutability":"view","type":"function"},{"constant":false,"inputs":[{"internalType":"address","name":"recipient","type":"address"},{"internalType":"uint256","name":"amount","type":"uint256"}],"name":"transfer","outputs":[{"internalType":"bool","name":"","type":"bool"}],"payable":false,"stateMutability":"nonpayable","type":"function"},{"constant":false,"inputs":[{"internalType":"address","name":"sender","type":"address"},{"internalType":"address","name":"recipient","type":"address"},{"internalType":"uint256","name":"amount","type":"uint256"}],"name":"transferFrom","outputs":[{"internalType":"bool","name":"","type":"bool"}],"payable":false,"stateMutability":"nonpayable","type":"function"}]'
+            '[{"inputs":[],"payable":false,"stateMutability":"nonpayable","type":"constructor"},{"anonymous":false,"inputs":[{"indexed":true,"internalType":"address","name":"owner","type":"address"},{"indexed":true,"internalType":"address","name":"spender","type":"address"},{"indexed":false,"internalType":"uint256","name":"value","type":"uint256"}],"name":"Approval","type":"event"},{"anonymous":false,"inputs":[{"indexed":true,"internalType":"address","name":"account","type":"address"}],"name":"MinterAdded","type":"event"},{"anonymous":false,"inputs":[{"indexed":true,"internalType":"address","name":"account","type":"address"}],"name":"MinterRemoved","type":"event"},{"anonymous":false,"inputs":[{"indexed":true,"internalType":"address","name":"from","type":"address"},{"indexed":true,"internalType":"address","name":"to","type":"address"},{"indexed":false,"internalType":"uint256","name":"value","type":"uint256"}],"name":"Transfer","type":"event"},{"constant":false,"inputs":[{"internalType":"address","name":"account","type":"address"}],"name":"addMinter","outputs":[],"payable":false,"stateMutability":"nonpayable","type":"function"},{"constant":true,"inputs":[{"internalType":"address","name":"owner","type":"address"},{"internalType":"address","name":"spender","type":"address"}],"name":"allowance","outputs":[{"internalType":"uint256","name":"","type":"uint256"}],"payable":false,"stateMutability":"view","type":"function"},{"constant":false,"inputs":[{"internalType":"address","name":"spender","type":"address"},{"internalType":"uint256","name":"amount","type":"uint256"}],"name":"approve","outputs":[{"internalType":"bool","name":"","type":"bool"}],"payable":false,"stateMutability":"nonpayable","type":"function"},{"constant":true,"inputs":[{"internalType":"address","name":"account","type":"address"}],"name":"balanceOf","outputs":[{"internalType":"uint256","name":"","type":"uint256"}],"payable":false,"stateMutability":"view","type":"function"},{"constant":false,"inputs":[{"internalType":"uint256","name":"amount","type":"uint256"}],"name":"burn","outputs":[],"payable":false,"stateMutability":"nonpayable","type":"function"},{"constant":false,"inputs":[{"internalType":"address","name":"account","type":"address"},{"internalType":"uint256","name":"amount","type":"uint256"}],"name":"burnFrom","outputs":[],"payable":false,"stateMutability":"nonpayable","type":"function"},{"constant":true,"inputs":[],"name":"cap","outputs":[{"internalType":"uint256","name":"","type":"uint256"}],"payable":false,"stateMutability":"view","type":"function"},{"constant":true,"inputs":[],"name":"decimals","outputs":[{"internalType":"uint8","name":"","type":"uint8"}],"payable":false,"stateMutability":"view","type":"function"},{"constant":false,"inputs":[{"internalType":"address","name":"spender","type":"address"},{"internalType":"uint256","name":"subtractedValue","type":"uint256"}],"name":"decreaseAllowance","outputs":[{"internalType":"bool","name":"","type":"bool"}],"payable":false,"stateMutability":"nonpayable","type":"function"},{"constant":true,"inputs":[],"name":"getDecimals","outputs":[{"internalType":"uint8","name":"","type":"uint8"}],"payable":false,"stateMutability":"view","type":"function"},{"constant":true,"inputs":[],"name":"gov","outputs":[{"internalType":"address","name":"","type":"address"}],"payable":false,"stateMutability":"view","type":"function"},{"constant":false,"inputs":[{"internalType":"address","name":"spender","type":"address"},{"internalType":"uint256","name":"addedValue","type":"uint256"}],"name":"increaseAllowance","outputs":[{"internalType":"bool","name":"","type":"bool"}],"payable":false,"stateMutability":"nonpayable","type":"function"},{"constant":true,"inputs":[{"internalType":"address","name":"account","type":"address"}],"name":"isMinter","outputs":[{"internalType":"bool","name":"","type":"bool"}],"payable":false,"stateMutability":"view","type":"function"},{"constant":false,"inputs":[{"internalType":"address","name":"account","type":"address"},{"internalType":"uint256","name":"amount","type":"uint256"}],"name":"mint","outputs":[{"internalType":"bool","name":"","type":"bool"}],"payable":false,"stateMutability":"nonpayable","type":"function"},{"constant":true,"inputs":[],"name":"name","outputs":[{"internalType":"string","name":"","type":"string"}],"payable":false,"stateMutability":"view","type":"function"},{"constant":false,"inputs":[{"internalType":"address","name":"account","type":"address"}],"name":"removeMinter","outputs":[],"payable":false,"stateMutability":"nonpayable","type":"function"},{"constant":false,"inputs":[],"name":"renounceMinter","outputs":[],"payable":false,"stateMutability":"nonpayable","type":"function"},{"constant":true,"inputs":[],"name":"symbol","outputs":[{"internalType":"string","name":"","type":"string"}],"payable":false,"stateMutability":"view","type":"function"},{"constant":true,"inputs":[],"name":"tokenName","outputs":[{"internalType":"string","name":"","type":"string"}],"payable":false,"stateMutability":"view","type":"function"},{"constant":true,"inputs":[],"name":"tokenSymbol","outputs":[{"internalType":"string","name":"","type":"string"}],"payable":false,"stateMutability":"view","type":"function"},{"constant":true,"inputs":[],"name":"totalSupply","outputs":[{"internalType":"uint256","name":"","type":"uint256"}],"payable":false,"stateMutability":"view","type":"function"},{"constant":false,"inputs":[{"internalType":"address","name":"recipient","type":"address"},{"internalType":"uint256","name":"amount","type":"uint256"}],"name":"transfer","outputs":[{"internalType":"bool","name":"","type":"bool"}],"payable":false,"stateMutability":"nonpayable","type":"function"},{"constant":false,"inputs":[{"internalType":"address","name":"sender","type":"address"},{"internalType":"address","name":"recipient","type":"address"},{"internalType":"uint256","name":"amount","type":"uint256"}],"name":"transferFrom","outputs":[{"internalType":"bool","name":"","type":"bool"}],"payable":false,"stateMutability":"nonpayable","type":"function"}]'
             # noqa: E501 (line-too-long)
         )
 
