@@ -32,26 +32,23 @@
 # pylint: disable=too-many-arguments
 
 import json
+import time
 from typing import (  # pylint: disable=unused-import
-    Any,
-    List,
     Optional,
     Tuple,
     Union,
 )
-import time
+
 from eth_utils import to_checksum_address
-from mypy_extensions import TypedDict  # pylint: disable=unused-import
 from hexbytes import HexBytes
-from web3 import Web3
 from web3.contract import ContractFunction
 from web3.datastructures import AttributeDict
-from web3.providers.base import BaseProvider
 from web3.exceptions import ContractLogicError
+
+from moody import Bolors
+from moody.libeb import MiliDoS
 from moody.m.bases import ContractMethod, Validator, ContractBase
 from moody.m.tx_params import TxParams
-from moody.libeb import MiliDoS
-from moody import Bolors
 
 # Try to import a custom validator class definition; if there isn&#39;t one,
 # declare one that we can instantiate for the default argument to the
