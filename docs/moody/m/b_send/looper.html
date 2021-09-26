@@ -4,7 +4,7 @@
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1, minimum-scale=1" />
 <meta name="generator" content="pdoc 0.9.1" />
-<title>moody.bulk API documentation</title>
+<title>moody.m.b_send.looper API documentation</title>
 <meta name="description" content="" />
 <link rel="preload stylesheet" as="style" href="https://cdnjs.cloudflare.com/ajax/libs/10up-sanitize.css/11.0.1/sanitize.min.css" integrity="sha256-PK9q560IAAa6WVRRh76LtCaI8pjTJ2z11v0miyNNjrs=" crossorigin>
 <link rel="preload stylesheet" as="style" href="https://cdnjs.cloudflare.com/ajax/libs/10up-sanitize.css/11.0.1/typography.min.css" integrity="sha256-7l/o7C8jubJiy74VsKTidCy1yBkRtiUGbVkYBylBqUg=" crossorigin>
@@ -19,7 +19,7 @@
 <main>
 <article id="content">
 <header>
-<h1 class="title">Module <code>moody.bulk</code></h1>
+<h1 class="title">Module <code>moody.m.b_send.looper</code></h1>
 </header>
 <section id="section-intro">
 <details class="source">
@@ -36,10 +36,10 @@ import time
 import pandas as pd
 from web3 import exceptions, _utils
 
-from .basec import BaseBulk, PrintNetworkName
-from ..libeb import MiliDoS
-from ..m.b_send import BSend
-from ..m.ori20 import Ori20
+from ..b_send import BSend
+from ..b_send.basec import BaseBulk, PrintNetworkName
+from ..ori20 import Ori20
+from ...libeb import MiliDoS
 
 
 class LooperBulk(BaseBulk):
@@ -340,13 +340,6 @@ class ExcelBulkManagerClassic(ExcelBasic):
 </details>
 </section>
 <section>
-<h2 class="section-title" id="header-submodules">Sub-modules</h2>
-<dl>
-<dt><code class="name"><a title="moody.bulk.basec" href="basec.html">moody.bulk.basec</a></code></dt>
-<dd>
-<div class="desc"></div>
-</dd>
-</dl>
 </section>
 <section>
 </section>
@@ -355,9 +348,9 @@ class ExcelBulkManagerClassic(ExcelBasic):
 <section>
 <h2 class="section-title" id="header-classes">Classes</h2>
 <dl>
-<dt id="moody.bulk.ExcelBasic"><code class="flex name class">
+<dt id="moody.m.b_send.looper.ExcelBasic"><code class="flex name class">
 <span>class <span class="ident">ExcelBasic</span></span>
-<span>(</span><span>filepath, mHold: <a title="moody.libeb.MiliDoS" href="../libeb.html#moody.libeb.MiliDoS">MiliDoS</a>)</span>
+<span>(</span><span>filepath, mHold: <a title="moody.libeb.MiliDoS" href="../../libeb.html#moody.libeb.MiliDoS">MiliDoS</a>)</span>
 </code></dt>
 <dd>
 <div class="desc"><p>Bulk manager execution now
@@ -387,18 +380,18 @@ class ExcelBulkManagerClassic(ExcelBasic):
 </details>
 <h3>Ancestors</h3>
 <ul class="hlist">
-<li><a title="moody.bulk.LooperBulk" href="#moody.bulk.LooperBulk">LooperBulk</a></li>
-<li><a title="moody.bulk.basec.BaseBulk" href="basec.html#moody.bulk.basec.BaseBulk">BaseBulk</a></li>
+<li><a title="moody.m.b_send.looper.LooperBulk" href="#moody.m.b_send.looper.LooperBulk">LooperBulk</a></li>
+<li><a title="moody.m.b_send.basec.BaseBulk" href="basec.html#moody.m.b_send.basec.BaseBulk">BaseBulk</a></li>
 </ul>
 <h3>Subclasses</h3>
 <ul class="hlist">
-<li><a title="moody.bulk.ExcelBulkManager" href="#moody.bulk.ExcelBulkManager">ExcelBulkManager</a></li>
-<li><a title="moody.bulk.ExcelBulkManagerClassic" href="#moody.bulk.ExcelBulkManagerClassic">ExcelBulkManagerClassic</a></li>
+<li><a title="moody.m.b_send.looper.ExcelBulkManager" href="#moody.m.b_send.looper.ExcelBulkManager">ExcelBulkManager</a></li>
+<li><a title="moody.m.b_send.looper.ExcelBulkManagerClassic" href="#moody.m.b_send.looper.ExcelBulkManagerClassic">ExcelBulkManagerClassic</a></li>
 </ul>
 <h3>Methods</h3>
 <dl>
-<dt id="moody.bulk.ExcelBasic.useKeyChinese"><code class="name flex">
-<span>def <span class="ident">useKeyChinese</span></span>(<span>self) ‑> <a title="moody.bulk.ExcelBasic" href="#moody.bulk.ExcelBasic">ExcelBasic</a></span>
+<dt id="moody.m.b_send.looper.ExcelBasic.useKeyChinese"><code class="name flex">
+<span>def <span class="ident">useKeyChinese</span></span>(<span>self) ‑> <a title="moody.m.b_send.looper.ExcelBasic" href="#moody.m.b_send.looper.ExcelBasic">ExcelBasic</a></span>
 </code></dt>
 <dd>
 <div class="desc"></div>
@@ -412,8 +405,8 @@ class ExcelBulkManagerClassic(ExcelBasic):
     return self</code></pre>
 </details>
 </dd>
-<dt id="moody.bulk.ExcelBasic.useKeyEng"><code class="name flex">
-<span>def <span class="ident">useKeyEng</span></span>(<span>self) ‑> <a title="moody.bulk.ExcelBasic" href="#moody.bulk.ExcelBasic">ExcelBasic</a></span>
+<dt id="moody.m.b_send.looper.ExcelBasic.useKeyEng"><code class="name flex">
+<span>def <span class="ident">useKeyEng</span></span>(<span>self) ‑> <a title="moody.m.b_send.looper.ExcelBasic" href="#moody.m.b_send.looper.ExcelBasic">ExcelBasic</a></span>
 </code></dt>
 <dd>
 <div class="desc"></div>
@@ -430,16 +423,16 @@ class ExcelBulkManagerClassic(ExcelBasic):
 </dl>
 <h3>Inherited members</h3>
 <ul class="hlist">
-<li><code><b><a title="moody.bulk.LooperBulk" href="#moody.bulk.LooperBulk">LooperBulk</a></b></code>:
+<li><code><b><a title="moody.m.b_send.looper.LooperBulk" href="#moody.m.b_send.looper.LooperBulk">LooperBulk</a></b></code>:
 <ul class="hlist">
-<li><code><a title="moody.bulk.LooperBulk.entryAdd" href="basec.html#moody.bulk.basec.BaseBulk.entryAdd">entryAdd</a></code></li>
+<li><code><a title="moody.m.b_send.looper.LooperBulk.entryAdd" href="basec.html#moody.m.b_send.basec.BaseBulk.entryAdd">entryAdd</a></code></li>
 </ul>
 </li>
 </ul>
 </dd>
-<dt id="moody.bulk.ExcelBulkManager"><code class="flex name class">
+<dt id="moody.m.b_send.looper.ExcelBulkManager"><code class="flex name class">
 <span>class <span class="ident">ExcelBulkManager</span></span>
-<span>(</span><span>filepath, m: <a title="moody.libeb.MiliDoS" href="../libeb.html#moody.libeb.MiliDoS">MiliDoS</a>)</span>
+<span>(</span><span>filepath, m: <a title="moody.libeb.MiliDoS" href="../../libeb.html#moody.libeb.MiliDoS">MiliDoS</a>)</span>
 </code></dt>
 <dd>
 <div class="desc"><p>using contract on making at least 250 transactions in a batch.</p></div>
@@ -495,13 +488,13 @@ class ExcelBulkManagerClassic(ExcelBasic):
 </details>
 <h3>Ancestors</h3>
 <ul class="hlist">
-<li><a title="moody.bulk.ExcelBasic" href="#moody.bulk.ExcelBasic">ExcelBasic</a></li>
-<li><a title="moody.bulk.LooperBulk" href="#moody.bulk.LooperBulk">LooperBulk</a></li>
-<li><a title="moody.bulk.basec.BaseBulk" href="basec.html#moody.bulk.basec.BaseBulk">BaseBulk</a></li>
+<li><a title="moody.m.b_send.looper.ExcelBasic" href="#moody.m.b_send.looper.ExcelBasic">ExcelBasic</a></li>
+<li><a title="moody.m.b_send.looper.LooperBulk" href="#moody.m.b_send.looper.LooperBulk">LooperBulk</a></li>
+<li><a title="moody.m.b_send.basec.BaseBulk" href="basec.html#moody.m.b_send.basec.BaseBulk">BaseBulk</a></li>
 </ul>
 <h3>Methods</h3>
 <dl>
-<dt id="moody.bulk.ExcelBulkManager.getPlatformVal"><code class="name flex">
+<dt id="moody.m.b_send.looper.ExcelBulkManager.getPlatformVal"><code class="name flex">
 <span>def <span class="ident">getPlatformVal</span></span>(<span>self) ‑> int</span>
 </code></dt>
 <dd>
@@ -514,7 +507,7 @@ class ExcelBulkManagerClassic(ExcelBasic):
     return int(self.total / TestBulkManager.wei)</code></pre>
 </details>
 </dd>
-<dt id="moody.bulk.ExcelBulkManager.getSENDAddresses"><code class="name flex">
+<dt id="moody.m.b_send.looper.ExcelBulkManager.getSENDAddresses"><code class="name flex">
 <span>def <span class="ident">getSENDAddresses</span></span>(<span>self) ‑> list</span>
 </code></dt>
 <dd>
@@ -527,7 +520,7 @@ class ExcelBulkManagerClassic(ExcelBasic):
     return self.list_address</code></pre>
 </details>
 </dd>
-<dt id="moody.bulk.ExcelBulkManager.getSENDAmountBalances"><code class="name flex">
+<dt id="moody.m.b_send.looper.ExcelBulkManager.getSENDAmountBalances"><code class="name flex">
 <span>def <span class="ident">getSENDAmountBalances</span></span>(<span>self) ‑> list</span>
 </code></dt>
 <dd>
@@ -540,7 +533,7 @@ class ExcelBulkManagerClassic(ExcelBasic):
     return self.list_amount</code></pre>
 </details>
 </dd>
-<dt id="moody.bulk.ExcelBulkManager.getSENDTotal"><code class="name flex">
+<dt id="moody.m.b_send.looper.ExcelBulkManager.getSENDTotal"><code class="name flex">
 <span>def <span class="ident">getSENDTotal</span></span>(<span>self) ‑> int</span>
 </code></dt>
 <dd>
@@ -553,8 +546,8 @@ class ExcelBulkManagerClassic(ExcelBasic):
     return self.total</code></pre>
 </details>
 </dd>
-<dt id="moody.bulk.ExcelBulkManager.prep"><code class="name flex">
-<span>def <span class="ident">prep</span></span>(<span>self) ‑> <a title="moody.bulk.ExcelBulkManager" href="#moody.bulk.ExcelBulkManager">ExcelBulkManager</a></span>
+<dt id="moody.m.b_send.looper.ExcelBulkManager.prep"><code class="name flex">
+<span>def <span class="ident">prep</span></span>(<span>self) ‑> <a title="moody.m.b_send.looper.ExcelBulkManager" href="#moody.m.b_send.looper.ExcelBulkManager">ExcelBulkManager</a></span>
 </code></dt>
 <dd>
 <div class="desc"></div>
@@ -591,14 +584,14 @@ class ExcelBulkManagerClassic(ExcelBasic):
 </dl>
 <h3>Inherited members</h3>
 <ul class="hlist">
-<li><code><b><a title="moody.bulk.ExcelBasic" href="#moody.bulk.ExcelBasic">ExcelBasic</a></b></code>:
+<li><code><b><a title="moody.m.b_send.looper.ExcelBasic" href="#moody.m.b_send.looper.ExcelBasic">ExcelBasic</a></b></code>:
 <ul class="hlist">
-<li><code><a title="moody.bulk.ExcelBasic.entryAdd" href="basec.html#moody.bulk.basec.BaseBulk.entryAdd">entryAdd</a></code></li>
+<li><code><a title="moody.m.b_send.looper.ExcelBasic.entryAdd" href="basec.html#moody.m.b_send.basec.BaseBulk.entryAdd">entryAdd</a></code></li>
 </ul>
 </li>
 </ul>
 </dd>
-<dt id="moody.bulk.ExcelBulkManagerClassic"><code class="flex name class">
+<dt id="moody.m.b_send.looper.ExcelBulkManagerClassic"><code class="flex name class">
 <span>class <span class="ident">ExcelBulkManagerClassic</span></span>
 <span>(</span><span>filepath, tron)</span>
 </code></dt>
@@ -714,14 +707,14 @@ class ExcelBulkManagerClassic(ExcelBasic):
 </details>
 <h3>Ancestors</h3>
 <ul class="hlist">
-<li><a title="moody.bulk.ExcelBasic" href="#moody.bulk.ExcelBasic">ExcelBasic</a></li>
-<li><a title="moody.bulk.LooperBulk" href="#moody.bulk.LooperBulk">LooperBulk</a></li>
-<li><a title="moody.bulk.basec.BaseBulk" href="basec.html#moody.bulk.basec.BaseBulk">BaseBulk</a></li>
+<li><a title="moody.m.b_send.looper.ExcelBasic" href="#moody.m.b_send.looper.ExcelBasic">ExcelBasic</a></li>
+<li><a title="moody.m.b_send.looper.LooperBulk" href="#moody.m.b_send.looper.LooperBulk">LooperBulk</a></li>
+<li><a title="moody.m.b_send.basec.BaseBulk" href="basec.html#moody.m.b_send.basec.BaseBulk">BaseBulk</a></li>
 </ul>
 <h3>Methods</h3>
 <dl>
-<dt id="moody.bulk.ExcelBulkManagerClassic.executeTokenDistribution"><code class="name flex">
-<span>def <span class="ident">executeTokenDistribution</span></span>(<span>self, token: <a title="moody.m.ori20.Ori20" href="../m/ori20/index.html#moody.m.ori20.Ori20">Ori20</a>, notify=None)</span>
+<dt id="moody.m.b_send.looper.ExcelBulkManagerClassic.executeTokenDistribution"><code class="name flex">
+<span>def <span class="ident">executeTokenDistribution</span></span>(<span>self, token: <a title="moody.m.ori20.Ori20" href="../ori20/index.html#moody.m.ori20.Ori20">Ori20</a>, notify=None)</span>
 </code></dt>
 <dd>
 <div class="desc"></div>
@@ -748,8 +741,8 @@ class ExcelBulkManagerClassic(ExcelBasic):
     self._status_busy = False</code></pre>
 </details>
 </dd>
-<dt id="moody.bulk.ExcelBulkManagerClassic.executeTokenTransferDistributionTg"><code class="name flex">
-<span>def <span class="ident">executeTokenTransferDistributionTg</span></span>(<span>self, token: <a title="moody.m.ori20.Ori20" href="../m/ori20/index.html#moody.m.ori20.Ori20">Ori20</a>, notify=None, errorNotify=None)</span>
+<dt id="moody.m.b_send.looper.ExcelBulkManagerClassic.executeTokenTransferDistributionTg"><code class="name flex">
+<span>def <span class="ident">executeTokenTransferDistributionTg</span></span>(<span>self, token: <a title="moody.m.ori20.Ori20" href="../ori20/index.html#moody.m.ori20.Ori20">Ori20</a>, notify=None, errorNotify=None)</span>
 </code></dt>
 <dd>
 <div class="desc"><p>limitation: <a href="https://core.telegram.org/bots/faq#my-bot-is-hitting-limits-how-do-i-avoid-this">https://core.telegram.org/bots/faq#my-bot-is-hitting-limits-how-do-i-avoid-this</a>
@@ -806,7 +799,7 @@ Also note that your bot will not be able to send more than 20 messages per minut
     self._status_busy = False</code></pre>
 </details>
 </dd>
-<dt id="moody.bulk.ExcelBulkManagerClassic.getSENDAddresses"><code class="name flex">
+<dt id="moody.m.b_send.looper.ExcelBulkManagerClassic.getSENDAddresses"><code class="name flex">
 <span>def <span class="ident">getSENDAddresses</span></span>(<span>self) ‑> list</span>
 </code></dt>
 <dd>
@@ -819,7 +812,7 @@ Also note that your bot will not be able to send more than 20 messages per minut
     return self.list_address</code></pre>
 </details>
 </dd>
-<dt id="moody.bulk.ExcelBulkManagerClassic.getSENDAmountBalances"><code class="name flex">
+<dt id="moody.m.b_send.looper.ExcelBulkManagerClassic.getSENDAmountBalances"><code class="name flex">
 <span>def <span class="ident">getSENDAmountBalances</span></span>(<span>self) ‑> list</span>
 </code></dt>
 <dd>
@@ -832,7 +825,7 @@ Also note that your bot will not be able to send more than 20 messages per minut
     return self.list_amount</code></pre>
 </details>
 </dd>
-<dt id="moody.bulk.ExcelBulkManagerClassic.getSENDTotal"><code class="name flex">
+<dt id="moody.m.b_send.looper.ExcelBulkManagerClassic.getSENDTotal"><code class="name flex">
 <span>def <span class="ident">getSENDTotal</span></span>(<span>self) ‑> int</span>
 </code></dt>
 <dd>
@@ -845,8 +838,8 @@ Also note that your bot will not be able to send more than 20 messages per minut
     return self.total</code></pre>
 </details>
 </dd>
-<dt id="moody.bulk.ExcelBulkManagerClassic.prep"><code class="name flex">
-<span>def <span class="ident">prep</span></span>(<span>self) ‑> <a title="moody.bulk.ExcelBulkManagerClassic" href="#moody.bulk.ExcelBulkManagerClassic">ExcelBulkManagerClassic</a></span>
+<dt id="moody.m.b_send.looper.ExcelBulkManagerClassic.prep"><code class="name flex">
+<span>def <span class="ident">prep</span></span>(<span>self) ‑> <a title="moody.m.b_send.looper.ExcelBulkManagerClassic" href="#moody.m.b_send.looper.ExcelBulkManagerClassic">ExcelBulkManagerClassic</a></span>
 </code></dt>
 <dd>
 <div class="desc"></div>
@@ -885,16 +878,16 @@ Also note that your bot will not be able to send more than 20 messages per minut
 </dl>
 <h3>Inherited members</h3>
 <ul class="hlist">
-<li><code><b><a title="moody.bulk.ExcelBasic" href="#moody.bulk.ExcelBasic">ExcelBasic</a></b></code>:
+<li><code><b><a title="moody.m.b_send.looper.ExcelBasic" href="#moody.m.b_send.looper.ExcelBasic">ExcelBasic</a></b></code>:
 <ul class="hlist">
-<li><code><a title="moody.bulk.ExcelBasic.entryAdd" href="basec.html#moody.bulk.basec.BaseBulk.entryAdd">entryAdd</a></code></li>
+<li><code><a title="moody.m.b_send.looper.ExcelBasic.entryAdd" href="basec.html#moody.m.b_send.basec.BaseBulk.entryAdd">entryAdd</a></code></li>
 </ul>
 </li>
 </ul>
 </dd>
-<dt id="moody.bulk.LooperBulk"><code class="flex name class">
+<dt id="moody.m.b_send.looper.LooperBulk"><code class="flex name class">
 <span>class <span class="ident">LooperBulk</span></span>
-<span>(</span><span>mHold: <a title="moody.libeb.MiliDoS" href="../libeb.html#moody.libeb.MiliDoS">MiliDoS</a>)</span>
+<span>(</span><span>mHold: <a title="moody.libeb.MiliDoS" href="../../libeb.html#moody.libeb.MiliDoS">MiliDoS</a>)</span>
 </code></dt>
 <dd>
 <div class="desc"><p>Bulk manager execution now
@@ -988,17 +981,17 @@ Also note that your bot will not be able to send more than 20 messages per minut
 </details>
 <h3>Ancestors</h3>
 <ul class="hlist">
-<li><a title="moody.bulk.basec.BaseBulk" href="basec.html#moody.bulk.basec.BaseBulk">BaseBulk</a></li>
+<li><a title="moody.m.b_send.basec.BaseBulk" href="basec.html#moody.m.b_send.basec.BaseBulk">BaseBulk</a></li>
 </ul>
 <h3>Subclasses</h3>
 <ul class="hlist">
-<li><a title="moody.bulk.ExcelBasic" href="#moody.bulk.ExcelBasic">ExcelBasic</a></li>
-<li><a title="moody.bulk.TestBulkManager" href="#moody.bulk.TestBulkManager">TestBulkManager</a></li>
+<li><a title="moody.m.b_send.looper.ExcelBasic" href="#moody.m.b_send.looper.ExcelBasic">ExcelBasic</a></li>
+<li><a title="moody.m.b_send.looper.TestBulkManager" href="#moody.m.b_send.looper.TestBulkManager">TestBulkManager</a></li>
 </ul>
 <h3>Methods</h3>
 <dl>
-<dt id="moody.bulk.LooperBulk.LoopBatchExecution"><code class="name flex">
-<span>def <span class="ident">LoopBatchExecution</span></span>(<span>self, express_contract: <a title="moody.m.b_send.BSend" href="../m/b_send/index.html#moody.m.b_send.BSend">BSend</a>, coin_contract: <a title="moody.m.ori20.Ori20" href="../m/ori20/index.html#moody.m.ori20.Ori20">Ori20</a>, notify=None, errorNotify=None) ‑> NoneType</span>
+<dt id="moody.m.b_send.looper.LooperBulk.LoopBatchExecution"><code class="name flex">
+<span>def <span class="ident">LoopBatchExecution</span></span>(<span>self, express_contract: <a title="moody.m.b_send.BSend" href="index.html#moody.m.b_send.BSend">BSend</a>, coin_contract: <a title="moody.m.ori20.Ori20" href="../ori20/index.html#moody.m.ori20.Ori20">Ori20</a>, notify=None, errorNotify=None) ‑> NoneType</span>
 </code></dt>
 <dd>
 <div class="desc"></div>
@@ -1067,16 +1060,16 @@ Also note that your bot will not be able to send more than 20 messages per minut
 </dl>
 <h3>Inherited members</h3>
 <ul class="hlist">
-<li><code><b><a title="moody.bulk.basec.BaseBulk" href="basec.html#moody.bulk.basec.BaseBulk">BaseBulk</a></b></code>:
+<li><code><b><a title="moody.m.b_send.basec.BaseBulk" href="basec.html#moody.m.b_send.basec.BaseBulk">BaseBulk</a></b></code>:
 <ul class="hlist">
-<li><code><a title="moody.bulk.basec.BaseBulk.entryAdd" href="basec.html#moody.bulk.basec.BaseBulk.entryAdd">entryAdd</a></code></li>
+<li><code><a title="moody.m.b_send.basec.BaseBulk.entryAdd" href="basec.html#moody.m.b_send.basec.BaseBulk.entryAdd">entryAdd</a></code></li>
 </ul>
 </li>
 </ul>
 </dd>
-<dt id="moody.bulk.TestBulkManager"><code class="flex name class">
+<dt id="moody.m.b_send.looper.TestBulkManager"><code class="flex name class">
 <span>class <span class="ident">TestBulkManager</span></span>
-<span>(</span><span>dat: list, mHold: <a title="moody.libeb.MiliDoS" href="../libeb.html#moody.libeb.MiliDoS">MiliDoS</a>)</span>
+<span>(</span><span>dat: list, mHold: <a title="moody.libeb.MiliDoS" href="../../libeb.html#moody.libeb.MiliDoS">MiliDoS</a>)</span>
 </code></dt>
 <dd>
 <div class="desc"><p>Bulk manager execution now
@@ -1128,12 +1121,12 @@ Also note that your bot will not be able to send more than 20 messages per minut
 </details>
 <h3>Ancestors</h3>
 <ul class="hlist">
-<li><a title="moody.bulk.LooperBulk" href="#moody.bulk.LooperBulk">LooperBulk</a></li>
-<li><a title="moody.bulk.basec.BaseBulk" href="basec.html#moody.bulk.basec.BaseBulk">BaseBulk</a></li>
+<li><a title="moody.m.b_send.looper.LooperBulk" href="#moody.m.b_send.looper.LooperBulk">LooperBulk</a></li>
+<li><a title="moody.m.b_send.basec.BaseBulk" href="basec.html#moody.m.b_send.basec.BaseBulk">BaseBulk</a></li>
 </ul>
 <h3>Methods</h3>
 <dl>
-<dt id="moody.bulk.TestBulkManager.getPlatformVal"><code class="name flex">
+<dt id="moody.m.b_send.looper.TestBulkManager.getPlatformVal"><code class="name flex">
 <span>def <span class="ident">getPlatformVal</span></span>(<span>self) ‑> int</span>
 </code></dt>
 <dd>
@@ -1149,7 +1142,7 @@ Also note that your bot will not be able to send more than 20 messages per minut
     return math.ceil(self.total / TestBulkManager.wei)</code></pre>
 </details>
 </dd>
-<dt id="moody.bulk.TestBulkManager.getSENDAddresses"><code class="name flex">
+<dt id="moody.m.b_send.looper.TestBulkManager.getSENDAddresses"><code class="name flex">
 <span>def <span class="ident">getSENDAddresses</span></span>(<span>self) ‑> list</span>
 </code></dt>
 <dd>
@@ -1162,7 +1155,7 @@ Also note that your bot will not be able to send more than 20 messages per minut
     return self.list_address</code></pre>
 </details>
 </dd>
-<dt id="moody.bulk.TestBulkManager.getSENDAmountBalances"><code class="name flex">
+<dt id="moody.m.b_send.looper.TestBulkManager.getSENDAmountBalances"><code class="name flex">
 <span>def <span class="ident">getSENDAmountBalances</span></span>(<span>self) ‑> list</span>
 </code></dt>
 <dd>
@@ -1175,8 +1168,8 @@ Also note that your bot will not be able to send more than 20 messages per minut
     return self.list_amount</code></pre>
 </details>
 </dd>
-<dt id="moody.bulk.TestBulkManager.prep"><code class="name flex">
-<span>def <span class="ident">prep</span></span>(<span>self) ‑> <a title="moody.bulk.TestBulkManager" href="#moody.bulk.TestBulkManager">TestBulkManager</a></span>
+<dt id="moody.m.b_send.looper.TestBulkManager.prep"><code class="name flex">
+<span>def <span class="ident">prep</span></span>(<span>self) ‑> <a title="moody.m.b_send.looper.TestBulkManager" href="#moody.m.b_send.looper.TestBulkManager">TestBulkManager</a></span>
 </code></dt>
 <dd>
 <div class="desc"></div>
@@ -1206,9 +1199,9 @@ Also note that your bot will not be able to send more than 20 messages per minut
 </dl>
 <h3>Inherited members</h3>
 <ul class="hlist">
-<li><code><b><a title="moody.bulk.LooperBulk" href="#moody.bulk.LooperBulk">LooperBulk</a></b></code>:
+<li><code><b><a title="moody.m.b_send.looper.LooperBulk" href="#moody.m.b_send.looper.LooperBulk">LooperBulk</a></b></code>:
 <ul class="hlist">
-<li><code><a title="moody.bulk.LooperBulk.entryAdd" href="basec.html#moody.bulk.basec.BaseBulk.entryAdd">entryAdd</a></code></li>
+<li><code><a title="moody.m.b_send.looper.LooperBulk.entryAdd" href="basec.html#moody.m.b_send.basec.BaseBulk.entryAdd">entryAdd</a></code></li>
 </ul>
 </li>
 </ul>
@@ -1224,57 +1217,52 @@ Also note that your bot will not be able to send more than 20 messages per minut
 <ul id="index">
 <li><h3>Super-module</h3>
 <ul>
-<li><code><a title="moody" href="../index.html">moody</a></code></li>
-</ul>
-</li>
-<li><h3><a href="#header-submodules">Sub-modules</a></h3>
-<ul>
-<li><code><a title="moody.bulk.basec" href="basec.html">moody.bulk.basec</a></code></li>
+<li><code><a title="moody.m.b_send" href="index.html">moody.m.b_send</a></code></li>
 </ul>
 </li>
 <li><h3><a href="#header-classes">Classes</a></h3>
 <ul>
 <li>
-<h4><code><a title="moody.bulk.ExcelBasic" href="#moody.bulk.ExcelBasic">ExcelBasic</a></code></h4>
+<h4><code><a title="moody.m.b_send.looper.ExcelBasic" href="#moody.m.b_send.looper.ExcelBasic">ExcelBasic</a></code></h4>
 <ul class="">
-<li><code><a title="moody.bulk.ExcelBasic.useKeyChinese" href="#moody.bulk.ExcelBasic.useKeyChinese">useKeyChinese</a></code></li>
-<li><code><a title="moody.bulk.ExcelBasic.useKeyEng" href="#moody.bulk.ExcelBasic.useKeyEng">useKeyEng</a></code></li>
+<li><code><a title="moody.m.b_send.looper.ExcelBasic.useKeyChinese" href="#moody.m.b_send.looper.ExcelBasic.useKeyChinese">useKeyChinese</a></code></li>
+<li><code><a title="moody.m.b_send.looper.ExcelBasic.useKeyEng" href="#moody.m.b_send.looper.ExcelBasic.useKeyEng">useKeyEng</a></code></li>
 </ul>
 </li>
 <li>
-<h4><code><a title="moody.bulk.ExcelBulkManager" href="#moody.bulk.ExcelBulkManager">ExcelBulkManager</a></code></h4>
+<h4><code><a title="moody.m.b_send.looper.ExcelBulkManager" href="#moody.m.b_send.looper.ExcelBulkManager">ExcelBulkManager</a></code></h4>
 <ul class="">
-<li><code><a title="moody.bulk.ExcelBulkManager.getPlatformVal" href="#moody.bulk.ExcelBulkManager.getPlatformVal">getPlatformVal</a></code></li>
-<li><code><a title="moody.bulk.ExcelBulkManager.getSENDAddresses" href="#moody.bulk.ExcelBulkManager.getSENDAddresses">getSENDAddresses</a></code></li>
-<li><code><a title="moody.bulk.ExcelBulkManager.getSENDAmountBalances" href="#moody.bulk.ExcelBulkManager.getSENDAmountBalances">getSENDAmountBalances</a></code></li>
-<li><code><a title="moody.bulk.ExcelBulkManager.getSENDTotal" href="#moody.bulk.ExcelBulkManager.getSENDTotal">getSENDTotal</a></code></li>
-<li><code><a title="moody.bulk.ExcelBulkManager.prep" href="#moody.bulk.ExcelBulkManager.prep">prep</a></code></li>
+<li><code><a title="moody.m.b_send.looper.ExcelBulkManager.getPlatformVal" href="#moody.m.b_send.looper.ExcelBulkManager.getPlatformVal">getPlatformVal</a></code></li>
+<li><code><a title="moody.m.b_send.looper.ExcelBulkManager.getSENDAddresses" href="#moody.m.b_send.looper.ExcelBulkManager.getSENDAddresses">getSENDAddresses</a></code></li>
+<li><code><a title="moody.m.b_send.looper.ExcelBulkManager.getSENDAmountBalances" href="#moody.m.b_send.looper.ExcelBulkManager.getSENDAmountBalances">getSENDAmountBalances</a></code></li>
+<li><code><a title="moody.m.b_send.looper.ExcelBulkManager.getSENDTotal" href="#moody.m.b_send.looper.ExcelBulkManager.getSENDTotal">getSENDTotal</a></code></li>
+<li><code><a title="moody.m.b_send.looper.ExcelBulkManager.prep" href="#moody.m.b_send.looper.ExcelBulkManager.prep">prep</a></code></li>
 </ul>
 </li>
 <li>
-<h4><code><a title="moody.bulk.ExcelBulkManagerClassic" href="#moody.bulk.ExcelBulkManagerClassic">ExcelBulkManagerClassic</a></code></h4>
+<h4><code><a title="moody.m.b_send.looper.ExcelBulkManagerClassic" href="#moody.m.b_send.looper.ExcelBulkManagerClassic">ExcelBulkManagerClassic</a></code></h4>
 <ul class="">
-<li><code><a title="moody.bulk.ExcelBulkManagerClassic.executeTokenDistribution" href="#moody.bulk.ExcelBulkManagerClassic.executeTokenDistribution">executeTokenDistribution</a></code></li>
-<li><code><a title="moody.bulk.ExcelBulkManagerClassic.executeTokenTransferDistributionTg" href="#moody.bulk.ExcelBulkManagerClassic.executeTokenTransferDistributionTg">executeTokenTransferDistributionTg</a></code></li>
-<li><code><a title="moody.bulk.ExcelBulkManagerClassic.getSENDAddresses" href="#moody.bulk.ExcelBulkManagerClassic.getSENDAddresses">getSENDAddresses</a></code></li>
-<li><code><a title="moody.bulk.ExcelBulkManagerClassic.getSENDAmountBalances" href="#moody.bulk.ExcelBulkManagerClassic.getSENDAmountBalances">getSENDAmountBalances</a></code></li>
-<li><code><a title="moody.bulk.ExcelBulkManagerClassic.getSENDTotal" href="#moody.bulk.ExcelBulkManagerClassic.getSENDTotal">getSENDTotal</a></code></li>
-<li><code><a title="moody.bulk.ExcelBulkManagerClassic.prep" href="#moody.bulk.ExcelBulkManagerClassic.prep">prep</a></code></li>
+<li><code><a title="moody.m.b_send.looper.ExcelBulkManagerClassic.executeTokenDistribution" href="#moody.m.b_send.looper.ExcelBulkManagerClassic.executeTokenDistribution">executeTokenDistribution</a></code></li>
+<li><code><a title="moody.m.b_send.looper.ExcelBulkManagerClassic.executeTokenTransferDistributionTg" href="#moody.m.b_send.looper.ExcelBulkManagerClassic.executeTokenTransferDistributionTg">executeTokenTransferDistributionTg</a></code></li>
+<li><code><a title="moody.m.b_send.looper.ExcelBulkManagerClassic.getSENDAddresses" href="#moody.m.b_send.looper.ExcelBulkManagerClassic.getSENDAddresses">getSENDAddresses</a></code></li>
+<li><code><a title="moody.m.b_send.looper.ExcelBulkManagerClassic.getSENDAmountBalances" href="#moody.m.b_send.looper.ExcelBulkManagerClassic.getSENDAmountBalances">getSENDAmountBalances</a></code></li>
+<li><code><a title="moody.m.b_send.looper.ExcelBulkManagerClassic.getSENDTotal" href="#moody.m.b_send.looper.ExcelBulkManagerClassic.getSENDTotal">getSENDTotal</a></code></li>
+<li><code><a title="moody.m.b_send.looper.ExcelBulkManagerClassic.prep" href="#moody.m.b_send.looper.ExcelBulkManagerClassic.prep">prep</a></code></li>
 </ul>
 </li>
 <li>
-<h4><code><a title="moody.bulk.LooperBulk" href="#moody.bulk.LooperBulk">LooperBulk</a></code></h4>
+<h4><code><a title="moody.m.b_send.looper.LooperBulk" href="#moody.m.b_send.looper.LooperBulk">LooperBulk</a></code></h4>
 <ul class="">
-<li><code><a title="moody.bulk.LooperBulk.LoopBatchExecution" href="#moody.bulk.LooperBulk.LoopBatchExecution">LoopBatchExecution</a></code></li>
+<li><code><a title="moody.m.b_send.looper.LooperBulk.LoopBatchExecution" href="#moody.m.b_send.looper.LooperBulk.LoopBatchExecution">LoopBatchExecution</a></code></li>
 </ul>
 </li>
 <li>
-<h4><code><a title="moody.bulk.TestBulkManager" href="#moody.bulk.TestBulkManager">TestBulkManager</a></code></h4>
+<h4><code><a title="moody.m.b_send.looper.TestBulkManager" href="#moody.m.b_send.looper.TestBulkManager">TestBulkManager</a></code></h4>
 <ul class="">
-<li><code><a title="moody.bulk.TestBulkManager.getPlatformVal" href="#moody.bulk.TestBulkManager.getPlatformVal">getPlatformVal</a></code></li>
-<li><code><a title="moody.bulk.TestBulkManager.getSENDAddresses" href="#moody.bulk.TestBulkManager.getSENDAddresses">getSENDAddresses</a></code></li>
-<li><code><a title="moody.bulk.TestBulkManager.getSENDAmountBalances" href="#moody.bulk.TestBulkManager.getSENDAmountBalances">getSENDAmountBalances</a></code></li>
-<li><code><a title="moody.bulk.TestBulkManager.prep" href="#moody.bulk.TestBulkManager.prep">prep</a></code></li>
+<li><code><a title="moody.m.b_send.looper.TestBulkManager.getPlatformVal" href="#moody.m.b_send.looper.TestBulkManager.getPlatformVal">getPlatformVal</a></code></li>
+<li><code><a title="moody.m.b_send.looper.TestBulkManager.getSENDAddresses" href="#moody.m.b_send.looper.TestBulkManager.getSENDAddresses">getSENDAddresses</a></code></li>
+<li><code><a title="moody.m.b_send.looper.TestBulkManager.getSENDAmountBalances" href="#moody.m.b_send.looper.TestBulkManager.getSENDAmountBalances">getSENDAmountBalances</a></code></li>
+<li><code><a title="moody.m.b_send.looper.TestBulkManager.prep" href="#moody.m.b_send.looper.TestBulkManager.prep">prep</a></code></li>
 </ul>
 </li>
 </ul>

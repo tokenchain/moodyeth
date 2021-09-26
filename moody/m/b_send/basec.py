@@ -6,7 +6,7 @@ import math
 
 from web3 import Web3
 
-from .. import conf, Bolors
+from ... import conf, Bolors
 
 
 def yes_or_no(question):
