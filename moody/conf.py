@@ -161,7 +161,9 @@ def RSCTestnet() -> Config:
         rpc_url="http://47.243.141.113:12369",
         chain_id=1235,
         symbol="RSCT",
-        block_explorer="http://47.243.123.252/"
+        block_explorer="http://47.243.123.252/",
+        wait_time=6,
+        one=10 ** 18,
     )
 
 

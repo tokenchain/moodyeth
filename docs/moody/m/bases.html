@@ -29,27 +29,28 @@
 </summary>
 <pre><code class="python">&#34;&#34;&#34;Base wrapper class for accessing ethereum smart contracts.&#34;&#34;&#34;
 
-from typing import Any, Union
+from typing import Any
 
 from eth_utils import is_address, to_checksum_address
 from web3 import Web3
+
+from .tx_params import TxParams
 # from web3.providers.base import BaseProvider
 from ..libeb import MiliDoS
-from .tx_params import TxParams
 
 
 class Validator:
     &#34;&#34;&#34;Base class for validating inputs to methods.&#34;&#34;&#34;
 
     def __init__(
-        self,
-        web3_or_provider: Web3,
-        contract_address: str,
+            self,
+            web3_or_provider: Web3,
+            contract_address: str,
     ):
         &#34;&#34;&#34;Initialize the instance.&#34;&#34;&#34;
 
     def assert_valid(
-        self, method_name: str, parameter_name: str, argument_value: Any
+            self, method_name: str, parameter_name: str, argument_value: Any
     ):
         &#34;&#34;&#34;Raise an exception if method input is not valid.
 
@@ -64,10 +65,10 @@ class ContractMethod:
     &#34;&#34;&#34;Base class for wrapping an Ethereum smart contract method.&#34;&#34;&#34;
 
     def __init__(
-        self,
-        elib: MiliDoS,
-        contract_address: str,
-        validator: Validator = None,
+            self,
+            elib: MiliDoS,
+            contract_address: str,
+            validator: Validator = None,
     ):
         &#34;&#34;&#34;Instantiate the object.
 
@@ -81,6 +82,7 @@ class ContractMethod:
             validator = Validator(self._web3_eth, contract_address)
         self.validator = validator
         self._operate = elib.accountAddr
+        self._wait = 5
 
     @staticmethod
     def validate_and_checksum_address(address: str):
@@ -103,7 +105,33 @@ class ContractMethod:
             tx_params.from_ = self.validate_and_checksum_address(
                 tx_params.from_
             )
-        return tx_params</code></pre>
+        return tx_params
+
+    def setWait(self, t: int) -&gt; &#34;ContractMethod&#34;:
+        self._wait = t
+        return self
+
+class ContractBase:
+    SIGNATURES = None
+
+    def __init__(self):
+        self.call_contract_fee_amount: int = 2000000000
+        self.call_contract_fee_price: int = 105910000000
+        self.call_contract_debug_flag: bool = False
+        self.call_contract_enforce_tx_receipt: bool = False
+
+    def CallContractFee(self, gas: int, price: int) -&gt; &#34;ContractBase&#34;:
+        self.call_contract_fee_amount = gas
+        self.call_contract_fee_price = price
+        return self
+
+    def CallDebug(self, yesno: bool) -&gt; &#34;ContractBase&#34;:
+        self.call_contract_debug_flag = yesno
+        return self
+
+    def EnforceTxReceipt(self, yesno: bool) -&gt; &#34;ContractBase&#34;:
+        self.call_contract_enforce_tx_receipt = yesno
+        return self</code></pre>
 </details>
 </section>
 <section>
@@ -115,6 +143,95 @@ class ContractMethod:
 <section>
 <h2 class="section-title" id="header-classes">Classes</h2>
 <dl>
+<dt id="moody.m.bases.ContractBase"><code class="flex name class">
+<span>class <span class="ident">ContractBase</span></span>
+</code></dt>
+<dd>
+<div class="desc"></div>
+<details class="source">
+<summary>
+<span>Expand source code</span>
+</summary>
+<pre><code class="python">class ContractBase:
+    SIGNATURES = None
+
+    def __init__(self):
+        self.call_contract_fee_amount: int = 2000000000
+        self.call_contract_fee_price: int = 105910000000
+        self.call_contract_debug_flag: bool = False
+        self.call_contract_enforce_tx_receipt: bool = False
+
+    def CallContractFee(self, gas: int, price: int) -&gt; &#34;ContractBase&#34;:
+        self.call_contract_fee_amount = gas
+        self.call_contract_fee_price = price
+        return self
+
+    def CallDebug(self, yesno: bool) -&gt; &#34;ContractBase&#34;:
+        self.call_contract_debug_flag = yesno
+        return self
+
+    def EnforceTxReceipt(self, yesno: bool) -&gt; &#34;ContractBase&#34;:
+        self.call_contract_enforce_tx_receipt = yesno
+        return self</code></pre>
+</details>
+<h3>Subclasses</h3>
+<ul class="hlist">
+<li><a title="moody.m.ori20.Ori20" href="ori20/index.html#moody.m.ori20.Ori20">Ori20</a></li>
+</ul>
+<h3>Class variables</h3>
+<dl>
+<dt id="moody.m.bases.ContractBase.SIGNATURES"><code class="name">var <span class="ident">SIGNATURES</span></code></dt>
+<dd>
+<div class="desc"></div>
+</dd>
+</dl>
+<h3>Methods</h3>
+<dl>
+<dt id="moody.m.bases.ContractBase.CallContractFee"><code class="name flex">
+<span>def <span class="ident">CallContractFee</span></span>(<span>self, gas: int, price: int) ‑> <a title="moody.m.bases.ContractBase" href="#moody.m.bases.ContractBase">ContractBase</a></span>
+</code></dt>
+<dd>
+<div class="desc"></div>
+<details class="source">
+<summary>
+<span>Expand source code</span>
+</summary>
+<pre><code class="python">def CallContractFee(self, gas: int, price: int) -&gt; &#34;ContractBase&#34;:
+    self.call_contract_fee_amount = gas
+    self.call_contract_fee_price = price
+    return self</code></pre>
+</details>
+</dd>
+<dt id="moody.m.bases.ContractBase.CallDebug"><code class="name flex">
+<span>def <span class="ident">CallDebug</span></span>(<span>self, yesno: bool) ‑> <a title="moody.m.bases.ContractBase" href="#moody.m.bases.ContractBase">ContractBase</a></span>
+</code></dt>
+<dd>
+<div class="desc"></div>
+<details class="source">
+<summary>
+<span>Expand source code</span>
+</summary>
+<pre><code class="python">def CallDebug(self, yesno: bool) -&gt; &#34;ContractBase&#34;:
+    self.call_contract_debug_flag = yesno
+    return self</code></pre>
+</details>
+</dd>
+<dt id="moody.m.bases.ContractBase.EnforceTxReceipt"><code class="name flex">
+<span>def <span class="ident">EnforceTxReceipt</span></span>(<span>self, yesno: bool) ‑> <a title="moody.m.bases.ContractBase" href="#moody.m.bases.ContractBase">ContractBase</a></span>
+</code></dt>
+<dd>
+<div class="desc"></div>
+<details class="source">
+<summary>
+<span>Expand source code</span>
+</summary>
+<pre><code class="python">def EnforceTxReceipt(self, yesno: bool) -&gt; &#34;ContractBase&#34;:
+    self.call_contract_enforce_tx_receipt = yesno
+    return self</code></pre>
+</details>
+</dd>
+</dl>
+</dd>
 <dt id="moody.m.bases.ContractMethod"><code class="flex name class">
 <span>class <span class="ident">ContractMethod</span></span>
 <span>(</span><span>elib: <a title="moody.libeb.MiliDoS" href="../libeb.html#moody.libeb.MiliDoS">MiliDoS</a>, contract_address: str, validator: <a title="moody.m.bases.Validator" href="#moody.m.bases.Validator">Validator</a> = None)</span>
@@ -133,10 +250,10 @@ class ContractMethod:
     &#34;&#34;&#34;Base class for wrapping an Ethereum smart contract method.&#34;&#34;&#34;
 
     def __init__(
-        self,
-        elib: MiliDoS,
-        contract_address: str,
-        validator: Validator = None,
+            self,
+            elib: MiliDoS,
+            contract_address: str,
+            validator: Validator = None,
     ):
         &#34;&#34;&#34;Instantiate the object.
 
@@ -150,6 +267,7 @@ class ContractMethod:
             validator = Validator(self._web3_eth, contract_address)
         self.validator = validator
         self._operate = elib.accountAddr
+        self._wait = 5
 
     @staticmethod
     def validate_and_checksum_address(address: str):
@@ -172,7 +290,11 @@ class ContractMethod:
             tx_params.from_ = self.validate_and_checksum_address(
                 tx_params.from_
             )
-        return tx_params</code></pre>
+        return tx_params
+
+    def setWait(self, t: int) -&gt; &#34;ContractMethod&#34;:
+        self._wait = t
+        return self</code></pre>
 </details>
 <h3>Subclasses</h3>
 <ul class="hlist">
@@ -268,6 +390,20 @@ def validate_and_checksum_address(address: str):
     return tx_params</code></pre>
 </details>
 </dd>
+<dt id="moody.m.bases.ContractMethod.setWait"><code class="name flex">
+<span>def <span class="ident">setWait</span></span>(<span>self, t: int) ‑> <a title="moody.m.bases.ContractMethod" href="#moody.m.bases.ContractMethod">ContractMethod</a></span>
+</code></dt>
+<dd>
+<div class="desc"></div>
+<details class="source">
+<summary>
+<span>Expand source code</span>
+</summary>
+<pre><code class="python">def setWait(self, t: int) -&gt; &#34;ContractMethod&#34;:
+    self._wait = t
+    return self</code></pre>
+</details>
+</dd>
 </dl>
 </dd>
 <dt id="moody.m.bases.Validator"><code class="flex name class">
@@ -285,14 +421,14 @@ def validate_and_checksum_address(address: str):
     &#34;&#34;&#34;Base class for validating inputs to methods.&#34;&#34;&#34;
 
     def __init__(
-        self,
-        web3_or_provider: Web3,
-        contract_address: str,
+            self,
+            web3_or_provider: Web3,
+            contract_address: str,
     ):
         &#34;&#34;&#34;Initialize the instance.&#34;&#34;&#34;
 
     def assert_valid(
-        self, method_name: str, parameter_name: str, argument_value: Any
+            self, method_name: str, parameter_name: str, argument_value: Any
     ):
         &#34;&#34;&#34;Raise an exception if method input is not valid.
 
@@ -323,7 +459,7 @@ validated.
 <span>Expand source code</span>
 </summary>
 <pre><code class="python">def assert_valid(
-    self, method_name: str, parameter_name: str, argument_value: Any
+        self, method_name: str, parameter_name: str, argument_value: Any
 ):
     &#34;&#34;&#34;Raise an exception if method input is not valid.
 
@@ -353,9 +489,19 @@ validated.
 <li><h3><a href="#header-classes">Classes</a></h3>
 <ul>
 <li>
+<h4><code><a title="moody.m.bases.ContractBase" href="#moody.m.bases.ContractBase">ContractBase</a></code></h4>
+<ul class="">
+<li><code><a title="moody.m.bases.ContractBase.CallContractFee" href="#moody.m.bases.ContractBase.CallContractFee">CallContractFee</a></code></li>
+<li><code><a title="moody.m.bases.ContractBase.CallDebug" href="#moody.m.bases.ContractBase.CallDebug">CallDebug</a></code></li>
+<li><code><a title="moody.m.bases.ContractBase.EnforceTxReceipt" href="#moody.m.bases.ContractBase.EnforceTxReceipt">EnforceTxReceipt</a></code></li>
+<li><code><a title="moody.m.bases.ContractBase.SIGNATURES" href="#moody.m.bases.ContractBase.SIGNATURES">SIGNATURES</a></code></li>
+</ul>
+</li>
+<li>
 <h4><code><a title="moody.m.bases.ContractMethod" href="#moody.m.bases.ContractMethod">ContractMethod</a></code></h4>
 <ul class="">
 <li><code><a title="moody.m.bases.ContractMethod.normalize_tx_params" href="#moody.m.bases.ContractMethod.normalize_tx_params">normalize_tx_params</a></code></li>
+<li><code><a title="moody.m.bases.ContractMethod.setWait" href="#moody.m.bases.ContractMethod.setWait">setWait</a></code></li>
 <li><code><a title="moody.m.bases.ContractMethod.validate_and_checksum_address" href="#moody.m.bases.ContractMethod.validate_and_checksum_address">validate_and_checksum_address</a></code></li>
 </ul>
 </li>

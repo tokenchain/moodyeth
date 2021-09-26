@@ -1,27 +1,27 @@
-
 """Base wrapper class for accessing ethereum smart contracts."""
 
-from typing import Any, Union
+from typing import Any
 
 from eth_utils import is_address, to_checksum_address
 from web3 import Web3
+
+from .tx_params import TxParams
 # from web3.providers.base import BaseProvider
 from ..libeb import MiliDoS
-from .tx_params import TxParams
 
 
 class Validator:
     """Base class for validating inputs to methods."""
 
     def __init__(
-        self,
-        web3_or_provider: Web3,
-        contract_address: str,
+            self,
+            web3_or_provider: Web3,
+            contract_address: str,
     ):
         """Initialize the instance."""
 
     def assert_valid(
-        self, method_name: str, parameter_name: str, argument_value: Any
+            self, method_name: str, parameter_name: str, argument_value: Any
     ):
         """Raise an exception if method input is not valid.
 
@@ -36,10 +36,10 @@ class ContractMethod:
     """Base class for wrapping an Ethereum smart contract method."""
 
     def __init__(
-        self,
-        elib: MiliDoS,
-        contract_address: str,
-        validator: Validator = None,
+            self,
+            elib: MiliDoS,
+            contract_address: str,
+            validator: Validator = None,
     ):
         """Instantiate the object.
 
@@ -53,6 +53,7 @@ class ContractMethod:
             validator = Validator(self._web3_eth, contract_address)
         self.validator = validator
         self._operate = elib.accountAddr
+        self._wait = 5
 
     @staticmethod
     def validate_and_checksum_address(address: str):
@@ -77,3 +78,28 @@ class ContractMethod:
             )
         return tx_params
 
+    def setWait(self, t: int) -> "ContractMethod":
+        self._wait = t
+        return self
+
+class ContractBase:
+    SIGNATURES = None
+
+    def __init__(self):
+        self.call_contract_fee_amount: int = 2000000000
+        self.call_contract_fee_price: int = 105910000000
+        self.call_contract_debug_flag: bool = False
+        self.call_contract_enforce_tx_receipt: bool = False
+
+    def CallContractFee(self, gas: int, price: int) -> "ContractBase":
+        self.call_contract_fee_amount = gas
+        self.call_contract_fee_price = price
+        return self
+
+    def CallDebug(self, yesno: bool) -> "ContractBase":
+        self.call_contract_debug_flag = yesno
+        return self
+
+    def EnforceTxReceipt(self, yesno: bool) -> "ContractBase":
+        self.call_contract_enforce_tx_receipt = yesno
+        return self
