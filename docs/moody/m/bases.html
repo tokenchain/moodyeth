@@ -39,6 +39,19 @@ from .tx_params import TxParams
 from ..libeb import MiliDoS
 
 
+class Signatures:
+    _function_signatures = {}
+
+    def __init__(self, abi: any):
+        for func in [obj for obj in abi if obj[&#39;type&#39;] == &#39;function&#39;]:
+            name = func[&#39;name&#39;]
+            types = [input[&#39;type&#39;] for input in func[&#39;inputs&#39;]]
+            self._function_signatures[name] = &#39;{}({})&#39;.format(name, &#39;,&#39;.join(types))
+
+    def fromSignatures(self) -&gt; dict:
+        return self._function_signatures
+
+
 class Validator:
     &#34;&#34;&#34;Base class for validating inputs to methods.&#34;&#34;&#34;
 
@@ -48,6 +61,7 @@ class Validator:
             contract_address: str,
     ):
         &#34;&#34;&#34;Initialize the instance.&#34;&#34;&#34;
+        pass
 
     def assert_valid(
             self, method_name: str, parameter_name: str, argument_value: Any
@@ -59,6 +73,12 @@ class Validator:
             validated.
         :param argument_value: Value of argument to parameter to be validated.
         &#34;&#34;&#34;
+
+    def bindSignatures(self, so: Signatures) -&gt; None:
+        self.binding: Signatures = so
+
+    def getSignature(self, sign_name: str) -&gt; str:
+        return self.binding.fromSignatures()[sign_name]
 
 
 class ContractMethod:
@@ -111,6 +131,7 @@ class ContractMethod:
         self._wait = t
         return self
 
+
 class ContractBase:
     SIGNATURES = None
 
@@ -118,7 +139,12 @@ class ContractBase:
         self.call_contract_fee_amount: int = 2000000000
         self.call_contract_fee_price: int = 105910000000
         self.call_contract_debug_flag: bool = False
-        self.call_contract_enforce_tx_receipt: bool = False
+        self.call_contract_enforce_tx_receipt: bool = True
+
+    def CallAutoConf(self, f: MiliDoS) -&gt; &#34;ContractBase&#34;:
+        self.call_contract_fee_amount = f.gas
+        self.call_contract_fee_price = f.gasPrice
+        return self
 
     def CallContractFee(self, gas: int, price: int) -&gt; &#34;ContractBase&#34;:
         self.call_contract_fee_amount = gas
@@ -159,7 +185,12 @@ class ContractBase:
         self.call_contract_fee_amount: int = 2000000000
         self.call_contract_fee_price: int = 105910000000
         self.call_contract_debug_flag: bool = False
-        self.call_contract_enforce_tx_receipt: bool = False
+        self.call_contract_enforce_tx_receipt: bool = True
+
+    def CallAutoConf(self, f: MiliDoS) -&gt; &#34;ContractBase&#34;:
+        self.call_contract_fee_amount = f.gas
+        self.call_contract_fee_price = f.gasPrice
+        return self
 
     def CallContractFee(self, gas: int, price: int) -&gt; &#34;ContractBase&#34;:
         self.call_contract_fee_amount = gas
@@ -190,6 +221,21 @@ class ContractBase:
 </dl>
 <h3>Methods</h3>
 <dl>
+<dt id="moody.m.bases.ContractBase.CallAutoConf"><code class="name flex">
+<span>def <span class="ident">CallAutoConf</span></span>(<span>self, f: <a title="moody.libeb.MiliDoS" href="../libeb.html#moody.libeb.MiliDoS">MiliDoS</a>) ‑> <a title="moody.m.bases.ContractBase" href="#moody.m.bases.ContractBase">ContractBase</a></span>
+</code></dt>
+<dd>
+<div class="desc"></div>
+<details class="source">
+<summary>
+<span>Expand source code</span>
+</summary>
+<pre><code class="python">def CallAutoConf(self, f: MiliDoS) -&gt; &#34;ContractBase&#34;:
+    self.call_contract_fee_amount = f.gas
+    self.call_contract_fee_price = f.gasPrice
+    return self</code></pre>
+</details>
+</dd>
 <dt id="moody.m.bases.ContractBase.CallContractFee"><code class="name flex">
 <span>def <span class="ident">CallContractFee</span></span>(<span>self, gas: int, price: int) ‑> <a title="moody.m.bases.ContractBase" href="#moody.m.bases.ContractBase">ContractBase</a></span>
 </code></dt>
@@ -430,6 +476,49 @@ def validate_and_checksum_address(address: str):
 </dd>
 </dl>
 </dd>
+<dt id="moody.m.bases.Signatures"><code class="flex name class">
+<span>class <span class="ident">Signatures</span></span>
+<span>(</span><span>abi: <built-in function any>)</span>
+</code></dt>
+<dd>
+<div class="desc"></div>
+<details class="source">
+<summary>
+<span>Expand source code</span>
+</summary>
+<pre><code class="python">class Signatures:
+    _function_signatures = {}
+
+    def __init__(self, abi: any):
+        for func in [obj for obj in abi if obj[&#39;type&#39;] == &#39;function&#39;]:
+            name = func[&#39;name&#39;]
+            types = [input[&#39;type&#39;] for input in func[&#39;inputs&#39;]]
+            self._function_signatures[name] = &#39;{}({})&#39;.format(name, &#39;,&#39;.join(types))
+
+    def fromSignatures(self) -&gt; dict:
+        return self._function_signatures</code></pre>
+</details>
+<h3>Subclasses</h3>
+<ul class="hlist">
+<li><a title="moody.m.ori20.SignatureGenerator" href="ori20/index.html#moody.m.ori20.SignatureGenerator">SignatureGenerator</a></li>
+</ul>
+<h3>Methods</h3>
+<dl>
+<dt id="moody.m.bases.Signatures.fromSignatures"><code class="name flex">
+<span>def <span class="ident">fromSignatures</span></span>(<span>self) ‑> dict</span>
+</code></dt>
+<dd>
+<div class="desc"></div>
+<details class="source">
+<summary>
+<span>Expand source code</span>
+</summary>
+<pre><code class="python">def fromSignatures(self) -&gt; dict:
+    return self._function_signatures</code></pre>
+</details>
+</dd>
+</dl>
+</dd>
 <dt id="moody.m.bases.Validator"><code class="flex name class">
 <span>class <span class="ident">Validator</span></span>
 <span>(</span><span>web3_or_provider: web3.main.Web3, contract_address: str)</span>
@@ -450,6 +539,7 @@ def validate_and_checksum_address(address: str):
             contract_address: str,
     ):
         &#34;&#34;&#34;Initialize the instance.&#34;&#34;&#34;
+        pass
 
     def assert_valid(
             self, method_name: str, parameter_name: str, argument_value: Any
@@ -460,7 +550,13 @@ def validate_and_checksum_address(address: str):
         :param parameter_name: Name of the parameter whose input is to be
             validated.
         :param argument_value: Value of argument to parameter to be validated.
-        &#34;&#34;&#34;</code></pre>
+        &#34;&#34;&#34;
+
+    def bindSignatures(self, so: Signatures) -&gt; None:
+        self.binding: Signatures = so
+
+    def getSignature(self, sign_name: str) -&gt; str:
+        return self.binding.fromSignatures()[sign_name]</code></pre>
 </details>
 <h3>Subclasses</h3>
 <ul class="hlist">
@@ -496,6 +592,32 @@ validated.
     &#34;&#34;&#34;</code></pre>
 </details>
 </dd>
+<dt id="moody.m.bases.Validator.bindSignatures"><code class="name flex">
+<span>def <span class="ident">bindSignatures</span></span>(<span>self, so: <a title="moody.m.bases.Signatures" href="#moody.m.bases.Signatures">Signatures</a>) ‑> NoneType</span>
+</code></dt>
+<dd>
+<div class="desc"></div>
+<details class="source">
+<summary>
+<span>Expand source code</span>
+</summary>
+<pre><code class="python">def bindSignatures(self, so: Signatures) -&gt; None:
+    self.binding: Signatures = so</code></pre>
+</details>
+</dd>
+<dt id="moody.m.bases.Validator.getSignature"><code class="name flex">
+<span>def <span class="ident">getSignature</span></span>(<span>self, sign_name: str) ‑> str</span>
+</code></dt>
+<dd>
+<div class="desc"></div>
+<details class="source">
+<summary>
+<span>Expand source code</span>
+</summary>
+<pre><code class="python">def getSignature(self, sign_name: str) -&gt; str:
+    return self.binding.fromSignatures()[sign_name]</code></pre>
+</details>
+</dd>
 </dl>
 </dd>
 </dl>
@@ -517,6 +639,7 @@ validated.
 <li>
 <h4><code><a title="moody.m.bases.ContractBase" href="#moody.m.bases.ContractBase">ContractBase</a></code></h4>
 <ul class="">
+<li><code><a title="moody.m.bases.ContractBase.CallAutoConf" href="#moody.m.bases.ContractBase.CallAutoConf">CallAutoConf</a></code></li>
 <li><code><a title="moody.m.bases.ContractBase.CallContractFee" href="#moody.m.bases.ContractBase.CallContractFee">CallContractFee</a></code></li>
 <li><code><a title="moody.m.bases.ContractBase.CallDebug" href="#moody.m.bases.ContractBase.CallDebug">CallDebug</a></code></li>
 <li><code><a title="moody.m.bases.ContractBase.EnforceTxReceipt" href="#moody.m.bases.ContractBase.EnforceTxReceipt">EnforceTxReceipt</a></code></li>
@@ -532,9 +655,17 @@ validated.
 </ul>
 </li>
 <li>
+<h4><code><a title="moody.m.bases.Signatures" href="#moody.m.bases.Signatures">Signatures</a></code></h4>
+<ul class="">
+<li><code><a title="moody.m.bases.Signatures.fromSignatures" href="#moody.m.bases.Signatures.fromSignatures">fromSignatures</a></code></li>
+</ul>
+</li>
+<li>
 <h4><code><a title="moody.m.bases.Validator" href="#moody.m.bases.Validator">Validator</a></code></h4>
 <ul class="">
 <li><code><a title="moody.m.bases.Validator.assert_valid" href="#moody.m.bases.Validator.assert_valid">assert_valid</a></code></li>
+<li><code><a title="moody.m.bases.Validator.bindSignatures" href="#moody.m.bases.Validator.bindSignatures">bindSignatures</a></code></li>
+<li><code><a title="moody.m.bases.Validator.getSignature" href="#moody.m.bases.Validator.getSignature">getSignature</a></code></li>
 </ul>
 </li>
 </ul>

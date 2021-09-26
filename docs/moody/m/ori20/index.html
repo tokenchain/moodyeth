@@ -47,7 +47,7 @@ from web3.exceptions import ContractLogicError
 
 from moody import Bolors
 from moody.libeb import MiliDoS
-from moody.m.bases import ContractMethod, Validator, ContractBase
+from moody.m.bases import ContractMethod, Validator, ContractBase, Signatures
 from moody.m.tx_params import TxParams
 
 # Try to import a custom validator class definition; if there isn&#39;t one,
@@ -1345,14 +1345,10 @@ class TransferFromMethod(ContractMethod):  # pylint: disable=invalid-name
         return self._underlying_method(sender, recipient, amount).estimateGas(tx_params.as_dict())
 
 
-class SignatureGenerator:
-    _function_signatures = {}
+class SignatureGenerator(Signatures):
 
     def __init__(self, abi: any):
-        for func in [obj for obj in abi if obj[&#39;type&#39;] == &#39;function&#39;]:
-            name = func[&#39;name&#39;]
-            types = [input[&#39;type&#39;] for input in func[&#39;inputs&#39;]]
-            self._function_signatures[name] = &#39;{}({})&#39;.format(name, &#39;,&#39;.join(types))
+        super().__init__(abi)
 
     def add_minter(self) -&gt; str:
         return self._function_signatures[&#34;addMinter&#34;]
@@ -5888,14 +5884,10 @@ Method of the function</p></div>
 <summary>
 <span>Expand source code</span>
 </summary>
-<pre><code class="python">class SignatureGenerator:
-    _function_signatures = {}
+<pre><code class="python">class SignatureGenerator(Signatures):
 
     def __init__(self, abi: any):
-        for func in [obj for obj in abi if obj[&#39;type&#39;] == &#39;function&#39;]:
-            name = func[&#39;name&#39;]
-            types = [input[&#39;type&#39;] for input in func[&#39;inputs&#39;]]
-            self._function_signatures[name] = &#39;{}({})&#39;.format(name, &#39;,&#39;.join(types))
+        super().__init__(abi)
 
     def add_minter(self) -&gt; str:
         return self._function_signatures[&#34;addMinter&#34;]
@@ -5960,6 +5952,10 @@ Method of the function</p></div>
     def transfer_from(self) -&gt; str:
         return self._function_signatures[&#34;transferFrom&#34;]</code></pre>
 </details>
+<h3>Ancestors</h3>
+<ul class="hlist">
+<li><a title="moody.m.bases.Signatures" href="../bases.html#moody.m.bases.Signatures">Signatures</a></li>
+</ul>
 <h3>Methods</h3>
 <dl>
 <dt id="moody.m.ori20.SignatureGenerator.add_minter"><code class="name flex">

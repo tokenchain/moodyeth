@@ -10,6 +10,19 @@ from .tx_params import TxParams
 from ..libeb import MiliDoS
 
 
+class Signatures:
+    _function_signatures = {}
+
+    def __init__(self, abi: any):
+        for func in [obj for obj in abi if obj['type'] == 'function']:
+            name = func['name']
+            types = [input['type'] for input in func['inputs']]
+            self._function_signatures[name] = '{}({})'.format(name, ','.join(types))
+
+    def fromSignatures(self) -> dict:
+        return self._function_signatures
+
+
 class Validator:
     """Base class for validating inputs to methods."""
 
@@ -19,6 +32,7 @@ class Validator:
             contract_address: str,
     ):
         """Initialize the instance."""
+        pass
 
     def assert_valid(
             self, method_name: str, parameter_name: str, argument_value: Any
@@ -30,6 +44,12 @@ class Validator:
             validated.
         :param argument_value: Value of argument to parameter to be validated.
         """
+
+    def bindSignatures(self, so: Signatures) -> None:
+        self.binding: Signatures = so
+
+    def getSignature(self, sign_name: str) -> str:
+        return self.binding.fromSignatures()[sign_name]
 
 
 class ContractMethod:
@@ -82,6 +102,7 @@ class ContractMethod:
         self._wait = t
         return self
 
+
 class ContractBase:
     SIGNATURES = None
 
@@ -89,7 +110,12 @@ class ContractBase:
         self.call_contract_fee_amount: int = 2000000000
         self.call_contract_fee_price: int = 105910000000
         self.call_contract_debug_flag: bool = False
-        self.call_contract_enforce_tx_receipt: bool = False
+        self.call_contract_enforce_tx_receipt: bool = True
+
+    def CallAutoConf(self, f: MiliDoS) -> "ContractBase":
+        self.call_contract_fee_amount = f.gas
+        self.call_contract_fee_price = f.gasPrice
+        return self
 
     def CallContractFee(self, gas: int, price: int) -> "ContractBase":
         self.call_contract_fee_amount = gas

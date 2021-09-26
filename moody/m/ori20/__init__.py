@@ -18,7 +18,7 @@ from web3.exceptions import ContractLogicError
 
 from moody import Bolors
 from moody.libeb import MiliDoS
-from moody.m.bases import ContractMethod, Validator, ContractBase
+from moody.m.bases import ContractMethod, Validator, ContractBase, Signatures
 from moody.m.tx_params import TxParams
 
 # Try to import a custom validator class definition; if there isn't one,
@@ -1316,14 +1316,10 @@ class TransferFromMethod(ContractMethod):  # pylint: disable=invalid-name
         return self._underlying_method(sender, recipient, amount).estimateGas(tx_params.as_dict())
 
 
-class SignatureGenerator:
-    _function_signatures = {}
+class SignatureGenerator(Signatures):
 
     def __init__(self, abi: any):
-        for func in [obj for obj in abi if obj['type'] == 'function']:
-            name = func['name']
-            types = [input['type'] for input in func['inputs']]
-            self._function_signatures[name] = '{}({})'.format(name, ','.join(types))
+        super().__init__(abi)
 
     def add_minter(self) -> str:
         return self._function_signatures["addMinter"]
