@@ -170,8 +170,8 @@ def RSCTestnet() -> Config:
 def RSCMainnet() -> Config:
     return Config(
         network_name="RSCMainnet",
-        rpc_url="http://119.8.109.101:23003",
+        rpc_url="http://rpc-mainnet.raisc.io",
         chain_id=1023,
         symbol="RSC",
-        block_explorer="http://159.138.158.8"
+        block_explorer="http://www.raisc.io/"
     )

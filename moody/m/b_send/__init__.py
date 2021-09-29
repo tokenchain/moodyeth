@@ -13,13 +13,14 @@ from typing import (  # pylint: disable=unused-import
 
 from eth_utils import to_checksum_address
 from hexbytes import HexBytes
+from web3.contract import ContractFunction
+from web3.datastructures import AttributeDict
+from web3.exceptions import ContractLogicError
+
 from moody import Bolors
 from moody.libeb import MiliDoS
 from moody.m.bases import ContractMethod, Validator, ContractBase, Signatures
 from moody.m.tx_params import TxParams
-from web3.contract import ContractFunction
-from web3.datastructures import AttributeDict
-from web3.exceptions import ContractLogicError
 
 # Try to import a custom validator class definition; if there isn't one,
 # declare one that we can instantiate for the default argument to the
@@ -62,7 +63,7 @@ class AddSignerMethod(ContractMethod):  # pylint: disable=invalid-name
         account = self.validate_and_checksum_address(account)
         return (account)
 
-    def block_send(self, account: str, gas: int, price: int, val: int = 0, debug: bool = False, receiptListen: bool = False) -> None:
+    def block_send(self, account: str, _gaswei: int, _pricewei: int, _valeth: int = 0, _debugtx: bool = False, _receipList: bool = False) -> None:
         """Execute underlying contract method via eth_call.
 
         :param tx_params: transaction parameters
@@ -73,15 +74,15 @@ class AddSignerMethod(ContractMethod):  # pylint: disable=invalid-name
 
             _t = _fn.buildTransaction({
                 'from': self._operate,
-                'gas': gas,
-                'gasPrice': price
+                'gas': _gaswei,
+                'gasPrice': _pricewei
             })
             _t['nonce'] = self._web3_eth.getTransactionCount(self._operate)
 
-            if val > 0:
-                _t['value'] = val
+            if _valeth > 0:
+                _t['value'] = _valeth
 
-            if debug:
+            if _debugtx:
                 print(f"======== Signing ✅ by {self._operate}")
                 print(f"======== Transaction ✅ check")
                 print(_t)
@@ -91,10 +92,10 @@ class AddSignerMethod(ContractMethod):  # pylint: disable=invalid-name
                 signed = self._web3_eth.account.sign_transaction(_t)
                 txHash = self._web3_eth.sendRawTransaction(signed.rawTransaction)
                 tx_receipt = None
-                if receiptListen is True:
+                if _receipList is True:
                     print(f"======== awaiting Confirmation 🚸️ {self.sign}")
                     tx_receipt = self._web3_eth.waitForTransactionReceipt(txHash)
-                    if debug:
+                    if _debugtx:
                         print("======== TX Result ✅")
                         print(tx_receipt)
 
@@ -104,7 +105,7 @@ class AddSignerMethod(ContractMethod):  # pylint: disable=invalid-name
                 else:
                     print(f"{Bolors.WARNING}{txHash.hex()}{Bolors.RESET} - broadcast hash")
 
-            if receiptListen is False:
+            if _receipList is False:
                 time.sleep(self._wait)
 
 
@@ -169,7 +170,7 @@ class BulkSendTokenMethod(ContractMethod):  # pylint: disable=invalid-name
         )
         return (token_addr, addresses, amounts)
 
-    def block_send(self, token_addr: str, addresses: List[str], amounts: List[int], gas: int, price: int, val: int = 0, debug: bool = False, receiptListen: bool = False) -> bool:
+    def block_send(self, token_addr: str, addresses: List[str], amounts: List[int], _gaswei: int, _pricewei: int, _valeth: int = 0, _debugtx: bool = False, _receipList: bool = False) -> bool:
         """Execute underlying contract method via eth_call.
 
         :param tx_params: transaction parameters
@@ -180,15 +181,15 @@ class BulkSendTokenMethod(ContractMethod):  # pylint: disable=invalid-name
 
             _t = _fn.buildTransaction({
                 'from': self._operate,
-                'gas': gas,
-                'gasPrice': price
+                'gas': _gaswei,
+                'gasPrice': _pricewei
             })
             _t['nonce'] = self._web3_eth.getTransactionCount(self._operate)
 
-            if val > 0:
-                _t['value'] = val
+            if _valeth > 0:
+                _t['value'] = _valeth
 
-            if debug:
+            if _debugtx:
                 print(f"======== Signing ✅ by {self._operate}")
                 print(f"======== Transaction ✅ check")
                 print(_t)
@@ -198,10 +199,10 @@ class BulkSendTokenMethod(ContractMethod):  # pylint: disable=invalid-name
                 signed = self._web3_eth.account.sign_transaction(_t)
                 txHash = self._web3_eth.sendRawTransaction(signed.rawTransaction)
                 tx_receipt = None
-                if receiptListen is True:
+                if _receipList is True:
                     print(f"======== awaiting Confirmation 🚸️ {self.sign}")
                     tx_receipt = self._web3_eth.waitForTransactionReceipt(txHash)
-                    if debug:
+                    if _debugtx:
                         print("======== TX Result ✅")
                         print(tx_receipt)
 
@@ -211,7 +212,7 @@ class BulkSendTokenMethod(ContractMethod):  # pylint: disable=invalid-name
                 else:
                     print(f"{Bolors.WARNING}{txHash.hex()}{Bolors.RESET} - broadcast hash")
 
-            if receiptListen is False:
+            if _receipList is False:
                 time.sleep(self._wait)
 
 
@@ -270,7 +271,7 @@ class BulkSendTrxMethod(ContractMethod):  # pylint: disable=invalid-name
         )
         return (addresses, amounts)
 
-    def block_send(self, addresses: List[str], amounts: List[int], gas: int, price: int, val: int = 0, debug: bool = False, receiptListen: bool = False) -> bool:
+    def block_send(self, addresses: List[str], amounts: List[int], _gaswei: int, _pricewei: int, _valeth: int = 0, _debugtx: bool = False, _receipList: bool = False) -> bool:
         """Execute underlying contract method via eth_call.
 
         :param tx_params: transaction parameters
@@ -281,15 +282,15 @@ class BulkSendTrxMethod(ContractMethod):  # pylint: disable=invalid-name
 
             _t = _fn.buildTransaction({
                 'from': self._operate,
-                'gas': gas,
-                'gasPrice': price
+                'gas': _gaswei,
+                'gasPrice': _pricewei
             })
             _t['nonce'] = self._web3_eth.getTransactionCount(self._operate)
 
-            if val > 0:
-                _t['value'] = val
+            if _valeth > 0:
+                _t['value'] = _valeth
 
-            if debug:
+            if _debugtx:
                 print(f"======== Signing ✅ by {self._operate}")
                 print(f"======== Transaction ✅ check")
                 print(_t)
@@ -299,10 +300,10 @@ class BulkSendTrxMethod(ContractMethod):  # pylint: disable=invalid-name
                 signed = self._web3_eth.account.sign_transaction(_t)
                 txHash = self._web3_eth.sendRawTransaction(signed.rawTransaction)
                 tx_receipt = None
-                if receiptListen is True:
+                if _receipList is True:
                     print(f"======== awaiting Confirmation 🚸️ {self.sign}")
                     tx_receipt = self._web3_eth.waitForTransactionReceipt(txHash)
-                    if debug:
+                    if _debugtx:
                         print("======== TX Result ✅")
                         print(tx_receipt)
 
@@ -312,7 +313,7 @@ class BulkSendTrxMethod(ContractMethod):  # pylint: disable=invalid-name
                 else:
                     print(f"{Bolors.WARNING}{txHash.hex()}{Bolors.RESET} - broadcast hash")
 
-            if receiptListen is False:
+            if _receipList is False:
                 time.sleep(self._wait)
 
 
@@ -348,16 +349,16 @@ class BulkSendTrxMethod(ContractMethod):  # pylint: disable=invalid-name
         return self._underlying_method(addresses, amounts).estimateGas(tx_params.as_dict())
 
 
-class DepositMethod(ContractMethod):  # pylint: disable=invalid-name
-    """Various interfaces to the deposit method."""
+class ClaimInitMethod(ContractMethod):  # pylint: disable=invalid-name
+    """Various interfaces to the claimInit method."""
 
     def __init__(self, elib: MiliDoS, contract_address: str, contract_function: ContractFunction, validator: Validator = None):
         """Persist instance data."""
         super().__init__(elib, contract_address)
         self._underlying_method = contract_function
-        self.sign = validator.getSignature("deposit")
+        self.sign = validator.getSignature("claimInit")
 
-    def block_send(self, gas: int, price: int, val: int = 0, debug: bool = False, receiptListen: bool = False) -> bool:
+    def block_send(self, _gaswei: int, _pricewei: int, _valeth: int = 0, _debugtx: bool = False, _receipList: bool = False) -> None:
         """Execute underlying contract method via eth_call.
 
         :param tx_params: transaction parameters
@@ -368,15 +369,15 @@ class DepositMethod(ContractMethod):  # pylint: disable=invalid-name
 
             _t = _fn.buildTransaction({
                 'from': self._operate,
-                'gas': gas,
-                'gasPrice': price
+                'gas': _gaswei,
+                'gasPrice': _pricewei
             })
             _t['nonce'] = self._web3_eth.getTransactionCount(self._operate)
 
-            if val > 0:
-                _t['value'] = val
+            if _valeth > 0:
+                _t['value'] = _valeth
 
-            if debug:
+            if _debugtx:
                 print(f"======== Signing ✅ by {self._operate}")
                 print(f"======== Transaction ✅ check")
                 print(_t)
@@ -386,10 +387,10 @@ class DepositMethod(ContractMethod):  # pylint: disable=invalid-name
                 signed = self._web3_eth.account.sign_transaction(_t)
                 txHash = self._web3_eth.sendRawTransaction(signed.rawTransaction)
                 tx_receipt = None
-                if receiptListen is True:
+                if _receipList is True:
                     print(f"======== awaiting Confirmation 🚸️ {self.sign}")
                     tx_receipt = self._web3_eth.waitForTransactionReceipt(txHash)
-                    if debug:
+                    if _debugtx:
                         print("======== TX Result ✅")
                         print(tx_receipt)
 
@@ -399,7 +400,91 @@ class DepositMethod(ContractMethod):  # pylint: disable=invalid-name
                 else:
                     print(f"{Bolors.WARNING}{txHash.hex()}{Bolors.RESET} - broadcast hash")
 
-            if receiptListen is False:
+            if _receipList is False:
+                time.sleep(self._wait)
+
+
+        except ContractLogicError as er:
+            print(f"{Bolors.FAIL}Error {er} {Bolors.RESET}: claim_init")
+
+        except ValueError as err:
+            if "message" in err.args[0]:
+                message = err.args[0]["message"]
+                print(f"{Bolors.FAIL}Error Revert {Bolors.RESET} on set_asset_token: {message}")
+            else:
+                print(f"{Bolors.FAIL}Error Revert {Bolors.RESET}: set_asset_token")
+
+    def send_transaction(self, tx_params: Optional[TxParams] = None) -> Union[HexBytes, bytes]:
+        """Execute underlying contract method via eth_sendTransaction.
+
+        :param tx_params: transaction parameters
+        """
+        tx_params = super().normalize_tx_params(tx_params)
+        return self._underlying_method().transact(tx_params.as_dict())
+
+    def build_transaction(self, tx_params: Optional[TxParams] = None) -> dict:
+        """Construct calldata to be used as input to the method."""
+        tx_params = super().normalize_tx_params(tx_params)
+        return self._underlying_method().buildTransaction(tx_params.as_dict())
+
+    def estimate_gas(self, tx_params: Optional[TxParams] = None) -> int:
+        """Estimate gas consumption of method call."""
+        tx_params = super().normalize_tx_params(tx_params)
+        return self._underlying_method().estimateGas(tx_params.as_dict())
+
+
+class DepositMethod(ContractMethod):  # pylint: disable=invalid-name
+    """Various interfaces to the deposit method."""
+
+    def __init__(self, elib: MiliDoS, contract_address: str, contract_function: ContractFunction, validator: Validator = None):
+        """Persist instance data."""
+        super().__init__(elib, contract_address)
+        self._underlying_method = contract_function
+        self.sign = validator.getSignature("deposit")
+
+    def block_send(self, _gaswei: int, _pricewei: int, _valeth: int = 0, _debugtx: bool = False, _receipList: bool = False) -> bool:
+        """Execute underlying contract method via eth_call.
+
+        :param tx_params: transaction parameters
+        :returns: the return value of the underlying method.
+        """
+        _fn = self._underlying_method()
+        try:
+
+            _t = _fn.buildTransaction({
+                'from': self._operate,
+                'gas': _gaswei,
+                'gasPrice': _pricewei
+            })
+            _t['nonce'] = self._web3_eth.getTransactionCount(self._operate)
+
+            if _valeth > 0:
+                _t['value'] = _valeth
+
+            if _debugtx:
+                print(f"======== Signing ✅ by {self._operate}")
+                print(f"======== Transaction ✅ check")
+                print(_t)
+
+            if 'data' in _t:
+
+                signed = self._web3_eth.account.sign_transaction(_t)
+                txHash = self._web3_eth.sendRawTransaction(signed.rawTransaction)
+                tx_receipt = None
+                if _receipList is True:
+                    print(f"======== awaiting Confirmation 🚸️ {self.sign}")
+                    tx_receipt = self._web3_eth.waitForTransactionReceipt(txHash)
+                    if _debugtx:
+                        print("======== TX Result ✅")
+                        print(tx_receipt)
+
+                print(f"======== TX blockHash ✅")
+                if tx_receipt is not None:
+                    print(f"{Bolors.OK}{tx_receipt.blockHash.hex()}{Bolors.RESET}")
+                else:
+                    print(f"{Bolors.WARNING}{txHash.hex()}{Bolors.RESET} - broadcast hash")
+
+            if _receipList is False:
                 time.sleep(self._wait)
 
 
@@ -529,7 +614,7 @@ class RenounceSignerMethod(ContractMethod):  # pylint: disable=invalid-name
         self._underlying_method = contract_function
         self.sign = validator.getSignature("renounceSigner")
 
-    def block_send(self, gas: int, price: int, val: int = 0, debug: bool = False, receiptListen: bool = False) -> None:
+    def block_send(self, _gaswei: int, _pricewei: int, _valeth: int = 0, _debugtx: bool = False, _receipList: bool = False) -> None:
         """Execute underlying contract method via eth_call.
 
         :param tx_params: transaction parameters
@@ -540,15 +625,15 @@ class RenounceSignerMethod(ContractMethod):  # pylint: disable=invalid-name
 
             _t = _fn.buildTransaction({
                 'from': self._operate,
-                'gas': gas,
-                'gasPrice': price
+                'gas': _gaswei,
+                'gasPrice': _pricewei
             })
             _t['nonce'] = self._web3_eth.getTransactionCount(self._operate)
 
-            if val > 0:
-                _t['value'] = val
+            if _valeth > 0:
+                _t['value'] = _valeth
 
-            if debug:
+            if _debugtx:
                 print(f"======== Signing ✅ by {self._operate}")
                 print(f"======== Transaction ✅ check")
                 print(_t)
@@ -558,10 +643,10 @@ class RenounceSignerMethod(ContractMethod):  # pylint: disable=invalid-name
                 signed = self._web3_eth.account.sign_transaction(_t)
                 txHash = self._web3_eth.sendRawTransaction(signed.rawTransaction)
                 tx_receipt = None
-                if receiptListen is True:
+                if _receipList is True:
                     print(f"======== awaiting Confirmation 🚸️ {self.sign}")
                     tx_receipt = self._web3_eth.waitForTransactionReceipt(txHash)
-                    if debug:
+                    if _debugtx:
                         print("======== TX Result ✅")
                         print(tx_receipt)
 
@@ -571,7 +656,7 @@ class RenounceSignerMethod(ContractMethod):  # pylint: disable=invalid-name
                 else:
                     print(f"{Bolors.WARNING}{txHash.hex()}{Bolors.RESET} - broadcast hash")
 
-            if receiptListen is False:
+            if _receipList is False:
                 time.sleep(self._wait)
 
 
@@ -624,7 +709,7 @@ class SetEthFeeMethod(ContractMethod):  # pylint: disable=invalid-name
         eth_send_fee = int(eth_send_fee)
         return (eth_send_fee)
 
-    def block_send(self, eth_send_fee: int, gas: int, price: int, val: int = 0, debug: bool = False, receiptListen: bool = False) -> bool:
+    def block_send(self, eth_send_fee: int, _gaswei: int, _pricewei: int, _valeth: int = 0, _debugtx: bool = False, _receipList: bool = False) -> bool:
         """Execute underlying contract method via eth_call.
 
         :param tx_params: transaction parameters
@@ -635,15 +720,15 @@ class SetEthFeeMethod(ContractMethod):  # pylint: disable=invalid-name
 
             _t = _fn.buildTransaction({
                 'from': self._operate,
-                'gas': gas,
-                'gasPrice': price
+                'gas': _gaswei,
+                'gasPrice': _pricewei
             })
             _t['nonce'] = self._web3_eth.getTransactionCount(self._operate)
 
-            if val > 0:
-                _t['value'] = val
+            if _valeth > 0:
+                _t['value'] = _valeth
 
-            if debug:
+            if _debugtx:
                 print(f"======== Signing ✅ by {self._operate}")
                 print(f"======== Transaction ✅ check")
                 print(_t)
@@ -653,10 +738,10 @@ class SetEthFeeMethod(ContractMethod):  # pylint: disable=invalid-name
                 signed = self._web3_eth.account.sign_transaction(_t)
                 txHash = self._web3_eth.sendRawTransaction(signed.rawTransaction)
                 tx_receipt = None
-                if receiptListen is True:
+                if _receipList is True:
                     print(f"======== awaiting Confirmation 🚸️ {self.sign}")
                     tx_receipt = self._web3_eth.waitForTransactionReceipt(txHash)
-                    if debug:
+                    if _debugtx:
                         print("======== TX Result ✅")
                         print(tx_receipt)
 
@@ -666,7 +751,7 @@ class SetEthFeeMethod(ContractMethod):  # pylint: disable=invalid-name
                 else:
                     print(f"{Bolors.WARNING}{txHash.hex()}{Bolors.RESET} - broadcast hash")
 
-            if receiptListen is False:
+            if _receipList is False:
                 time.sleep(self._wait)
 
 
@@ -722,7 +807,7 @@ class SetTokenFeeMethod(ContractMethod):  # pylint: disable=invalid-name
         token_send_fee = int(token_send_fee)
         return (token_send_fee)
 
-    def block_send(self, token_send_fee: int, gas: int, price: int, val: int = 0, debug: bool = False, receiptListen: bool = False) -> bool:
+    def block_send(self, token_send_fee: int, _gaswei: int, _pricewei: int, _valeth: int = 0, _debugtx: bool = False, _receipList: bool = False) -> bool:
         """Execute underlying contract method via eth_call.
 
         :param tx_params: transaction parameters
@@ -733,15 +818,15 @@ class SetTokenFeeMethod(ContractMethod):  # pylint: disable=invalid-name
 
             _t = _fn.buildTransaction({
                 'from': self._operate,
-                'gas': gas,
-                'gasPrice': price
+                'gas': _gaswei,
+                'gasPrice': _pricewei
             })
             _t['nonce'] = self._web3_eth.getTransactionCount(self._operate)
 
-            if val > 0:
-                _t['value'] = val
+            if _valeth > 0:
+                _t['value'] = _valeth
 
-            if debug:
+            if _debugtx:
                 print(f"======== Signing ✅ by {self._operate}")
                 print(f"======== Transaction ✅ check")
                 print(_t)
@@ -751,10 +836,10 @@ class SetTokenFeeMethod(ContractMethod):  # pylint: disable=invalid-name
                 signed = self._web3_eth.account.sign_transaction(_t)
                 txHash = self._web3_eth.sendRawTransaction(signed.rawTransaction)
                 tx_receipt = None
-                if receiptListen is True:
+                if _receipList is True:
                     print(f"======== awaiting Confirmation 🚸️ {self.sign}")
                     tx_receipt = self._web3_eth.waitForTransactionReceipt(txHash)
-                    if debug:
+                    if _debugtx:
                         print("======== TX Result ✅")
                         print(tx_receipt)
 
@@ -764,7 +849,7 @@ class SetTokenFeeMethod(ContractMethod):  # pylint: disable=invalid-name
                 else:
                     print(f"{Bolors.WARNING}{txHash.hex()}{Bolors.RESET} - broadcast hash")
 
-            if receiptListen is False:
+            if _receipList is False:
                 time.sleep(self._wait)
 
 
@@ -848,7 +933,7 @@ class WithdrawEtherMethod(ContractMethod):  # pylint: disable=invalid-name
         amount = int(amount)
         return (addr, amount)
 
-    def block_send(self, addr: str, amount: int, gas: int, price: int, val: int = 0, debug: bool = False, receiptListen: bool = False) -> bool:
+    def block_send(self, addr: str, amount: int, _gaswei: int, _pricewei: int, _valeth: int = 0, _debugtx: bool = False, _receipList: bool = False) -> bool:
         """Execute underlying contract method via eth_call.
 
         :param tx_params: transaction parameters
@@ -859,15 +944,15 @@ class WithdrawEtherMethod(ContractMethod):  # pylint: disable=invalid-name
 
             _t = _fn.buildTransaction({
                 'from': self._operate,
-                'gas': gas,
-                'gasPrice': price
+                'gas': _gaswei,
+                'gasPrice': _pricewei
             })
             _t['nonce'] = self._web3_eth.getTransactionCount(self._operate)
 
-            if val > 0:
-                _t['value'] = val
+            if _valeth > 0:
+                _t['value'] = _valeth
 
-            if debug:
+            if _debugtx:
                 print(f"======== Signing ✅ by {self._operate}")
                 print(f"======== Transaction ✅ check")
                 print(_t)
@@ -877,10 +962,10 @@ class WithdrawEtherMethod(ContractMethod):  # pylint: disable=invalid-name
                 signed = self._web3_eth.account.sign_transaction(_t)
                 txHash = self._web3_eth.sendRawTransaction(signed.rawTransaction)
                 tx_receipt = None
-                if receiptListen is True:
+                if _receipList is True:
                     print(f"======== awaiting Confirmation 🚸️ {self.sign}")
                     tx_receipt = self._web3_eth.waitForTransactionReceipt(txHash)
-                    if debug:
+                    if _debugtx:
                         print("======== TX Result ✅")
                         print(tx_receipt)
 
@@ -890,7 +975,7 @@ class WithdrawEtherMethod(ContractMethod):  # pylint: disable=invalid-name
                 else:
                     print(f"{Bolors.WARNING}{txHash.hex()}{Bolors.RESET} - broadcast hash")
 
-            if receiptListen is False:
+            if _receipList is False:
                 time.sleep(self._wait)
 
 
@@ -958,7 +1043,7 @@ class WithdrawTokenMethod(ContractMethod):  # pylint: disable=invalid-name
         amount = int(amount)
         return (token_addr, to, amount)
 
-    def block_send(self, token_addr: str, to: str, amount: int, gas: int, price: int, val: int = 0, debug: bool = False, receiptListen: bool = False) -> bool:
+    def block_send(self, token_addr: str, to: str, amount: int, _gaswei: int, _pricewei: int, _valeth: int = 0, _debugtx: bool = False, _receipList: bool = False) -> bool:
         """Execute underlying contract method via eth_call.
 
         :param tx_params: transaction parameters
@@ -969,15 +1054,15 @@ class WithdrawTokenMethod(ContractMethod):  # pylint: disable=invalid-name
 
             _t = _fn.buildTransaction({
                 'from': self._operate,
-                'gas': gas,
-                'gasPrice': price
+                'gas': _gaswei,
+                'gasPrice': _pricewei
             })
             _t['nonce'] = self._web3_eth.getTransactionCount(self._operate)
 
-            if val > 0:
-                _t['value'] = val
+            if _valeth > 0:
+                _t['value'] = _valeth
 
-            if debug:
+            if _debugtx:
                 print(f"======== Signing ✅ by {self._operate}")
                 print(f"======== Transaction ✅ check")
                 print(_t)
@@ -987,10 +1072,10 @@ class WithdrawTokenMethod(ContractMethod):  # pylint: disable=invalid-name
                 signed = self._web3_eth.account.sign_transaction(_t)
                 txHash = self._web3_eth.sendRawTransaction(signed.rawTransaction)
                 tx_receipt = None
-                if receiptListen is True:
+                if _receipList is True:
                     print(f"======== awaiting Confirmation 🚸️ {self.sign}")
                     tx_receipt = self._web3_eth.waitForTransactionReceipt(txHash)
-                    if debug:
+                    if _debugtx:
                         print("======== TX Result ✅")
                         print(tx_receipt)
 
@@ -1000,7 +1085,7 @@ class WithdrawTokenMethod(ContractMethod):  # pylint: disable=invalid-name
                 else:
                     print(f"{Bolors.WARNING}{txHash.hex()}{Bolors.RESET} - broadcast hash")
 
-            if receiptListen is False:
+            if _receipList is False:
                 time.sleep(self._wait)
 
 
@@ -1053,6 +1138,9 @@ class SignatureGenerator(Signatures):
     def bulk_send_trx(self) -> str:
         return self._function_signatures["bulkSendTrx"]
 
+    def claim_init(self) -> str:
+        return self._function_signatures["claimInit"]
+
     def deposit(self) -> str:
         return self._function_signatures["deposit"]
 
@@ -1100,6 +1188,11 @@ class BSend(ContractBase):
     _fn_bulk_send_trx: BulkSendTrxMethod
     """Constructor-initialized instance of
     :class:`BulkSendTrxMethod`.
+    """
+
+    _fn_claim_init: ClaimInitMethod
+    """Constructor-initialized instance of
+    :class:`ClaimInitMethod`.
     """
 
     _fn_deposit: DepositMethod
@@ -1193,6 +1286,7 @@ class BSend(ContractBase):
         self._fn_add_signer = AddSignerMethod(core_lib, contract_address, functions.addSigner, validator)
         self._fn_bulk_send_token = BulkSendTokenMethod(core_lib, contract_address, functions.bulkSendToken, validator)
         self._fn_bulk_send_trx = BulkSendTrxMethod(core_lib, contract_address, functions.bulkSendTrx, validator)
+        self._fn_claim_init = ClaimInitMethod(core_lib, contract_address, functions.claimInit, validator)
         self._fn_deposit = DepositMethod(core_lib, contract_address, functions.deposit, validator)
         self._fn_eth_send_fee = EthSendFeeMethod(core_lib, contract_address, functions.ethSendFee, validator)
         self._fn_get_balance = GetBalanceMethod(core_lib, contract_address, functions.getBalance, validator)
@@ -1258,6 +1352,17 @@ class BSend(ContractBase):
         """
 
         return self._fn_bulk_send_trx.block_send(addresses, amounts, self.call_contract_fee_amount, self.call_contract_fee_price, wei, self.call_contract_debug_flag, self.call_contract_enforce_tx_receipt)
+
+    def claim_init(self) -> None:
+        """
+        Implementation of claim_init in contract BSend
+        Method of the function
+
+
+
+        """
+
+        return self._fn_claim_init.block_send(self.call_contract_fee_amount, self.call_contract_fee_price, 0, self.call_contract_debug_flag, self.call_contract_enforce_tx_receipt)
 
     def deposit(self, wei: int = 0) -> bool:
         """
@@ -1373,6 +1478,7 @@ class BSend(ContractBase):
         self._fn_add_signer.setWait(t_long)
         self._fn_bulk_send_token.setWait(t_long)
         self._fn_bulk_send_trx.setWait(t_long)
+        self._fn_claim_init.setWait(t_long)
         self._fn_deposit.setWait(t_long)
         self._fn_eth_send_fee.setWait(t_long)
         self._fn_get_balance.setWait(t_long)
@@ -1389,7 +1495,7 @@ class BSend(ContractBase):
     def abi():
         """Return the ABI to the underlying contract."""
         return json.loads(
-            '[{"inputs":[],"payable":true,"stateMutability":"payable","type":"constructor"},{"anonymous":false,"inputs":[{"indexed":true,"internalType":"address","name":"account","type":"address"}],"name":"SignerAdded","type":"event"},{"anonymous":false,"inputs":[{"indexed":true,"internalType":"address","name":"account","type":"address"}],"name":"SignerRemoved","type":"event"},{"constant":false,"inputs":[{"internalType":"address","name":"account","type":"address"}],"name":"addSigner","outputs":[],"payable":false,"stateMutability":"nonpayable","type":"function"},{"constant":false,"inputs":[{"internalType":"address","name":"tokenAddr","type":"address"},{"internalType":"address[]","name":"addresses","type":"address[]"},{"internalType":"uint256[]","name":"amounts","type":"uint256[]"}],"name":"bulkSendToken","outputs":[{"internalType":"bool","name":"","type":"bool"}],"payable":true,"stateMutability":"payable","type":"function"},{"constant":false,"inputs":[{"internalType":"address[]","name":"addresses","type":"address[]"},{"internalType":"uint256[]","name":"amounts","type":"uint256[]"}],"name":"bulkSendTrx","outputs":[{"internalType":"bool","name":"","type":"bool"}],"payable":true,"stateMutability":"payable","type":"function"},{"constant":false,"inputs":[],"name":"deposit","outputs":[{"internalType":"bool","name":"","type":"bool"}],"payable":true,"stateMutability":"payable","type":"function"},{"constant":true,"inputs":[],"name":"ethSendFee","outputs":[{"internalType":"uint256","name":"","type":"uint256"}],"payable":false,"stateMutability":"view","type":"function"},{"constant":true,"inputs":[{"internalType":"address","name":"addr","type":"address"}],"name":"getBalance","outputs":[{"internalType":"uint256","name":"","type":"uint256"}],"payable":false,"stateMutability":"view","type":"function"},{"constant":true,"inputs":[{"internalType":"address","name":"account","type":"address"}],"name":"isSigner","outputs":[{"internalType":"bool","name":"","type":"bool"}],"payable":false,"stateMutability":"view","type":"function"},{"constant":false,"inputs":[],"name":"renounceSigner","outputs":[],"payable":false,"stateMutability":"nonpayable","type":"function"},{"constant":false,"inputs":[{"internalType":"uint256","name":"_ethSendFee","type":"uint256"}],"name":"setEthFee","outputs":[{"internalType":"bool","name":"","type":"bool"}],"payable":false,"stateMutability":"nonpayable","type":"function"},{"constant":false,"inputs":[{"internalType":"uint256","name":"_tokenSendFee","type":"uint256"}],"name":"setTokenFee","outputs":[{"internalType":"bool","name":"","type":"bool"}],"payable":false,"stateMutability":"nonpayable","type":"function"},{"constant":true,"inputs":[],"name":"tokenSendFee","outputs":[{"internalType":"uint256","name":"","type":"uint256"}],"payable":false,"stateMutability":"view","type":"function"},{"constant":false,"inputs":[{"internalType":"address","name":"addr","type":"address"},{"internalType":"uint256","name":"amount","type":"uint256"}],"name":"withdrawEther","outputs":[{"internalType":"bool","name":"","type":"bool"}],"payable":false,"stateMutability":"nonpayable","type":"function"},{"constant":false,"inputs":[{"internalType":"address","name":"tokenAddr","type":"address"},{"internalType":"address","name":"_to","type":"address"},{"internalType":"uint256","name":"_amount","type":"uint256"}],"name":"withdrawToken","outputs":[{"internalType":"bool","name":"","type":"bool"}],"payable":false,"stateMutability":"nonpayable","type":"function"}]'
+            '[{"inputs":[],"payable":true,"stateMutability":"payable","type":"constructor"},{"anonymous":false,"inputs":[{"indexed":true,"internalType":"address","name":"account","type":"address"}],"name":"SignerAdded","type":"event"},{"anonymous":false,"inputs":[{"indexed":true,"internalType":"address","name":"account","type":"address"}],"name":"SignerRemoved","type":"event"},{"constant":false,"inputs":[{"internalType":"address","name":"account","type":"address"}],"name":"addSigner","outputs":[],"payable":false,"stateMutability":"nonpayable","type":"function"},{"constant":false,"inputs":[{"internalType":"address","name":"tokenAddr","type":"address"},{"internalType":"address[]","name":"addresses","type":"address[]"},{"internalType":"uint256[]","name":"amounts","type":"uint256[]"}],"name":"bulkSendToken","outputs":[{"internalType":"bool","name":"","type":"bool"}],"payable":true,"stateMutability":"payable","type":"function"},{"constant":false,"inputs":[{"internalType":"address[]","name":"addresses","type":"address[]"},{"internalType":"uint256[]","name":"amounts","type":"uint256[]"}],"name":"bulkSendTrx","outputs":[{"internalType":"bool","name":"","type":"bool"}],"payable":true,"stateMutability":"payable","type":"function"},{"constant":false,"inputs":[],"name":"claimInit","outputs":[],"payable":false,"stateMutability":"nonpayable","type":"function"},{"constant":false,"inputs":[],"name":"deposit","outputs":[{"internalType":"bool","name":"","type":"bool"}],"payable":true,"stateMutability":"payable","type":"function"},{"constant":true,"inputs":[],"name":"ethSendFee","outputs":[{"internalType":"uint256","name":"","type":"uint256"}],"payable":false,"stateMutability":"view","type":"function"},{"constant":true,"inputs":[{"internalType":"address","name":"addr","type":"address"}],"name":"getBalance","outputs":[{"internalType":"uint256","name":"","type":"uint256"}],"payable":false,"stateMutability":"view","type":"function"},{"constant":true,"inputs":[{"internalType":"address","name":"account","type":"address"}],"name":"isSigner","outputs":[{"internalType":"bool","name":"","type":"bool"}],"payable":false,"stateMutability":"view","type":"function"},{"constant":false,"inputs":[],"name":"renounceSigner","outputs":[],"payable":false,"stateMutability":"nonpayable","type":"function"},{"constant":false,"inputs":[{"internalType":"uint256","name":"_ethSendFee","type":"uint256"}],"name":"setEthFee","outputs":[{"internalType":"bool","name":"","type":"bool"}],"payable":false,"stateMutability":"nonpayable","type":"function"},{"constant":false,"inputs":[{"internalType":"uint256","name":"_tokenSendFee","type":"uint256"}],"name":"setTokenFee","outputs":[{"internalType":"bool","name":"","type":"bool"}],"payable":false,"stateMutability":"nonpayable","type":"function"},{"constant":true,"inputs":[],"name":"tokenSendFee","outputs":[{"internalType":"uint256","name":"","type":"uint256"}],"payable":false,"stateMutability":"view","type":"function"},{"constant":false,"inputs":[{"internalType":"address","name":"addr","type":"address"},{"internalType":"uint256","name":"amount","type":"uint256"}],"name":"withdrawEther","outputs":[{"internalType":"bool","name":"","type":"bool"}],"payable":false,"stateMutability":"nonpayable","type":"function"},{"constant":false,"inputs":[{"internalType":"address","name":"tokenAddr","type":"address"},{"internalType":"address","name":"_to","type":"address"},{"internalType":"uint256","name":"_amount","type":"uint256"}],"name":"withdrawToken","outputs":[{"internalType":"bool","name":"","type":"bool"}],"payable":false,"stateMutability":"nonpayable","type":"function"}]'
             # noqa: E501 (line-too-long)
         )
 
