@@ -249,6 +249,7 @@ class MiliDoS:
         self.accountAddr = None
         self.pathfinder = None
         self.artifact_manager = None
+        self._sol_link = None
         self.is_deploy = False
         self.last_class = &#34;&#34;
         self.list_type = &#34;list_address&#34;
@@ -307,12 +308,16 @@ class MiliDoS:
         self._sol_list = to_compile_contract_list
         return self
 
+    def setClassSolLinks(self, compile_links: list) -&gt; &#34;MiliDoS&#34;:
+        self._sol_link = compile_links
+        return self
+
     def remoteCompile(self, ver: str) -&gt; &#34;MiliDoS&#34;:
         if ver == &#34;&#34;:
             print(&#34;there is no solidity version specified&#34;)
             exit(0)
         self.pathfinder.setSolVersion(ver)
-        BuildRemoteLinuxCommand(self.pathfinder, self._sol_list)
+        BuildRemoteLinuxCommand(self.pathfinder, self._sol_list, self._sol_link)
         return self
 
     def localTranspile(self, dapp_folder: str = &#34;app&#34;) -&gt; &#34;MiliDoS&#34;:
@@ -1002,6 +1007,7 @@ implement default like this::</p>
         self.accountAddr = None
         self.pathfinder = None
         self.artifact_manager = None
+        self._sol_link = None
         self.is_deploy = False
         self.last_class = &#34;&#34;
         self.list_type = &#34;list_address&#34;
@@ -1060,12 +1066,16 @@ implement default like this::</p>
         self._sol_list = to_compile_contract_list
         return self
 
+    def setClassSolLinks(self, compile_links: list) -&gt; &#34;MiliDoS&#34;:
+        self._sol_link = compile_links
+        return self
+
     def remoteCompile(self, ver: str) -&gt; &#34;MiliDoS&#34;:
         if ver == &#34;&#34;:
             print(&#34;there is no solidity version specified&#34;)
             exit(0)
         self.pathfinder.setSolVersion(ver)
-        BuildRemoteLinuxCommand(self.pathfinder, self._sol_list)
+        BuildRemoteLinuxCommand(self.pathfinder, self._sol_list, self._sol_link)
         return self
 
     def localTranspile(self, dapp_folder: str = &#34;app&#34;) -&gt; &#34;MiliDoS&#34;:
@@ -2233,7 +2243,7 @@ Note: Be cautions with the range provided, as the logic creates query for each b
         print(&#34;there is no solidity version specified&#34;)
         exit(0)
     self.pathfinder.setSolVersion(ver)
-    BuildRemoteLinuxCommand(self.pathfinder, self._sol_list)
+    BuildRemoteLinuxCommand(self.pathfinder, self._sol_list, self._sol_link)
     return self</code></pre>
 </details>
 </dd>
@@ -2281,6 +2291,20 @@ Note: Be cautions with the range provided, as the logic creates query for each b
         })
     signed_txn = self.w3.eth.account.sign_transaction(tx, private_key)
     return self.w3.eth.sendRawTransaction(signed_txn.rawTransaction)</code></pre>
+</details>
+</dd>
+<dt id="moody.libeb.MiliDoS.setClassSolLinks"><code class="name flex">
+<span>def <span class="ident">setClassSolLinks</span></span>(<span>self, compile_links: list) ‑> <a title="moody.libeb.MiliDoS" href="#moody.libeb.MiliDoS">MiliDoS</a></span>
+</code></dt>
+<dd>
+<div class="desc"></div>
+<details class="source">
+<summary>
+<span>Expand source code</span>
+</summary>
+<pre><code class="python">def setClassSolLinks(self, compile_links: list) -&gt; &#34;MiliDoS&#34;:
+    self._sol_link = compile_links
+    return self</code></pre>
 </details>
 </dd>
 <dt id="moody.libeb.MiliDoS.setClassSolNames"><code class="name flex">
@@ -2773,6 +2797,7 @@ all works will be done with the remote server or using the docker</p></div>
 <li><code><a title="moody.libeb.MiliDoS.remoteCompile" href="#moody.libeb.MiliDoS.remoteCompile">remoteCompile</a></code></li>
 <li><code><a title="moody.libeb.MiliDoS.removeAddress" href="#moody.libeb.MiliDoS.removeAddress">removeAddress</a></code></li>
 <li><code><a title="moody.libeb.MiliDoS.send_contract_tx" href="#moody.libeb.MiliDoS.send_contract_tx">send_contract_tx</a></code></li>
+<li><code><a title="moody.libeb.MiliDoS.setClassSolLinks" href="#moody.libeb.MiliDoS.setClassSolLinks">setClassSolLinks</a></code></li>
 <li><code><a title="moody.libeb.MiliDoS.setClassSolNames" href="#moody.libeb.MiliDoS.setClassSolNames">setClassSolNames</a></code></li>
 <li><code><a title="moody.libeb.MiliDoS.setKV" href="#moody.libeb.MiliDoS.setKV">setKV</a></code></li>
 <li><code><a title="moody.libeb.MiliDoS.setTargetClass" href="#moody.libeb.MiliDoS.setTargetClass">setTargetClass</a></code></li>

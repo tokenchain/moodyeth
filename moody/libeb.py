@@ -221,6 +221,7 @@ class MiliDoS:
         self.accountAddr = None
         self.pathfinder = None
         self.artifact_manager = None
+        self._sol_link = None
         self.is_deploy = False
         self.last_class = ""
         self.list_type = "list_address"
@@ -279,12 +280,16 @@ class MiliDoS:
         self._sol_list = to_compile_contract_list
         return self
 
+    def setClassSolLinks(self, compile_links: list) -> "MiliDoS":
+        self._sol_link = compile_links
+        return self
+
     def remoteCompile(self, ver: str) -> "MiliDoS":
         if ver == "":
             print("there is no solidity version specified")
             exit(0)
         self.pathfinder.setSolVersion(ver)
-        BuildRemoteLinuxCommand(self.pathfinder, self._sol_list)
+        BuildRemoteLinuxCommand(self.pathfinder, self._sol_list, self._sol_link)
         return self
 
     def localTranspile(self, dapp_folder: str = "app") -> "MiliDoS":

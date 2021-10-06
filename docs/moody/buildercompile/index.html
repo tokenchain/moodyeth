@@ -60,15 +60,23 @@ if ! command -v abi-gen-uni &amp;&gt;/dev/null; then
     echo &#34;abi-gen-uni could not be found. please check the official source from: https://www.npmjs.com/package/easy-abi-gen&#34;
     cnpm i -g easy-abi-gen
 fi
-
+if ! command -v poa-solidity-flattener &amp;&gt;/dev/null; then
+    echo &#34;poa-solidity-flattener could not be found, now it needs to install&#34;
+    cnpm i -g poa-solidity-flattener
+fi
 {LISTP}
 
 &#34;&#34;&#34;
 ITEM = &#34;&#34;&#34;
-echo &#34;🍯 make compile of the contract from {COMPILE_COIN}&#34;
+echo &#34;🍯 Compiling from {COMPILE_COIN} 🧀&#34;
 SOLC_VERSION={SOLVER} solc --allow-paths {SOLCPATH} -o build --bin --bin-runtime --abi --optimize --metadata --overwrite {COMPILE_COIN}
 echo &#34;=&gt; 🍺🍺🍺 {COMPILE_COIN}&#34;
+&#34;&#34;&#34;
 
+ITEMLINK = &#34;&#34;&#34;
+echo &#34;🍰 Compiling with LINK from {COMPILE_COIN} 🧀&#34;
+SOLC_VERSION={SOLVER} solc --allow-paths {SOLCPATH} -o build --bin --bin-runtime --abi --optimize --metadata --libraries {FILES_CONFIG} --overwrite {COMPILE_COIN}
+echo &#34;=&gt; 🍥🍥🍥 {COMPILE_COIN}&#34;
 &#34;&#34;&#34;
 
 ITEM_CP_LOCAL = &#34;&#34;&#34;

@@ -1,5 +1,5 @@
 from moody.paths import Paths
-from . import REC, ITEM
+from . import REC, ITEM, ITEMLINK
 
 
 def listItemContent(tar: Paths, k0: str) -> str:
@@ -12,6 +12,26 @@ def listItemContent(tar: Paths, k0: str) -> str:
     return ITEM.format(
         SOLCPATH=tar.SOLCPATH,
         COMPILE_COIN=k0,
+        SOLVER=tar.SOLC_VER,
+    )
+
+
+def listItemContentWithLink(tar: Paths, k0: str, link: dict) -> str:
+    """
+    example: link = {
+    "filepath.sol:CLASS" = "0x0930193019391093012930209099302129"
+    }
+    :param tar:
+    :param k0:
+    :param link:
+    :return:
+    """
+    configfile = " ".join(link)
+
+    return ITEMLINK.format(
+        SOLCPATH=tar.SOLCPATH,
+        COMPILE_COIN=k0,
+        FILES_CONFIG=configfile,
         SOLVER=tar.SOLC_VER,
     )
 
@@ -31,7 +51,7 @@ def wrapContent(tar: Paths, compile_list: list) -> str:
     )
 
 
-def BuildRemoteLinuxCommand(p: Paths, list_files: list) -> None:
+def BuildRemoteLinuxCommand(p: Paths, list_files: list, linked: dict = None) -> None:
     """
     building the remote linux command line
     :param p:
@@ -42,6 +62,12 @@ def BuildRemoteLinuxCommand(p: Paths, list_files: list) -> None:
     # ==================================================
     for v in list_files:
         k.append(listItemContent(p, v))
+
+    if linked is not None and "file" in linked:
+        for vh in linked["file"]:
+            if "src" in vh and "links" in vh:
+                k.append(listItemContentWithLink(p, vh["src"], vh["links"]))
+
     # ==================================================
     with open(p.workspaceFilename("remotesolc"), 'w') as f:
         f.write(wrapContent(p, k))
