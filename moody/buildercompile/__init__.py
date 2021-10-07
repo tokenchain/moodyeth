@@ -47,7 +47,8 @@ echo "=> 🍺🍺🍺 {COMPILE_COIN}"
 
 ITEMLINK = """
 echo "🍰 Compiling with LINK from {COMPILE_COIN} 🧀"
-SOLC_VERSION={SOLVER} solc --allow-paths {SOLCPATH} -o build --bin --bin-runtime --abi --optimize --metadata --libraries "{FILES_CONFIG}" --overwrite {COMPILE_COIN}
+#solc --optimize --bin MetaCoin.sol | solc --link --libraries TestLib:<address>
+SOLC_VERSION={SOLVER} solc --allow-paths {SOLCPATH} -o build  --optimize --bin --abi --link --libraries "{FILES_CONFIG}" --overwrite {COMPILE_COIN}
 echo "=> 🍥🍥🍥 {COMPILE_COIN}"
 """
 

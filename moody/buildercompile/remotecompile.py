@@ -48,7 +48,7 @@ def wrapContent(tar: Paths, compile_list: list) -> str:
     )
 
 
-def BuildRemoteLinuxCommand(p: Paths, list_files: list, linked: dict = None) -> None:
+def BuildRemoteLinuxCommand(p: Paths, list_files: list = None, linked: dict = None) -> None:
     """
     building the remote linux command line
     :param p:
@@ -57,8 +57,9 @@ def BuildRemoteLinuxCommand(p: Paths, list_files: list, linked: dict = None) -> 
     """
     k = list()
     # ==================================================
-    for v in list_files:
-        k.append(compileItem1(p, v))
+    if list_files is not None:
+        for v in list_files:
+            k.append(compileItem1(p, v))
     # ==================================================
     if linked is not None:
         for c in linked:
@@ -72,11 +73,14 @@ def BuildRemoteLinuxCommand(p: Paths, list_files: list, linked: dict = None) -> 
                     "filepath.sol:CLASS:0x0930193019391093012930209099302129"
                 }
                 
+                solc --optimize --bin MetaCoin.sol | solc --link --libraries TestLib:<address>
+                
                 """
                 for b in c["libraries"]:
                     if "src" in b and "class" in b and "address" in b:
-                        src_ex_ly = "{}:{}:{}".format(b["src"], b["class"], b["address"])
-                        lib_cmds.append(src_ex_ly)
+                        # sourceexly = "{}:{}:{}".format(b["src"], b["class"], b["address"])
+                        source_exely = "{}:{}".format(b["class"], b["address"])
+                        lib_cmds.append(source_exely)
                 library_link_cmd = " ".join(lib_cmds)
                 k.append(compileItem2(p, compile_file, library_link_cmd))
     # ==================================================

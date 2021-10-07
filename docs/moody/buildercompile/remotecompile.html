@@ -76,7 +76,7 @@ def wrapContent(tar: Paths, compile_list: list) -&gt; str:
     )
 
 
-def BuildRemoteLinuxCommand(p: Paths, list_files: list, linked: dict = None) -&gt; None:
+def BuildRemoteLinuxCommand(p: Paths, list_files: list = None, linked: dict = None) -&gt; None:
     &#34;&#34;&#34;
     building the remote linux command line
     :param p:
@@ -85,8 +85,9 @@ def BuildRemoteLinuxCommand(p: Paths, list_files: list, linked: dict = None) -&g
     &#34;&#34;&#34;
     k = list()
     # ==================================================
-    for v in list_files:
-        k.append(compileItem1(p, v))
+    if list_files is not None:
+        for v in list_files:
+            k.append(compileItem1(p, v))
     # ==================================================
     if linked is not None:
         for c in linked:
@@ -100,11 +101,14 @@ def BuildRemoteLinuxCommand(p: Paths, list_files: list, linked: dict = None) -&g
                     &#34;filepath.sol:CLASS:0x0930193019391093012930209099302129&#34;
                 }
                 
+                solc --optimize --bin MetaCoin.sol | solc --link --libraries TestLib:&lt;address&gt;
+                
                 &#34;&#34;&#34;
                 for b in c[&#34;libraries&#34;]:
                     if &#34;src&#34; in b and &#34;class&#34; in b and &#34;address&#34; in b:
-                        src_ex_ly = &#34;{}:{}:{}&#34;.format(b[&#34;src&#34;], b[&#34;class&#34;], b[&#34;address&#34;])
-                        lib_cmds.append(src_ex_ly)
+                        # sourceexly = &#34;{}:{}:{}&#34;.format(b[&#34;src&#34;], b[&#34;class&#34;], b[&#34;address&#34;])
+                        source_exely = &#34;{}:{}&#34;.format(b[&#34;class&#34;], b[&#34;address&#34;])
+                        lib_cmds.append(source_exely)
                 library_link_cmd = &#34; &#34;.join(lib_cmds)
                 k.append(compileItem2(p, compile_file, library_link_cmd))
     # ==================================================
@@ -122,7 +126,7 @@ def BuildRemoteLinuxCommand(p: Paths, list_files: list, linked: dict = None) -&g
 <h2 class="section-title" id="header-functions">Functions</h2>
 <dl>
 <dt id="moody.buildercompile.remotecompile.BuildRemoteLinuxCommand"><code class="name flex">
-<span>def <span class="ident">BuildRemoteLinuxCommand</span></span>(<span>p: <a title="moody.paths.Paths" href="../paths.html#moody.paths.Paths">Paths</a>, list_files: list, linked: dict = None) ‑> NoneType</span>
+<span>def <span class="ident">BuildRemoteLinuxCommand</span></span>(<span>p: <a title="moody.paths.Paths" href="../paths.html#moody.paths.Paths">Paths</a>, list_files: list = None, linked: dict = None) ‑> NoneType</span>
 </code></dt>
 <dd>
 <div class="desc"><p>building the remote linux command line
@@ -133,7 +137,7 @@ def BuildRemoteLinuxCommand(p: Paths, list_files: list, linked: dict = None) -&g
 <summary>
 <span>Expand source code</span>
 </summary>
-<pre><code class="python">def BuildRemoteLinuxCommand(p: Paths, list_files: list, linked: dict = None) -&gt; None:
+<pre><code class="python">def BuildRemoteLinuxCommand(p: Paths, list_files: list = None, linked: dict = None) -&gt; None:
     &#34;&#34;&#34;
     building the remote linux command line
     :param p:
@@ -142,8 +146,9 @@ def BuildRemoteLinuxCommand(p: Paths, list_files: list, linked: dict = None) -&g
     &#34;&#34;&#34;
     k = list()
     # ==================================================
-    for v in list_files:
-        k.append(compileItem1(p, v))
+    if list_files is not None:
+        for v in list_files:
+            k.append(compileItem1(p, v))
     # ==================================================
     if linked is not None:
         for c in linked:
@@ -157,11 +162,14 @@ def BuildRemoteLinuxCommand(p: Paths, list_files: list, linked: dict = None) -&g
                     &#34;filepath.sol:CLASS:0x0930193019391093012930209099302129&#34;
                 }
                 
+                solc --optimize --bin MetaCoin.sol | solc --link --libraries TestLib:&lt;address&gt;
+                
                 &#34;&#34;&#34;
                 for b in c[&#34;libraries&#34;]:
                     if &#34;src&#34; in b and &#34;class&#34; in b and &#34;address&#34; in b:
-                        src_ex_ly = &#34;{}:{}:{}&#34;.format(b[&#34;src&#34;], b[&#34;class&#34;], b[&#34;address&#34;])
-                        lib_cmds.append(src_ex_ly)
+                        # sourceexly = &#34;{}:{}:{}&#34;.format(b[&#34;src&#34;], b[&#34;class&#34;], b[&#34;address&#34;])
+                        source_exely = &#34;{}:{}&#34;.format(b[&#34;class&#34;], b[&#34;address&#34;])
+                        lib_cmds.append(source_exely)
                 library_link_cmd = &#34; &#34;.join(lib_cmds)
                 k.append(compileItem2(p, compile_file, library_link_cmd))
     # ==================================================
