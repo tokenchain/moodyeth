@@ -105,10 +105,11 @@ def BuildRemoteLinuxCommand(p: Paths, list_files: list = None, linked: dict = No
                 
                 &#34;&#34;&#34;
                 for b in c[&#34;libraries&#34;]:
-                    if &#34;src&#34; in b and &#34;class&#34; in b and &#34;address&#34; in b:
-                        # sourceexly = &#34;{}:{}:{}&#34;.format(b[&#34;src&#34;], b[&#34;class&#34;], b[&#34;address&#34;])
-                        source_exely = &#34;{}:{}&#34;.format(b[&#34;class&#34;], b[&#34;address&#34;])
-                        lib_cmds.append(source_exely)
+                    if &#34;class&#34; in b and &#34;address&#34; in b:
+                        source_line = &#34;{}:{}&#34;.format(b[&#34;class&#34;], b[&#34;address&#34;])
+                        if &#34;src&#34; in b:
+                            source_line = &#34;{}:{}:{}&#34;.format(b[&#34;src&#34;], b[&#34;class&#34;], b[&#34;address&#34;])
+                        lib_cmds.append(source_line)
                 library_link_cmd = &#34; &#34;.join(lib_cmds)
                 k.append(compileItem2(p, compile_file, library_link_cmd))
     # ==================================================
@@ -166,10 +167,11 @@ def BuildRemoteLinuxCommand(p: Paths, list_files: list = None, linked: dict = No
                 
                 &#34;&#34;&#34;
                 for b in c[&#34;libraries&#34;]:
-                    if &#34;src&#34; in b and &#34;class&#34; in b and &#34;address&#34; in b:
-                        # sourceexly = &#34;{}:{}:{}&#34;.format(b[&#34;src&#34;], b[&#34;class&#34;], b[&#34;address&#34;])
-                        source_exely = &#34;{}:{}&#34;.format(b[&#34;class&#34;], b[&#34;address&#34;])
-                        lib_cmds.append(source_exely)
+                    if &#34;class&#34; in b and &#34;address&#34; in b:
+                        source_line = &#34;{}:{}&#34;.format(b[&#34;class&#34;], b[&#34;address&#34;])
+                        if &#34;src&#34; in b:
+                            source_line = &#34;{}:{}:{}&#34;.format(b[&#34;src&#34;], b[&#34;class&#34;], b[&#34;address&#34;])
+                        lib_cmds.append(source_line)
                 library_link_cmd = &#34; &#34;.join(lib_cmds)
                 k.append(compileItem2(p, compile_file, library_link_cmd))
     # ==================================================

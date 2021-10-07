@@ -77,10 +77,11 @@ def BuildRemoteLinuxCommand(p: Paths, list_files: list = None, linked: dict = No
                 
                 """
                 for b in c["libraries"]:
-                    if "src" in b and "class" in b and "address" in b:
-                        # sourceexly = "{}:{}:{}".format(b["src"], b["class"], b["address"])
-                        source_exely = "{}:{}".format(b["class"], b["address"])
-                        lib_cmds.append(source_exely)
+                    if "class" in b and "address" in b:
+                        source_line = "{}:{}".format(b["class"], b["address"])
+                        if "src" in b:
+                            source_line = "{}:{}:{}".format(b["src"], b["class"], b["address"])
+                        lib_cmds.append(source_line)
                 library_link_cmd = " ".join(lib_cmds)
                 k.append(compileItem2(p, compile_file, library_link_cmd))
     # ==================================================
