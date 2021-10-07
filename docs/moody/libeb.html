@@ -49,6 +49,7 @@ from . import Bolors
 from .buildercompile.remotecompile import BuildRemoteLinuxCommand
 from .buildercompile.transpile import BuildLang
 from .conf import Config
+from .exceptions import FoundUndeployedLibraries
 from .paths import Paths
 
 
@@ -148,6 +149,68 @@ def toDict(dictToParse):
     return parsedDict
 
 
+import re
+
+regex1 = r&#34;\/\/*.*&#34;
+
+
+class IDos:
+    def hasContractName(self, name: str) -&gt; bool:
+        pass
+
+    def getAddr(self, keyname: str) -&gt; str:
+        pass
+
+
+class BinOp:
+    def __init__(self, bin_content: str, file_name: str):
+        self.bin_raw = bin_content
+        self.bin_knifed = bin_content
+        self.bin_undeploy_lib = set()
+        self.file_name = file_name
+
+    def GetRawBin(self) -&gt; str:
+        return self.bin_raw
+
+    def GetKnifedBin(self) -&gt; str:
+        return self.bin_knifed
+
+    def checkBinForUndeployLib(self) -&gt; bool:
+        matches = re.finditer(regex1, self.bin_raw, re.MULTILINE)
+        found = False
+        self.bin_undeploy_lib = set()
+
+        for matchNum, match in enumerate(matches, start=1):
+            print(&#34;Match {matchNum} was found at {start}-{end}: {match}&#34;.format(matchNum=matchNum, start=match.start(), end=match.end(), match=match.group()))
+            for groupNum in range(0, len(match.groups())):
+                groupNum = groupNum + 1
+                print(&#34;Group {groupNum} found at {start}-{end}: {group}&#34;.format(groupNum=groupNum, start=match.start(groupNum), end=match.end(groupNum), group=match.group(groupNum)))
+                self.bin_undeploy_lib.add(match.group(groupNum))
+            found = True
+        return found
+
+    def anaylze(self, databank: IDos) -&gt; bool:
+        if len(self.bin_undeploy_lib) == 0:
+            return False
+        for line in self.bin_undeploy_lib:
+            class_name = str(line).split(&#34;:&#34;)[1]
+            keyholder = &#34;__{}__&#34;.format(str(line).split(&#34;-&gt;&#34;)[0].strip(&#34; //&#34;))
+            if databank.hasContractName(class_name) is True:
+                self.knifeBin(class_name, keyholder, databank.getAddr(class_name).lower())
+            else:
+                print(&#34;🧊 Found undeploy libraries - {}&#34;.format(class_name))
+                raise FoundUndeployedLibraries
+
+        self.bin_knifed = self.bin_knifed.splitlines(True)[0]
+        print(f&#34;The final bin file is like... {self.file_name}&#34;)
+        print(self.bin_knifed)
+        return True
+
+    def knifeBin(self, c: str, k: str, address: str) -&gt; None:
+        self.bin_knifed = self.bin_raw.replace(k, address)
+        print(f&#34;🍡 Linked successfully for CLASS {c}&#34;)
+
+
 class SolWeb3Tool(object):
     OUTPUT_BUILD = &#34;build&#34;
     WORKSPACE_PATH = &#34;&#34;
@@ -234,7 +297,7 @@ class SolWeb3Tool(object):
         writeFile(json.dumps(predump, ensure_ascii=False), filepath)
 
 
-class MiliDoS:
+class MiliDoS(IDos):
     &#34;&#34;&#34;
     wrap the web3 into the package
     @
@@ -512,9 +575,18 @@ class MiliDoS:
             solc_artifact = SolWeb3Tool()
             solc_artifact.setBasePath(self.base_path)
             solc_artifact = solc_artifact.GetCodeClassFromBuild(class_name)
-            contract_nv = self.w3.eth.contract(abi=solc_artifact.abi, bytecode=solc_artifact.bin)
+            bin = BinOp(solc_artifact.bin, class_name)
+            if bin.checkBinForUndeployLib() is True:
+                # try to find the needed libraries in address..
+                bin.anaylze(self)
+                contract_nv = self.w3.eth.contract(abi=solc_artifact.abi, bytecode=bin.GetKnifedBin())
+            else:
+                contract_nv = self.w3.eth.contract(abi=solc_artifact.abi, bytecode=bin.GetRawBin())
+
         except FileNotFoundError:
             print(&#34;💢 bin or abi file is not found.&#34;)
+            exit(0)
+        except FoundUndeployedLibraries:
             exit(0)
 
         if len(params) &gt; 0:
@@ -854,6 +926,159 @@ class MiliDoS:
 <section>
 <h2 class="section-title" id="header-classes">Classes</h2>
 <dl>
+<dt id="moody.libeb.BinOp"><code class="flex name class">
+<span>class <span class="ident">BinOp</span></span>
+<span>(</span><span>bin_content: str, file_name: str)</span>
+</code></dt>
+<dd>
+<div class="desc"></div>
+<details class="source">
+<summary>
+<span>Expand source code</span>
+</summary>
+<pre><code class="python">class BinOp:
+    def __init__(self, bin_content: str, file_name: str):
+        self.bin_raw = bin_content
+        self.bin_knifed = bin_content
+        self.bin_undeploy_lib = set()
+        self.file_name = file_name
+
+    def GetRawBin(self) -&gt; str:
+        return self.bin_raw
+
+    def GetKnifedBin(self) -&gt; str:
+        return self.bin_knifed
+
+    def checkBinForUndeployLib(self) -&gt; bool:
+        matches = re.finditer(regex1, self.bin_raw, re.MULTILINE)
+        found = False
+        self.bin_undeploy_lib = set()
+
+        for matchNum, match in enumerate(matches, start=1):
+            print(&#34;Match {matchNum} was found at {start}-{end}: {match}&#34;.format(matchNum=matchNum, start=match.start(), end=match.end(), match=match.group()))
+            for groupNum in range(0, len(match.groups())):
+                groupNum = groupNum + 1
+                print(&#34;Group {groupNum} found at {start}-{end}: {group}&#34;.format(groupNum=groupNum, start=match.start(groupNum), end=match.end(groupNum), group=match.group(groupNum)))
+                self.bin_undeploy_lib.add(match.group(groupNum))
+            found = True
+        return found
+
+    def anaylze(self, databank: IDos) -&gt; bool:
+        if len(self.bin_undeploy_lib) == 0:
+            return False
+        for line in self.bin_undeploy_lib:
+            class_name = str(line).split(&#34;:&#34;)[1]
+            keyholder = &#34;__{}__&#34;.format(str(line).split(&#34;-&gt;&#34;)[0].strip(&#34; //&#34;))
+            if databank.hasContractName(class_name) is True:
+                self.knifeBin(class_name, keyholder, databank.getAddr(class_name).lower())
+            else:
+                print(&#34;🧊 Found undeploy libraries - {}&#34;.format(class_name))
+                raise FoundUndeployedLibraries
+
+        self.bin_knifed = self.bin_knifed.splitlines(True)[0]
+        print(f&#34;The final bin file is like... {self.file_name}&#34;)
+        print(self.bin_knifed)
+        return True
+
+    def knifeBin(self, c: str, k: str, address: str) -&gt; None:
+        self.bin_knifed = self.bin_raw.replace(k, address)
+        print(f&#34;🍡 Linked successfully for CLASS {c}&#34;)</code></pre>
+</details>
+<h3>Methods</h3>
+<dl>
+<dt id="moody.libeb.BinOp.GetKnifedBin"><code class="name flex">
+<span>def <span class="ident">GetKnifedBin</span></span>(<span>self) ‑> str</span>
+</code></dt>
+<dd>
+<div class="desc"></div>
+<details class="source">
+<summary>
+<span>Expand source code</span>
+</summary>
+<pre><code class="python">def GetKnifedBin(self) -&gt; str:
+    return self.bin_knifed</code></pre>
+</details>
+</dd>
+<dt id="moody.libeb.BinOp.GetRawBin"><code class="name flex">
+<span>def <span class="ident">GetRawBin</span></span>(<span>self) ‑> str</span>
+</code></dt>
+<dd>
+<div class="desc"></div>
+<details class="source">
+<summary>
+<span>Expand source code</span>
+</summary>
+<pre><code class="python">def GetRawBin(self) -&gt; str:
+    return self.bin_raw</code></pre>
+</details>
+</dd>
+<dt id="moody.libeb.BinOp.anaylze"><code class="name flex">
+<span>def <span class="ident">anaylze</span></span>(<span>self, databank: <a title="moody.libeb.IDos" href="#moody.libeb.IDos">IDos</a>) ‑> bool</span>
+</code></dt>
+<dd>
+<div class="desc"></div>
+<details class="source">
+<summary>
+<span>Expand source code</span>
+</summary>
+<pre><code class="python">def anaylze(self, databank: IDos) -&gt; bool:
+    if len(self.bin_undeploy_lib) == 0:
+        return False
+    for line in self.bin_undeploy_lib:
+        class_name = str(line).split(&#34;:&#34;)[1]
+        keyholder = &#34;__{}__&#34;.format(str(line).split(&#34;-&gt;&#34;)[0].strip(&#34; //&#34;))
+        if databank.hasContractName(class_name) is True:
+            self.knifeBin(class_name, keyholder, databank.getAddr(class_name).lower())
+        else:
+            print(&#34;🧊 Found undeploy libraries - {}&#34;.format(class_name))
+            raise FoundUndeployedLibraries
+
+    self.bin_knifed = self.bin_knifed.splitlines(True)[0]
+    print(f&#34;The final bin file is like... {self.file_name}&#34;)
+    print(self.bin_knifed)
+    return True</code></pre>
+</details>
+</dd>
+<dt id="moody.libeb.BinOp.checkBinForUndeployLib"><code class="name flex">
+<span>def <span class="ident">checkBinForUndeployLib</span></span>(<span>self) ‑> bool</span>
+</code></dt>
+<dd>
+<div class="desc"></div>
+<details class="source">
+<summary>
+<span>Expand source code</span>
+</summary>
+<pre><code class="python">def checkBinForUndeployLib(self) -&gt; bool:
+    matches = re.finditer(regex1, self.bin_raw, re.MULTILINE)
+    found = False
+    self.bin_undeploy_lib = set()
+
+    for matchNum, match in enumerate(matches, start=1):
+        print(&#34;Match {matchNum} was found at {start}-{end}: {match}&#34;.format(matchNum=matchNum, start=match.start(), end=match.end(), match=match.group()))
+        for groupNum in range(0, len(match.groups())):
+            groupNum = groupNum + 1
+            print(&#34;Group {groupNum} found at {start}-{end}: {group}&#34;.format(groupNum=groupNum, start=match.start(groupNum), end=match.end(groupNum), group=match.group(groupNum)))
+            self.bin_undeploy_lib.add(match.group(groupNum))
+        found = True
+    return found</code></pre>
+</details>
+</dd>
+<dt id="moody.libeb.BinOp.knifeBin"><code class="name flex">
+<span>def <span class="ident">knifeBin</span></span>(<span>self, c: str, k: str, address: str) ‑> NoneType</span>
+</code></dt>
+<dd>
+<div class="desc"></div>
+<details class="source">
+<summary>
+<span>Expand source code</span>
+</summary>
+<pre><code class="python">def knifeBin(self, c: str, k: str, address: str) -&gt; None:
+    self.bin_knifed = self.bin_raw.replace(k, address)
+    print(f&#34;🍡 Linked successfully for CLASS {c}&#34;)</code></pre>
+</details>
+</dd>
+</dl>
+</dd>
 <dt id="moody.libeb.HexJsonEncoder"><code class="flex name class">
 <span>class <span class="ident">HexJsonEncoder</span></span>
 <span>(</span><span>*, skipkeys=False, ensure_ascii=True, check_circular=True, allow_nan=True, sort_keys=False, indent=None, separators=None, default=None)</span>
@@ -981,6 +1206,56 @@ implement default like this::</p>
 </dd>
 </dl>
 </dd>
+<dt id="moody.libeb.IDos"><code class="flex name class">
+<span>class <span class="ident">IDos</span></span>
+</code></dt>
+<dd>
+<div class="desc"></div>
+<details class="source">
+<summary>
+<span>Expand source code</span>
+</summary>
+<pre><code class="python">class IDos:
+    def hasContractName(self, name: str) -&gt; bool:
+        pass
+
+    def getAddr(self, keyname: str) -&gt; str:
+        pass</code></pre>
+</details>
+<h3>Subclasses</h3>
+<ul class="hlist">
+<li><a title="moody.libeb.MiliDoS" href="#moody.libeb.MiliDoS">MiliDoS</a></li>
+</ul>
+<h3>Methods</h3>
+<dl>
+<dt id="moody.libeb.IDos.getAddr"><code class="name flex">
+<span>def <span class="ident">getAddr</span></span>(<span>self, keyname: str) ‑> str</span>
+</code></dt>
+<dd>
+<div class="desc"></div>
+<details class="source">
+<summary>
+<span>Expand source code</span>
+</summary>
+<pre><code class="python">def getAddr(self, keyname: str) -&gt; str:
+    pass</code></pre>
+</details>
+</dd>
+<dt id="moody.libeb.IDos.hasContractName"><code class="name flex">
+<span>def <span class="ident">hasContractName</span></span>(<span>self, name: str) ‑> bool</span>
+</code></dt>
+<dd>
+<div class="desc"></div>
+<details class="source">
+<summary>
+<span>Expand source code</span>
+</summary>
+<pre><code class="python">def hasContractName(self, name: str) -&gt; bool:
+    pass</code></pre>
+</details>
+</dd>
+</dl>
+</dd>
 <dt id="moody.libeb.MiliDoS"><code class="flex name class">
 <span>class <span class="ident">MiliDoS</span></span>
 <span>(</span><span>_nodeCfg: <a title="moody.Config" href="index.html#moody.Config">Config</a>)</span>
@@ -992,7 +1267,7 @@ implement default like this::</p>
 <summary>
 <span>Expand source code</span>
 </summary>
-<pre><code class="python">class MiliDoS:
+<pre><code class="python">class MiliDoS(IDos):
     &#34;&#34;&#34;
     wrap the web3 into the package
     @
@@ -1270,9 +1545,18 @@ implement default like this::</p>
             solc_artifact = SolWeb3Tool()
             solc_artifact.setBasePath(self.base_path)
             solc_artifact = solc_artifact.GetCodeClassFromBuild(class_name)
-            contract_nv = self.w3.eth.contract(abi=solc_artifact.abi, bytecode=solc_artifact.bin)
+            bin = BinOp(solc_artifact.bin, class_name)
+            if bin.checkBinForUndeployLib() is True:
+                # try to find the needed libraries in address..
+                bin.anaylze(self)
+                contract_nv = self.w3.eth.contract(abi=solc_artifact.abi, bytecode=bin.GetKnifedBin())
+            else:
+                contract_nv = self.w3.eth.contract(abi=solc_artifact.abi, bytecode=bin.GetRawBin())
+
         except FileNotFoundError:
             print(&#34;💢 bin or abi file is not found.&#34;)
+            exit(0)
+        except FoundUndeployedLibraries:
             exit(0)
 
         if len(params) &gt; 0:
@@ -1458,6 +1742,10 @@ implement default like this::</p>
     def SaveConfig(self) -&gt; None:
         self.complete_deployment()</code></pre>
 </details>
+<h3>Ancestors</h3>
+<ul class="hlist">
+<li><a title="moody.libeb.IDos" href="#moody.libeb.IDos">IDos</a></li>
+</ul>
 <h3>Subclasses</h3>
 <ul class="hlist">
 <li><a title="moody.bussen.BusExpress" href="bussen.html#moody.bussen.BusExpress">BusExpress</a></li>
@@ -1811,9 +2099,18 @@ Note: Be cautions with the range provided, as the logic creates query for each b
         solc_artifact = SolWeb3Tool()
         solc_artifact.setBasePath(self.base_path)
         solc_artifact = solc_artifact.GetCodeClassFromBuild(class_name)
-        contract_nv = self.w3.eth.contract(abi=solc_artifact.abi, bytecode=solc_artifact.bin)
+        bin = BinOp(solc_artifact.bin, class_name)
+        if bin.checkBinForUndeployLib() is True:
+            # try to find the needed libraries in address..
+            bin.anaylze(self)
+            contract_nv = self.w3.eth.contract(abi=solc_artifact.abi, bytecode=bin.GetKnifedBin())
+        else:
+            contract_nv = self.w3.eth.contract(abi=solc_artifact.abi, bytecode=bin.GetRawBin())
+
     except FileNotFoundError:
         print(&#34;💢 bin or abi file is not found.&#34;)
+        exit(0)
+    except FoundUndeployedLibraries:
         exit(0)
 
     if len(params) &gt; 0:
@@ -2748,9 +3045,26 @@ all works will be done with the remote server or using the docker</p></div>
 <li><h3><a href="#header-classes">Classes</a></h3>
 <ul>
 <li>
+<h4><code><a title="moody.libeb.BinOp" href="#moody.libeb.BinOp">BinOp</a></code></h4>
+<ul class="">
+<li><code><a title="moody.libeb.BinOp.GetKnifedBin" href="#moody.libeb.BinOp.GetKnifedBin">GetKnifedBin</a></code></li>
+<li><code><a title="moody.libeb.BinOp.GetRawBin" href="#moody.libeb.BinOp.GetRawBin">GetRawBin</a></code></li>
+<li><code><a title="moody.libeb.BinOp.anaylze" href="#moody.libeb.BinOp.anaylze">anaylze</a></code></li>
+<li><code><a title="moody.libeb.BinOp.checkBinForUndeployLib" href="#moody.libeb.BinOp.checkBinForUndeployLib">checkBinForUndeployLib</a></code></li>
+<li><code><a title="moody.libeb.BinOp.knifeBin" href="#moody.libeb.BinOp.knifeBin">knifeBin</a></code></li>
+</ul>
+</li>
+<li>
 <h4><code><a title="moody.libeb.HexJsonEncoder" href="#moody.libeb.HexJsonEncoder">HexJsonEncoder</a></code></h4>
 <ul class="">
 <li><code><a title="moody.libeb.HexJsonEncoder.default" href="#moody.libeb.HexJsonEncoder.default">default</a></code></li>
+</ul>
+</li>
+<li>
+<h4><code><a title="moody.libeb.IDos" href="#moody.libeb.IDos">IDos</a></code></h4>
+<ul class="">
+<li><code><a title="moody.libeb.IDos.getAddr" href="#moody.libeb.IDos.getAddr">getAddr</a></code></li>
+<li><code><a title="moody.libeb.IDos.hasContractName" href="#moody.libeb.IDos.hasContractName">hasContractName</a></code></li>
 </ul>
 </li>
 <li>

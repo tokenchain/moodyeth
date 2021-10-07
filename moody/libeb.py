@@ -21,6 +21,7 @@ from . import Bolors
 from .buildercompile.remotecompile import BuildRemoteLinuxCommand
 from .buildercompile.transpile import BuildLang
 from .conf import Config
+from .exceptions import FoundUndeployedLibraries
 from .paths import Paths
 
 
@@ -120,6 +121,68 @@ def toDict(dictToParse):
     return parsedDict
 
 
+import re
+
+regex1 = r"\/\/*.*"
+
+
+class IDos:
+    def hasContractName(self, name: str) -> bool:
+        pass
+
+    def getAddr(self, keyname: str) -> str:
+        pass
+
+
+class BinOp:
+    def __init__(self, bin_content: str, file_name: str):
+        self.bin_raw = bin_content
+        self.bin_knifed = bin_content
+        self.bin_undeploy_lib = set()
+        self.file_name = file_name
+
+    def GetRawBin(self) -> str:
+        return self.bin_raw
+
+    def GetKnifedBin(self) -> str:
+        return self.bin_knifed
+
+    def checkBinForUndeployLib(self) -> bool:
+        matches = re.finditer(regex1, self.bin_raw, re.MULTILINE)
+        found = False
+        self.bin_undeploy_lib = set()
+
+        for matchNum, match in enumerate(matches, start=1):
+            print("Match {matchNum} was found at {start}-{end}: {match}".format(matchNum=matchNum, start=match.start(), end=match.end(), match=match.group()))
+            for groupNum in range(0, len(match.groups())):
+                groupNum = groupNum + 1
+                print("Group {groupNum} found at {start}-{end}: {group}".format(groupNum=groupNum, start=match.start(groupNum), end=match.end(groupNum), group=match.group(groupNum)))
+                self.bin_undeploy_lib.add(match.group(groupNum))
+            found = True
+        return found
+
+    def anaylze(self, databank: IDos) -> bool:
+        if len(self.bin_undeploy_lib) == 0:
+            return False
+        for line in self.bin_undeploy_lib:
+            class_name = str(line).split(":")[1]
+            keyholder = "__{}__".format(str(line).split("->")[0].strip(" //"))
+            if databank.hasContractName(class_name) is True:
+                self.knifeBin(class_name, keyholder, databank.getAddr(class_name).lower())
+            else:
+                print("🧊 Found undeploy libraries - {}".format(class_name))
+                raise FoundUndeployedLibraries
+
+        self.bin_knifed = self.bin_knifed.splitlines(True)[0]
+        print(f"The final bin file is like... {self.file_name}")
+        print(self.bin_knifed)
+        return True
+
+    def knifeBin(self, c: str, k: str, address: str) -> None:
+        self.bin_knifed = self.bin_raw.replace(k, address)
+        print(f"🍡 Linked successfully for CLASS {c}")
+
+
 class SolWeb3Tool(object):
     OUTPUT_BUILD = "build"
     WORKSPACE_PATH = ""
@@ -206,7 +269,7 @@ class SolWeb3Tool(object):
         writeFile(json.dumps(predump, ensure_ascii=False), filepath)
 
 
-class MiliDoS:
+class MiliDoS(IDos):
     """
     wrap the web3 into the package
     @
@@ -484,9 +547,18 @@ class MiliDoS:
             solc_artifact = SolWeb3Tool()
             solc_artifact.setBasePath(self.base_path)
             solc_artifact = solc_artifact.GetCodeClassFromBuild(class_name)
-            contract_nv = self.w3.eth.contract(abi=solc_artifact.abi, bytecode=solc_artifact.bin)
+            bin = BinOp(solc_artifact.bin, class_name)
+            if bin.checkBinForUndeployLib() is True:
+                # try to find the needed libraries in address..
+                bin.anaylze(self)
+                contract_nv = self.w3.eth.contract(abi=solc_artifact.abi, bytecode=bin.GetKnifedBin())
+            else:
+                contract_nv = self.w3.eth.contract(abi=solc_artifact.abi, bytecode=bin.GetRawBin())
+
         except FileNotFoundError:
             print("💢 bin or abi file is not found.")
+            exit(0)
+        except FoundUndeployedLibraries:
             exit(0)
 
         if len(params) > 0:
