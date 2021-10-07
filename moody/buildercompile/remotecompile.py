@@ -2,7 +2,7 @@ from moody.paths import Paths
 from . import REC, ITEM, ITEMLINK
 
 
-def listItemContent(tar: Paths, k0: str) -> str:
+def compileItem1(tar: Paths, k0: str) -> str:
     """
     list the item content
     :param tar:
@@ -16,22 +16,19 @@ def listItemContent(tar: Paths, k0: str) -> str:
     )
 
 
-def listItemContentWithLink(tar: Paths, k0: str, link: dict) -> str:
+def compileItem2(tar: Paths, k0: str, link_lib_conf: str) -> str:
     """
-    example: link = {
-    "filepath.sol:CLASS" = "0x0930193019391093012930209099302129"
-    }
+
     :param tar:
     :param k0:
     :param link:
     :return:
     """
-    configfile = " ".join(link)
 
     return ITEMLINK.format(
         SOLCPATH=tar.SOLCPATH,
         COMPILE_COIN=k0,
-        FILES_CONFIG=configfile,
+        FILES_CONFIG=link_lib_conf,
         SOLVER=tar.SOLC_VER,
     )
 
@@ -61,14 +58,29 @@ def BuildRemoteLinuxCommand(p: Paths, list_files: list, linked: dict = None) -> 
     k = list()
     # ==================================================
     for v in list_files:
-        k.append(listItemContent(p, v))
-
-    if linked is not None and "file" in linked:
-        for vh in linked["file"]:
-            if "src" in vh and "links" in vh:
-                k.append(listItemContentWithLink(p, vh["src"], vh["links"]))
-
+        k.append(compileItem1(p, v))
+    # ==================================================
+    if linked is not None:
+        for c in linked:
+            if "compile" in c and "libraries" in c:
+                compile_file = c["compile"]
+                lib_cmds = list()
+                """
+                solc before v0.8.1
+                
+                example: link = {
+                    "filepath.sol:CLASS:0x0930193019391093012930209099302129"
+                }
+                
+                """
+                for b in c["libraries"]:
+                    if "src" in b and "class" in b and "address" in b:
+                        src_ex_ly = "{}:{}:{}".format(b["src"], b["class"], b["address"])
+                        lib_cmds.append(src_ex_ly)
+                library_link_cmd = " ".join(lib_cmds)
+                k.append(compileItem2(p, compile_file, library_link_cmd))
     # ==================================================
     with open(p.workspaceFilename("remotesolc"), 'w') as f:
         f.write(wrapContent(p, k))
         f.close()
+    # ==================================================

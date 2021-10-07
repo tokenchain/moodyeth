@@ -30,7 +30,7 @@
 from . import REC, ITEM, ITEMLINK
 
 
-def listItemContent(tar: Paths, k0: str) -&gt; str:
+def compileItem1(tar: Paths, k0: str) -&gt; str:
     &#34;&#34;&#34;
     list the item content
     :param tar:
@@ -44,22 +44,19 @@ def listItemContent(tar: Paths, k0: str) -&gt; str:
     )
 
 
-def listItemContentWithLink(tar: Paths, k0: str, link: dict) -&gt; str:
+def compileItem2(tar: Paths, k0: str, link_lib_conf: str) -&gt; str:
     &#34;&#34;&#34;
-    example: link = {
-    &#34;filepath.sol:CLASS&#34; = &#34;0x0930193019391093012930209099302129&#34;
-    }
+
     :param tar:
     :param k0:
     :param link:
     :return:
     &#34;&#34;&#34;
-    configfile = &#34; &#34;.join(link)
 
     return ITEMLINK.format(
         SOLCPATH=tar.SOLCPATH,
         COMPILE_COIN=k0,
-        FILES_CONFIG=configfile,
+        FILES_CONFIG=link_lib_conf,
         SOLVER=tar.SOLC_VER,
     )
 
@@ -89,17 +86,32 @@ def BuildRemoteLinuxCommand(p: Paths, list_files: list, linked: dict = None) -&g
     k = list()
     # ==================================================
     for v in list_files:
-        k.append(listItemContent(p, v))
-
-    if linked is not None and &#34;file&#34; in linked:
-        for vh in linked[&#34;file&#34;]:
-            if &#34;src&#34; in vh and &#34;links&#34; in vh:
-                k.append(listItemContentWithLink(p, vh[&#34;src&#34;], vh[&#34;links&#34;]))
-
+        k.append(compileItem1(p, v))
+    # ==================================================
+    if linked is not None:
+        for c in linked:
+            if &#34;compile&#34; in c and &#34;libraries&#34; in c:
+                compile_file = c[&#34;compile&#34;]
+                lib_cmds = list()
+                &#34;&#34;&#34;
+                solc before v0.8.1
+                
+                example: link = {
+                    &#34;filepath.sol:CLASS:0x0930193019391093012930209099302129&#34;
+                }
+                
+                &#34;&#34;&#34;
+                for b in c[&#34;libraries&#34;]:
+                    if &#34;src&#34; in b and &#34;class&#34; in b and &#34;address&#34; in b:
+                        src_ex_ly = &#34;{}:{}:{}&#34;.format(b[&#34;src&#34;], b[&#34;class&#34;], b[&#34;address&#34;])
+                        lib_cmds.append(src_ex_ly)
+                library_link_cmd = &#34; &#34;.join(lib_cmds)
+                k.append(compileItem2(p, compile_file, library_link_cmd))
     # ==================================================
     with open(p.workspaceFilename(&#34;remotesolc&#34;), &#39;w&#39;) as f:
         f.write(wrapContent(p, k))
-        f.close()</code></pre>
+        f.close()
+    # ==================================================</code></pre>
 </details>
 </section>
 <section>
@@ -131,21 +143,35 @@ def BuildRemoteLinuxCommand(p: Paths, list_files: list, linked: dict = None) -&g
     k = list()
     # ==================================================
     for v in list_files:
-        k.append(listItemContent(p, v))
-
-    if linked is not None and &#34;file&#34; in linked:
-        for vh in linked[&#34;file&#34;]:
-            if &#34;src&#34; in vh and &#34;links&#34; in vh:
-                k.append(listItemContentWithLink(p, vh[&#34;src&#34;], vh[&#34;links&#34;]))
-
+        k.append(compileItem1(p, v))
+    # ==================================================
+    if linked is not None:
+        for c in linked:
+            if &#34;compile&#34; in c and &#34;libraries&#34; in c:
+                compile_file = c[&#34;compile&#34;]
+                lib_cmds = list()
+                &#34;&#34;&#34;
+                solc before v0.8.1
+                
+                example: link = {
+                    &#34;filepath.sol:CLASS:0x0930193019391093012930209099302129&#34;
+                }
+                
+                &#34;&#34;&#34;
+                for b in c[&#34;libraries&#34;]:
+                    if &#34;src&#34; in b and &#34;class&#34; in b and &#34;address&#34; in b:
+                        src_ex_ly = &#34;{}:{}:{}&#34;.format(b[&#34;src&#34;], b[&#34;class&#34;], b[&#34;address&#34;])
+                        lib_cmds.append(src_ex_ly)
+                library_link_cmd = &#34; &#34;.join(lib_cmds)
+                k.append(compileItem2(p, compile_file, library_link_cmd))
     # ==================================================
     with open(p.workspaceFilename(&#34;remotesolc&#34;), &#39;w&#39;) as f:
         f.write(wrapContent(p, k))
         f.close()</code></pre>
 </details>
 </dd>
-<dt id="moody.buildercompile.remotecompile.listItemContent"><code class="name flex">
-<span>def <span class="ident">listItemContent</span></span>(<span>tar: <a title="moody.paths.Paths" href="../paths.html#moody.paths.Paths">Paths</a>, k0: str) ‑> str</span>
+<dt id="moody.buildercompile.remotecompile.compileItem1"><code class="name flex">
+<span>def <span class="ident">compileItem1</span></span>(<span>tar: <a title="moody.paths.Paths" href="../paths.html#moody.paths.Paths">Paths</a>, k0: str) ‑> str</span>
 </code></dt>
 <dd>
 <div class="desc"><p>list the item content
@@ -156,7 +182,7 @@ def BuildRemoteLinuxCommand(p: Paths, list_files: list, linked: dict = None) -&g
 <summary>
 <span>Expand source code</span>
 </summary>
-<pre><code class="python">def listItemContent(tar: Paths, k0: str) -&gt; str:
+<pre><code class="python">def compileItem1(tar: Paths, k0: str) -&gt; str:
     &#34;&#34;&#34;
     list the item content
     :param tar:
@@ -170,14 +196,11 @@ def BuildRemoteLinuxCommand(p: Paths, list_files: list, linked: dict = None) -&g
     )</code></pre>
 </details>
 </dd>
-<dt id="moody.buildercompile.remotecompile.listItemContentWithLink"><code class="name flex">
-<span>def <span class="ident">listItemContentWithLink</span></span>(<span>tar: <a title="moody.paths.Paths" href="../paths.html#moody.paths.Paths">Paths</a>, k0: str, link: dict) ‑> str</span>
+<dt id="moody.buildercompile.remotecompile.compileItem2"><code class="name flex">
+<span>def <span class="ident">compileItem2</span></span>(<span>tar: <a title="moody.paths.Paths" href="../paths.html#moody.paths.Paths">Paths</a>, k0: str, link_lib_conf: str) ‑> str</span>
 </code></dt>
 <dd>
-<div class="desc"><p>example: link = {
-"filepath.sol:CLASS" = "0x0930193019391093012930209099302129"
-}
-:param tar:
+<div class="desc"><p>:param tar:
 :param k0:
 :param link:
 :return:</p></div>
@@ -185,22 +208,19 @@ def BuildRemoteLinuxCommand(p: Paths, list_files: list, linked: dict = None) -&g
 <summary>
 <span>Expand source code</span>
 </summary>
-<pre><code class="python">def listItemContentWithLink(tar: Paths, k0: str, link: dict) -&gt; str:
+<pre><code class="python">def compileItem2(tar: Paths, k0: str, link_lib_conf: str) -&gt; str:
     &#34;&#34;&#34;
-    example: link = {
-    &#34;filepath.sol:CLASS&#34; = &#34;0x0930193019391093012930209099302129&#34;
-    }
+
     :param tar:
     :param k0:
     :param link:
     :return:
     &#34;&#34;&#34;
-    configfile = &#34; &#34;.join(link)
 
     return ITEMLINK.format(
         SOLCPATH=tar.SOLCPATH,
         COMPILE_COIN=k0,
-        FILES_CONFIG=configfile,
+        FILES_CONFIG=link_lib_conf,
         SOLVER=tar.SOLC_VER,
     )</code></pre>
 </details>
@@ -251,8 +271,8 @@ def BuildRemoteLinuxCommand(p: Paths, list_files: list, linked: dict = None) -&g
 <li><h3><a href="#header-functions">Functions</a></h3>
 <ul class="">
 <li><code><a title="moody.buildercompile.remotecompile.BuildRemoteLinuxCommand" href="#moody.buildercompile.remotecompile.BuildRemoteLinuxCommand">BuildRemoteLinuxCommand</a></code></li>
-<li><code><a title="moody.buildercompile.remotecompile.listItemContent" href="#moody.buildercompile.remotecompile.listItemContent">listItemContent</a></code></li>
-<li><code><a title="moody.buildercompile.remotecompile.listItemContentWithLink" href="#moody.buildercompile.remotecompile.listItemContentWithLink">listItemContentWithLink</a></code></li>
+<li><code><a title="moody.buildercompile.remotecompile.compileItem1" href="#moody.buildercompile.remotecompile.compileItem1">compileItem1</a></code></li>
+<li><code><a title="moody.buildercompile.remotecompile.compileItem2" href="#moody.buildercompile.remotecompile.compileItem2">compileItem2</a></code></li>
 <li><code><a title="moody.buildercompile.remotecompile.wrapContent" href="#moody.buildercompile.remotecompile.wrapContent">wrapContent</a></code></li>
 </ul>
 </li>
