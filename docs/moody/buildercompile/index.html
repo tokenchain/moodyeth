@@ -52,7 +52,14 @@ rm -rf {TARGET_LOC}/build
 exit
 
 &#34;&#34;&#34;
+&#34;&#34;&#34;
 
+if ! command -v poa-solidity-flattener &amp;&gt;/dev/null; then
+    echo &#34;poa-solidity-flattener could not be found, now it needs to install&#34;
+    npm i -g poa-solidity-flattener
+fi
+
+&#34;&#34;&#34;
 TRANS_LOCAL = &#34;&#34;&#34;#!/bin/bash
 
 # -----------------------------------------------
@@ -60,10 +67,7 @@ if ! command -v abi-gen-uni &amp;&gt;/dev/null; then
     echo &#34;abi-gen-uni could not be found. please check the official source from: https://www.npmjs.com/package/easy-abi-gen&#34;
     cnpm i -g easy-abi-gen
 fi
-if ! command -v poa-solidity-flattener &amp;&gt;/dev/null; then
-    echo &#34;poa-solidity-flattener could not be found, now it needs to install&#34;
-    cnpm i -g poa-solidity-flattener
-fi
+
 {LISTP}
 
 &#34;&#34;&#34;
@@ -140,6 +144,16 @@ echo &#34;==&gt; compile abi to golang 🚸✅&#34;
 </dl>
 </section>
 <section>
+<h2 class="section-title" id="header-variables">Global variables</h2>
+<dl>
+<dt id="moody.buildercompile.REC"><code class="name">var <span class="ident">REC</span></code></dt>
+<dd>
+<div class="desc"><p>if ! command -v poa-solidity-flattener &amp;&gt;/dev/null; then
+echo "poa-solidity-flattener could not be found, now it needs to install"
+npm i -g poa-solidity-flattener
+fi</p></div>
+</dd>
+</dl>
 </section>
 <section>
 </section>
@@ -161,6 +175,11 @@ echo &#34;==&gt; compile abi to golang 🚸✅&#34;
 <ul>
 <li><code><a title="moody.buildercompile.remotecompile" href="remotecompile.html">moody.buildercompile.remotecompile</a></code></li>
 <li><code><a title="moody.buildercompile.transpile" href="transpile.html">moody.buildercompile.transpile</a></code></li>
+</ul>
+</li>
+<li><h3><a href="#header-variables">Global variables</a></h3>
+<ul class="">
+<li><code><a title="moody.buildercompile.REC" href="#moody.buildercompile.REC">REC</a></code></li>
 </ul>
 </li>
 </ul>

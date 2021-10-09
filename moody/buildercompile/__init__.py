@@ -24,7 +24,14 @@ rm -rf {TARGET_LOC}/build
 exit
 
 """
+"""
 
+if ! command -v poa-solidity-flattener &>/dev/null; then
+    echo "poa-solidity-flattener could not be found, now it needs to install"
+    npm i -g poa-solidity-flattener
+fi
+
+"""
 TRANS_LOCAL = """#!/bin/bash
 
 # -----------------------------------------------
@@ -32,10 +39,7 @@ if ! command -v abi-gen-uni &>/dev/null; then
     echo "abi-gen-uni could not be found. please check the official source from: https://www.npmjs.com/package/easy-abi-gen"
     cnpm i -g easy-abi-gen
 fi
-if ! command -v poa-solidity-flattener &>/dev/null; then
-    echo "poa-solidity-flattener could not be found, now it needs to install"
-    cnpm i -g poa-solidity-flattener
-fi
+
 {LISTP}
 
 """
