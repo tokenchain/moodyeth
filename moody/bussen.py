@@ -14,10 +14,12 @@ class BusExpress(MiliDoS):
 
     def __init__(self):
         self.kol = None
+        self.ContractBusExpress: BSend = None
 
     def start(self, holder: Key, rootpath: str) -> "BusExpress":
         super().__init__(conf.XDaiMainnet())
         self.Auth(holder.private_key).connect(rootpath, "xDaiBusSend")
+        self.OverrideGasConfig(2000000000, 6000000)
         self.ready_io(True)
         return self
 
@@ -31,13 +33,12 @@ class BusExpress(MiliDoS):
     def SetupContract(self) -> "BusExpress":
         self.ContractBusExpress = BSend(self, self.BSendAddress) \
             .CallDebug(True) \
-            .CallContractFee(100000000000000000) \
             .EnforceTxReceipt(False)
         # self.MasterContract = ERC20(self.w3, self.BSendAddress).CallDebug(False).CallContractFee(10000000)
         return self
 
     def AddAdmin(self, address: str) -> "BusExpress":
-        self.ContractBusExpress.add_whitelist_admin(address)
+        self.ContractBusExpress.add_signer(address)
         return self
 
     def Error(self, str_s: str) -> None:

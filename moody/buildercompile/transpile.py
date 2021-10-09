@@ -1,4 +1,5 @@
 import os
+import re
 
 from moody.paths import Paths
 from . import ITEM_CP_LOCAL, TRANS_LOCAL, ITEM_TRANSPILE_PYTHON, ITEM_TRANSPILE_TS
@@ -80,9 +81,3 @@ def BuildLang(p: Paths, list_class_names: list) -> None:
     with open(p.workspaceFilename("localpile"), 'w') as f:
         f.write(wrapContent(p, k))
         f.close()
-
-
-
-
-
-
