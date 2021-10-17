@@ -24,14 +24,7 @@ rm -rf {TARGET_LOC}/build
 exit
 
 """
-"""
 
-if ! command -v poa-solidity-flattener &>/dev/null; then
-    echo "poa-solidity-flattener could not be found, now it needs to install"
-    npm i -g poa-solidity-flattener
-fi
-
-"""
 TRANS_LOCAL = """#!/bin/bash
 
 # -----------------------------------------------

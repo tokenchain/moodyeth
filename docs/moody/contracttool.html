@@ -199,15 +199,15 @@ class ContractTool(MiliDoS):
             if from_account_index == ind:
                 ind += 1
                 continue
-            self.Transfer(ind, 0.1, gas, price)
+            self.TransferRefer(ind, 0.1, gas, price)
             ind += 1
 
-    def Transfer(self, w_index: int, amount: float, gas: int = 2000000, price: int = 500000000) -&gt; str:
+    def Transfer(self, address_receive: str, amount: float, gas_limit: int = 0, gas_price: int = 0) -&gt; str:
         tx = {
-            &#39;to&#39;: self.referrer(w_index),
+            &#39;to&#39;: address_receive,
             &#39;chainId&#39;: self.w3.eth.chainId,
-            &#39;gas&#39;: gas,
-            &#39;gasPrice&#39;: price,
+            &#39;gas&#39;: self.gas if gas_limit == 0 else gas_limit,
+            &#39;gasPrice&#39;: self.gasPrice if gas_price == 0 else gas_price,
             &#39;nonce&#39;: self.w3.eth.getTransactionCount(self.w3.eth.account.address),
             &#39;value&#39;: self.w3.toWei(amount, &#34;ether&#34;)
         }
@@ -220,7 +220,10 @@ class ContractTool(MiliDoS):
         print(f&#34;☕️ Waiting for the block confirmation now ...&#34;)
         self.w3.eth.waitForTransactionReceipt(tx_hash)
         print(f&#34;✅ {Bolors.OK}{hash_tx_str}{Bolors.RESET}&#34;)
-        return hash_tx_str</code></pre>
+        return hash_tx_str
+
+    def TransferRefer(self, w_index: int, amount: float, gas_limit: int = 0, gas_price: int = 0) -&gt; str:
+        return self.Transfer(self.referrer(w_index), amount, gas_limit, gas_price)</code></pre>
 </details>
 </section>
 <section>
@@ -406,15 +409,15 @@ class ContractTool(MiliDoS):
             if from_account_index == ind:
                 ind += 1
                 continue
-            self.Transfer(ind, 0.1, gas, price)
+            self.TransferRefer(ind, 0.1, gas, price)
             ind += 1
 
-    def Transfer(self, w_index: int, amount: float, gas: int = 2000000, price: int = 500000000) -&gt; str:
+    def Transfer(self, address_receive: str, amount: float, gas_limit: int = 0, gas_price: int = 0) -&gt; str:
         tx = {
-            &#39;to&#39;: self.referrer(w_index),
+            &#39;to&#39;: address_receive,
             &#39;chainId&#39;: self.w3.eth.chainId,
-            &#39;gas&#39;: gas,
-            &#39;gasPrice&#39;: price,
+            &#39;gas&#39;: self.gas if gas_limit == 0 else gas_limit,
+            &#39;gasPrice&#39;: self.gasPrice if gas_price == 0 else gas_price,
             &#39;nonce&#39;: self.w3.eth.getTransactionCount(self.w3.eth.account.address),
             &#39;value&#39;: self.w3.toWei(amount, &#34;ether&#34;)
         }
@@ -427,7 +430,10 @@ class ContractTool(MiliDoS):
         print(f&#34;☕️ Waiting for the block confirmation now ...&#34;)
         self.w3.eth.waitForTransactionReceipt(tx_hash)
         print(f&#34;✅ {Bolors.OK}{hash_tx_str}{Bolors.RESET}&#34;)
-        return hash_tx_str</code></pre>
+        return hash_tx_str
+
+    def TransferRefer(self, w_index: int, amount: float, gas_limit: int = 0, gas_price: int = 0) -&gt; str:
+        return self.Transfer(self.referrer(w_index), amount, gas_limit, gas_price)</code></pre>
 </details>
 <h3>Ancestors</h3>
 <ul class="hlist">
@@ -665,7 +671,7 @@ def USDTAddress(self) -&gt; str:
         if from_account_index == ind:
             ind += 1
             continue
-        self.Transfer(ind, 0.1, gas, price)
+        self.TransferRefer(ind, 0.1, gas, price)
         ind += 1</code></pre>
 </details>
 </dd>
@@ -707,7 +713,7 @@ def USDTAddress(self) -&gt; str:
 </details>
 </dd>
 <dt id="moody.contracttool.ContractTool.Transfer"><code class="name flex">
-<span>def <span class="ident">Transfer</span></span>(<span>self, w_index: int, amount: float, gas: int = 2000000, price: int = 500000000) ‑> str</span>
+<span>def <span class="ident">Transfer</span></span>(<span>self, address_receive: str, amount: float, gas_limit: int = 0, gas_price: int = 0) ‑> str</span>
 </code></dt>
 <dd>
 <div class="desc"></div>
@@ -715,12 +721,12 @@ def USDTAddress(self) -&gt; str:
 <summary>
 <span>Expand source code</span>
 </summary>
-<pre><code class="python">def Transfer(self, w_index: int, amount: float, gas: int = 2000000, price: int = 500000000) -&gt; str:
+<pre><code class="python">def Transfer(self, address_receive: str, amount: float, gas_limit: int = 0, gas_price: int = 0) -&gt; str:
     tx = {
-        &#39;to&#39;: self.referrer(w_index),
+        &#39;to&#39;: address_receive,
         &#39;chainId&#39;: self.w3.eth.chainId,
-        &#39;gas&#39;: gas,
-        &#39;gasPrice&#39;: price,
+        &#39;gas&#39;: self.gas if gas_limit == 0 else gas_limit,
+        &#39;gasPrice&#39;: self.gasPrice if gas_price == 0 else gas_price,
         &#39;nonce&#39;: self.w3.eth.getTransactionCount(self.w3.eth.account.address),
         &#39;value&#39;: self.w3.toWei(amount, &#34;ether&#34;)
     }
@@ -734,6 +740,19 @@ def USDTAddress(self) -&gt; str:
     self.w3.eth.waitForTransactionReceipt(tx_hash)
     print(f&#34;✅ {Bolors.OK}{hash_tx_str}{Bolors.RESET}&#34;)
     return hash_tx_str</code></pre>
+</details>
+</dd>
+<dt id="moody.contracttool.ContractTool.TransferRefer"><code class="name flex">
+<span>def <span class="ident">TransferRefer</span></span>(<span>self, w_index: int, amount: float, gas_limit: int = 0, gas_price: int = 0) ‑> str</span>
+</code></dt>
+<dd>
+<div class="desc"></div>
+<details class="source">
+<summary>
+<span>Expand source code</span>
+</summary>
+<pre><code class="python">def TransferRefer(self, w_index: int, amount: float, gas_limit: int = 0, gas_price: int = 0) -&gt; str:
+    return self.Transfer(self.referrer(w_index), amount, gas_limit, gas_price)</code></pre>
 </details>
 </dd>
 <dt id="moody.contracttool.ContractTool.auth"><code class="name flex">
@@ -849,6 +868,7 @@ def USDTAddress(self) -&gt; str:
 <li><code><a title="moody.contracttool.ContractTool.TokenCurrencyAddress" href="#moody.contracttool.ContractTool.TokenCurrencyAddress">TokenCurrencyAddress</a></code></li>
 <li><code><a title="moody.contracttool.ContractTool.TokenMineAddress" href="#moody.contracttool.ContractTool.TokenMineAddress">TokenMineAddress</a></code></li>
 <li><code><a title="moody.contracttool.ContractTool.Transfer" href="#moody.contracttool.ContractTool.Transfer">Transfer</a></code></li>
+<li><code><a title="moody.contracttool.ContractTool.TransferRefer" href="#moody.contracttool.ContractTool.TransferRefer">TransferRefer</a></code></li>
 <li><code><a title="moody.contracttool.ContractTool.USDCAddress" href="#moody.contracttool.ContractTool.USDCAddress">USDCAddress</a></code></li>
 <li><code><a title="moody.contracttool.ContractTool.USDTAddress" href="#moody.contracttool.ContractTool.USDTAddress">USDTAddress</a></code></li>
 <li><code><a title="moody.contracttool.ContractTool.auth" href="#moody.contracttool.ContractTool.auth">auth</a></code></li>

@@ -171,15 +171,15 @@ class ContractTool(MiliDoS):
             if from_account_index == ind:
                 ind += 1
                 continue
-            self.Transfer(ind, 0.1, gas, price)
+            self.TransferRefer(ind, 0.1, gas, price)
             ind += 1
 
-    def Transfer(self, w_index: int, amount: float, gas: int = 2000000, price: int = 500000000) -> str:
+    def Transfer(self, address_receive: str, amount: float, gas_limit: int = 0, gas_price: int = 0) -> str:
         tx = {
-            'to': self.referrer(w_index),
+            'to': address_receive,
             'chainId': self.w3.eth.chainId,
-            'gas': gas,
-            'gasPrice': price,
+            'gas': self.gas if gas_limit == 0 else gas_limit,
+            'gasPrice': self.gasPrice if gas_price == 0 else gas_price,
             'nonce': self.w3.eth.getTransactionCount(self.w3.eth.account.address),
             'value': self.w3.toWei(amount, "ether")
         }
@@ -193,3 +193,6 @@ class ContractTool(MiliDoS):
         self.w3.eth.waitForTransactionReceipt(tx_hash)
         print(f"✅ {Bolors.OK}{hash_tx_str}{Bolors.RESET}")
         return hash_tx_str
+
+    def TransferRefer(self, w_index: int, amount: float, gas_limit: int = 0, gas_price: int = 0) -> str:
+        return self.Transfer(self.referrer(w_index), amount, gas_limit, gas_price)
