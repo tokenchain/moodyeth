@@ -10,7 +10,7 @@ from .libeb import MiliDoS
 
 class ContractTool(MiliDoS):
     classes = [
-        "Genesis", "Mine", "Currency"
+        "Genesis", "GenesisKey"
     ]
 
     def __init__(self, netconfig: Config, root_path, deploy_list: dict, wallet_addresses: list):
@@ -47,7 +47,7 @@ class ContractTool(MiliDoS):
     def check_fill(self, inset: dict, cls_name: str) -> None:
         if len(inset) > 0:
             if cls_name not in self._contract_dict:
-                print(f"Check class: {Bolors.WARNING}{cls_name}{Bolors.RESET}->{inset[cls_name]}")
+                print(f"🍽  Check class: {Bolors.WARNING}{cls_name}{Bolors.RESET}->{inset[cls_name]}")
                 self._contract_dict[cls_name] = inset[cls_name]
 
     def FillAddresses(self, deploy_list_input: dict) -> "ContractTool":
@@ -90,57 +90,6 @@ class ContractTool(MiliDoS):
             return self.getAddr("GenesisKey")
         else:
             raise ValueError(f"{Bolors.FAIL}not GenesisKey {Bolors.RESET}address is found")
-
-    @property
-    def TokenCurrencyAddress(self) -> str:
-        if "Currency" in self._contract_dict:
-            return self.getAddr("Currency")
-        else:
-            self.SaveConfig()
-            return self.getAddr("Currency")
-
-    @property
-    def OracleAddress(self) -> str:
-        if "PriceOracle" in self._contract_dict:
-            return self.getAddr("PriceOracle")
-        else:
-            self.SaveConfig()
-            return self.getAddr("PriceOracle")
-
-    @property
-    def MarkSixAddress(self) -> str:
-        if "MarkSix" in self._contract_dict:
-            return self.getAddr("MarkSix")
-        else:
-            raise ValueError("not MarkSix contract address is found")
-
-    @property
-    def ReferralNetworkAddress(self) -> str:
-        if "ReferralNetwork" in self._contract_dict:
-            return self.getAddr("ReferralNetwork")
-        else:
-            raise ValueError("not ReferralNetwork contract address is found")
-
-    @property
-    def ReferralColaAddress(self) -> str:
-        if "ReferralCola" in self._contract_dict:
-            return self.getAddr("ReferralCola")
-        else:
-            raise ValueError("not ReferralCola contract address is found")
-
-    @property
-    def FarmAddress(self) -> str:
-        if "Farm" in self._contract_dict:
-            return self.getAddr("Farm")
-        else:
-            raise ValueError("not Farm contract address is found")
-
-    @property
-    def TokenMineAddress(self) -> str:
-        if "Mine" in self._contract_dict:
-            return self.getAddr("Mine")
-        else:
-            raise ValueError("not Mine contract address is found")
 
     @property
     def USDTAddress(self) -> str:

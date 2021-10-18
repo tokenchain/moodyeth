@@ -63,7 +63,7 @@ abi-gen-uni --abibins {target_abi} --out "{outputfolder}" \
     --partials "{BUILDPATH}/factoryabi/PythonEthernum/partials/*.handlebars" \
     --template "{BUILDPATH}/factoryabi/PythonEthernum/contract.handlebars" \
     --language "Python"
-echo "==> compile abi to python 🚸✅"
+echo "==> generate abi to python --> 🧊"
 """
 
 ITEM_TRANSPILE_TS = """
@@ -78,7 +78,7 @@ abi-gen-uni --abibins "{target_abi}" --out "{outputfolder}" \
     --backend "web3" \
     --language "TypeScript"
 
-echo "==> compile abi to typescript 🚸✅"
+echo "==> generate abi to typescript --> 🧊"
 """
 ITEM_TRANSPILE_GO="""
 echo "==> 🚸 compile abi to golang"
@@ -91,5 +91,5 @@ fi
 
 abigen --abi "$BUILDPATH/build/$CLASSNAME.abi" --pkg $CLASSNAME --out "$GO_CONTRACT_SRC_PATH/$CLASSNAME/init.go"
 
-echo "==> compile abi to golang 🚸✅"
+echo "==> generate abi to golang --> 🧊"
 """

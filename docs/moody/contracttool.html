@@ -38,7 +38,7 @@ from .libeb import MiliDoS
 
 class ContractTool(MiliDoS):
     classes = [
-        &#34;Genesis&#34;, &#34;Mine&#34;, &#34;Currency&#34;
+        &#34;Genesis&#34;, &#34;GenesisKey&#34;
     ]
 
     def __init__(self, netconfig: Config, root_path, deploy_list: dict, wallet_addresses: list):
@@ -75,7 +75,7 @@ class ContractTool(MiliDoS):
     def check_fill(self, inset: dict, cls_name: str) -&gt; None:
         if len(inset) &gt; 0:
             if cls_name not in self._contract_dict:
-                print(f&#34;Check class: {Bolors.WARNING}{cls_name}{Bolors.RESET}-&gt;{inset[cls_name]}&#34;)
+                print(f&#34;🍽  Check class: {Bolors.WARNING}{cls_name}{Bolors.RESET}-&gt;{inset[cls_name]}&#34;)
                 self._contract_dict[cls_name] = inset[cls_name]
 
     def FillAddresses(self, deploy_list_input: dict) -&gt; &#34;ContractTool&#34;:
@@ -118,57 +118,6 @@ class ContractTool(MiliDoS):
             return self.getAddr(&#34;GenesisKey&#34;)
         else:
             raise ValueError(f&#34;{Bolors.FAIL}not GenesisKey {Bolors.RESET}address is found&#34;)
-
-    @property
-    def TokenCurrencyAddress(self) -&gt; str:
-        if &#34;Currency&#34; in self._contract_dict:
-            return self.getAddr(&#34;Currency&#34;)
-        else:
-            self.SaveConfig()
-            return self.getAddr(&#34;Currency&#34;)
-
-    @property
-    def OracleAddress(self) -&gt; str:
-        if &#34;PriceOracle&#34; in self._contract_dict:
-            return self.getAddr(&#34;PriceOracle&#34;)
-        else:
-            self.SaveConfig()
-            return self.getAddr(&#34;PriceOracle&#34;)
-
-    @property
-    def MarkSixAddress(self) -&gt; str:
-        if &#34;MarkSix&#34; in self._contract_dict:
-            return self.getAddr(&#34;MarkSix&#34;)
-        else:
-            raise ValueError(&#34;not MarkSix contract address is found&#34;)
-
-    @property
-    def ReferralNetworkAddress(self) -&gt; str:
-        if &#34;ReferralNetwork&#34; in self._contract_dict:
-            return self.getAddr(&#34;ReferralNetwork&#34;)
-        else:
-            raise ValueError(&#34;not ReferralNetwork contract address is found&#34;)
-
-    @property
-    def ReferralColaAddress(self) -&gt; str:
-        if &#34;ReferralCola&#34; in self._contract_dict:
-            return self.getAddr(&#34;ReferralCola&#34;)
-        else:
-            raise ValueError(&#34;not ReferralCola contract address is found&#34;)
-
-    @property
-    def FarmAddress(self) -&gt; str:
-        if &#34;Farm&#34; in self._contract_dict:
-            return self.getAddr(&#34;Farm&#34;)
-        else:
-            raise ValueError(&#34;not Farm contract address is found&#34;)
-
-    @property
-    def TokenMineAddress(self) -&gt; str:
-        if &#34;Mine&#34; in self._contract_dict:
-            return self.getAddr(&#34;Mine&#34;)
-        else:
-            raise ValueError(&#34;not Mine contract address is found&#34;)
 
     @property
     def USDTAddress(self) -&gt; str:
@@ -248,7 +197,7 @@ class ContractTool(MiliDoS):
 </summary>
 <pre><code class="python">class ContractTool(MiliDoS):
     classes = [
-        &#34;Genesis&#34;, &#34;Mine&#34;, &#34;Currency&#34;
+        &#34;Genesis&#34;, &#34;GenesisKey&#34;
     ]
 
     def __init__(self, netconfig: Config, root_path, deploy_list: dict, wallet_addresses: list):
@@ -285,7 +234,7 @@ class ContractTool(MiliDoS):
     def check_fill(self, inset: dict, cls_name: str) -&gt; None:
         if len(inset) &gt; 0:
             if cls_name not in self._contract_dict:
-                print(f&#34;Check class: {Bolors.WARNING}{cls_name}{Bolors.RESET}-&gt;{inset[cls_name]}&#34;)
+                print(f&#34;🍽  Check class: {Bolors.WARNING}{cls_name}{Bolors.RESET}-&gt;{inset[cls_name]}&#34;)
                 self._contract_dict[cls_name] = inset[cls_name]
 
     def FillAddresses(self, deploy_list_input: dict) -&gt; &#34;ContractTool&#34;:
@@ -328,57 +277,6 @@ class ContractTool(MiliDoS):
             return self.getAddr(&#34;GenesisKey&#34;)
         else:
             raise ValueError(f&#34;{Bolors.FAIL}not GenesisKey {Bolors.RESET}address is found&#34;)
-
-    @property
-    def TokenCurrencyAddress(self) -&gt; str:
-        if &#34;Currency&#34; in self._contract_dict:
-            return self.getAddr(&#34;Currency&#34;)
-        else:
-            self.SaveConfig()
-            return self.getAddr(&#34;Currency&#34;)
-
-    @property
-    def OracleAddress(self) -&gt; str:
-        if &#34;PriceOracle&#34; in self._contract_dict:
-            return self.getAddr(&#34;PriceOracle&#34;)
-        else:
-            self.SaveConfig()
-            return self.getAddr(&#34;PriceOracle&#34;)
-
-    @property
-    def MarkSixAddress(self) -&gt; str:
-        if &#34;MarkSix&#34; in self._contract_dict:
-            return self.getAddr(&#34;MarkSix&#34;)
-        else:
-            raise ValueError(&#34;not MarkSix contract address is found&#34;)
-
-    @property
-    def ReferralNetworkAddress(self) -&gt; str:
-        if &#34;ReferralNetwork&#34; in self._contract_dict:
-            return self.getAddr(&#34;ReferralNetwork&#34;)
-        else:
-            raise ValueError(&#34;not ReferralNetwork contract address is found&#34;)
-
-    @property
-    def ReferralColaAddress(self) -&gt; str:
-        if &#34;ReferralCola&#34; in self._contract_dict:
-            return self.getAddr(&#34;ReferralCola&#34;)
-        else:
-            raise ValueError(&#34;not ReferralCola contract address is found&#34;)
-
-    @property
-    def FarmAddress(self) -&gt; str:
-        if &#34;Farm&#34; in self._contract_dict:
-            return self.getAddr(&#34;Farm&#34;)
-        else:
-            raise ValueError(&#34;not Farm contract address is found&#34;)
-
-    @property
-    def TokenMineAddress(self) -&gt; str:
-        if &#34;Mine&#34; in self._contract_dict:
-            return self.getAddr(&#34;Mine&#34;)
-        else:
-            raise ValueError(&#34;not Mine contract address is found&#34;)
 
     @property
     def USDTAddress(self) -&gt; str:
@@ -449,21 +347,6 @@ class ContractTool(MiliDoS):
 </dl>
 <h3>Instance variables</h3>
 <dl>
-<dt id="moody.contracttool.ContractTool.FarmAddress"><code class="name">var <span class="ident">FarmAddress</span> : str</code></dt>
-<dd>
-<div class="desc"></div>
-<details class="source">
-<summary>
-<span>Expand source code</span>
-</summary>
-<pre><code class="python">@property
-def FarmAddress(self) -&gt; str:
-    if &#34;Farm&#34; in self._contract_dict:
-        return self.getAddr(&#34;Farm&#34;)
-    else:
-        raise ValueError(&#34;not Farm contract address is found&#34;)</code></pre>
-</details>
-</dd>
 <dt id="moody.contracttool.ContractTool.GenesisAddress"><code class="name">var <span class="ident">GenesisAddress</span> : str</code></dt>
 <dd>
 <div class="desc"></div>
@@ -492,98 +375,6 @@ def GenesisKeyAddress(self) -&gt; str:
         return self.getAddr(&#34;GenesisKey&#34;)
     else:
         raise ValueError(f&#34;{Bolors.FAIL}not GenesisKey {Bolors.RESET}address is found&#34;)</code></pre>
-</details>
-</dd>
-<dt id="moody.contracttool.ContractTool.MarkSixAddress"><code class="name">var <span class="ident">MarkSixAddress</span> : str</code></dt>
-<dd>
-<div class="desc"></div>
-<details class="source">
-<summary>
-<span>Expand source code</span>
-</summary>
-<pre><code class="python">@property
-def MarkSixAddress(self) -&gt; str:
-    if &#34;MarkSix&#34; in self._contract_dict:
-        return self.getAddr(&#34;MarkSix&#34;)
-    else:
-        raise ValueError(&#34;not MarkSix contract address is found&#34;)</code></pre>
-</details>
-</dd>
-<dt id="moody.contracttool.ContractTool.OracleAddress"><code class="name">var <span class="ident">OracleAddress</span> : str</code></dt>
-<dd>
-<div class="desc"></div>
-<details class="source">
-<summary>
-<span>Expand source code</span>
-</summary>
-<pre><code class="python">@property
-def OracleAddress(self) -&gt; str:
-    if &#34;PriceOracle&#34; in self._contract_dict:
-        return self.getAddr(&#34;PriceOracle&#34;)
-    else:
-        self.SaveConfig()
-        return self.getAddr(&#34;PriceOracle&#34;)</code></pre>
-</details>
-</dd>
-<dt id="moody.contracttool.ContractTool.ReferralColaAddress"><code class="name">var <span class="ident">ReferralColaAddress</span> : str</code></dt>
-<dd>
-<div class="desc"></div>
-<details class="source">
-<summary>
-<span>Expand source code</span>
-</summary>
-<pre><code class="python">@property
-def ReferralColaAddress(self) -&gt; str:
-    if &#34;ReferralCola&#34; in self._contract_dict:
-        return self.getAddr(&#34;ReferralCola&#34;)
-    else:
-        raise ValueError(&#34;not ReferralCola contract address is found&#34;)</code></pre>
-</details>
-</dd>
-<dt id="moody.contracttool.ContractTool.ReferralNetworkAddress"><code class="name">var <span class="ident">ReferralNetworkAddress</span> : str</code></dt>
-<dd>
-<div class="desc"></div>
-<details class="source">
-<summary>
-<span>Expand source code</span>
-</summary>
-<pre><code class="python">@property
-def ReferralNetworkAddress(self) -&gt; str:
-    if &#34;ReferralNetwork&#34; in self._contract_dict:
-        return self.getAddr(&#34;ReferralNetwork&#34;)
-    else:
-        raise ValueError(&#34;not ReferralNetwork contract address is found&#34;)</code></pre>
-</details>
-</dd>
-<dt id="moody.contracttool.ContractTool.TokenCurrencyAddress"><code class="name">var <span class="ident">TokenCurrencyAddress</span> : str</code></dt>
-<dd>
-<div class="desc"></div>
-<details class="source">
-<summary>
-<span>Expand source code</span>
-</summary>
-<pre><code class="python">@property
-def TokenCurrencyAddress(self) -&gt; str:
-    if &#34;Currency&#34; in self._contract_dict:
-        return self.getAddr(&#34;Currency&#34;)
-    else:
-        self.SaveConfig()
-        return self.getAddr(&#34;Currency&#34;)</code></pre>
-</details>
-</dd>
-<dt id="moody.contracttool.ContractTool.TokenMineAddress"><code class="name">var <span class="ident">TokenMineAddress</span> : str</code></dt>
-<dd>
-<div class="desc"></div>
-<details class="source">
-<summary>
-<span>Expand source code</span>
-</summary>
-<pre><code class="python">@property
-def TokenMineAddress(self) -&gt; str:
-    if &#34;Mine&#34; in self._contract_dict:
-        return self.getAddr(&#34;Mine&#34;)
-    else:
-        raise ValueError(&#34;not Mine contract address is found&#34;)</code></pre>
 </details>
 </dd>
 <dt id="moody.contracttool.ContractTool.USDCAddress"><code class="name">var <span class="ident">USDCAddress</span> : str</code></dt>
@@ -780,7 +571,7 @@ def USDTAddress(self) -&gt; str:
 <pre><code class="python">def check_fill(self, inset: dict, cls_name: str) -&gt; None:
     if len(inset) &gt; 0:
         if cls_name not in self._contract_dict:
-            print(f&#34;Check class: {Bolors.WARNING}{cls_name}{Bolors.RESET}-&gt;{inset[cls_name]}&#34;)
+            print(f&#34;🍽  Check class: {Bolors.WARNING}{cls_name}{Bolors.RESET}-&gt;{inset[cls_name]}&#34;)
             self._contract_dict[cls_name] = inset[cls_name]</code></pre>
 </details>
 </dd>
@@ -853,20 +644,13 @@ def USDTAddress(self) -&gt; str:
 <ul>
 <li>
 <h4><code><a title="moody.contracttool.ContractTool" href="#moody.contracttool.ContractTool">ContractTool</a></code></h4>
-<ul class="">
+<ul class="two-column">
 <li><code><a title="moody.contracttool.ContractTool.AuthIndex" href="#moody.contracttool.ContractTool.AuthIndex">AuthIndex</a></code></li>
 <li><code><a title="moody.contracttool.ContractTool.ClassList" href="#moody.contracttool.ContractTool.ClassList">ClassList</a></code></li>
 <li><code><a title="moody.contracttool.ContractTool.DistributeCoins" href="#moody.contracttool.ContractTool.DistributeCoins">DistributeCoins</a></code></li>
-<li><code><a title="moody.contracttool.ContractTool.FarmAddress" href="#moody.contracttool.ContractTool.FarmAddress">FarmAddress</a></code></li>
 <li><code><a title="moody.contracttool.ContractTool.FillAddresses" href="#moody.contracttool.ContractTool.FillAddresses">FillAddresses</a></code></li>
 <li><code><a title="moody.contracttool.ContractTool.GenesisAddress" href="#moody.contracttool.ContractTool.GenesisAddress">GenesisAddress</a></code></li>
 <li><code><a title="moody.contracttool.ContractTool.GenesisKeyAddress" href="#moody.contracttool.ContractTool.GenesisKeyAddress">GenesisKeyAddress</a></code></li>
-<li><code><a title="moody.contracttool.ContractTool.MarkSixAddress" href="#moody.contracttool.ContractTool.MarkSixAddress">MarkSixAddress</a></code></li>
-<li><code><a title="moody.contracttool.ContractTool.OracleAddress" href="#moody.contracttool.ContractTool.OracleAddress">OracleAddress</a></code></li>
-<li><code><a title="moody.contracttool.ContractTool.ReferralColaAddress" href="#moody.contracttool.ContractTool.ReferralColaAddress">ReferralColaAddress</a></code></li>
-<li><code><a title="moody.contracttool.ContractTool.ReferralNetworkAddress" href="#moody.contracttool.ContractTool.ReferralNetworkAddress">ReferralNetworkAddress</a></code></li>
-<li><code><a title="moody.contracttool.ContractTool.TokenCurrencyAddress" href="#moody.contracttool.ContractTool.TokenCurrencyAddress">TokenCurrencyAddress</a></code></li>
-<li><code><a title="moody.contracttool.ContractTool.TokenMineAddress" href="#moody.contracttool.ContractTool.TokenMineAddress">TokenMineAddress</a></code></li>
 <li><code><a title="moody.contracttool.ContractTool.Transfer" href="#moody.contracttool.ContractTool.Transfer">Transfer</a></code></li>
 <li><code><a title="moody.contracttool.ContractTool.TransferRefer" href="#moody.contracttool.ContractTool.TransferRefer">TransferRefer</a></code></li>
 <li><code><a title="moody.contracttool.ContractTool.USDCAddress" href="#moody.contracttool.ContractTool.USDCAddress">USDCAddress</a></code></li>
