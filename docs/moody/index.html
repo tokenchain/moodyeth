@@ -92,18 +92,22 @@ class Bolors:
 from enum import Enum
 
 
+# EVM history: https://en.wikipedia.org/wiki/Ethereum
 class Evm(Enum):
     TANGERINEWHISTLE = &#34;tangerineWhistle&#34;
     &#34;&#34;&#34;
+    18 October 2016
     Gas cost for access to other accounts increased, relevant for gas estimation and the optimizer.
     All gas sent by default for external calls, previously a certain amount had to be retained.
     &#34;&#34;&#34;
     SPURIOUSDRAGON = &#34;spuriousDragon&#34;
     &#34;&#34;&#34;
+    23 November 2016
     Gas cost for the exp opcode increased, relevant for gas estimation and the optimizer.
     &#34;&#34;&#34;
     BYZANTIUM = &#34;byzantium&#34;
     &#34;&#34;&#34;
+    16 October 2017
     Opcodes `returndatacopy`, `returndatasize` and `staticcall` are available in assembly.
     The `staticcall` opcode is used when calling non-library view or pure functions, which prevents the functions from modifying state at the EVM level, i.e., even applies when you use invalid type conversions.
     It is possible to access dynamic data returned from function calls.
@@ -111,23 +115,28 @@ class Evm(Enum):
     &#34;&#34;&#34;
     CONSTANTINOPLE = &#34;constantinople&#34;
     &#34;&#34;&#34;
+    28 February 2019
     Opcodes `create2`, `extcodehash`, `shl`, `shr` and `sar` are available in assembly.
     Shifting operators use shifting opcodes and thus need less gas.
     &#34;&#34;&#34;
     PETERSBURG = &#34;petersburg&#34;
     &#34;&#34;&#34;
+    28 February 2019
     The compiler behaves the same way as with constantinople.
     &#34;&#34;&#34;
     ISTANBUL = &#34;istanbul&#34;
     &#34;&#34;&#34;
+    8 December 2019
     Opcodes `chainid` and `selfbalance` are available in assembly.
     &#34;&#34;&#34;
     BERLIN = &#34;berlin&#34;
     &#34;&#34;&#34;
+    15 April 2021
     Gas costs for `SLOAD`, `*CALL`, `BALANCE`, `EXT*` and `SELFDESTRUCT` increased. The compiler assumes cold gas costs for such operations. This is relevant for gas estimation and the optimizer.
     &#34;&#34;&#34;
     LONDON = &#34;london&#34;
     &#34;&#34;&#34;
+    5 August 2021
     The block’s base fee (EIP-3198 and EIP-1559) can be accessed via the global block.basefee or basefee() in inline assembly.
     &#34;&#34;&#34;</code></pre>
 </details>
@@ -324,15 +333,18 @@ class Evm(Enum):
 <pre><code class="python">class Evm(Enum):
     TANGERINEWHISTLE = &#34;tangerineWhistle&#34;
     &#34;&#34;&#34;
+    18 October 2016
     Gas cost for access to other accounts increased, relevant for gas estimation and the optimizer.
     All gas sent by default for external calls, previously a certain amount had to be retained.
     &#34;&#34;&#34;
     SPURIOUSDRAGON = &#34;spuriousDragon&#34;
     &#34;&#34;&#34;
+    23 November 2016
     Gas cost for the exp opcode increased, relevant for gas estimation and the optimizer.
     &#34;&#34;&#34;
     BYZANTIUM = &#34;byzantium&#34;
     &#34;&#34;&#34;
+    16 October 2017
     Opcodes `returndatacopy`, `returndatasize` and `staticcall` are available in assembly.
     The `staticcall` opcode is used when calling non-library view or pure functions, which prevents the functions from modifying state at the EVM level, i.e., even applies when you use invalid type conversions.
     It is possible to access dynamic data returned from function calls.
@@ -340,23 +352,28 @@ class Evm(Enum):
     &#34;&#34;&#34;
     CONSTANTINOPLE = &#34;constantinople&#34;
     &#34;&#34;&#34;
+    28 February 2019
     Opcodes `create2`, `extcodehash`, `shl`, `shr` and `sar` are available in assembly.
     Shifting operators use shifting opcodes and thus need less gas.
     &#34;&#34;&#34;
     PETERSBURG = &#34;petersburg&#34;
     &#34;&#34;&#34;
+    28 February 2019
     The compiler behaves the same way as with constantinople.
     &#34;&#34;&#34;
     ISTANBUL = &#34;istanbul&#34;
     &#34;&#34;&#34;
+    8 December 2019
     Opcodes `chainid` and `selfbalance` are available in assembly.
     &#34;&#34;&#34;
     BERLIN = &#34;berlin&#34;
     &#34;&#34;&#34;
+    15 April 2021
     Gas costs for `SLOAD`, `*CALL`, `BALANCE`, `EXT*` and `SELFDESTRUCT` increased. The compiler assumes cold gas costs for such operations. This is relevant for gas estimation and the optimizer.
     &#34;&#34;&#34;
     LONDON = &#34;london&#34;
     &#34;&#34;&#34;
+    5 August 2021
     The block’s base fee (EIP-3198 and EIP-1559) can be accessed via the global block.basefee or basefee() in inline assembly.
     &#34;&#34;&#34;</code></pre>
 </details>
@@ -368,39 +385,47 @@ class Evm(Enum):
 <dl>
 <dt id="moody.Evm.BERLIN"><code class="name">var <span class="ident">BERLIN</span></code></dt>
 <dd>
-<div class="desc"><p>Gas costs for <code>SLOAD</code>, <code>*CALL</code>, <code>BALANCE</code>, <code>EXT*</code> and <code>SELFDESTRUCT</code> increased. The compiler assumes cold gas costs for such operations. This is relevant for gas estimation and the optimizer.</p></div>
+<div class="desc"><p>15 April 2021
+Gas costs for <code>SLOAD</code>, <code>*CALL</code>, <code>BALANCE</code>, <code>EXT*</code> and <code>SELFDESTRUCT</code> increased. The compiler assumes cold gas costs for such operations. This is relevant for gas estimation and the optimizer.</p></div>
 </dd>
 <dt id="moody.Evm.BYZANTIUM"><code class="name">var <span class="ident">BYZANTIUM</span></code></dt>
 <dd>
-<div class="desc"><p>Opcodes <code>returndatacopy</code>, <code>returndatasize</code> and <code>staticcall</code> are available in assembly.
+<div class="desc"><p>16 October 2017
+Opcodes <code>returndatacopy</code>, <code>returndatasize</code> and <code>staticcall</code> are available in assembly.
 The <code>staticcall</code> opcode is used when calling non-library view or pure functions, which prevents the functions from modifying state at the EVM level, i.e., even applies when you use invalid type conversions.
 It is possible to access dynamic data returned from function calls.
 revert opcode introduced, which means that <code>revert()</code> will not waste gas.</p></div>
 </dd>
 <dt id="moody.Evm.CONSTANTINOPLE"><code class="name">var <span class="ident">CONSTANTINOPLE</span></code></dt>
 <dd>
-<div class="desc"><p>Opcodes <code>create2</code>, <code>extcodehash</code>, <code>shl</code>, <code>shr</code> and <code>sar</code> are available in assembly.
+<div class="desc"><p>28 February 2019
+Opcodes <code>create2</code>, <code>extcodehash</code>, <code>shl</code>, <code>shr</code> and <code>sar</code> are available in assembly.
 Shifting operators use shifting opcodes and thus need less gas.</p></div>
 </dd>
 <dt id="moody.Evm.ISTANBUL"><code class="name">var <span class="ident">ISTANBUL</span></code></dt>
 <dd>
-<div class="desc"><p>Opcodes <code>chainid</code> and <code>selfbalance</code> are available in assembly.</p></div>
+<div class="desc"><p>8 December 2019
+Opcodes <code>chainid</code> and <code>selfbalance</code> are available in assembly.</p></div>
 </dd>
 <dt id="moody.Evm.LONDON"><code class="name">var <span class="ident">LONDON</span></code></dt>
 <dd>
-<div class="desc"><p>The block’s base fee (EIP-3198 and EIP-1559) can be accessed via the global block.basefee or basefee() in inline assembly.</p></div>
+<div class="desc"><p>5 August 2021
+The block’s base fee (EIP-3198 and EIP-1559) can be accessed via the global block.basefee or basefee() in inline assembly.</p></div>
 </dd>
 <dt id="moody.Evm.PETERSBURG"><code class="name">var <span class="ident">PETERSBURG</span></code></dt>
 <dd>
-<div class="desc"><p>The compiler behaves the same way as with constantinople.</p></div>
+<div class="desc"><p>28 February 2019
+The compiler behaves the same way as with constantinople.</p></div>
 </dd>
 <dt id="moody.Evm.SPURIOUSDRAGON"><code class="name">var <span class="ident">SPURIOUSDRAGON</span></code></dt>
 <dd>
-<div class="desc"><p>Gas cost for the exp opcode increased, relevant for gas estimation and the optimizer.</p></div>
+<div class="desc"><p>23 November 2016
+Gas cost for the exp opcode increased, relevant for gas estimation and the optimizer.</p></div>
 </dd>
 <dt id="moody.Evm.TANGERINEWHISTLE"><code class="name">var <span class="ident">TANGERINEWHISTLE</span></code></dt>
 <dd>
-<div class="desc"><p>Gas cost for access to other accounts increased, relevant for gas estimation and the optimizer.
+<div class="desc"><p>18 October 2016
+Gas cost for access to other accounts increased, relevant for gas estimation and the optimizer.
 All gas sent by default for external calls, previously a certain amount had to be retained.</p></div>
 </dd>
 </dl>

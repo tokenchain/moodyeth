@@ -45,7 +45,7 @@ from web3.middleware import geth_poa_middleware
 from web3.types import BlockData
 
 # ========================== Of course
-from . import Bolors
+from . import Bolors, Evm
 from .buildercompile.remotecompile import BuildRemoteLinuxCommand
 from .buildercompile.transpile import BuildLang
 from .conf import Config
@@ -326,6 +326,8 @@ class MiliDoS(IDos):
     @
     &#34;&#34;&#34;
 
+    EVM_VERSION: Evm = Evm.ISTANBUL
+
     def __init__(self, _nodeCfg: Config):
         # the hidden list
         self._contract_dict = dict()
@@ -401,11 +403,16 @@ class MiliDoS(IDos):
         self._sol_link = compile_links
         return self
 
+    def setEvm(self, ver: Evm = Evm.ISTANBUL) -&gt; &#34;MiliDoS&#34;:
+        self.EVM_VERSION = ver
+        return self
+
     def remoteCompile(self, ver: str) -&gt; &#34;MiliDoS&#34;:
         if ver == &#34;&#34;:
             print(&#34;there is no solidity version specified&#34;)
             exit(0)
         self.pathfinder.setSolVersion(ver)
+        self.pathfinder.setEvm(self.EVM_VERSION)
         BuildRemoteLinuxCommand(self.pathfinder, self._sol_list, self._sol_link)
         return self
 
@@ -587,7 +594,7 @@ class MiliDoS(IDos):
         else:
             return self.network_cfg.link_token
 
-    def _checkErrorForTxReceipt(self, receipt: any, class_name: str, jsonfile:str):
+    def _checkErrorForTxReceipt(self, receipt: any, class_name: str, jsonfile: str):
 
         if &#34;contractAddress&#34; not in receipt:
             print(f&#34;⚠️ Error from deploy contract and no valid address found for {class_name}.&#34;)
@@ -1380,6 +1387,8 @@ implement default like this::</p>
     @
     &#34;&#34;&#34;
 
+    EVM_VERSION: Evm = Evm.ISTANBUL
+
     def __init__(self, _nodeCfg: Config):
         # the hidden list
         self._contract_dict = dict()
@@ -1455,11 +1464,16 @@ implement default like this::</p>
         self._sol_link = compile_links
         return self
 
+    def setEvm(self, ver: Evm = Evm.ISTANBUL) -&gt; &#34;MiliDoS&#34;:
+        self.EVM_VERSION = ver
+        return self
+
     def remoteCompile(self, ver: str) -&gt; &#34;MiliDoS&#34;:
         if ver == &#34;&#34;:
             print(&#34;there is no solidity version specified&#34;)
             exit(0)
         self.pathfinder.setSolVersion(ver)
+        self.pathfinder.setEvm(self.EVM_VERSION)
         BuildRemoteLinuxCommand(self.pathfinder, self._sol_list, self._sol_link)
         return self
 
@@ -1641,7 +1655,7 @@ implement default like this::</p>
         else:
             return self.network_cfg.link_token
 
-    def _checkErrorForTxReceipt(self, receipt: any, class_name: str, jsonfile:str):
+    def _checkErrorForTxReceipt(self, receipt: any, class_name: str, jsonfile: str):
 
         if &#34;contractAddress&#34; not in receipt:
             print(f&#34;⚠️ Error from deploy contract and no valid address found for {class_name}.&#34;)
@@ -1884,6 +1898,13 @@ implement default like this::</p>
 <li><a title="moody.contracttool.ContractTool" href="contracttool.html#moody.contracttool.ContractTool">ContractTool</a></li>
 <li><a title="moody.erc20.ERC20H" href="erc20.html#moody.erc20.ERC20H">ERC20H</a></li>
 </ul>
+<h3>Class variables</h3>
+<dl>
+<dt id="moody.libeb.MiliDoS.EVM_VERSION"><code class="name">var <span class="ident">EVM_VERSION</span> : <a title="moody.Evm" href="index.html#moody.Evm">Evm</a></code></dt>
+<dd>
+<div class="desc"></div>
+</dd>
+</dl>
 <h3>Instance variables</h3>
 <dl>
 <dt id="moody.libeb.MiliDoS.LinkTokenAddress"><code class="name">var <span class="ident">LinkTokenAddress</span> : str</code></dt>
@@ -2691,6 +2712,7 @@ Note: Be cautions with the range provided, as the logic creates query for each b
         print(&#34;there is no solidity version specified&#34;)
         exit(0)
     self.pathfinder.setSolVersion(ver)
+    self.pathfinder.setEvm(self.EVM_VERSION)
     BuildRemoteLinuxCommand(self.pathfinder, self._sol_list, self._sol_link)
     return self</code></pre>
 </details>
@@ -2766,6 +2788,20 @@ Note: Be cautions with the range provided, as the logic creates query for each b
 </summary>
 <pre><code class="python">def setClassSolNames(self, to_compile_contract_list: list) -&gt; &#34;MiliDoS&#34;:
     self._sol_list = to_compile_contract_list
+    return self</code></pre>
+</details>
+</dd>
+<dt id="moody.libeb.MiliDoS.setEvm"><code class="name flex">
+<span>def <span class="ident">setEvm</span></span>(<span>self, ver: <a title="moody.Evm" href="index.html#moody.Evm">Evm</a> = Evm.ISTANBUL) ‑> <a title="moody.libeb.MiliDoS" href="#moody.libeb.MiliDoS">MiliDoS</a></span>
+</code></dt>
+<dd>
+<div class="desc"></div>
+<details class="source">
+<summary>
+<span>Expand source code</span>
+</summary>
+<pre><code class="python">def setEvm(self, ver: Evm = Evm.ISTANBUL) -&gt; &#34;MiliDoS&#34;:
+    self.EVM_VERSION = ver
     return self</code></pre>
 </details>
 </dd>
@@ -3224,6 +3260,7 @@ all works will be done with the remote server or using the docker</p></div>
 <h4><code><a title="moody.libeb.MiliDoS" href="#moody.libeb.MiliDoS">MiliDoS</a></code></h4>
 <ul class="">
 <li><code><a title="moody.libeb.MiliDoS.Auth" href="#moody.libeb.MiliDoS.Auth">Auth</a></code></li>
+<li><code><a title="moody.libeb.MiliDoS.EVM_VERSION" href="#moody.libeb.MiliDoS.EVM_VERSION">EVM_VERSION</a></code></li>
 <li><code><a title="moody.libeb.MiliDoS.LinkTokenAddress" href="#moody.libeb.MiliDoS.LinkTokenAddress">LinkTokenAddress</a></code></li>
 <li><code><a title="moody.libeb.MiliDoS.LinkVRFCoordinator" href="#moody.libeb.MiliDoS.LinkVRFCoordinator">LinkVRFCoordinator</a></code></li>
 <li><code><a title="moody.libeb.MiliDoS.LinkVRFHashKey" href="#moody.libeb.MiliDoS.LinkVRFHashKey">LinkVRFHashKey</a></code></li>
@@ -3267,6 +3304,7 @@ all works will be done with the remote server or using the docker</p></div>
 <li><code><a title="moody.libeb.MiliDoS.send_contract_tx" href="#moody.libeb.MiliDoS.send_contract_tx">send_contract_tx</a></code></li>
 <li><code><a title="moody.libeb.MiliDoS.setClassSolLinks" href="#moody.libeb.MiliDoS.setClassSolLinks">setClassSolLinks</a></code></li>
 <li><code><a title="moody.libeb.MiliDoS.setClassSolNames" href="#moody.libeb.MiliDoS.setClassSolNames">setClassSolNames</a></code></li>
+<li><code><a title="moody.libeb.MiliDoS.setEvm" href="#moody.libeb.MiliDoS.setEvm">setEvm</a></code></li>
 <li><code><a title="moody.libeb.MiliDoS.setKV" href="#moody.libeb.MiliDoS.setKV">setKV</a></code></li>
 <li><code><a title="moody.libeb.MiliDoS.setTargetClass" href="#moody.libeb.MiliDoS.setTargetClass">setTargetClass</a></code></li>
 <li><code><a title="moody.libeb.MiliDoS.setTargetListName" href="#moody.libeb.MiliDoS.setTargetListName">setTargetListName</a></code></li>

@@ -17,7 +17,7 @@ from web3.middleware import geth_poa_middleware
 from web3.types import BlockData
 
 # ========================== Of course
-from . import Bolors
+from . import Bolors, Evm
 from .buildercompile.remotecompile import BuildRemoteLinuxCommand
 from .buildercompile.transpile import BuildLang
 from .conf import Config
@@ -298,6 +298,8 @@ class MiliDoS(IDos):
     @
     """
 
+    EVM_VERSION: Evm = Evm.ISTANBUL
+
     def __init__(self, _nodeCfg: Config):
         # the hidden list
         self._contract_dict = dict()
@@ -373,11 +375,16 @@ class MiliDoS(IDos):
         self._sol_link = compile_links
         return self
 
+    def setEvm(self, ver: Evm = Evm.ISTANBUL) -> "MiliDoS":
+        self.EVM_VERSION = ver
+        return self
+
     def remoteCompile(self, ver: str) -> "MiliDoS":
         if ver == "":
             print("there is no solidity version specified")
             exit(0)
         self.pathfinder.setSolVersion(ver)
+        self.pathfinder.setEvm(self.EVM_VERSION)
         BuildRemoteLinuxCommand(self.pathfinder, self._sol_list, self._sol_link)
         return self
 
@@ -559,7 +566,7 @@ class MiliDoS(IDos):
         else:
             return self.network_cfg.link_token
 
-    def _checkErrorForTxReceipt(self, receipt: any, class_name: str, jsonfile:str):
+    def _checkErrorForTxReceipt(self, receipt: any, class_name: str, jsonfile: str):
 
         if "contractAddress" not in receipt:
             print(f"⚠️ Error from deploy contract and no valid address found for {class_name}.")
