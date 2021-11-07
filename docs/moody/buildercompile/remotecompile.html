@@ -41,6 +41,7 @@ def compileItem1(tar: Paths, k0: str) -&gt; str:
         SOLCPATH=tar.SOLCPATH,
         COMPILE_COIN=k0,
         SOLVER=tar.SOLC_VER,
+        EVMVERSION=str(tar.EVM_VERSION)
     )
 
 
@@ -203,6 +204,7 @@ def BuildRemoteLinuxCommand(p: Paths, list_files: list = None, linked: dict = No
         SOLCPATH=tar.SOLCPATH,
         COMPILE_COIN=k0,
         SOLVER=tar.SOLC_VER,
+        EVMVERSION=str(tar.EVM_VERSION)
     )</code></pre>
 </details>
 </dd>

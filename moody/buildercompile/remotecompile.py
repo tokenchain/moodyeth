@@ -13,6 +13,7 @@ def compileItem1(tar: Paths, k0: str) -> str:
         SOLCPATH=tar.SOLCPATH,
         COMPILE_COIN=k0,
         SOLVER=tar.SOLC_VER,
+        EVMVERSION=str(tar.EVM_VERSION)
     )
 
 

@@ -33,9 +33,9 @@ import codecs
 import json
 import os
 
-
 # from datetime import datetime
 # from typing import Any, Union, Tuple
+from moody import Evm
 
 
 class Paths:
@@ -59,6 +59,7 @@ class Paths:
     COMPRESSED_NAME = &#34;solc-build.tar.gz&#34;
     SOLC_VER = &#34;0.5.15&#34;
     SOLCPATH = &#34;/root/contracts/vault&#34;
+    EVM_VERSION: Evm = Evm.ISTANBUL
     BUILDPATH = &#34;&#34;
     WEB_DAPP_SRC = &#34;app&#34;
 
@@ -90,6 +91,10 @@ class Paths:
 
     def setSolVersion(self, version: str) -&gt; &#34;Paths&#34;:
         self.SOLC_VER = version
+        return self
+
+    def setEvm(self, ver: Evm = Evm.ISTANBUL) -&gt; &#34;Paths&#34;:
+        self.EVM_VERSION = ver
         return self
 
     def setDefaultPath(self) -&gt; &#34;Paths&#34;:
@@ -183,6 +188,7 @@ Manage the workspace paths</p></div>
     COMPRESSED_NAME = &#34;solc-build.tar.gz&#34;
     SOLC_VER = &#34;0.5.15&#34;
     SOLCPATH = &#34;/root/contracts/vault&#34;
+    EVM_VERSION: Evm = Evm.ISTANBUL
     BUILDPATH = &#34;&#34;
     WEB_DAPP_SRC = &#34;app&#34;
 
@@ -214,6 +220,10 @@ Manage the workspace paths</p></div>
 
     def setSolVersion(self, version: str) -&gt; &#34;Paths&#34;:
         self.SOLC_VER = version
+        return self
+
+    def setEvm(self, ver: Evm = Evm.ISTANBUL) -&gt; &#34;Paths&#34;:
+        self.EVM_VERSION = ver
         return self
 
     def setDefaultPath(self) -&gt; &#34;Paths&#34;:
@@ -284,6 +294,10 @@ Manage the workspace paths</p></div>
 <div class="desc"></div>
 </dd>
 <dt id="moody.paths.Paths.DEPLOYMENT_FILE_NAME"><code class="name">var <span class="ident">DEPLOYMENT_FILE_NAME</span></code></dt>
+<dd>
+<div class="desc"></div>
+</dd>
+<dt id="moody.paths.Paths.EVM_VERSION"><code class="name">var <span class="ident">EVM_VERSION</span> : <a title="moody.Evm" href="index.html#moody.Evm">Evm</a></code></dt>
 <dd>
 <div class="desc"></div>
 </dd>
@@ -479,6 +493,20 @@ def subFix(self) -&gt; str:
     return self</code></pre>
 </details>
 </dd>
+<dt id="moody.paths.Paths.setEvm"><code class="name flex">
+<span>def <span class="ident">setEvm</span></span>(<span>self, ver: <a title="moody.Evm" href="index.html#moody.Evm">Evm</a> = Evm.ISTANBUL) ‑> <a title="moody.paths.Paths" href="#moody.paths.Paths">Paths</a></span>
+</code></dt>
+<dd>
+<div class="desc"></div>
+<details class="source">
+<summary>
+<span>Expand source code</span>
+</summary>
+<pre><code class="python">def setEvm(self, ver: Evm = Evm.ISTANBUL) -&gt; &#34;Paths&#34;:
+    self.EVM_VERSION = ver
+    return self</code></pre>
+</details>
+</dd>
 <dt id="moody.paths.Paths.setSolVersion"><code class="name flex">
 <span>def <span class="ident">setSolVersion</span></span>(<span>self, version: str) ‑> <a title="moody.paths.Paths" href="#moody.paths.Paths">Paths</a></span>
 </code></dt>
@@ -546,6 +574,7 @@ def subFix(self) -&gt; str:
 <li><code><a title="moody.paths.Paths.COLLECTION_CONTRACTS" href="#moody.paths.Paths.COLLECTION_CONTRACTS">COLLECTION_CONTRACTS</a></code></li>
 <li><code><a title="moody.paths.Paths.COMPRESSED_NAME" href="#moody.paths.Paths.COMPRESSED_NAME">COMPRESSED_NAME</a></code></li>
 <li><code><a title="moody.paths.Paths.DEPLOYMENT_FILE_NAME" href="#moody.paths.Paths.DEPLOYMENT_FILE_NAME">DEPLOYMENT_FILE_NAME</a></code></li>
+<li><code><a title="moody.paths.Paths.EVM_VERSION" href="#moody.paths.Paths.EVM_VERSION">EVM_VERSION</a></code></li>
 <li><code><a title="moody.paths.Paths.FILE_CONTRACT" href="#moody.paths.Paths.FILE_CONTRACT">FILE_CONTRACT</a></code></li>
 <li><code><a title="moody.paths.Paths.HISTORY_FOLDER" href="#moody.paths.Paths.HISTORY_FOLDER">HISTORY_FOLDER</a></code></li>
 <li><code><a title="moody.paths.Paths.LoadDeploymentFile" href="#moody.paths.Paths.LoadDeploymentFile">LoadDeploymentFile</a></code></li>
@@ -563,6 +592,7 @@ def subFix(self) -&gt; str:
 <li><code><a title="moody.paths.Paths.WEB_DAPP_SRC" href="#moody.paths.Paths.WEB_DAPP_SRC">WEB_DAPP_SRC</a></code></li>
 <li><code><a title="moody.paths.Paths.classObject" href="#moody.paths.Paths.classObject">classObject</a></code></li>
 <li><code><a title="moody.paths.Paths.setDefaultPath" href="#moody.paths.Paths.setDefaultPath">setDefaultPath</a></code></li>
+<li><code><a title="moody.paths.Paths.setEvm" href="#moody.paths.Paths.setEvm">setEvm</a></code></li>
 <li><code><a title="moody.paths.Paths.setSolVersion" href="#moody.paths.Paths.setSolVersion">setSolVersion</a></code></li>
 <li><code><a title="moody.paths.Paths.showCurrentDeployedClass" href="#moody.paths.Paths.showCurrentDeployedClass">showCurrentDeployedClass</a></code></li>
 <li><code><a title="moody.paths.Paths.statement" href="#moody.paths.Paths.statement">statement</a></code></li>

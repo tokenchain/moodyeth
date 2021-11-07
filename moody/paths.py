@@ -4,9 +4,9 @@ import codecs
 import json
 import os
 
-
 # from datetime import datetime
 # from typing import Any, Union, Tuple
+from moody import Evm
 
 
 class Paths:
@@ -30,6 +30,7 @@ class Paths:
     COMPRESSED_NAME = "solc-build.tar.gz"
     SOLC_VER = "0.5.15"
     SOLCPATH = "/root/contracts/vault"
+    EVM_VERSION: Evm = Evm.ISTANBUL
     BUILDPATH = ""
     WEB_DAPP_SRC = "app"
 
@@ -61,6 +62,10 @@ class Paths:
 
     def setSolVersion(self, version: str) -> "Paths":
         self.SOLC_VER = version
+        return self
+
+    def setEvm(self, ver: Evm = Evm.ISTANBUL) -> "Paths":
+        self.EVM_VERSION = ver
         return self
 
     def setDefaultPath(self) -> "Paths":

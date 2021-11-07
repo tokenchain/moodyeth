@@ -52,6 +52,7 @@ class Token:
     spender: dict = None
     balance: dict = None
 
+
 @dataclass
 class Config:
     network_name: str
@@ -85,7 +86,50 @@ class Bolors:
     OK = &#39;\033[92m&#39;  # GREEN
     WARNING = &#39;\033[93m&#39;  # YELLOW
     FAIL = &#39;\033[91m&#39;  # RED
-    RESET = &#39;\033[0m&#39;  # RESET COLOR</code></pre>
+    RESET = &#39;\033[0m&#39;  # RESET COLOR
+
+
+from enum import Enum
+
+
+class Evm(Enum):
+    TANGERINEWHISTLE = &#34;tangerineWhistle&#34;
+    &#34;&#34;&#34;
+    Gas cost for access to other accounts increased, relevant for gas estimation and the optimizer.
+    All gas sent by default for external calls, previously a certain amount had to be retained.
+    &#34;&#34;&#34;
+    SPURIOUSDRAGON = &#34;spuriousDragon&#34;
+    &#34;&#34;&#34;
+    Gas cost for the exp opcode increased, relevant for gas estimation and the optimizer.
+    &#34;&#34;&#34;
+    BYZANTIUM = &#34;byzantium&#34;
+    &#34;&#34;&#34;
+    Opcodes `returndatacopy`, `returndatasize` and `staticcall` are available in assembly.
+    The `staticcall` opcode is used when calling non-library view or pure functions, which prevents the functions from modifying state at the EVM level, i.e., even applies when you use invalid type conversions.
+    It is possible to access dynamic data returned from function calls.
+    revert opcode introduced, which means that `revert()` will not waste gas.
+    &#34;&#34;&#34;
+    CONSTANTINOPLE = &#34;constantinople&#34;
+    &#34;&#34;&#34;
+    Opcodes `create2`, `extcodehash`, `shl`, `shr` and `sar` are available in assembly.
+    Shifting operators use shifting opcodes and thus need less gas.
+    &#34;&#34;&#34;
+    PETERSBURG = &#34;petersburg&#34;
+    &#34;&#34;&#34;
+    The compiler behaves the same way as with constantinople.
+    &#34;&#34;&#34;
+    ISTANBUL = &#34;istanbul&#34;
+    &#34;&#34;&#34;
+    Opcodes `chainid` and `selfbalance` are available in assembly.
+    &#34;&#34;&#34;
+    BERLIN = &#34;berlin&#34;
+    &#34;&#34;&#34;
+    Gas costs for `SLOAD`, `*CALL`, `BALANCE`, `EXT*` and `SELFDESTRUCT` increased. The compiler assumes cold gas costs for such operations. This is relevant for gas estimation and the optimizer.
+    &#34;&#34;&#34;
+    LONDON = &#34;london&#34;
+    &#34;&#34;&#34;
+    The block’s base fee (EIP-3198 and EIP-1559) can be accessed via the global block.basefee or basefee() in inline assembly.
+    &#34;&#34;&#34;</code></pre>
 </details>
 </section>
 <section>
@@ -267,6 +311,100 @@ class Bolors:
 </dd>
 </dl>
 </dd>
+<dt id="moody.Evm"><code class="flex name class">
+<span>class <span class="ident">Evm</span></span>
+<span>(</span><span>value, names=None, *, module=None, qualname=None, type=None, start=1)</span>
+</code></dt>
+<dd>
+<div class="desc"><p>An enumeration.</p></div>
+<details class="source">
+<summary>
+<span>Expand source code</span>
+</summary>
+<pre><code class="python">class Evm(Enum):
+    TANGERINEWHISTLE = &#34;tangerineWhistle&#34;
+    &#34;&#34;&#34;
+    Gas cost for access to other accounts increased, relevant for gas estimation and the optimizer.
+    All gas sent by default for external calls, previously a certain amount had to be retained.
+    &#34;&#34;&#34;
+    SPURIOUSDRAGON = &#34;spuriousDragon&#34;
+    &#34;&#34;&#34;
+    Gas cost for the exp opcode increased, relevant for gas estimation and the optimizer.
+    &#34;&#34;&#34;
+    BYZANTIUM = &#34;byzantium&#34;
+    &#34;&#34;&#34;
+    Opcodes `returndatacopy`, `returndatasize` and `staticcall` are available in assembly.
+    The `staticcall` opcode is used when calling non-library view or pure functions, which prevents the functions from modifying state at the EVM level, i.e., even applies when you use invalid type conversions.
+    It is possible to access dynamic data returned from function calls.
+    revert opcode introduced, which means that `revert()` will not waste gas.
+    &#34;&#34;&#34;
+    CONSTANTINOPLE = &#34;constantinople&#34;
+    &#34;&#34;&#34;
+    Opcodes `create2`, `extcodehash`, `shl`, `shr` and `sar` are available in assembly.
+    Shifting operators use shifting opcodes and thus need less gas.
+    &#34;&#34;&#34;
+    PETERSBURG = &#34;petersburg&#34;
+    &#34;&#34;&#34;
+    The compiler behaves the same way as with constantinople.
+    &#34;&#34;&#34;
+    ISTANBUL = &#34;istanbul&#34;
+    &#34;&#34;&#34;
+    Opcodes `chainid` and `selfbalance` are available in assembly.
+    &#34;&#34;&#34;
+    BERLIN = &#34;berlin&#34;
+    &#34;&#34;&#34;
+    Gas costs for `SLOAD`, `*CALL`, `BALANCE`, `EXT*` and `SELFDESTRUCT` increased. The compiler assumes cold gas costs for such operations. This is relevant for gas estimation and the optimizer.
+    &#34;&#34;&#34;
+    LONDON = &#34;london&#34;
+    &#34;&#34;&#34;
+    The block’s base fee (EIP-3198 and EIP-1559) can be accessed via the global block.basefee or basefee() in inline assembly.
+    &#34;&#34;&#34;</code></pre>
+</details>
+<h3>Ancestors</h3>
+<ul class="hlist">
+<li>enum.Enum</li>
+</ul>
+<h3>Class variables</h3>
+<dl>
+<dt id="moody.Evm.BERLIN"><code class="name">var <span class="ident">BERLIN</span></code></dt>
+<dd>
+<div class="desc"><p>Gas costs for <code>SLOAD</code>, <code>*CALL</code>, <code>BALANCE</code>, <code>EXT*</code> and <code>SELFDESTRUCT</code> increased. The compiler assumes cold gas costs for such operations. This is relevant for gas estimation and the optimizer.</p></div>
+</dd>
+<dt id="moody.Evm.BYZANTIUM"><code class="name">var <span class="ident">BYZANTIUM</span></code></dt>
+<dd>
+<div class="desc"><p>Opcodes <code>returndatacopy</code>, <code>returndatasize</code> and <code>staticcall</code> are available in assembly.
+The <code>staticcall</code> opcode is used when calling non-library view or pure functions, which prevents the functions from modifying state at the EVM level, i.e., even applies when you use invalid type conversions.
+It is possible to access dynamic data returned from function calls.
+revert opcode introduced, which means that <code>revert()</code> will not waste gas.</p></div>
+</dd>
+<dt id="moody.Evm.CONSTANTINOPLE"><code class="name">var <span class="ident">CONSTANTINOPLE</span></code></dt>
+<dd>
+<div class="desc"><p>Opcodes <code>create2</code>, <code>extcodehash</code>, <code>shl</code>, <code>shr</code> and <code>sar</code> are available in assembly.
+Shifting operators use shifting opcodes and thus need less gas.</p></div>
+</dd>
+<dt id="moody.Evm.ISTANBUL"><code class="name">var <span class="ident">ISTANBUL</span></code></dt>
+<dd>
+<div class="desc"><p>Opcodes <code>chainid</code> and <code>selfbalance</code> are available in assembly.</p></div>
+</dd>
+<dt id="moody.Evm.LONDON"><code class="name">var <span class="ident">LONDON</span></code></dt>
+<dd>
+<div class="desc"><p>The block’s base fee (EIP-3198 and EIP-1559) can be accessed via the global block.basefee or basefee() in inline assembly.</p></div>
+</dd>
+<dt id="moody.Evm.PETERSBURG"><code class="name">var <span class="ident">PETERSBURG</span></code></dt>
+<dd>
+<div class="desc"><p>The compiler behaves the same way as with constantinople.</p></div>
+</dd>
+<dt id="moody.Evm.SPURIOUSDRAGON"><code class="name">var <span class="ident">SPURIOUSDRAGON</span></code></dt>
+<dd>
+<div class="desc"><p>Gas cost for the exp opcode increased, relevant for gas estimation and the optimizer.</p></div>
+</dd>
+<dt id="moody.Evm.TANGERINEWHISTLE"><code class="name">var <span class="ident">TANGERINEWHISTLE</span></code></dt>
+<dd>
+<div class="desc"><p>Gas cost for access to other accounts increased, relevant for gas estimation and the optimizer.
+All gas sent by default for external calls, previously a certain amount had to be retained.</p></div>
+</dd>
+</dl>
+</dd>
 <dt id="moody.Key"><code class="flex name class">
 <span>class <span class="ident">Key</span></span>
 <span>(</span><span>private_key: str, wallet_address: str, token: str, precision: int, network: str)</span>
@@ -420,6 +558,19 @@ class Bolors:
 <li><code><a title="moody.Config.rpc_url" href="#moody.Config.rpc_url">rpc_url</a></code></li>
 <li><code><a title="moody.Config.symbol" href="#moody.Config.symbol">symbol</a></code></li>
 <li><code><a title="moody.Config.wait_time" href="#moody.Config.wait_time">wait_time</a></code></li>
+</ul>
+</li>
+<li>
+<h4><code><a title="moody.Evm" href="#moody.Evm">Evm</a></code></h4>
+<ul class="two-column">
+<li><code><a title="moody.Evm.BERLIN" href="#moody.Evm.BERLIN">BERLIN</a></code></li>
+<li><code><a title="moody.Evm.BYZANTIUM" href="#moody.Evm.BYZANTIUM">BYZANTIUM</a></code></li>
+<li><code><a title="moody.Evm.CONSTANTINOPLE" href="#moody.Evm.CONSTANTINOPLE">CONSTANTINOPLE</a></code></li>
+<li><code><a title="moody.Evm.ISTANBUL" href="#moody.Evm.ISTANBUL">ISTANBUL</a></code></li>
+<li><code><a title="moody.Evm.LONDON" href="#moody.Evm.LONDON">LONDON</a></code></li>
+<li><code><a title="moody.Evm.PETERSBURG" href="#moody.Evm.PETERSBURG">PETERSBURG</a></code></li>
+<li><code><a title="moody.Evm.SPURIOUSDRAGON" href="#moody.Evm.SPURIOUSDRAGON">SPURIOUSDRAGON</a></code></li>
+<li><code><a title="moody.Evm.TANGERINEWHISTLE" href="#moody.Evm.TANGERINEWHISTLE">TANGERINEWHISTLE</a></code></li>
 </ul>
 </li>
 <li>
