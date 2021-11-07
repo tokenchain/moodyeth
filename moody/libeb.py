@@ -11,7 +11,7 @@ from hexbytes import HexBytes
 from web3 import Web3, HTTPProvider
 from web3.contract import Contract as Web3Contract
 from web3.datastructures import AttributeDict
-from web3.exceptions import TransactionNotFound, ContractLogicError
+from web3.exceptions import TransactionNotFound, ContractLogicError, InvalidAddress
 from web3.logs import DISCARD
 from web3.middleware import geth_poa_middleware
 from web3.types import BlockData
@@ -133,13 +133,20 @@ class IDos:
     def getAddr(self, keyname: str) -> str:
         pass
 
+    def isAddress(self, add: str) -> bool:
+        pass
+
 
 class BinOp:
     def __init__(self, bin_content: str, file_name: str):
         self.bin_raw = bin_content
         self.bin_knifed = bin_content
-        self.bin_undeploy_lib = set()
+        self.bin_undeploy_lib = dict()
         self.file_name = file_name
+        self.debug = False
+
+    def setDebug(self, de: bool):
+        self.debug = de
 
     def GetRawBin(self) -> str:
         return self.bin_raw
@@ -150,37 +157,53 @@ class BinOp:
     def checkBinForUndeployLib(self) -> bool:
         matches = re.finditer(regex1, self.bin_raw, re.MULTILINE)
         found = False
-        self.bin_undeploy_lib = set()
-
         for matchNum, match in enumerate(matches, start=1):
-            print("Match {matchNum} was found at {start}-{end}: {match}".format(matchNum=matchNum, start=match.start(), end=match.end(), match=match.group()))
-            for groupNum in range(0, len(match.groups())):
-                groupNum = groupNum + 1
-                print("Group {groupNum} found at {start}-{end}: {group}".format(groupNum=groupNum, start=match.start(groupNum), end=match.end(groupNum), group=match.group(groupNum)))
-                self.bin_undeploy_lib.add(match.group(groupNum))
+            print("Library {matchNum} is found at {start}-{end}: {match}".format(matchNum=matchNum, start=match.start(), end=match.end(), match=match.group()))
+            k, v = self.fromLine(match.group())
+            self.bin_undeploy_lib[k] = v
             found = True
         return found
 
+    def fromLine(self, input_line: str) -> Tuple[str, str]:
+        class_name = input_line.split(":")[1]
+        return class_name, input_line
+
     def anaylze(self, databank: IDos) -> bool:
         if len(self.bin_undeploy_lib) == 0:
+            print("🚧 Nothing to process")
             return False
-        for line in self.bin_undeploy_lib:
-            class_name = str(line).split(":")[1]
-            keyholder = "__{}__".format(str(line).split("->")[0].strip(" //"))
+
+        for class_name, instruction_line in self.bin_undeploy_lib.items():
+            keyholder = "__{}__".format(str(instruction_line).split("->")[0].strip(" //"))
             if databank.hasContractName(class_name) is True:
-                self.knifeBin(class_name, keyholder, databank.getAddr(class_name).lower())
+                print(f"💽 Found support Class {class_name} - deployment address")
+                if databank.isAddress(databank.getAddr(class_name)):
+                    self._knifeBinClass(class_name, keyholder, databank.getAddr(class_name))
+                else:
+                    print("🧊 The found library address is not valid - {}, {}".format(class_name, databank.getAddr(class_name)))
+                    raise FoundUndeployedLibraries
             else:
-                print("🧊 Found undeploy libraries - {}".format(class_name))
+                print("⚠️ Unfound library Error- {}, please make sure you have this library deployed.".format(class_name))
                 raise FoundUndeployedLibraries
 
         self.bin_knifed = self.bin_knifed.splitlines(True)[0]
-        print(f"The final bin file is like... {self.file_name}")
-        print(self.bin_knifed)
+        self.bin_knifed = self.bin_knifed.replace("\n", "")
+        # self.bin_knifed = "0x" + self.bin_knifed
+        if self.debug is True:
+            print(f"After processed bin file - {self.file_name}.bin (should be done now)")
+            print(self.bin_knifed)
+            # print(self.bin_raw)
+            print("File content end ##")
+        else:
+            print(f"After processed bin file - {self.file_name}.bin")
+
         return True
 
-    def knifeBin(self, c: str, k: str, address: str) -> None:
-        self.bin_knifed = self.bin_raw.replace(k, address)
-        print(f"🍡 Linked successfully for CLASS {c}")
+    def _knifeBinClass(self, c: str, k: str, address: str) -> None:
+        # address_step_1 = address.lower()
+        address_step_2 = address.replace("0x", "")
+        self.bin_knifed = self.bin_knifed.replace(k, address_step_2)
+        print(f"🍡 Linked successfully for Solidity Class {c} with {address}")
 
 
 class SolWeb3Tool(object):
@@ -302,6 +325,9 @@ class MiliDoS(IDos):
     def withPOA(self) -> "MiliDoS":
         self.w3.middleware_onion.inject(geth_poa_middleware, layer=0)
         return self
+
+    def isAddress(self, address: str) -> bool:
+        return self.w3.isAddress(address)
 
     def connect(self, workspace: str, history: any) -> None:
 
@@ -533,6 +559,22 @@ class MiliDoS(IDos):
         else:
             return self.network_cfg.link_token
 
+    def _checkErrorForTxReceipt(self, receipt: any, class_name: str, jsonfile:str):
+
+        if "contractAddress" not in receipt:
+            print(f"⚠️ Error from deploy contract and no valid address found for {class_name}.")
+            raise InvalidAddress
+
+        if "transactionHash" not in receipt:
+            print(f"⚠️ The deployment is failed because there is no valid address found from {class_name}. Please check for internal errors from deployment has {receipt.transactionHash}")
+            raise InvalidAddress
+
+        hash = str(receipt.transactionHash)
+        preaddress = str(receipt.contractAddress)
+        if self.isAddress(preaddress) is False:
+            print(f"⚠️ The deployment is failed because there is no valid address found from {class_name}. Please check for internal errors from deployment hash from {jsonfile}")
+            raise InvalidAddress
+
     def deploy(self, class_name: str,
                params: list = [],
                gas_price: int = 0,
@@ -549,10 +591,13 @@ class MiliDoS(IDos):
             solc_artifact = solc_artifact.GetCodeClassFromBuild(class_name)
             bin = BinOp(solc_artifact.bin, class_name)
             if bin.checkBinForUndeployLib() is True:
+                bin.setDebug(True)
                 # try to find the needed libraries in address..
                 bin.anaylze(self)
                 contract_nv = self.w3.eth.contract(abi=solc_artifact.abi, bytecode=bin.GetKnifedBin())
             else:
+                print(f"this is now done... {class_name}")
+                # exit(0)
                 contract_nv = self.w3.eth.contract(abi=solc_artifact.abi, bytecode=bin.GetRawBin())
 
         except FileNotFoundError:
@@ -578,25 +623,28 @@ class MiliDoS(IDos):
         try:
             txHash = self.w3.eth.sendRawTransaction(signed.rawTransaction)
             # print(f"Contract '{class_name}' deployed; Waiting to transaction receipt")
-            print(f"========Wait for Block Confirmation {class_name} 🚸")
+            print(f"========Wait for Block Confirmation - {class_name} ☕️")
             tx_receipt = self.w3.eth.waitForTransactionReceipt(txHash)
             print("========TX Pre-Result ✅")
             print(tx_receipt)
             print(f"========Broadcast Result ✅ -> {Paths.showCurrentDeployedClass(class_name)}")
-            if "contractAddress" not in tx_receipt:
-                print("error from deploy contract")
-                exit(1)
+
+            self._checkErrorForTxReceipt(tx_receipt, class_name, Paths.showCurrentDeployedClass(class_name))
             fresh_address = tx_receipt.contractAddress
             self._contract_dict[class_name] = fresh_address
+
             self._contract_dict["kv_{}".format(class_name)] = dict(
                 owner="",
             )
+
             print("📦 Address saved to ✅ {} -> {}".format(fresh_address, class_name))
             print(f"🔍 You can check with the explorer for more detail: {Bolors.WARNING} {self.network_cfg.block_explorer}{Bolors.RESET}")
             self.artifact_manager = solc_artifact
             solc_artifact.StoreTxResult(tx_receipt, self.pathfinder.classObject(class_name))
             self.complete_deployment()
             return True
+        except InvalidAddress:
+            return False
         except ContractLogicError as w3ex:
             print(w3ex)
             return False

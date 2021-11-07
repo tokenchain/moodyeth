@@ -39,7 +39,7 @@ from hexbytes import HexBytes
 from web3 import Web3, HTTPProvider
 from web3.contract import Contract as Web3Contract
 from web3.datastructures import AttributeDict
-from web3.exceptions import TransactionNotFound, ContractLogicError
+from web3.exceptions import TransactionNotFound, ContractLogicError, InvalidAddress
 from web3.logs import DISCARD
 from web3.middleware import geth_poa_middleware
 from web3.types import BlockData
@@ -161,13 +161,20 @@ class IDos:
     def getAddr(self, keyname: str) -&gt; str:
         pass
 
+    def isAddress(self, add: str) -&gt; bool:
+        pass
+
 
 class BinOp:
     def __init__(self, bin_content: str, file_name: str):
         self.bin_raw = bin_content
         self.bin_knifed = bin_content
-        self.bin_undeploy_lib = set()
+        self.bin_undeploy_lib = dict()
         self.file_name = file_name
+        self.debug = False
+
+    def setDebug(self, de: bool):
+        self.debug = de
 
     def GetRawBin(self) -&gt; str:
         return self.bin_raw
@@ -178,37 +185,53 @@ class BinOp:
     def checkBinForUndeployLib(self) -&gt; bool:
         matches = re.finditer(regex1, self.bin_raw, re.MULTILINE)
         found = False
-        self.bin_undeploy_lib = set()
-
         for matchNum, match in enumerate(matches, start=1):
-            print(&#34;Match {matchNum} was found at {start}-{end}: {match}&#34;.format(matchNum=matchNum, start=match.start(), end=match.end(), match=match.group()))
-            for groupNum in range(0, len(match.groups())):
-                groupNum = groupNum + 1
-                print(&#34;Group {groupNum} found at {start}-{end}: {group}&#34;.format(groupNum=groupNum, start=match.start(groupNum), end=match.end(groupNum), group=match.group(groupNum)))
-                self.bin_undeploy_lib.add(match.group(groupNum))
+            print(&#34;Library {matchNum} is found at {start}-{end}: {match}&#34;.format(matchNum=matchNum, start=match.start(), end=match.end(), match=match.group()))
+            k, v = self.fromLine(match.group())
+            self.bin_undeploy_lib[k] = v
             found = True
         return found
 
+    def fromLine(self, input_line: str) -&gt; Tuple[str, str]:
+        class_name = input_line.split(&#34;:&#34;)[1]
+        return class_name, input_line
+
     def anaylze(self, databank: IDos) -&gt; bool:
         if len(self.bin_undeploy_lib) == 0:
+            print(&#34;🚧 Nothing to process&#34;)
             return False
-        for line in self.bin_undeploy_lib:
-            class_name = str(line).split(&#34;:&#34;)[1]
-            keyholder = &#34;__{}__&#34;.format(str(line).split(&#34;-&gt;&#34;)[0].strip(&#34; //&#34;))
+
+        for class_name, instruction_line in self.bin_undeploy_lib.items():
+            keyholder = &#34;__{}__&#34;.format(str(instruction_line).split(&#34;-&gt;&#34;)[0].strip(&#34; //&#34;))
             if databank.hasContractName(class_name) is True:
-                self.knifeBin(class_name, keyholder, databank.getAddr(class_name).lower())
+                print(f&#34;💽 Found support Class {class_name} - deployment address&#34;)
+                if databank.isAddress(databank.getAddr(class_name)):
+                    self._knifeBinClass(class_name, keyholder, databank.getAddr(class_name))
+                else:
+                    print(&#34;🧊 The found library address is not valid - {}, {}&#34;.format(class_name, databank.getAddr(class_name)))
+                    raise FoundUndeployedLibraries
             else:
-                print(&#34;🧊 Found undeploy libraries - {}&#34;.format(class_name))
+                print(&#34;⚠️ Unfound library Error- {}, please make sure you have this library deployed.&#34;.format(class_name))
                 raise FoundUndeployedLibraries
 
         self.bin_knifed = self.bin_knifed.splitlines(True)[0]
-        print(f&#34;The final bin file is like... {self.file_name}&#34;)
-        print(self.bin_knifed)
+        self.bin_knifed = self.bin_knifed.replace(&#34;\n&#34;, &#34;&#34;)
+        # self.bin_knifed = &#34;0x&#34; + self.bin_knifed
+        if self.debug is True:
+            print(f&#34;After processed bin file - {self.file_name}.bin (should be done now)&#34;)
+            print(self.bin_knifed)
+            # print(self.bin_raw)
+            print(&#34;File content end ##&#34;)
+        else:
+            print(f&#34;After processed bin file - {self.file_name}.bin&#34;)
+
         return True
 
-    def knifeBin(self, c: str, k: str, address: str) -&gt; None:
-        self.bin_knifed = self.bin_raw.replace(k, address)
-        print(f&#34;🍡 Linked successfully for CLASS {c}&#34;)
+    def _knifeBinClass(self, c: str, k: str, address: str) -&gt; None:
+        # address_step_1 = address.lower()
+        address_step_2 = address.replace(&#34;0x&#34;, &#34;&#34;)
+        self.bin_knifed = self.bin_knifed.replace(k, address_step_2)
+        print(f&#34;🍡 Linked successfully for Solidity Class {c} with {address}&#34;)
 
 
 class SolWeb3Tool(object):
@@ -330,6 +353,9 @@ class MiliDoS(IDos):
     def withPOA(self) -&gt; &#34;MiliDoS&#34;:
         self.w3.middleware_onion.inject(geth_poa_middleware, layer=0)
         return self
+
+    def isAddress(self, address: str) -&gt; bool:
+        return self.w3.isAddress(address)
 
     def connect(self, workspace: str, history: any) -&gt; None:
 
@@ -561,6 +587,22 @@ class MiliDoS(IDos):
         else:
             return self.network_cfg.link_token
 
+    def _checkErrorForTxReceipt(self, receipt: any, class_name: str, jsonfile:str):
+
+        if &#34;contractAddress&#34; not in receipt:
+            print(f&#34;⚠️ Error from deploy contract and no valid address found for {class_name}.&#34;)
+            raise InvalidAddress
+
+        if &#34;transactionHash&#34; not in receipt:
+            print(f&#34;⚠️ The deployment is failed because there is no valid address found from {class_name}. Please check for internal errors from deployment has {receipt.transactionHash}&#34;)
+            raise InvalidAddress
+
+        hash = str(receipt.transactionHash)
+        preaddress = str(receipt.contractAddress)
+        if self.isAddress(preaddress) is False:
+            print(f&#34;⚠️ The deployment is failed because there is no valid address found from {class_name}. Please check for internal errors from deployment hash from {jsonfile}&#34;)
+            raise InvalidAddress
+
     def deploy(self, class_name: str,
                params: list = [],
                gas_price: int = 0,
@@ -577,10 +619,13 @@ class MiliDoS(IDos):
             solc_artifact = solc_artifact.GetCodeClassFromBuild(class_name)
             bin = BinOp(solc_artifact.bin, class_name)
             if bin.checkBinForUndeployLib() is True:
+                bin.setDebug(True)
                 # try to find the needed libraries in address..
                 bin.anaylze(self)
                 contract_nv = self.w3.eth.contract(abi=solc_artifact.abi, bytecode=bin.GetKnifedBin())
             else:
+                print(f&#34;this is now done... {class_name}&#34;)
+                # exit(0)
                 contract_nv = self.w3.eth.contract(abi=solc_artifact.abi, bytecode=bin.GetRawBin())
 
         except FileNotFoundError:
@@ -606,25 +651,28 @@ class MiliDoS(IDos):
         try:
             txHash = self.w3.eth.sendRawTransaction(signed.rawTransaction)
             # print(f&#34;Contract &#39;{class_name}&#39; deployed; Waiting to transaction receipt&#34;)
-            print(f&#34;========Wait for Block Confirmation {class_name} 🚸&#34;)
+            print(f&#34;========Wait for Block Confirmation - {class_name} ☕️&#34;)
             tx_receipt = self.w3.eth.waitForTransactionReceipt(txHash)
             print(&#34;========TX Pre-Result ✅&#34;)
             print(tx_receipt)
             print(f&#34;========Broadcast Result ✅ -&gt; {Paths.showCurrentDeployedClass(class_name)}&#34;)
-            if &#34;contractAddress&#34; not in tx_receipt:
-                print(&#34;error from deploy contract&#34;)
-                exit(1)
+
+            self._checkErrorForTxReceipt(tx_receipt, class_name, Paths.showCurrentDeployedClass(class_name))
             fresh_address = tx_receipt.contractAddress
             self._contract_dict[class_name] = fresh_address
+
             self._contract_dict[&#34;kv_{}&#34;.format(class_name)] = dict(
                 owner=&#34;&#34;,
             )
+
             print(&#34;📦 Address saved to ✅ {} -&gt; {}&#34;.format(fresh_address, class_name))
             print(f&#34;🔍 You can check with the explorer for more detail: {Bolors.WARNING} {self.network_cfg.block_explorer}{Bolors.RESET}&#34;)
             self.artifact_manager = solc_artifact
             solc_artifact.StoreTxResult(tx_receipt, self.pathfinder.classObject(class_name))
             self.complete_deployment()
             return True
+        except InvalidAddress:
+            return False
         except ContractLogicError as w3ex:
             print(w3ex)
             return False
@@ -940,8 +988,12 @@ class MiliDoS(IDos):
     def __init__(self, bin_content: str, file_name: str):
         self.bin_raw = bin_content
         self.bin_knifed = bin_content
-        self.bin_undeploy_lib = set()
+        self.bin_undeploy_lib = dict()
         self.file_name = file_name
+        self.debug = False
+
+    def setDebug(self, de: bool):
+        self.debug = de
 
     def GetRawBin(self) -&gt; str:
         return self.bin_raw
@@ -952,37 +1004,53 @@ class MiliDoS(IDos):
     def checkBinForUndeployLib(self) -&gt; bool:
         matches = re.finditer(regex1, self.bin_raw, re.MULTILINE)
         found = False
-        self.bin_undeploy_lib = set()
-
         for matchNum, match in enumerate(matches, start=1):
-            print(&#34;Match {matchNum} was found at {start}-{end}: {match}&#34;.format(matchNum=matchNum, start=match.start(), end=match.end(), match=match.group()))
-            for groupNum in range(0, len(match.groups())):
-                groupNum = groupNum + 1
-                print(&#34;Group {groupNum} found at {start}-{end}: {group}&#34;.format(groupNum=groupNum, start=match.start(groupNum), end=match.end(groupNum), group=match.group(groupNum)))
-                self.bin_undeploy_lib.add(match.group(groupNum))
+            print(&#34;Library {matchNum} is found at {start}-{end}: {match}&#34;.format(matchNum=matchNum, start=match.start(), end=match.end(), match=match.group()))
+            k, v = self.fromLine(match.group())
+            self.bin_undeploy_lib[k] = v
             found = True
         return found
 
+    def fromLine(self, input_line: str) -&gt; Tuple[str, str]:
+        class_name = input_line.split(&#34;:&#34;)[1]
+        return class_name, input_line
+
     def anaylze(self, databank: IDos) -&gt; bool:
         if len(self.bin_undeploy_lib) == 0:
+            print(&#34;🚧 Nothing to process&#34;)
             return False
-        for line in self.bin_undeploy_lib:
-            class_name = str(line).split(&#34;:&#34;)[1]
-            keyholder = &#34;__{}__&#34;.format(str(line).split(&#34;-&gt;&#34;)[0].strip(&#34; //&#34;))
+
+        for class_name, instruction_line in self.bin_undeploy_lib.items():
+            keyholder = &#34;__{}__&#34;.format(str(instruction_line).split(&#34;-&gt;&#34;)[0].strip(&#34; //&#34;))
             if databank.hasContractName(class_name) is True:
-                self.knifeBin(class_name, keyholder, databank.getAddr(class_name).lower())
+                print(f&#34;💽 Found support Class {class_name} - deployment address&#34;)
+                if databank.isAddress(databank.getAddr(class_name)):
+                    self._knifeBinClass(class_name, keyholder, databank.getAddr(class_name))
+                else:
+                    print(&#34;🧊 The found library address is not valid - {}, {}&#34;.format(class_name, databank.getAddr(class_name)))
+                    raise FoundUndeployedLibraries
             else:
-                print(&#34;🧊 Found undeploy libraries - {}&#34;.format(class_name))
+                print(&#34;⚠️ Unfound library Error- {}, please make sure you have this library deployed.&#34;.format(class_name))
                 raise FoundUndeployedLibraries
 
         self.bin_knifed = self.bin_knifed.splitlines(True)[0]
-        print(f&#34;The final bin file is like... {self.file_name}&#34;)
-        print(self.bin_knifed)
+        self.bin_knifed = self.bin_knifed.replace(&#34;\n&#34;, &#34;&#34;)
+        # self.bin_knifed = &#34;0x&#34; + self.bin_knifed
+        if self.debug is True:
+            print(f&#34;After processed bin file - {self.file_name}.bin (should be done now)&#34;)
+            print(self.bin_knifed)
+            # print(self.bin_raw)
+            print(&#34;File content end ##&#34;)
+        else:
+            print(f&#34;After processed bin file - {self.file_name}.bin&#34;)
+
         return True
 
-    def knifeBin(self, c: str, k: str, address: str) -&gt; None:
-        self.bin_knifed = self.bin_raw.replace(k, address)
-        print(f&#34;🍡 Linked successfully for CLASS {c}&#34;)</code></pre>
+    def _knifeBinClass(self, c: str, k: str, address: str) -&gt; None:
+        # address_step_1 = address.lower()
+        address_step_2 = address.replace(&#34;0x&#34;, &#34;&#34;)
+        self.bin_knifed = self.bin_knifed.replace(k, address_step_2)
+        print(f&#34;🍡 Linked successfully for Solidity Class {c} with {address}&#34;)</code></pre>
 </details>
 <h3>Methods</h3>
 <dl>
@@ -1023,19 +1091,33 @@ class MiliDoS(IDos):
 </summary>
 <pre><code class="python">def anaylze(self, databank: IDos) -&gt; bool:
     if len(self.bin_undeploy_lib) == 0:
+        print(&#34;🚧 Nothing to process&#34;)
         return False
-    for line in self.bin_undeploy_lib:
-        class_name = str(line).split(&#34;:&#34;)[1]
-        keyholder = &#34;__{}__&#34;.format(str(line).split(&#34;-&gt;&#34;)[0].strip(&#34; //&#34;))
+
+    for class_name, instruction_line in self.bin_undeploy_lib.items():
+        keyholder = &#34;__{}__&#34;.format(str(instruction_line).split(&#34;-&gt;&#34;)[0].strip(&#34; //&#34;))
         if databank.hasContractName(class_name) is True:
-            self.knifeBin(class_name, keyholder, databank.getAddr(class_name).lower())
+            print(f&#34;💽 Found support Class {class_name} - deployment address&#34;)
+            if databank.isAddress(databank.getAddr(class_name)):
+                self._knifeBinClass(class_name, keyholder, databank.getAddr(class_name))
+            else:
+                print(&#34;🧊 The found library address is not valid - {}, {}&#34;.format(class_name, databank.getAddr(class_name)))
+                raise FoundUndeployedLibraries
         else:
-            print(&#34;🧊 Found undeploy libraries - {}&#34;.format(class_name))
+            print(&#34;⚠️ Unfound library Error- {}, please make sure you have this library deployed.&#34;.format(class_name))
             raise FoundUndeployedLibraries
 
     self.bin_knifed = self.bin_knifed.splitlines(True)[0]
-    print(f&#34;The final bin file is like... {self.file_name}&#34;)
-    print(self.bin_knifed)
+    self.bin_knifed = self.bin_knifed.replace(&#34;\n&#34;, &#34;&#34;)
+    # self.bin_knifed = &#34;0x&#34; + self.bin_knifed
+    if self.debug is True:
+        print(f&#34;After processed bin file - {self.file_name}.bin (should be done now)&#34;)
+        print(self.bin_knifed)
+        # print(self.bin_raw)
+        print(&#34;File content end ##&#34;)
+    else:
+        print(f&#34;After processed bin file - {self.file_name}.bin&#34;)
+
     return True</code></pre>
 </details>
 </dd>
@@ -1051,20 +1133,16 @@ class MiliDoS(IDos):
 <pre><code class="python">def checkBinForUndeployLib(self) -&gt; bool:
     matches = re.finditer(regex1, self.bin_raw, re.MULTILINE)
     found = False
-    self.bin_undeploy_lib = set()
-
     for matchNum, match in enumerate(matches, start=1):
-        print(&#34;Match {matchNum} was found at {start}-{end}: {match}&#34;.format(matchNum=matchNum, start=match.start(), end=match.end(), match=match.group()))
-        for groupNum in range(0, len(match.groups())):
-            groupNum = groupNum + 1
-            print(&#34;Group {groupNum} found at {start}-{end}: {group}&#34;.format(groupNum=groupNum, start=match.start(groupNum), end=match.end(groupNum), group=match.group(groupNum)))
-            self.bin_undeploy_lib.add(match.group(groupNum))
+        print(&#34;Library {matchNum} is found at {start}-{end}: {match}&#34;.format(matchNum=matchNum, start=match.start(), end=match.end(), match=match.group()))
+        k, v = self.fromLine(match.group())
+        self.bin_undeploy_lib[k] = v
         found = True
     return found</code></pre>
 </details>
 </dd>
-<dt id="moody.libeb.BinOp.knifeBin"><code class="name flex">
-<span>def <span class="ident">knifeBin</span></span>(<span>self, c: str, k: str, address: str) ‑> NoneType</span>
+<dt id="moody.libeb.BinOp.fromLine"><code class="name flex">
+<span>def <span class="ident">fromLine</span></span>(<span>self, input_line: str) ‑> Tuple[str, str]</span>
 </code></dt>
 <dd>
 <div class="desc"></div>
@@ -1072,9 +1150,22 @@ class MiliDoS(IDos):
 <summary>
 <span>Expand source code</span>
 </summary>
-<pre><code class="python">def knifeBin(self, c: str, k: str, address: str) -&gt; None:
-    self.bin_knifed = self.bin_raw.replace(k, address)
-    print(f&#34;🍡 Linked successfully for CLASS {c}&#34;)</code></pre>
+<pre><code class="python">def fromLine(self, input_line: str) -&gt; Tuple[str, str]:
+    class_name = input_line.split(&#34;:&#34;)[1]
+    return class_name, input_line</code></pre>
+</details>
+</dd>
+<dt id="moody.libeb.BinOp.setDebug"><code class="name flex">
+<span>def <span class="ident">setDebug</span></span>(<span>self, de: bool)</span>
+</code></dt>
+<dd>
+<div class="desc"></div>
+<details class="source">
+<summary>
+<span>Expand source code</span>
+</summary>
+<pre><code class="python">def setDebug(self, de: bool):
+    self.debug = de</code></pre>
 </details>
 </dd>
 </dl>
@@ -1220,6 +1311,9 @@ implement default like this::</p>
         pass
 
     def getAddr(self, keyname: str) -&gt; str:
+        pass
+
+    def isAddress(self, add: str) -&gt; bool:
         pass</code></pre>
 </details>
 <h3>Subclasses</h3>
@@ -1251,6 +1345,19 @@ implement default like this::</p>
 <span>Expand source code</span>
 </summary>
 <pre><code class="python">def hasContractName(self, name: str) -&gt; bool:
+    pass</code></pre>
+</details>
+</dd>
+<dt id="moody.libeb.IDos.isAddress"><code class="name flex">
+<span>def <span class="ident">isAddress</span></span>(<span>self, add: str) ‑> bool</span>
+</code></dt>
+<dd>
+<div class="desc"></div>
+<details class="source">
+<summary>
+<span>Expand source code</span>
+</summary>
+<pre><code class="python">def isAddress(self, add: str) -&gt; bool:
     pass</code></pre>
 </details>
 </dd>
@@ -1300,6 +1407,9 @@ implement default like this::</p>
     def withPOA(self) -&gt; &#34;MiliDoS&#34;:
         self.w3.middleware_onion.inject(geth_poa_middleware, layer=0)
         return self
+
+    def isAddress(self, address: str) -&gt; bool:
+        return self.w3.isAddress(address)
 
     def connect(self, workspace: str, history: any) -&gt; None:
 
@@ -1531,6 +1641,22 @@ implement default like this::</p>
         else:
             return self.network_cfg.link_token
 
+    def _checkErrorForTxReceipt(self, receipt: any, class_name: str, jsonfile:str):
+
+        if &#34;contractAddress&#34; not in receipt:
+            print(f&#34;⚠️ Error from deploy contract and no valid address found for {class_name}.&#34;)
+            raise InvalidAddress
+
+        if &#34;transactionHash&#34; not in receipt:
+            print(f&#34;⚠️ The deployment is failed because there is no valid address found from {class_name}. Please check for internal errors from deployment has {receipt.transactionHash}&#34;)
+            raise InvalidAddress
+
+        hash = str(receipt.transactionHash)
+        preaddress = str(receipt.contractAddress)
+        if self.isAddress(preaddress) is False:
+            print(f&#34;⚠️ The deployment is failed because there is no valid address found from {class_name}. Please check for internal errors from deployment hash from {jsonfile}&#34;)
+            raise InvalidAddress
+
     def deploy(self, class_name: str,
                params: list = [],
                gas_price: int = 0,
@@ -1547,10 +1673,13 @@ implement default like this::</p>
             solc_artifact = solc_artifact.GetCodeClassFromBuild(class_name)
             bin = BinOp(solc_artifact.bin, class_name)
             if bin.checkBinForUndeployLib() is True:
+                bin.setDebug(True)
                 # try to find the needed libraries in address..
                 bin.anaylze(self)
                 contract_nv = self.w3.eth.contract(abi=solc_artifact.abi, bytecode=bin.GetKnifedBin())
             else:
+                print(f&#34;this is now done... {class_name}&#34;)
+                # exit(0)
                 contract_nv = self.w3.eth.contract(abi=solc_artifact.abi, bytecode=bin.GetRawBin())
 
         except FileNotFoundError:
@@ -1576,25 +1705,28 @@ implement default like this::</p>
         try:
             txHash = self.w3.eth.sendRawTransaction(signed.rawTransaction)
             # print(f&#34;Contract &#39;{class_name}&#39; deployed; Waiting to transaction receipt&#34;)
-            print(f&#34;========Wait for Block Confirmation {class_name} 🚸&#34;)
+            print(f&#34;========Wait for Block Confirmation - {class_name} ☕️&#34;)
             tx_receipt = self.w3.eth.waitForTransactionReceipt(txHash)
             print(&#34;========TX Pre-Result ✅&#34;)
             print(tx_receipt)
             print(f&#34;========Broadcast Result ✅ -&gt; {Paths.showCurrentDeployedClass(class_name)}&#34;)
-            if &#34;contractAddress&#34; not in tx_receipt:
-                print(&#34;error from deploy contract&#34;)
-                exit(1)
+
+            self._checkErrorForTxReceipt(tx_receipt, class_name, Paths.showCurrentDeployedClass(class_name))
             fresh_address = tx_receipt.contractAddress
             self._contract_dict[class_name] = fresh_address
+
             self._contract_dict[&#34;kv_{}&#34;.format(class_name)] = dict(
                 owner=&#34;&#34;,
             )
+
             print(&#34;📦 Address saved to ✅ {} -&gt; {}&#34;.format(fresh_address, class_name))
             print(f&#34;🔍 You can check with the explorer for more detail: {Bolors.WARNING} {self.network_cfg.block_explorer}{Bolors.RESET}&#34;)
             self.artifact_manager = solc_artifact
             solc_artifact.StoreTxResult(tx_receipt, self.pathfinder.classObject(class_name))
             self.complete_deployment()
             return True
+        except InvalidAddress:
+            return False
         except ContractLogicError as w3ex:
             print(w3ex)
             return False
@@ -2101,10 +2233,13 @@ Note: Be cautions with the range provided, as the logic creates query for each b
         solc_artifact = solc_artifact.GetCodeClassFromBuild(class_name)
         bin = BinOp(solc_artifact.bin, class_name)
         if bin.checkBinForUndeployLib() is True:
+            bin.setDebug(True)
             # try to find the needed libraries in address..
             bin.anaylze(self)
             contract_nv = self.w3.eth.contract(abi=solc_artifact.abi, bytecode=bin.GetKnifedBin())
         else:
+            print(f&#34;this is now done... {class_name}&#34;)
+            # exit(0)
             contract_nv = self.w3.eth.contract(abi=solc_artifact.abi, bytecode=bin.GetRawBin())
 
     except FileNotFoundError:
@@ -2130,25 +2265,28 @@ Note: Be cautions with the range provided, as the logic creates query for each b
     try:
         txHash = self.w3.eth.sendRawTransaction(signed.rawTransaction)
         # print(f&#34;Contract &#39;{class_name}&#39; deployed; Waiting to transaction receipt&#34;)
-        print(f&#34;========Wait for Block Confirmation {class_name} 🚸&#34;)
+        print(f&#34;========Wait for Block Confirmation - {class_name} ☕️&#34;)
         tx_receipt = self.w3.eth.waitForTransactionReceipt(txHash)
         print(&#34;========TX Pre-Result ✅&#34;)
         print(tx_receipt)
         print(f&#34;========Broadcast Result ✅ -&gt; {Paths.showCurrentDeployedClass(class_name)}&#34;)
-        if &#34;contractAddress&#34; not in tx_receipt:
-            print(&#34;error from deploy contract&#34;)
-            exit(1)
+
+        self._checkErrorForTxReceipt(tx_receipt, class_name, Paths.showCurrentDeployedClass(class_name))
         fresh_address = tx_receipt.contractAddress
         self._contract_dict[class_name] = fresh_address
+
         self._contract_dict[&#34;kv_{}&#34;.format(class_name)] = dict(
             owner=&#34;&#34;,
         )
+
         print(&#34;📦 Address saved to ✅ {} -&gt; {}&#34;.format(fresh_address, class_name))
         print(f&#34;🔍 You can check with the explorer for more detail: {Bolors.WARNING} {self.network_cfg.block_explorer}{Bolors.RESET}&#34;)
         self.artifact_manager = solc_artifact
         solc_artifact.StoreTxResult(tx_receipt, self.pathfinder.classObject(class_name))
         self.complete_deployment()
         return True
+    except InvalidAddress:
+        return False
     except ContractLogicError as w3ex:
         print(w3ex)
         return False
@@ -2418,6 +2556,19 @@ Note: Be cautions with the range provided, as the logic creates query for each b
     if self.__list_key_label not in self._contract_dict:
         return False
     return len(self._contract_dict[self.__list_key_label]) &gt; 0</code></pre>
+</details>
+</dd>
+<dt id="moody.libeb.MiliDoS.isAddress"><code class="name flex">
+<span>def <span class="ident">isAddress</span></span>(<span>self, address: str) ‑> bool</span>
+</code></dt>
+<dd>
+<div class="desc"></div>
+<details class="source">
+<summary>
+<span>Expand source code</span>
+</summary>
+<pre><code class="python">def isAddress(self, address: str) -&gt; bool:
+    return self.w3.isAddress(address)</code></pre>
 </details>
 </dd>
 <dt id="moody.libeb.MiliDoS.is_deployment"><code class="name flex">
@@ -3051,7 +3202,8 @@ all works will be done with the remote server or using the docker</p></div>
 <li><code><a title="moody.libeb.BinOp.GetRawBin" href="#moody.libeb.BinOp.GetRawBin">GetRawBin</a></code></li>
 <li><code><a title="moody.libeb.BinOp.anaylze" href="#moody.libeb.BinOp.anaylze">anaylze</a></code></li>
 <li><code><a title="moody.libeb.BinOp.checkBinForUndeployLib" href="#moody.libeb.BinOp.checkBinForUndeployLib">checkBinForUndeployLib</a></code></li>
-<li><code><a title="moody.libeb.BinOp.knifeBin" href="#moody.libeb.BinOp.knifeBin">knifeBin</a></code></li>
+<li><code><a title="moody.libeb.BinOp.fromLine" href="#moody.libeb.BinOp.fromLine">fromLine</a></code></li>
+<li><code><a title="moody.libeb.BinOp.setDebug" href="#moody.libeb.BinOp.setDebug">setDebug</a></code></li>
 </ul>
 </li>
 <li>
@@ -3065,6 +3217,7 @@ all works will be done with the remote server or using the docker</p></div>
 <ul class="">
 <li><code><a title="moody.libeb.IDos.getAddr" href="#moody.libeb.IDos.getAddr">getAddr</a></code></li>
 <li><code><a title="moody.libeb.IDos.hasContractName" href="#moody.libeb.IDos.hasContractName">hasContractName</a></code></li>
+<li><code><a title="moody.libeb.IDos.isAddress" href="#moody.libeb.IDos.isAddress">isAddress</a></code></li>
 </ul>
 </li>
 <li>
@@ -3101,6 +3254,7 @@ all works will be done with the remote server or using the docker</p></div>
 <li><code><a title="moody.libeb.MiliDoS.hasContractName" href="#moody.libeb.MiliDoS.hasContractName">hasContractName</a></code></li>
 <li><code><a title="moody.libeb.MiliDoS.hasField" href="#moody.libeb.MiliDoS.hasField">hasField</a></code></li>
 <li><code><a title="moody.libeb.MiliDoS.hasList" href="#moody.libeb.MiliDoS.hasList">hasList</a></code></li>
+<li><code><a title="moody.libeb.MiliDoS.isAddress" href="#moody.libeb.MiliDoS.isAddress">isAddress</a></code></li>
 <li><code><a title="moody.libeb.MiliDoS.is_deployment" href="#moody.libeb.MiliDoS.is_deployment">is_deployment</a></code></li>
 <li><code><a title="moody.libeb.MiliDoS.iterList" href="#moody.libeb.MiliDoS.iterList">iterList</a></code></li>
 <li><code><a title="moody.libeb.MiliDoS.localTranspile" href="#moody.libeb.MiliDoS.localTranspile">localTranspile</a></code></li>

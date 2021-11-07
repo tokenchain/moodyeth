@@ -38,7 +38,7 @@ fi
 """
 ITEM = """
 echo "🍯 Compiling from {COMPILE_COIN} 🧀"
-SOLC_VERSION={SOLVER} solc --allow-paths {SOLCPATH} -o build --bin --bin-runtime --abi --optimize --metadata --overwrite {COMPILE_COIN}
+SOLC_VERSION={SOLVER} solc --evm-version byzantium --allow-paths {SOLCPATH} -o build --bin --bin-runtime --abi --optimize --metadata --overwrite {COMPILE_COIN}
 echo "=> 🍺🍺🍺 {COMPILE_COIN}"
 """
 
