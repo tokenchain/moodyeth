@@ -30,7 +30,7 @@ class Paths:
     COMPRESSED_NAME = "solc-build.tar.gz"
     SOLC_VER = "0.5.15"
     SOLCPATH = "/root/contracts/vault"
-    EVM_VERSION: Evm = Evm.ISTANBUL
+    EVM_VERSION = Evm.ISTANBUL
     BUILDPATH = ""
     WEB_DAPP_SRC = "app"
 
@@ -64,7 +64,7 @@ class Paths:
         self.SOLC_VER = version
         return self
 
-    def setEvm(self, ver: Evm = Evm.ISTANBUL) -> "Paths":
+    def setEvm(self, ver: str) -> "Paths":
         self.EVM_VERSION = ver
         return self
 

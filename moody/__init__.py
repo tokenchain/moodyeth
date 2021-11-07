@@ -61,11 +61,8 @@ class Bolors:
     RESET = '\033[0m'  # RESET COLOR
 
 
-from enum import Enum
-
-
 # EVM history: https://en.wikipedia.org/wiki/Ethereum
-class Evm(Enum):
+class Evm:
     TANGERINEWHISTLE = "tangerineWhistle"
     """
     18 October 2016

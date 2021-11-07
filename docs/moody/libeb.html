@@ -326,7 +326,7 @@ class MiliDoS(IDos):
     @
     &#34;&#34;&#34;
 
-    EVM_VERSION: Evm = Evm.ISTANBUL
+    EVM_VERSION = Evm.BERLIN
 
     def __init__(self, _nodeCfg: Config):
         # the hidden list
@@ -403,8 +403,8 @@ class MiliDoS(IDos):
         self._sol_link = compile_links
         return self
 
-    def setEvm(self, ver: Evm = Evm.ISTANBUL) -&gt; &#34;MiliDoS&#34;:
-        self.EVM_VERSION = ver
+    def setEvm(self, verc: str) -&gt; &#34;MiliDoS&#34;:
+        self.EVM_VERSION = verc
         return self
 
     def remoteCompile(self, ver: str) -&gt; &#34;MiliDoS&#34;:
@@ -1387,7 +1387,7 @@ implement default like this::</p>
     @
     &#34;&#34;&#34;
 
-    EVM_VERSION: Evm = Evm.ISTANBUL
+    EVM_VERSION = Evm.BERLIN
 
     def __init__(self, _nodeCfg: Config):
         # the hidden list
@@ -1464,8 +1464,8 @@ implement default like this::</p>
         self._sol_link = compile_links
         return self
 
-    def setEvm(self, ver: Evm = Evm.ISTANBUL) -&gt; &#34;MiliDoS&#34;:
-        self.EVM_VERSION = ver
+    def setEvm(self, verc: str) -&gt; &#34;MiliDoS&#34;:
+        self.EVM_VERSION = verc
         return self
 
     def remoteCompile(self, ver: str) -&gt; &#34;MiliDoS&#34;:
@@ -1900,7 +1900,7 @@ implement default like this::</p>
 </ul>
 <h3>Class variables</h3>
 <dl>
-<dt id="moody.libeb.MiliDoS.EVM_VERSION"><code class="name">var <span class="ident">EVM_VERSION</span> : <a title="moody.Evm" href="index.html#moody.Evm">Evm</a></code></dt>
+<dt id="moody.libeb.MiliDoS.EVM_VERSION"><code class="name">var <span class="ident">EVM_VERSION</span></code></dt>
 <dd>
 <div class="desc"></div>
 </dd>
@@ -2792,7 +2792,7 @@ Note: Be cautions with the range provided, as the logic creates query for each b
 </details>
 </dd>
 <dt id="moody.libeb.MiliDoS.setEvm"><code class="name flex">
-<span>def <span class="ident">setEvm</span></span>(<span>self, ver: <a title="moody.Evm" href="index.html#moody.Evm">Evm</a> = Evm.ISTANBUL) ‑> <a title="moody.libeb.MiliDoS" href="#moody.libeb.MiliDoS">MiliDoS</a></span>
+<span>def <span class="ident">setEvm</span></span>(<span>self, verc: str) ‑> <a title="moody.libeb.MiliDoS" href="#moody.libeb.MiliDoS">MiliDoS</a></span>
 </code></dt>
 <dd>
 <div class="desc"></div>
@@ -2800,8 +2800,8 @@ Note: Be cautions with the range provided, as the logic creates query for each b
 <summary>
 <span>Expand source code</span>
 </summary>
-<pre><code class="python">def setEvm(self, ver: Evm = Evm.ISTANBUL) -&gt; &#34;MiliDoS&#34;:
-    self.EVM_VERSION = ver
+<pre><code class="python">def setEvm(self, verc: str) -&gt; &#34;MiliDoS&#34;:
+    self.EVM_VERSION = verc
     return self</code></pre>
 </details>
 </dd>

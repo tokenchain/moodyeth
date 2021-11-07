@@ -59,7 +59,7 @@ class Paths:
     COMPRESSED_NAME = &#34;solc-build.tar.gz&#34;
     SOLC_VER = &#34;0.5.15&#34;
     SOLCPATH = &#34;/root/contracts/vault&#34;
-    EVM_VERSION: Evm = Evm.ISTANBUL
+    EVM_VERSION = Evm.ISTANBUL
     BUILDPATH = &#34;&#34;
     WEB_DAPP_SRC = &#34;app&#34;
 
@@ -93,7 +93,7 @@ class Paths:
         self.SOLC_VER = version
         return self
 
-    def setEvm(self, ver: Evm = Evm.ISTANBUL) -&gt; &#34;Paths&#34;:
+    def setEvm(self, ver: str) -&gt; &#34;Paths&#34;:
         self.EVM_VERSION = ver
         return self
 
@@ -188,7 +188,7 @@ Manage the workspace paths</p></div>
     COMPRESSED_NAME = &#34;solc-build.tar.gz&#34;
     SOLC_VER = &#34;0.5.15&#34;
     SOLCPATH = &#34;/root/contracts/vault&#34;
-    EVM_VERSION: Evm = Evm.ISTANBUL
+    EVM_VERSION = Evm.ISTANBUL
     BUILDPATH = &#34;&#34;
     WEB_DAPP_SRC = &#34;app&#34;
 
@@ -222,7 +222,7 @@ Manage the workspace paths</p></div>
         self.SOLC_VER = version
         return self
 
-    def setEvm(self, ver: Evm = Evm.ISTANBUL) -&gt; &#34;Paths&#34;:
+    def setEvm(self, ver: str) -&gt; &#34;Paths&#34;:
         self.EVM_VERSION = ver
         return self
 
@@ -297,7 +297,7 @@ Manage the workspace paths</p></div>
 <dd>
 <div class="desc"></div>
 </dd>
-<dt id="moody.paths.Paths.EVM_VERSION"><code class="name">var <span class="ident">EVM_VERSION</span> : <a title="moody.Evm" href="index.html#moody.Evm">Evm</a></code></dt>
+<dt id="moody.paths.Paths.EVM_VERSION"><code class="name">var <span class="ident">EVM_VERSION</span></code></dt>
 <dd>
 <div class="desc"></div>
 </dd>
@@ -494,7 +494,7 @@ def subFix(self) -&gt; str:
 </details>
 </dd>
 <dt id="moody.paths.Paths.setEvm"><code class="name flex">
-<span>def <span class="ident">setEvm</span></span>(<span>self, ver: <a title="moody.Evm" href="index.html#moody.Evm">Evm</a> = Evm.ISTANBUL) ‑> <a title="moody.paths.Paths" href="#moody.paths.Paths">Paths</a></span>
+<span>def <span class="ident">setEvm</span></span>(<span>self, ver: str) ‑> <a title="moody.paths.Paths" href="#moody.paths.Paths">Paths</a></span>
 </code></dt>
 <dd>
 <div class="desc"></div>
@@ -502,7 +502,7 @@ def subFix(self) -&gt; str:
 <summary>
 <span>Expand source code</span>
 </summary>
-<pre><code class="python">def setEvm(self, ver: Evm = Evm.ISTANBUL) -&gt; &#34;Paths&#34;:
+<pre><code class="python">def setEvm(self, ver: str) -&gt; &#34;Paths&#34;:
     self.EVM_VERSION = ver
     return self</code></pre>
 </details>

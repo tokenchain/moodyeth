@@ -89,11 +89,8 @@ class Bolors:
     RESET = &#39;\033[0m&#39;  # RESET COLOR
 
 
-from enum import Enum
-
-
 # EVM history: https://en.wikipedia.org/wiki/Ethereum
-class Evm(Enum):
+class Evm:
     TANGERINEWHISTLE = &#34;tangerineWhistle&#34;
     &#34;&#34;&#34;
     18 October 2016
@@ -322,15 +319,14 @@ class Evm(Enum):
 </dd>
 <dt id="moody.Evm"><code class="flex name class">
 <span>class <span class="ident">Evm</span></span>
-<span>(</span><span>value, names=None, *, module=None, qualname=None, type=None, start=1)</span>
 </code></dt>
 <dd>
-<div class="desc"><p>An enumeration.</p></div>
+<div class="desc"></div>
 <details class="source">
 <summary>
 <span>Expand source code</span>
 </summary>
-<pre><code class="python">class Evm(Enum):
+<pre><code class="python">class Evm:
     TANGERINEWHISTLE = &#34;tangerineWhistle&#34;
     &#34;&#34;&#34;
     18 October 2016
@@ -377,10 +373,6 @@ class Evm(Enum):
     The block’s base fee (EIP-3198 and EIP-1559) can be accessed via the global block.basefee or basefee() in inline assembly.
     &#34;&#34;&#34;</code></pre>
 </details>
-<h3>Ancestors</h3>
-<ul class="hlist">
-<li>enum.Enum</li>
-</ul>
 <h3>Class variables</h3>
 <dl>
 <dt id="moody.Evm.BERLIN"><code class="name">var <span class="ident">BERLIN</span></code></dt>

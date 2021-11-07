@@ -298,7 +298,7 @@ class MiliDoS(IDos):
     @
     """
 
-    EVM_VERSION: Evm = Evm.ISTANBUL
+    EVM_VERSION = Evm.BERLIN
 
     def __init__(self, _nodeCfg: Config):
         # the hidden list
@@ -375,8 +375,8 @@ class MiliDoS(IDos):
         self._sol_link = compile_links
         return self
 
-    def setEvm(self, ver: Evm = Evm.ISTANBUL) -> "MiliDoS":
-        self.EVM_VERSION = ver
+    def setEvm(self, verc: str) -> "MiliDoS":
+        self.EVM_VERSION = verc
         return self
 
     def remoteCompile(self, ver: str) -> "MiliDoS":
