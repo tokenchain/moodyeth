@@ -11,7 +11,7 @@ from hexbytes import HexBytes
 from web3 import Web3, HTTPProvider
 from web3.contract import Contract as Web3Contract
 from web3.datastructures import AttributeDict
-from web3.exceptions import TransactionNotFound, ContractLogicError, InvalidAddress
+from web3.exceptions import TransactionNotFound, ContractLogicError, InvalidAddress, TimeExhausted
 from web3.logs import DISCARD
 from web3.middleware import geth_poa_middleware
 from web3.types import BlockData
@@ -168,17 +168,19 @@ class BinOp:
         class_name = input_line.split(":")[1]
         return class_name, input_line
 
+    def _placehd(self, instruction_line: str) -> str:
+        return "__{}__".format(str(instruction_line).split("->")[0].strip(" //"))
+
     def anaylze(self, databank: IDos) -> bool:
         if len(self.bin_undeploy_lib) == 0:
             print("🚧 Nothing to process")
             return False
 
         for class_name, instruction_line in self.bin_undeploy_lib.items():
-            keyholder = "__{}__".format(str(instruction_line).split("->")[0].strip(" //"))
             if databank.hasContractName(class_name) is True:
                 print(f"💽 Found support Class {class_name} - deployment address")
                 if databank.isAddress(databank.getAddr(class_name)):
-                    self._knifeBinClass(class_name, keyholder, databank.getAddr(class_name))
+                    self._knifeBinClass(class_name, self._placehd(instruction_line), databank.getAddr(class_name))
                 else:
                     print("🧊 The found library address is not valid - {}, {}".format(class_name, databank.getAddr(class_name)))
                     raise FoundUndeployedLibraries
@@ -655,9 +657,12 @@ class MiliDoS(IDos):
         except ContractLogicError as w3ex:
             print(w3ex)
             return False
+        except TimeExhausted:
+            print("After 120 seconds, the boardcast block is not in the chain.")
+            return False
         except ValueError as te:
             if "code" in te:
-                code = te["code"]
+                code = int(te["code"])
                 if code == -32000:
                     print("NOT ENOUGH GAS - insufficient funds for gas")
                     return False

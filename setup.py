@@ -1,6 +1,6 @@
 #!/usr/bin/env python
 # --------------------------------------------------------------------
-# Copyright (c) tokenchain. All rights reserved.
+# Copyright (c) TokenChain. All rights reserved.
 # Licensed under the MIT License.
 # See License.txt in the project root for license information.
 # --------------------------------------------------------------------
@@ -9,9 +9,9 @@
     setup
     =====
 
-    Tron: A Python API for interacting with Tron (TRX)
+    Tron: A Python API for interacting with ETH (EVM)
 
-    :copyright: © 2021 by the tokenchain.
+    :copyright: © 2021 by the TokenChain.
     :license: MIT License
 """
 

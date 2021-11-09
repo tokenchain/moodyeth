@@ -39,7 +39,7 @@ from hexbytes import HexBytes
 from web3 import Web3, HTTPProvider
 from web3.contract import Contract as Web3Contract
 from web3.datastructures import AttributeDict
-from web3.exceptions import TransactionNotFound, ContractLogicError, InvalidAddress
+from web3.exceptions import TransactionNotFound, ContractLogicError, InvalidAddress, TimeExhausted
 from web3.logs import DISCARD
 from web3.middleware import geth_poa_middleware
 from web3.types import BlockData
@@ -196,17 +196,19 @@ class BinOp:
         class_name = input_line.split(&#34;:&#34;)[1]
         return class_name, input_line
 
+    def _placehd(self, instruction_line: str) -&gt; str:
+        return &#34;__{}__&#34;.format(str(instruction_line).split(&#34;-&gt;&#34;)[0].strip(&#34; //&#34;))
+
     def anaylze(self, databank: IDos) -&gt; bool:
         if len(self.bin_undeploy_lib) == 0:
             print(&#34;🚧 Nothing to process&#34;)
             return False
 
         for class_name, instruction_line in self.bin_undeploy_lib.items():
-            keyholder = &#34;__{}__&#34;.format(str(instruction_line).split(&#34;-&gt;&#34;)[0].strip(&#34; //&#34;))
             if databank.hasContractName(class_name) is True:
                 print(f&#34;💽 Found support Class {class_name} - deployment address&#34;)
                 if databank.isAddress(databank.getAddr(class_name)):
-                    self._knifeBinClass(class_name, keyholder, databank.getAddr(class_name))
+                    self._knifeBinClass(class_name, self._placehd(instruction_line), databank.getAddr(class_name))
                 else:
                     print(&#34;🧊 The found library address is not valid - {}, {}&#34;.format(class_name, databank.getAddr(class_name)))
                     raise FoundUndeployedLibraries
@@ -683,9 +685,12 @@ class MiliDoS(IDos):
         except ContractLogicError as w3ex:
             print(w3ex)
             return False
+        except TimeExhausted:
+            print(&#34;After 120 seconds, the boardcast block is not in the chain.&#34;)
+            return False
         except ValueError as te:
             if &#34;code&#34; in te:
-                code = te[&#34;code&#34;]
+                code = int(te[&#34;code&#34;])
                 if code == -32000:
                     print(&#34;NOT ENOUGH GAS - insufficient funds for gas&#34;)
                     return False
@@ -1022,17 +1027,19 @@ class MiliDoS(IDos):
         class_name = input_line.split(&#34;:&#34;)[1]
         return class_name, input_line
 
+    def _placehd(self, instruction_line: str) -&gt; str:
+        return &#34;__{}__&#34;.format(str(instruction_line).split(&#34;-&gt;&#34;)[0].strip(&#34; //&#34;))
+
     def anaylze(self, databank: IDos) -&gt; bool:
         if len(self.bin_undeploy_lib) == 0:
             print(&#34;🚧 Nothing to process&#34;)
             return False
 
         for class_name, instruction_line in self.bin_undeploy_lib.items():
-            keyholder = &#34;__{}__&#34;.format(str(instruction_line).split(&#34;-&gt;&#34;)[0].strip(&#34; //&#34;))
             if databank.hasContractName(class_name) is True:
                 print(f&#34;💽 Found support Class {class_name} - deployment address&#34;)
                 if databank.isAddress(databank.getAddr(class_name)):
-                    self._knifeBinClass(class_name, keyholder, databank.getAddr(class_name))
+                    self._knifeBinClass(class_name, self._placehd(instruction_line), databank.getAddr(class_name))
                 else:
                     print(&#34;🧊 The found library address is not valid - {}, {}&#34;.format(class_name, databank.getAddr(class_name)))
                     raise FoundUndeployedLibraries
@@ -1102,11 +1109,10 @@ class MiliDoS(IDos):
         return False
 
     for class_name, instruction_line in self.bin_undeploy_lib.items():
-        keyholder = &#34;__{}__&#34;.format(str(instruction_line).split(&#34;-&gt;&#34;)[0].strip(&#34; //&#34;))
         if databank.hasContractName(class_name) is True:
             print(f&#34;💽 Found support Class {class_name} - deployment address&#34;)
             if databank.isAddress(databank.getAddr(class_name)):
-                self._knifeBinClass(class_name, keyholder, databank.getAddr(class_name))
+                self._knifeBinClass(class_name, self._placehd(instruction_line), databank.getAddr(class_name))
             else:
                 print(&#34;🧊 The found library address is not valid - {}, {}&#34;.format(class_name, databank.getAddr(class_name)))
                 raise FoundUndeployedLibraries
@@ -1744,9 +1750,12 @@ implement default like this::</p>
         except ContractLogicError as w3ex:
             print(w3ex)
             return False
+        except TimeExhausted:
+            print(&#34;After 120 seconds, the boardcast block is not in the chain.&#34;)
+            return False
         except ValueError as te:
             if &#34;code&#34; in te:
-                code = te[&#34;code&#34;]
+                code = int(te[&#34;code&#34;])
                 if code == -32000:
                     print(&#34;NOT ENOUGH GAS - insufficient funds for gas&#34;)
                     return False
@@ -2311,9 +2320,12 @@ Note: Be cautions with the range provided, as the logic creates query for each b
     except ContractLogicError as w3ex:
         print(w3ex)
         return False
+    except TimeExhausted:
+        print(&#34;After 120 seconds, the boardcast block is not in the chain.&#34;)
+        return False
     except ValueError as te:
         if &#34;code&#34; in te:
-            code = te[&#34;code&#34;]
+            code = int(te[&#34;code&#34;])
             if code == -32000:
                 print(&#34;NOT ENOUGH GAS - insufficient funds for gas&#34;)
                 return False
