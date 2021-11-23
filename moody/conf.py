@@ -175,3 +175,23 @@ def RSCMainnet() -> Config:
         symbol="RSC",
         block_explorer="http://www.raisc.io/"
     )
+
+
+def AvalancheFujiTestnet() -> Config:
+    return Config(
+        network_name="AvalancheTestnet",
+        rpc_url="https://api.avax-test.network/ext/bc/C/rpc",
+        chain_id=43113,
+        symbol="AVAX",
+        block_explorer="https://testnet.snowtrace.io/"
+    )
+
+
+def AvalancheMainnet() -> Config:
+    return Config(
+        network_name="AvalancheMainnet",
+        rpc_url="https://api.avax.network/ext/bc/C/rpc",
+        chain_id=43114,
+        symbol="AVAX",
+        block_explorer="https://snowtrace.io/"
+    )
