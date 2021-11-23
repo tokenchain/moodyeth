@@ -195,3 +195,23 @@ def AvalancheMainnet() -> Config:
         symbol="AVAX",
         block_explorer="https://snowtrace.io/"
     )
+
+
+def OptimisticEthereum() -> Config:
+    return Config(
+        network_name="OptimisticEthereumMainnet",
+        rpc_url="https://mainnet.optimism.io/",
+        chain_id=10,
+        symbol="ETH",
+        block_explorer="https://optimistic.etherscan.io/"
+    )
+
+
+def OptimisticEthereumTestnet() -> Config:
+    return Config(
+        network_name="OptimisticEthereumMainnet",
+        rpc_url="https://kovan.optimism.io/",
+        chain_id=69,
+        symbol="ETH",
+        block_explorer="https://kovan-optimistic.etherscan.io/"
+    )

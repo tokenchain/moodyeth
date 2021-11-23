@@ -222,6 +222,26 @@ def AvalancheMainnet() -&gt; Config:
         chain_id=43114,
         symbol=&#34;AVAX&#34;,
         block_explorer=&#34;https://snowtrace.io/&#34;
+    )
+
+
+def OptimisticEthereum() -&gt; Config:
+    return Config(
+        network_name=&#34;OptimisticEthereumMainnet&#34;,
+        rpc_url=&#34;https://mainnet.optimism.io/&#34;,
+        chain_id=10,
+        symbol=&#34;ETH&#34;,
+        block_explorer=&#34;https://optimistic.etherscan.io/&#34;
+    )
+
+
+def OptimisticEthereumTestnet() -&gt; Config:
+    return Config(
+        network_name=&#34;OptimisticEthereumMainnet&#34;,
+        rpc_url=&#34;https://kovan.optimism.io/&#34;,
+        chain_id=69,
+        symbol=&#34;ETH&#34;,
+        block_explorer=&#34;https://kovan-optimistic.etherscan.io/&#34;
     )</code></pre>
 </details>
 </section>
@@ -451,6 +471,44 @@ def AvalancheMainnet() -&gt; Config:
     )</code></pre>
 </details>
 </dd>
+<dt id="moody.conf.OptimisticEthereum"><code class="name flex">
+<span>def <span class="ident">OptimisticEthereum</span></span>(<span>) ‑> <a title="moody.Config" href="index.html#moody.Config">Config</a></span>
+</code></dt>
+<dd>
+<div class="desc"></div>
+<details class="source">
+<summary>
+<span>Expand source code</span>
+</summary>
+<pre><code class="python">def OptimisticEthereum() -&gt; Config:
+    return Config(
+        network_name=&#34;OptimisticEthereumMainnet&#34;,
+        rpc_url=&#34;https://mainnet.optimism.io/&#34;,
+        chain_id=10,
+        symbol=&#34;ETH&#34;,
+        block_explorer=&#34;https://optimistic.etherscan.io/&#34;
+    )</code></pre>
+</details>
+</dd>
+<dt id="moody.conf.OptimisticEthereumTestnet"><code class="name flex">
+<span>def <span class="ident">OptimisticEthereumTestnet</span></span>(<span>) ‑> <a title="moody.Config" href="index.html#moody.Config">Config</a></span>
+</code></dt>
+<dd>
+<div class="desc"></div>
+<details class="source">
+<summary>
+<span>Expand source code</span>
+</summary>
+<pre><code class="python">def OptimisticEthereumTestnet() -&gt; Config:
+    return Config(
+        network_name=&#34;OptimisticEthereumMainnet&#34;,
+        rpc_url=&#34;https://kovan.optimism.io/&#34;,
+        chain_id=69,
+        symbol=&#34;ETH&#34;,
+        block_explorer=&#34;https://kovan-optimistic.etherscan.io/&#34;
+    )</code></pre>
+</details>
+</dd>
 <dt id="moody.conf.PolygonMainnet"><code class="name flex">
 <span>def <span class="ident">PolygonMainnet</span></span>(<span>) ‑> <a title="moody.Config" href="index.html#moody.Config">Config</a></span>
 </code></dt>
@@ -612,6 +670,8 @@ def AvalancheMainnet() -&gt; Config:
 <li><code><a title="moody.conf.MoonBeamTestnet" href="#moody.conf.MoonBeamTestnet">MoonBeamTestnet</a></code></li>
 <li><code><a title="moody.conf.OKChainMainnet" href="#moody.conf.OKChainMainnet">OKChainMainnet</a></code></li>
 <li><code><a title="moody.conf.OKChainTestnet" href="#moody.conf.OKChainTestnet">OKChainTestnet</a></code></li>
+<li><code><a title="moody.conf.OptimisticEthereum" href="#moody.conf.OptimisticEthereum">OptimisticEthereum</a></code></li>
+<li><code><a title="moody.conf.OptimisticEthereumTestnet" href="#moody.conf.OptimisticEthereumTestnet">OptimisticEthereumTestnet</a></code></li>
 <li><code><a title="moody.conf.PolygonMainnet" href="#moody.conf.PolygonMainnet">PolygonMainnet</a></code></li>
 <li><code><a title="moody.conf.PolygonMumbai" href="#moody.conf.PolygonMumbai">PolygonMumbai</a></code></li>
 <li><code><a title="moody.conf.RSCMainnet" href="#moody.conf.RSCMainnet">RSCMainnet</a></code></li>
