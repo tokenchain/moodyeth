@@ -260,6 +260,25 @@ def OptimisticEthereumTestnet() -&gt; Config:
         chain_id=69,
         symbol=&#34;ETH&#34;,
         block_explorer=&#34;https://kovan-optimistic.etherscan.io/&#34;
+    )
+
+# https://github.com/aurora-is-near/aurora-engine
+def NearAuroraTestnet() -&gt; Config:
+    return Config(
+        network_name=&#34;AuroraTestnet&#34;,
+        rpc_url=&#34;https://testnet.aurora.dev/&#34;,
+        chain_id=1313161555,
+        symbol=&#34;NEAR&#34;,
+        block_explorer=&#34;https://explorer.testnet.near.org/&#34;
+    )
+
+def NearAuroraMainnet() -&gt; Config:
+    return Config(
+        network_name=&#34;AuroraTestnet&#34;,
+        rpc_url=&#34;https://testnet.aurora.dev/&#34;,
+        chain_id=1313161554,
+        symbol=&#34;NEAR&#34;,
+        block_explorer=&#34;https://explorer.near.org/&#34;
     )</code></pre>
 </details>
 </section>
@@ -470,6 +489,44 @@ def OptimisticEthereumTestnet() -&gt; Config:
         chain_id=1287,
         symbol=&#34;DEV&#34;,
         block_explorer=&#34;https://moonbase-blockscout.testnet.moonbeam.network/&#34;
+    )</code></pre>
+</details>
+</dd>
+<dt id="moody.conf.NearAuroraMainnet"><code class="name flex">
+<span>def <span class="ident">NearAuroraMainnet</span></span>(<span>) ‑> <a title="moody.Config" href="index.html#moody.Config">Config</a></span>
+</code></dt>
+<dd>
+<div class="desc"></div>
+<details class="source">
+<summary>
+<span>Expand source code</span>
+</summary>
+<pre><code class="python">def NearAuroraMainnet() -&gt; Config:
+    return Config(
+        network_name=&#34;AuroraTestnet&#34;,
+        rpc_url=&#34;https://testnet.aurora.dev/&#34;,
+        chain_id=1313161554,
+        symbol=&#34;NEAR&#34;,
+        block_explorer=&#34;https://explorer.near.org/&#34;
+    )</code></pre>
+</details>
+</dd>
+<dt id="moody.conf.NearAuroraTestnet"><code class="name flex">
+<span>def <span class="ident">NearAuroraTestnet</span></span>(<span>) ‑> <a title="moody.Config" href="index.html#moody.Config">Config</a></span>
+</code></dt>
+<dd>
+<div class="desc"></div>
+<details class="source">
+<summary>
+<span>Expand source code</span>
+</summary>
+<pre><code class="python">def NearAuroraTestnet() -&gt; Config:
+    return Config(
+        network_name=&#34;AuroraTestnet&#34;,
+        rpc_url=&#34;https://testnet.aurora.dev/&#34;,
+        chain_id=1313161555,
+        symbol=&#34;NEAR&#34;,
+        block_explorer=&#34;https://explorer.testnet.near.org/&#34;
     )</code></pre>
 </details>
 </dd>
@@ -691,6 +748,8 @@ def OptimisticEthereumTestnet() -&gt; Config:
 <li><code><a title="moody.conf.HuobiChainTestnet" href="#moody.conf.HuobiChainTestnet">HuobiChainTestnet</a></code></li>
 <li><code><a title="moody.conf.Kovan" href="#moody.conf.Kovan">Kovan</a></code></li>
 <li><code><a title="moody.conf.MoonBeamTestnet" href="#moody.conf.MoonBeamTestnet">MoonBeamTestnet</a></code></li>
+<li><code><a title="moody.conf.NearAuroraMainnet" href="#moody.conf.NearAuroraMainnet">NearAuroraMainnet</a></code></li>
+<li><code><a title="moody.conf.NearAuroraTestnet" href="#moody.conf.NearAuroraTestnet">NearAuroraTestnet</a></code></li>
 <li><code><a title="moody.conf.OKChainMainnet" href="#moody.conf.OKChainMainnet">OKChainMainnet</a></code></li>
 <li><code><a title="moody.conf.OKChainTestnet" href="#moody.conf.OKChainTestnet">OKChainTestnet</a></code></li>
 <li><code><a title="moody.conf.OptimisticEthereum" href="#moody.conf.OptimisticEthereum">OptimisticEthereum</a></code></li>

@@ -233,3 +233,22 @@ def OptimisticEthereumTestnet() -> Config:
         symbol="ETH",
         block_explorer="https://kovan-optimistic.etherscan.io/"
     )
+
+# https://github.com/aurora-is-near/aurora-engine
+def NearAuroraTestnet() -> Config:
+    return Config(
+        network_name="AuroraTestnet",
+        rpc_url="https://testnet.aurora.dev/",
+        chain_id=1313161555,
+        symbol="NEAR",
+        block_explorer="https://explorer.testnet.near.org/"
+    )
+
+def NearAuroraMainnet() -> Config:
+    return Config(
+        network_name="AuroraTestnet",
+        rpc_url="https://testnet.aurora.dev/",
+        chain_id=1313161554,
+        symbol="NEAR",
+        block_explorer="https://explorer.near.org/"
+    )
