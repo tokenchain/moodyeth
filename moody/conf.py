@@ -14,6 +14,19 @@ def BSCTest() -> Config:
     )
 
 
+def Ethereum() -> Config:
+    return Config(
+        network_name="EthereumMainnet",
+        rpc_url="https://mainnet.infura.io/v3/9aa3d95b3bc440fa88ea12eaa4456161",
+        chain_id=1,
+        symbol="ETH",
+        block_explorer="https://etherscan.io/",
+        link_token="0x514910771AF9Ca656af840dff83E8264EcF986CA",
+        link_vrf_coordinator="0xf0d54349aDdcf704F77AE15b96510dEA15cb7952",
+        link_keyhash="0xAA77729D3466CA35AE8D28B3BBAC7CC36A5031EFDC430821C02BC31A238AF445"
+    )
+
+
 def BSCMain() -> Config:
     return Config(
         network_name="BinanceMainnet",
@@ -155,16 +168,18 @@ def OKChainTestnet() -> Config:
     )
 
 
+"""
 def RSCTestnet() -> Config:
     return Config(
         network_name="RSCTestnet",
-        rpc_url="http://47.243.141.113:12369",
+        rpc_url="",
         chain_id=1235,
         symbol="RSCT",
-        block_explorer="http://47.243.123.252/",
+        block_explorer="",
         wait_time=6,
         one=10 ** 18,
     )
+"""
 
 
 def RSCMainnet() -> Config:
@@ -173,7 +188,10 @@ def RSCMainnet() -> Config:
         rpc_url="https://rpc-mainnet.raisc.io",
         chain_id=1023,
         symbol="RSC",
-        block_explorer="http://www.raisc.io/"
+        block_explorer="http://www.raisc.io/",
+        link_token="0x79e93714E4049Ae8745F1FA21838d6FdfDCa9cA6",
+        link_vrf_coordinator="0x3c89bdbfF0B1a27c126b89e78F21a7B66DA2dbeC",
+        link_keyhash="0x66c8089c4313b58a4344f69f796705ea1a7b2c180836e56f4785bde84f7af32f"
     )
 
 
