@@ -641,9 +641,9 @@ class MiliDoS(IDos):
             self._checkErrorForTxReceipt(tx_receipt, class_name, Paths.showCurrentDeployedClass(class_name))
             fresh_address = tx_receipt.contractAddress
             self._contract_dict[class_name] = fresh_address
-
+    
             self._contract_dict["kv_{}".format(class_name)] = dict(
-                owner="",
+                owner=self.accountAddr,
             )
 
             print("📦 Address saved to ✅ {} -> {}".format(fresh_address, class_name))

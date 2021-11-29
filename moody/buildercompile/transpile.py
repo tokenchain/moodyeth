@@ -2,7 +2,7 @@ import os
 import re
 
 from moody.paths import Paths
-from . import ITEM_CP_LOCAL, TRANS_LOCAL, ITEM_TRANSPILE_PYTHON, ITEM_TRANSPILE_TS
+from . import ITEM_CP_LOCAL, TRANS_LOCAL, ITEM_TRANSPILE_PYTHON, ITEM_TRANSPILE_TS,PRE_HEAD
 
 REG = r"(.+?)([A-Z])"
 
@@ -49,7 +49,7 @@ def buildCmdTs(p: Paths, pathName: str) -> str:
     )
 
 
-def wrapContent(tar: Paths, compile_list: list) -> str:
+def wrapContentTranspile(tar: Paths, compile_list: list) -> str:
     """
     wrap content
     :param tar:
@@ -61,6 +61,7 @@ def wrapContent(tar: Paths, compile_list: list) -> str:
         TARGET_LOC=tar.TARGET_LOC,
         COMPRESSED_NAME=tar.COMPRESSED_NAME,
         SOLVER=tar.SOLC_VER,
+        PRE_HEAD=PRE_HEAD
     )
 
 
@@ -79,5 +80,5 @@ def BuildLang(p: Paths, list_class_names: list) -> None:
         k.append(buildCmdTsUpdate(p, v))
     # ==================================================
     with open(p.workspaceFilename("localpile"), 'w') as f:
-        f.write(wrapContent(p, k))
+        f.write(wrapContentTranspile(p, k))
         f.close()

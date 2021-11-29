@@ -1,3 +1,4 @@
+#!/usr/bin/env python
 REC = """#!/bin/bash
 if [[ ! -f {TARGET_LOC} ]]; then
     mkdir -p {TARGET_LOC}/vault
@@ -10,9 +11,7 @@ cd {TARGET_LOC}
 echo "🍜 changed permission to root"
 SOLC_VERSION={SOLVER} solc --version
 
-
 echo "and then the compiler version should be... "
-
 
 {LISTP}
 
@@ -26,12 +25,8 @@ exit
 """
 
 TRANS_LOCAL = """#!/bin/bash
-
 # -----------------------------------------------
-if ! command -v abi-gen-uni &>/dev/null; then
-    echo "abi-gen-uni could not be found. please check the official source from: https://www.npmjs.com/package/easy-abi-gen"
-    cnpm i -g easy-abi-gen
-fi
+{PRE_HEAD}
 
 {LISTP}
 
@@ -80,7 +75,7 @@ abi-gen-uni --abibins "{target_abi}" --out "{outputfolder}" \
 
 echo "==> generate abi to typescript --> 🧊"
 """
-ITEM_TRANSPILE_GO="""
+ITEM_TRANSPILE_GO = """
 echo "==> 🚸 compile abi to golang"
 local SOL=$1
 local CLASSNAME=$2
@@ -92,4 +87,13 @@ fi
 abigen --abi "$BUILDPATH/build/$CLASSNAME.abi" --pkg $CLASSNAME --out "$GO_CONTRACT_SRC_PATH/$CLASSNAME/init.go"
 
 echo "==> generate abi to golang --> 🧊"
+"""
+
+PRE_HEAD = """
+
+if ! command -v abi-gen-uni &>/dev/null; then
+    echo "abi-gen-uni could not be found"
+    cnpm i -g easy-abi-gen
+fi
+  
 """

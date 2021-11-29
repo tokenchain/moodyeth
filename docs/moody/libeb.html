@@ -669,9 +669,9 @@ class MiliDoS(IDos):
             self._checkErrorForTxReceipt(tx_receipt, class_name, Paths.showCurrentDeployedClass(class_name))
             fresh_address = tx_receipt.contractAddress
             self._contract_dict[class_name] = fresh_address
-
+    
             self._contract_dict[&#34;kv_{}&#34;.format(class_name)] = dict(
-                owner=&#34;&#34;,
+                owner=self.accountAddr,
             )
 
             print(&#34;📦 Address saved to ✅ {} -&gt; {}&#34;.format(fresh_address, class_name))
@@ -1734,9 +1734,9 @@ implement default like this::</p>
             self._checkErrorForTxReceipt(tx_receipt, class_name, Paths.showCurrentDeployedClass(class_name))
             fresh_address = tx_receipt.contractAddress
             self._contract_dict[class_name] = fresh_address
-
+    
             self._contract_dict[&#34;kv_{}&#34;.format(class_name)] = dict(
-                owner=&#34;&#34;,
+                owner=self.accountAddr,
             )
 
             print(&#34;📦 Address saved to ✅ {} -&gt; {}&#34;.format(fresh_address, class_name))
@@ -2306,7 +2306,7 @@ Note: Be cautions with the range provided, as the logic creates query for each b
         self._contract_dict[class_name] = fresh_address
 
         self._contract_dict[&#34;kv_{}&#34;.format(class_name)] = dict(
-            owner=&#34;&#34;,
+            owner=self.accountAddr,
         )
 
         print(&#34;📦 Address saved to ✅ {} -&gt; {}&#34;.format(fresh_address, class_name))
