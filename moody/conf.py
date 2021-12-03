@@ -234,6 +234,7 @@ def OptimisticEthereumTestnet() -> Config:
         block_explorer="https://kovan-optimistic.etherscan.io/"
     )
 
+
 # https://github.com/aurora-is-near/aurora-engine
 def NearAuroraTestnet() -> Config:
     return Config(
@@ -243,6 +244,7 @@ def NearAuroraTestnet() -> Config:
         symbol="NEAR",
         block_explorer="https://explorer.testnet.near.org/"
     )
+
 
 def NearAuroraMainnet() -> Config:
     return Config(

@@ -512,7 +512,6 @@ class MiliDoS(IDos):
         # self.w3.eth.defaultAccount(f&#34;0x{keyLo.key}&#34;)
         is_address = self.w3.isAddress(keyLo.address)
         # self.w3.isChecksumAddress(keyLo.address)
-        # keyLo.
         self.accountAddr = keyLo.address
         print(f&#34;🔫 You are now using {keyLo.address} and it is a {&#39;valid key&#39; if is_address else &#39;invalid key&#39;}&#34;)
 
@@ -633,8 +632,6 @@ class MiliDoS(IDos):
                 bin.anaylze(self)
                 contract_nv = self.w3.eth.contract(abi=solc_artifact.abi, bytecode=bin.GetKnifedBin())
             else:
-                print(f&#34;this is now done... {class_name}&#34;)
-                # exit(0)
                 contract_nv = self.w3.eth.contract(abi=solc_artifact.abi, bytecode=bin.GetRawBin())
 
         except FileNotFoundError:
@@ -642,22 +639,34 @@ class MiliDoS(IDos):
             exit(0)
         except FoundUndeployedLibraries:
             exit(0)
+        except ContractLogicError as e:
+            print(f&#34;💢 Contract error {e}&#34;)
+            exit(0)
 
-        if len(params) &gt; 0:
-            _transaction = contract_nv.constructor(*params).buildTransaction()
-        else:
-            _transaction = contract_nv.constructor().buildTransaction()
-
-        _transaction[&#39;nonce&#39;] = self.w3.eth.getTransactionCount(self.accountAddr)
-        _transaction[&#39;to&#39;] = None
-        _transaction[&#39;gas&#39;] = self.gas if gas_limit == 0 else gas_limit
-        _transaction[&#39;gasPrice&#39;] = self.gasPrice if gas_price == 0 else gas_price
-        # _transaction[&#39;gas&#39;] = 2200000000,
-
-        # Get correct transaction nonce for sender from the node
-        print(f&#34;========🖍 Signing {class_name}, gas:{_transaction[&#39;gas&#39;]}, price:{_transaction[&#39;gasPrice&#39;]} ...&#34;)
-        signed = self.w3.eth.account.sign_transaction(_transaction)
         try:
+            gasprice = self.gasPrice if gas_price == 0 else gas_price
+            gas = self.gas if gas_limit == 0 else gas_limit
+            if len(params) &gt; 0:
+                _transaction = contract_nv.constructor(*params).buildTransaction({
+                    &#34;gasPrice&#34;: gasprice,
+                    &#34;gas&#34;: gas
+                })
+            else:
+                _transaction = contract_nv.constructor().buildTransaction({
+                    &#34;gasPrice&#34;: gasprice,
+                    &#34;gas&#34;: gas
+                })
+
+            _transaction[&#39;nonce&#39;] = self.w3.eth.getTransactionCount(self.accountAddr)
+            _transaction[&#39;to&#39;] = None
+            # _transaction[&#39;gas&#39;] = self.gas if gas_limit == 0 else gas_limit
+            # _transaction[&#39;gasPrice&#39;] = self.gasPrice if gas_price == 0 else gas_price
+            # _transaction[&#39;gas&#39;] = 2200000000,
+            print(&#34;ok --- &#34;, _transaction)
+            # Get correct transaction nonce for sender from the node
+            print(f&#34;========🖍 Signing {class_name}, gas:{_transaction[&#39;gas&#39;]}, price:{_transaction[&#39;gasPrice&#39;]} ...&#34;)
+            signed = self.w3.eth.account.sign_transaction(_transaction)
+
             txHash = self.w3.eth.sendRawTransaction(signed.rawTransaction)
             # print(f&#34;Contract &#39;{class_name}&#39; deployed; Waiting to transaction receipt&#34;)
             print(f&#34;========Wait for Block Confirmation - {class_name} ☕️&#34;)
@@ -669,7 +678,7 @@ class MiliDoS(IDos):
             self._checkErrorForTxReceipt(tx_receipt, class_name, Paths.showCurrentDeployedClass(class_name))
             fresh_address = tx_receipt.contractAddress
             self._contract_dict[class_name] = fresh_address
-    
+
             self._contract_dict[&#34;kv_{}&#34;.format(class_name)] = dict(
                 owner=self.accountAddr,
             )
@@ -682,8 +691,8 @@ class MiliDoS(IDos):
             return True
         except InvalidAddress:
             return False
-        except ContractLogicError as w3ex:
-            print(w3ex)
+        except ContractLogicError as e:
+            print(f&#34;Error: {e}&#34;)
             return False
         except TimeExhausted:
             print(&#34;After 120 seconds, the boardcast block is not in the chain.&#34;)
@@ -1577,7 +1586,6 @@ implement default like this::</p>
         # self.w3.eth.defaultAccount(f&#34;0x{keyLo.key}&#34;)
         is_address = self.w3.isAddress(keyLo.address)
         # self.w3.isChecksumAddress(keyLo.address)
-        # keyLo.
         self.accountAddr = keyLo.address
         print(f&#34;🔫 You are now using {keyLo.address} and it is a {&#39;valid key&#39; if is_address else &#39;invalid key&#39;}&#34;)
 
@@ -1698,8 +1706,6 @@ implement default like this::</p>
                 bin.anaylze(self)
                 contract_nv = self.w3.eth.contract(abi=solc_artifact.abi, bytecode=bin.GetKnifedBin())
             else:
-                print(f&#34;this is now done... {class_name}&#34;)
-                # exit(0)
                 contract_nv = self.w3.eth.contract(abi=solc_artifact.abi, bytecode=bin.GetRawBin())
 
         except FileNotFoundError:
@@ -1707,22 +1713,34 @@ implement default like this::</p>
             exit(0)
         except FoundUndeployedLibraries:
             exit(0)
+        except ContractLogicError as e:
+            print(f&#34;💢 Contract error {e}&#34;)
+            exit(0)
 
-        if len(params) &gt; 0:
-            _transaction = contract_nv.constructor(*params).buildTransaction()
-        else:
-            _transaction = contract_nv.constructor().buildTransaction()
-
-        _transaction[&#39;nonce&#39;] = self.w3.eth.getTransactionCount(self.accountAddr)
-        _transaction[&#39;to&#39;] = None
-        _transaction[&#39;gas&#39;] = self.gas if gas_limit == 0 else gas_limit
-        _transaction[&#39;gasPrice&#39;] = self.gasPrice if gas_price == 0 else gas_price
-        # _transaction[&#39;gas&#39;] = 2200000000,
-
-        # Get correct transaction nonce for sender from the node
-        print(f&#34;========🖍 Signing {class_name}, gas:{_transaction[&#39;gas&#39;]}, price:{_transaction[&#39;gasPrice&#39;]} ...&#34;)
-        signed = self.w3.eth.account.sign_transaction(_transaction)
         try:
+            gasprice = self.gasPrice if gas_price == 0 else gas_price
+            gas = self.gas if gas_limit == 0 else gas_limit
+            if len(params) &gt; 0:
+                _transaction = contract_nv.constructor(*params).buildTransaction({
+                    &#34;gasPrice&#34;: gasprice,
+                    &#34;gas&#34;: gas
+                })
+            else:
+                _transaction = contract_nv.constructor().buildTransaction({
+                    &#34;gasPrice&#34;: gasprice,
+                    &#34;gas&#34;: gas
+                })
+
+            _transaction[&#39;nonce&#39;] = self.w3.eth.getTransactionCount(self.accountAddr)
+            _transaction[&#39;to&#39;] = None
+            # _transaction[&#39;gas&#39;] = self.gas if gas_limit == 0 else gas_limit
+            # _transaction[&#39;gasPrice&#39;] = self.gasPrice if gas_price == 0 else gas_price
+            # _transaction[&#39;gas&#39;] = 2200000000,
+            print(&#34;ok --- &#34;, _transaction)
+            # Get correct transaction nonce for sender from the node
+            print(f&#34;========🖍 Signing {class_name}, gas:{_transaction[&#39;gas&#39;]}, price:{_transaction[&#39;gasPrice&#39;]} ...&#34;)
+            signed = self.w3.eth.account.sign_transaction(_transaction)
+
             txHash = self.w3.eth.sendRawTransaction(signed.rawTransaction)
             # print(f&#34;Contract &#39;{class_name}&#39; deployed; Waiting to transaction receipt&#34;)
             print(f&#34;========Wait for Block Confirmation - {class_name} ☕️&#34;)
@@ -1734,7 +1752,7 @@ implement default like this::</p>
             self._checkErrorForTxReceipt(tx_receipt, class_name, Paths.showCurrentDeployedClass(class_name))
             fresh_address = tx_receipt.contractAddress
             self._contract_dict[class_name] = fresh_address
-    
+
             self._contract_dict[&#34;kv_{}&#34;.format(class_name)] = dict(
                 owner=self.accountAddr,
             )
@@ -1747,8 +1765,8 @@ implement default like this::</p>
             return True
         except InvalidAddress:
             return False
-        except ContractLogicError as w3ex:
-            print(w3ex)
+        except ContractLogicError as e:
+            print(f&#34;Error: {e}&#34;)
             return False
         except TimeExhausted:
             print(&#34;After 120 seconds, the boardcast block is not in the chain.&#34;)
@@ -2036,7 +2054,6 @@ def waitSec(self) -&gt; int:
     # self.w3.eth.defaultAccount(f&#34;0x{keyLo.key}&#34;)
     is_address = self.w3.isAddress(keyLo.address)
     # self.w3.isChecksumAddress(keyLo.address)
-    # keyLo.
     self.accountAddr = keyLo.address
     print(f&#34;🔫 You are now using {keyLo.address} and it is a {&#39;valid key&#39; if is_address else &#39;invalid key&#39;}&#34;)
 
@@ -2268,8 +2285,6 @@ Note: Be cautions with the range provided, as the logic creates query for each b
             bin.anaylze(self)
             contract_nv = self.w3.eth.contract(abi=solc_artifact.abi, bytecode=bin.GetKnifedBin())
         else:
-            print(f&#34;this is now done... {class_name}&#34;)
-            # exit(0)
             contract_nv = self.w3.eth.contract(abi=solc_artifact.abi, bytecode=bin.GetRawBin())
 
     except FileNotFoundError:
@@ -2277,22 +2292,34 @@ Note: Be cautions with the range provided, as the logic creates query for each b
         exit(0)
     except FoundUndeployedLibraries:
         exit(0)
+    except ContractLogicError as e:
+        print(f&#34;💢 Contract error {e}&#34;)
+        exit(0)
 
-    if len(params) &gt; 0:
-        _transaction = contract_nv.constructor(*params).buildTransaction()
-    else:
-        _transaction = contract_nv.constructor().buildTransaction()
-
-    _transaction[&#39;nonce&#39;] = self.w3.eth.getTransactionCount(self.accountAddr)
-    _transaction[&#39;to&#39;] = None
-    _transaction[&#39;gas&#39;] = self.gas if gas_limit == 0 else gas_limit
-    _transaction[&#39;gasPrice&#39;] = self.gasPrice if gas_price == 0 else gas_price
-    # _transaction[&#39;gas&#39;] = 2200000000,
-
-    # Get correct transaction nonce for sender from the node
-    print(f&#34;========🖍 Signing {class_name}, gas:{_transaction[&#39;gas&#39;]}, price:{_transaction[&#39;gasPrice&#39;]} ...&#34;)
-    signed = self.w3.eth.account.sign_transaction(_transaction)
     try:
+        gasprice = self.gasPrice if gas_price == 0 else gas_price
+        gas = self.gas if gas_limit == 0 else gas_limit
+        if len(params) &gt; 0:
+            _transaction = contract_nv.constructor(*params).buildTransaction({
+                &#34;gasPrice&#34;: gasprice,
+                &#34;gas&#34;: gas
+            })
+        else:
+            _transaction = contract_nv.constructor().buildTransaction({
+                &#34;gasPrice&#34;: gasprice,
+                &#34;gas&#34;: gas
+            })
+
+        _transaction[&#39;nonce&#39;] = self.w3.eth.getTransactionCount(self.accountAddr)
+        _transaction[&#39;to&#39;] = None
+        # _transaction[&#39;gas&#39;] = self.gas if gas_limit == 0 else gas_limit
+        # _transaction[&#39;gasPrice&#39;] = self.gasPrice if gas_price == 0 else gas_price
+        # _transaction[&#39;gas&#39;] = 2200000000,
+        print(&#34;ok --- &#34;, _transaction)
+        # Get correct transaction nonce for sender from the node
+        print(f&#34;========🖍 Signing {class_name}, gas:{_transaction[&#39;gas&#39;]}, price:{_transaction[&#39;gasPrice&#39;]} ...&#34;)
+        signed = self.w3.eth.account.sign_transaction(_transaction)
+
         txHash = self.w3.eth.sendRawTransaction(signed.rawTransaction)
         # print(f&#34;Contract &#39;{class_name}&#39; deployed; Waiting to transaction receipt&#34;)
         print(f&#34;========Wait for Block Confirmation - {class_name} ☕️&#34;)
@@ -2317,8 +2344,8 @@ Note: Be cautions with the range provided, as the logic creates query for each b
         return True
     except InvalidAddress:
         return False
-    except ContractLogicError as w3ex:
-        print(w3ex)
+    except ContractLogicError as e:
+        print(f&#34;Error: {e}&#34;)
         return False
     except TimeExhausted:
         print(&#34;After 120 seconds, the boardcast block is not in the chain.&#34;)
