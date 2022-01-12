@@ -1,10 +1,8 @@
 import os
 import re
 
-from tronpytool.compile import ITEM_TRANSPILE_GO
-
 from moody.paths import Paths
-from . import ITEM_CP_LOCAL, TRANS_LOCAL, ITEM_TRANSPILE_PYTHON, ITEM_TRANSPILE_TS, PRE_HEAD
+from . import ITEM_CP_LOCAL, ITEM_TRANSPILE_GO, TRANS_LOCAL, ITEM_TRANSPILE_PYTHON, ITEM_TRANSPILE_TS, PRE_HEAD
 
 REG = r"(.+?)([A-Z])"
 
@@ -54,7 +52,6 @@ def buildCmdTs(p: Paths, pathName: str) -> str:
 def buildCmdGo(p: Paths, pathName: str) -> str:
     based_name = os.path.basename(pathName)
     class_name = filter_file_name(based_name).replace('.sol', '')
-    print("new new new new")
     return ITEM_TRANSPILE_GO.format(
         outputfolder=f"{p.BUILDPATH}/codec/gen_go",
         target_abi=f"{p.BUILDPATH}/build/{based_name.replace('.sol', '')}.abi",

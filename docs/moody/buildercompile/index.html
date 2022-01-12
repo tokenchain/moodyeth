@@ -73,7 +73,7 @@ echo &#34;=&gt; 🍥🍥🍥 {COMPILE_COIN}&#34;
 &#34;&#34;&#34;
 
 ITEM_CP_LOCAL = &#34;&#34;&#34;
-echo &#34;==&gt; 🚸 file system operation, move files.. 
+echo &#34;==&gt; 🚸 file system operation, move files..&#34;
 rm &#34;{tolocation}&#34;
 cp &#34;{fromlocation}&#34; &#34;{tolocation}&#34;
 &#34;&#34;&#34;
@@ -104,10 +104,12 @@ abi-gen-uni --abibins &#34;{target_abi}&#34; --out &#34;{outputfolder}&#34; \
 
 echo &#34;==&gt; generate abi to typescript --&gt; 🧊&#34;
 &#34;&#34;&#34;
+
 ITEM_TRANSPILE_GO = &#34;&#34;&#34;
+
 echo &#34;==&gt; 🚸 compile abi to golang&#34;
-if [[ ! -f {outputfolder} ]]; then
-    mkdir -p {outputfolder}
+if [[ ! -f {outputfolder}/{classname} ]]; then
+    mkdir -p {outputfolder}/{classname}
 fi
 
 abigen --abi {target_abi} --pkg {classname} --type {classname} --out {outputfolder}/{classname}/init.go

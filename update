@@ -61,6 +61,7 @@ pub_ver() {
 
   echo "please update the package by using this command"
   echo "pip3 install moodyeth==$VERSION"
+  echo "pip3 install moodyeth==$VERSION --upgrade"
   echo "pi moodyeth==$VERSION"
   echo "pc moodyeth==$VERSION"
   echo "wait 30 seconds until it gets uploaded online..."

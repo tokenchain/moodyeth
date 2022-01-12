@@ -29,10 +29,8 @@
 <pre><code class="python">import os
 import re
 
-from tronpytool.compile import ITEM_TRANSPILE_GO
-
 from moody.paths import Paths
-from . import ITEM_CP_LOCAL, TRANS_LOCAL, ITEM_TRANSPILE_PYTHON, ITEM_TRANSPILE_TS, PRE_HEAD
+from . import ITEM_CP_LOCAL, ITEM_TRANSPILE_GO, TRANS_LOCAL, ITEM_TRANSPILE_PYTHON, ITEM_TRANSPILE_TS, PRE_HEAD
 
 REG = r&#34;(.+?)([A-Z])&#34;
 
@@ -82,7 +80,6 @@ def buildCmdTs(p: Paths, pathName: str) -&gt; str:
 def buildCmdGo(p: Paths, pathName: str) -&gt; str:
     based_name = os.path.basename(pathName)
     class_name = filter_file_name(based_name).replace(&#39;.sol&#39;, &#39;&#39;)
-    print(&#34;new new new new&#34;)
     return ITEM_TRANSPILE_GO.format(
         outputfolder=f&#34;{p.BUILDPATH}/codec/gen_go&#34;,
         target_abi=f&#34;{p.BUILDPATH}/build/{based_name.replace(&#39;.sol&#39;, &#39;&#39;)}.abi&#34;,
@@ -177,7 +174,6 @@ def BuildLang(p: Paths, list_class_names: list) -&gt; None:
 <pre><code class="python">def buildCmdGo(p: Paths, pathName: str) -&gt; str:
     based_name = os.path.basename(pathName)
     class_name = filter_file_name(based_name).replace(&#39;.sol&#39;, &#39;&#39;)
-    print(&#34;new new new new&#34;)
     return ITEM_TRANSPILE_GO.format(
         outputfolder=f&#34;{p.BUILDPATH}/codec/gen_go&#34;,
         target_abi=f&#34;{p.BUILDPATH}/build/{based_name.replace(&#39;.sol&#39;, &#39;&#39;)}.abi&#34;,
