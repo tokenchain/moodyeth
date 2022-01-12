@@ -77,14 +77,12 @@ echo "==> generate abi to typescript --> 🧊"
 """
 ITEM_TRANSPILE_GO = """
 echo "==> 🚸 compile abi to golang"
-local SOL=$1
-local CLASSNAME=$2
-local GO_CONTRACT_SRC_PATH=$3
-if [[ ! -f $GO_CONTRACT_SRC_PATH/$CLASSNAME ]]; then
-    mkdir -p "$GO_CONTRACT_SRC_PATH/$CLASSNAME"
+
+if [[ ! -f {outputfolder} ]]; then
+    mkdir -p {outputfolder}
 fi
 
-abigen --abi "$BUILDPATH/build/$CLASSNAME.abi" --pkg $CLASSNAME --out "$GO_CONTRACT_SRC_PATH/$CLASSNAME/init.go"
+abigen --abi "{target_abi}" --pkg {classname} --type {classname} --out "{outputfolder}/{classname}/init.go"
 
 echo "==> generate abi to golang --> 🧊"
 """
@@ -95,5 +93,9 @@ if ! command -v abi-gen-uni &>/dev/null; then
     echo "abi-gen-uni could not be found"
     cnpm i -g easy-abi-gen
 fi
-  
+
+if ! command -v abigen &>/dev/null; then
+    echo "abigen could not be found, please go check out: https://geth.ethereum.org/downloads/"
+    exit;
+fi
 """

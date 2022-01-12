@@ -1,8 +1,10 @@
 import os
 import re
 
+from tronpytool.compile import ITEM_TRANSPILE_GO
+
 from moody.paths import Paths
-from . import ITEM_CP_LOCAL, TRANS_LOCAL, ITEM_TRANSPILE_PYTHON, ITEM_TRANSPILE_TS,PRE_HEAD
+from . import ITEM_CP_LOCAL, TRANS_LOCAL, ITEM_TRANSPILE_PYTHON, ITEM_TRANSPILE_TS, PRE_HEAD
 
 REG = r"(.+?)([A-Z])"
 
@@ -23,7 +25,7 @@ def filter_file_name(y: str) -> str:
     return classNameNew
 
 
-def buildCmdTsUpdate(p: Paths, pathName: str) -> str:
+def moveTsFiles(p: Paths, pathName: str) -> str:
     nameClass = filter_file_name(os.path.basename(pathName)).replace('.sol', '')
     fromp = "{}/codec/gen_ts/{}.ts".format(p.BUILDPATH, nameClass)
     top = "{}/{}/src/api/abi/{}.ts".format(p.BUILDPATH, p.WEB_DAPP_SRC, nameClass)
@@ -46,6 +48,16 @@ def buildCmdTs(p: Paths, pathName: str) -> str:
         outputfolder=f"{p.BUILDPATH}/codec/gen_ts",
         target_abi=f"{p.BUILDPATH}/build/{os.path.basename(pathName).replace('.sol', '')}.abi",
         BUILDPATH=p.BUILDPATH
+    )
+
+
+def buildCmdGo(p: Paths, pathName: str) -> str:
+    nameClass = filter_file_name(os.path.basename(pathName)).replace('.sol', '')
+    return ITEM_TRANSPILE_GO.format(
+        outputfolder=f"{p.BUILDPATH}/codec/gen_go",
+        target_abi=f"{p.BUILDPATH}/build/{os.path.basename(pathName).replace('.sol', '')}.abi",
+        BUILDPATH=p.BUILDPATH,
+        classname=nameClass
     )
 
 
@@ -77,7 +89,8 @@ def BuildLang(p: Paths, list_class_names: list) -> None:
     for v in list_class_names:
         k.append(buildCmdPy(p, v))
         k.append(buildCmdTs(p, v))
-        k.append(buildCmdTsUpdate(p, v))
+        k.append(buildCmdGo(p, v))
+        k.append(moveTsFiles(p, v))
     # ==================================================
     with open(p.workspaceFilename("localpile"), 'w') as f:
         f.write(wrapContentTranspile(p, k))

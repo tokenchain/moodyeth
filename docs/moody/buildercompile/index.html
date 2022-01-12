@@ -105,14 +105,12 @@ echo &#34;==&gt; generate abi to typescript --&gt; 🧊&#34;
 &#34;&#34;&#34;
 ITEM_TRANSPILE_GO = &#34;&#34;&#34;
 echo &#34;==&gt; 🚸 compile abi to golang&#34;
-local SOL=$1
-local CLASSNAME=$2
-local GO_CONTRACT_SRC_PATH=$3
-if [[ ! -f $GO_CONTRACT_SRC_PATH/$CLASSNAME ]]; then
-    mkdir -p &#34;$GO_CONTRACT_SRC_PATH/$CLASSNAME&#34;
+
+if [[ ! -f {outputfolder} ]]; then
+    mkdir -p {outputfolder}
 fi
 
-abigen --abi &#34;$BUILDPATH/build/$CLASSNAME.abi&#34; --pkg $CLASSNAME --out &#34;$GO_CONTRACT_SRC_PATH/$CLASSNAME/init.go&#34;
+abigen --abi &#34;{target_abi}&#34; --pkg {classname} --type {classname} --out &#34;{outputfolder}/{classname}/init.go&#34;
 
 echo &#34;==&gt; generate abi to golang --&gt; 🧊&#34;
 &#34;&#34;&#34;
@@ -123,7 +121,11 @@ if ! command -v abi-gen-uni &amp;&gt;/dev/null; then
     echo &#34;abi-gen-uni could not be found&#34;
     cnpm i -g easy-abi-gen
 fi
-  
+
+if ! command -v abigen &amp;&gt;/dev/null; then
+    echo &#34;abigen could not be found, please go check out: https://geth.ethereum.org/downloads/&#34;
+    exit;
+fi
 &#34;&#34;&#34;</code></pre>
 </details>
 </section>
