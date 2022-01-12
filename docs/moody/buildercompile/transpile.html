@@ -80,12 +80,14 @@ def buildCmdTs(p: Paths, pathName: str) -&gt; str:
 
 
 def buildCmdGo(p: Paths, pathName: str) -&gt; str:
-    nameClass = filter_file_name(os.path.basename(pathName)).replace(&#39;.sol&#39;, &#39;&#39;)
+    based_name = os.path.basename(pathName)
+    class_name = filter_file_name(based_name).replace(&#39;.sol&#39;, &#39;&#39;)
+    print(&#34;new new new new&#34;)
     return ITEM_TRANSPILE_GO.format(
         outputfolder=f&#34;{p.BUILDPATH}/codec/gen_go&#34;,
-        target_abi=f&#34;{p.BUILDPATH}/build/{os.path.basename(pathName).replace(&#39;.sol&#39;, &#39;&#39;)}.abi&#34;,
+        target_abi=f&#34;{p.BUILDPATH}/build/{based_name.replace(&#39;.sol&#39;, &#39;&#39;)}.abi&#34;,
         BUILDPATH=p.BUILDPATH,
-        classname=nameClass
+        classname=class_name
     )
 
 
@@ -173,12 +175,14 @@ def BuildLang(p: Paths, list_class_names: list) -&gt; None:
 <span>Expand source code</span>
 </summary>
 <pre><code class="python">def buildCmdGo(p: Paths, pathName: str) -&gt; str:
-    nameClass = filter_file_name(os.path.basename(pathName)).replace(&#39;.sol&#39;, &#39;&#39;)
+    based_name = os.path.basename(pathName)
+    class_name = filter_file_name(based_name).replace(&#39;.sol&#39;, &#39;&#39;)
+    print(&#34;new new new new&#34;)
     return ITEM_TRANSPILE_GO.format(
         outputfolder=f&#34;{p.BUILDPATH}/codec/gen_go&#34;,
-        target_abi=f&#34;{p.BUILDPATH}/build/{os.path.basename(pathName).replace(&#39;.sol&#39;, &#39;&#39;)}.abi&#34;,
+        target_abi=f&#34;{p.BUILDPATH}/build/{based_name.replace(&#39;.sol&#39;, &#39;&#39;)}.abi&#34;,
         BUILDPATH=p.BUILDPATH,
-        classname=nameClass
+        classname=class_name
     )</code></pre>
 </details>
 </dd>

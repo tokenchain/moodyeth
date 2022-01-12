@@ -45,6 +45,7 @@ echo "=> 🍥🍥🍥 {COMPILE_COIN}"
 """
 
 ITEM_CP_LOCAL = """
+echo "==> 🚸 file system operation, move files.. 
 rm "{tolocation}"
 cp "{fromlocation}" "{tolocation}"
 """
@@ -77,12 +78,11 @@ echo "==> generate abi to typescript --> 🧊"
 """
 ITEM_TRANSPILE_GO = """
 echo "==> 🚸 compile abi to golang"
-
 if [[ ! -f {outputfolder} ]]; then
     mkdir -p {outputfolder}
 fi
 
-abigen --abi "{target_abi}" --pkg {classname} --type {classname} --out "{outputfolder}/{classname}/init.go"
+abigen --abi {target_abi} --pkg {classname} --type {classname} --out {outputfolder}/{classname}/init.go
 
 echo "==> generate abi to golang --> 🧊"
 """

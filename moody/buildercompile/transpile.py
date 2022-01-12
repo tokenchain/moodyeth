@@ -52,12 +52,14 @@ def buildCmdTs(p: Paths, pathName: str) -> str:
 
 
 def buildCmdGo(p: Paths, pathName: str) -> str:
-    nameClass = filter_file_name(os.path.basename(pathName)).replace('.sol', '')
+    based_name = os.path.basename(pathName)
+    class_name = filter_file_name(based_name).replace('.sol', '')
+    print("new new new new")
     return ITEM_TRANSPILE_GO.format(
         outputfolder=f"{p.BUILDPATH}/codec/gen_go",
-        target_abi=f"{p.BUILDPATH}/build/{os.path.basename(pathName).replace('.sol', '')}.abi",
+        target_abi=f"{p.BUILDPATH}/build/{based_name.replace('.sol', '')}.abi",
         BUILDPATH=p.BUILDPATH,
-        classname=nameClass
+        classname=class_name
     )
 
 
