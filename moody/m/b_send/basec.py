@@ -65,6 +65,18 @@ class BaseBulk:
     def _newBatchSlots(self):
         self._batch = []
 
+    def weiUpdate(self, decimal: int) -> "BaseBulk":
+        self.wei = 10 ** decimal
+        return self
+
+    def batchLimitUpdate(self, total_count: int) -> "BaseBulk":
+        self.batch_limit = total_count
+        return self
+
+    def symbolUpdate(self, coin_symbol: str) -> "BaseBulk":
+        self.token_symbol = coin_symbol
+        return self
+
     def withDecimal(self, dec: int) -> "BaseBulk":
         self.decimal = dec
         return self

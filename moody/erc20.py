@@ -4,14 +4,14 @@ from datetime import datetime
 from web3 import Web3
 
 from .libeb import MiliDoS
-from .m.ori20 import Ori20
+from .m.pharaohs import pharaohs
 
 
 class ERC20H(MiliDoS):
     def __init__(self, network):
         super().__init__(network)
-        self.TokenContract: Ori20 = None
-        self.MasterContract: Ori20 = None
+        self.TokenContract: pharaohs = None
+        self.MasterContract: pharaohs = None
 
     def generateHash(self) -> bytes:
         gTime = int(datetime.now().timestamp())
@@ -44,5 +44,5 @@ class ERC20H(MiliDoS):
             self.deploy("BSend", [], 10 ** 9, 1)
 
     def SetupContract(self):
-        self.TokenContract = Ori20(self, self.TokenAddress).CallDebug(False).CallContractFee(10000000)
-        self.MasterContract = Ori20(self, self.ERC20Address).CallDebug(False).CallContractFee(10000000)
+        self.TokenContract = pharaohs(self, self.TokenAddress).CallDebug(False).CallContractFee(10000000)
+        self.MasterContract = pharaohs(self, self.ERC20Address).CallDebug(False).CallContractFee(10000000)

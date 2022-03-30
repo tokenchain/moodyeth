@@ -10,7 +10,7 @@ from web3 import exceptions, _utils
 
 from ..b_send import BSend
 from ..b_send.basec import BaseBulk, PrintNetworkName
-from ..ori20 import Ori20
+from ..pharaohs import pharaohs
 from ...libeb import MiliDoS
 
 
@@ -42,7 +42,7 @@ class LooperBulk(BaseBulk):
 
     def LoopBatchExecution(self,
                            express_contract: BSend,
-                           coin_contract: Ori20,
+                           coin_contract: pharaohs,
                            notify=None, errorNotify=None) -> None:
 
         coin_address = coin_contract.contract_address
@@ -69,7 +69,6 @@ class LooperBulk(BaseBulk):
 
                 if balance >= total_approval:
                     coin_contract.EnforceTxReceipt(True)
-                    coin_contract.CallContractFee(1 * BaseBulk.wei)
                     coin_contract.approve(express_address, total_approval)
                 else:
                     self._line_error(errorNotify, f"⚠️ not enough in the balance")
@@ -208,6 +207,9 @@ class ExcelBulkManager(ExcelBasic):
 
 
 class ExcelBulkManagerClassic(ExcelBasic):
+    """
+    This is the traditional wallet to wallet transaction transfer using the native method
+    """
 
     def __init__(self, filepath, tron):
         super().__init__(filepath, tron)
@@ -248,7 +250,7 @@ class ExcelBulkManagerClassic(ExcelBasic):
     def getSENDTotal(self) -> int:
         return self.total
 
-    def executeTokenDistribution(self, token: Ori20, notify=None):
+    def executeTokenDistribution(self, token: pharaohs, notify=None):
         v = 0
         self._status_busy = True
 
@@ -266,7 +268,7 @@ class ExcelBulkManagerClassic(ExcelBasic):
 
         self._status_busy = False
 
-    def executeTokenTransferDistributionTg(self, token: Ori20, notify=None, errorNotify=None):
+    def executeTokenTransferDistributionTg(self, token: pharaohs, notify=None, errorNotify=None):
         """
          limitation: https://core.telegram.org/bots/faq#my-bot-is-hitting-limits-how-do-i-avoid-this
          When sending messages inside a particular chat, avoid sending more than one message per second. We may allow short bursts that go over this limit, but eventually you'll begin receiving 429 errors.
@@ -301,8 +303,6 @@ class ExcelBulkManagerClassic(ExcelBasic):
                     self._file_logger(f"#{v} {recipient} {report_amount} 📤 ")
 
                 time.sleep(0.5)
-
-
 
         except ValueError:
             errorNotify("Value error. unknown error")

@@ -3,24 +3,26 @@
 # pylint: disable=too-many-arguments
 
 import json
-import time
 from typing import (  # pylint: disable=unused-import
+    Any,
     List,
     Optional,
     Tuple,
     Union,
 )
-
+import time
 from eth_utils import to_checksum_address
+from mypy_extensions import TypedDict  # pylint: disable=unused-import
 from hexbytes import HexBytes
+from web3 import Web3
 from web3.contract import ContractFunction
 from web3.datastructures import AttributeDict
+from web3.providers.base import BaseProvider
 from web3.exceptions import ContractLogicError
-
-from moody import Bolors
-from moody.libeb import MiliDoS
 from moody.m.bases import ContractMethod, Validator, ContractBase, Signatures
 from moody.m.tx_params import TxParams
+from moody.libeb import MiliDoS
+from moody import Bolors
 
 # Try to import a custom validator class definition; if there isn't one,
 # declare one that we can instantiate for the default argument to the
@@ -115,9 +117,9 @@ class AddSignerMethod(ContractMethod):  # pylint: disable=invalid-name
         except ValueError as err:
             if "message" in err.args[0]:
                 message = err.args[0]["message"]
-                print(f"{Bolors.FAIL}Error Revert {Bolors.RESET} on set_asset_token: {message}")
+                print(f"{Bolors.FAIL}Error Revert {Bolors.RESET}, add_signer: {message}")
             else:
-                print(f"{Bolors.FAIL}Error Revert {Bolors.RESET}: set_asset_token")
+                print(f"{Bolors.FAIL}Error Revert {Bolors.RESET}, add_signer. Reason: Unknown")
 
     def send_transaction(self, account: str, tx_params: Optional[TxParams] = None) -> Union[HexBytes, bytes]:
         """Execute underlying contract method via eth_sendTransaction.
@@ -222,9 +224,9 @@ class BulkSendTokenMethod(ContractMethod):  # pylint: disable=invalid-name
         except ValueError as err:
             if "message" in err.args[0]:
                 message = err.args[0]["message"]
-                print(f"{Bolors.FAIL}Error Revert {Bolors.RESET} on set_asset_token: {message}")
+                print(f"{Bolors.FAIL}Error Revert {Bolors.RESET}, bulk_send_token: {message}")
             else:
-                print(f"{Bolors.FAIL}Error Revert {Bolors.RESET}: set_asset_token")
+                print(f"{Bolors.FAIL}Error Revert {Bolors.RESET}, bulk_send_token. Reason: Unknown")
 
     def send_transaction(self, token_addr: str, addresses: List[str], amounts: List[int], tx_params: Optional[TxParams] = None) -> Union[HexBytes, bytes]:
         """Execute underlying contract method via eth_sendTransaction.
@@ -323,9 +325,9 @@ class BulkSendTrxMethod(ContractMethod):  # pylint: disable=invalid-name
         except ValueError as err:
             if "message" in err.args[0]:
                 message = err.args[0]["message"]
-                print(f"{Bolors.FAIL}Error Revert {Bolors.RESET} on set_asset_token: {message}")
+                print(f"{Bolors.FAIL}Error Revert {Bolors.RESET}, bulk_send_trx: {message}")
             else:
-                print(f"{Bolors.FAIL}Error Revert {Bolors.RESET}: set_asset_token")
+                print(f"{Bolors.FAIL}Error Revert {Bolors.RESET}, bulk_send_trx. Reason: Unknown")
 
     def send_transaction(self, addresses: List[str], amounts: List[int], tx_params: Optional[TxParams] = None) -> Union[HexBytes, bytes]:
         """Execute underlying contract method via eth_sendTransaction.
@@ -410,9 +412,9 @@ class ClaimInitMethod(ContractMethod):  # pylint: disable=invalid-name
         except ValueError as err:
             if "message" in err.args[0]:
                 message = err.args[0]["message"]
-                print(f"{Bolors.FAIL}Error Revert {Bolors.RESET} on set_asset_token: {message}")
+                print(f"{Bolors.FAIL}Error Revert {Bolors.RESET}, claim_init: {message}")
             else:
-                print(f"{Bolors.FAIL}Error Revert {Bolors.RESET}: set_asset_token")
+                print(f"{Bolors.FAIL}Error Revert {Bolors.RESET}, claim_init. Reason: Unknown")
 
     def send_transaction(self, tx_params: Optional[TxParams] = None) -> Union[HexBytes, bytes]:
         """Execute underlying contract method via eth_sendTransaction.
@@ -494,9 +496,9 @@ class DepositMethod(ContractMethod):  # pylint: disable=invalid-name
         except ValueError as err:
             if "message" in err.args[0]:
                 message = err.args[0]["message"]
-                print(f"{Bolors.FAIL}Error Revert {Bolors.RESET} on set_asset_token: {message}")
+                print(f"{Bolors.FAIL}Error Revert {Bolors.RESET}, deposit: {message}")
             else:
-                print(f"{Bolors.FAIL}Error Revert {Bolors.RESET}: set_asset_token")
+                print(f"{Bolors.FAIL}Error Revert {Bolors.RESET}, deposit. Reason: Unknown")
 
     def send_transaction(self, tx_params: Optional[TxParams] = None) -> Union[HexBytes, bytes]:
         """Execute underlying contract method via eth_sendTransaction.
@@ -666,9 +668,9 @@ class RenounceSignerMethod(ContractMethod):  # pylint: disable=invalid-name
         except ValueError as err:
             if "message" in err.args[0]:
                 message = err.args[0]["message"]
-                print(f"{Bolors.FAIL}Error Revert {Bolors.RESET} on set_asset_token: {message}")
+                print(f"{Bolors.FAIL}Error Revert {Bolors.RESET}, renounce_signer: {message}")
             else:
-                print(f"{Bolors.FAIL}Error Revert {Bolors.RESET}: set_asset_token")
+                print(f"{Bolors.FAIL}Error Revert {Bolors.RESET}, renounce_signer. Reason: Unknown")
 
     def send_transaction(self, tx_params: Optional[TxParams] = None) -> Union[HexBytes, bytes]:
         """Execute underlying contract method via eth_sendTransaction.
@@ -761,9 +763,9 @@ class SetEthFeeMethod(ContractMethod):  # pylint: disable=invalid-name
         except ValueError as err:
             if "message" in err.args[0]:
                 message = err.args[0]["message"]
-                print(f"{Bolors.FAIL}Error Revert {Bolors.RESET} on set_asset_token: {message}")
+                print(f"{Bolors.FAIL}Error Revert {Bolors.RESET}, set_eth_fee: {message}")
             else:
-                print(f"{Bolors.FAIL}Error Revert {Bolors.RESET}: set_asset_token")
+                print(f"{Bolors.FAIL}Error Revert {Bolors.RESET}, set_eth_fee. Reason: Unknown")
 
     def send_transaction(self, eth_send_fee: int, tx_params: Optional[TxParams] = None) -> Union[HexBytes, bytes]:
         """Execute underlying contract method via eth_sendTransaction.
@@ -859,9 +861,9 @@ class SetTokenFeeMethod(ContractMethod):  # pylint: disable=invalid-name
         except ValueError as err:
             if "message" in err.args[0]:
                 message = err.args[0]["message"]
-                print(f"{Bolors.FAIL}Error Revert {Bolors.RESET} on set_asset_token: {message}")
+                print(f"{Bolors.FAIL}Error Revert {Bolors.RESET}, set_token_fee: {message}")
             else:
-                print(f"{Bolors.FAIL}Error Revert {Bolors.RESET}: set_asset_token")
+                print(f"{Bolors.FAIL}Error Revert {Bolors.RESET}, set_token_fee. Reason: Unknown")
 
     def send_transaction(self, token_send_fee: int, tx_params: Optional[TxParams] = None) -> Union[HexBytes, bytes]:
         """Execute underlying contract method via eth_sendTransaction.
@@ -985,9 +987,9 @@ class WithdrawEtherMethod(ContractMethod):  # pylint: disable=invalid-name
         except ValueError as err:
             if "message" in err.args[0]:
                 message = err.args[0]["message"]
-                print(f"{Bolors.FAIL}Error Revert {Bolors.RESET} on set_asset_token: {message}")
+                print(f"{Bolors.FAIL}Error Revert {Bolors.RESET}, withdraw_ether: {message}")
             else:
-                print(f"{Bolors.FAIL}Error Revert {Bolors.RESET}: set_asset_token")
+                print(f"{Bolors.FAIL}Error Revert {Bolors.RESET}, withdraw_ether. Reason: Unknown")
 
     def send_transaction(self, addr: str, amount: int, tx_params: Optional[TxParams] = None) -> Union[HexBytes, bytes]:
         """Execute underlying contract method via eth_sendTransaction.
@@ -1095,9 +1097,9 @@ class WithdrawTokenMethod(ContractMethod):  # pylint: disable=invalid-name
         except ValueError as err:
             if "message" in err.args[0]:
                 message = err.args[0]["message"]
-                print(f"{Bolors.FAIL}Error Revert {Bolors.RESET} on set_asset_token: {message}")
+                print(f"{Bolors.FAIL}Error Revert {Bolors.RESET}, withdraw_token: {message}")
             else:
-                print(f"{Bolors.FAIL}Error Revert {Bolors.RESET}: set_asset_token")
+                print(f"{Bolors.FAIL}Error Revert {Bolors.RESET}, withdraw_token. Reason: Unknown")
 
     def send_transaction(self, token_addr: str, to: str, amount: int, tx_params: Optional[TxParams] = None) -> Union[HexBytes, bytes]:
         """Execute underlying contract method via eth_sendTransaction.

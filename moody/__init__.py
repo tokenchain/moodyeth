@@ -2,11 +2,13 @@
 import sys
 from dataclasses import dataclass
 
+import pkg_resources
+
 if sys.version_info < (3, 5):
     raise EnvironmentError("Python 3.5 or above is required")
 
+__version__ = pkg_resources.get_distribution("moodyeth").version
 
-# __version__ = pkg_resources.get_distribution("moodyeth").version
 
 # __all__ = [
 #    '__version__',
@@ -108,3 +110,11 @@ class Evm:
     5 August 2021
     The block’s base fee (EIP-3198 and EIP-1559) can be accessed via the global block.basefee or basefee() in inline assembly.
     """
+
+
+__all__ = [
+    '__version__',
+    'Evm',
+    'Config',
+    'Bolors'
+]

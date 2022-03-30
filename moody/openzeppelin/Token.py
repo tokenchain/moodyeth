@@ -1,6 +1,6 @@
 from .. import Token
 from ..libeb import MiliDoS
-from ..m.ori20 import Ori20
+from ..m.tc20 import Tc20
 
 
 class TokenActor(Token):
@@ -10,7 +10,7 @@ class TokenActor(Token):
 
     def __init__(self, _from: MiliDoS):
         self.engine: MiliDoS = _from
-        self._token: Ori20
+        self._token: Tc20
 
     @property
     def TokenAddress(self) -> str:
@@ -34,7 +34,7 @@ class TokenActor(Token):
             print("⚠️ Since there is no given token address, we will fail back and select the default NameClass Tc20/Ori20/Erc20")
             address = self.TokenAddress
 
-        self._token = Ori20(self.engine, address)
+        self._token = Tc20(self.engine, address)
         self._token.CallContractFee(self.engine.gas, self.engine.gasPrice).CallDebug(True).CallContractWait(self.engine.waitSec)
         return self
 
