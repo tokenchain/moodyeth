@@ -1,4 +1,5 @@
 # 🏗👷🏾 Moodyeth
+### Ether API for Python The only Library
 
 [![moodyeth](https://img.shields.io/pypi/v/moodyeth?style=plastic)](https://pypi.org/project/moodyeth/)
 [![moodyeth](https://img.shields.io/pypi/pyversions/moodyeth.svg)](https://pypi.org/project/moodyeth/)
@@ -63,7 +64,6 @@ meta.deploy("Ori20")
 ## 🚩 Challenge 0: 🎟 Simple NFT Example 🤓
 
 🎫 Create a simple NFT to learn basics of 🏗 scaffold-eth. You'll use 👷‍♀️ HardHat to compile and deploy smart contracts. Then, you'll use a template React app full of important Ethereum components and hooks. Finally, you'll deploy an NFT to a public network to share with friends! 🚀
-
 
 
 ---

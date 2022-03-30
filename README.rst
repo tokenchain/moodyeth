@@ -1,6 +1,6 @@
-======================================
-# 🏗👷🏾 Ether API for Python The only Library
-======================================
+==============================================
+🏗👷🏾 Ether API for Python The only Library
+==============================================
 
 A Python API for interacting with the Ether (ETH)
 
@@ -29,6 +29,12 @@ You can install it in a system-wide location via pip:
 .. code-block:: bash
 
     sudo pip3 install moodyeth
+
+Or upgrade it with the older version
+
+.. code-block:: bash
+
+    sudo pip3 install moodyeth --upgrade
 
 Or install it locally using `virtualenv <https://github.com/pypa/virtualenv>`__:
 
@@ -61,7 +67,30 @@ Deploy Smart Contract
     c.deploy("ERC20")
 
 
-### 💬 Support Chat
+
+Features
+==================
+
+ - Autolink
+ - JSON file recording from all the deployments
+ - Common contracts supports
+ - Contract upgrade and patches deployments
+
+Documentation
+==================
+
+Read the library manual by the `manual <docs/moody/index.html>`__
+Documentation is available at `docs <https://moodyeth.readthedocs.io/en/latest/>`__.
+
+
+Donations
+==================
+
+Welcome for donation for the good works!
+
+
+💬 Support Chat
+==================
 
 Join the telegram [support chat 💬](https://t.me/joinchat/KByvmRe5wkR-8F_zz6AjpA) to ask questions and find others building with 🏗 scaffold-eth!
 
@@ -70,14 +99,3 @@ Join the telegram [support chat 💬](https://t.me/joinchat/KByvmRe5wkR-8F_zz6Aj
 🙏 Please check out our [Gitcoin grant](https://gitcoin.co/grants/2851/scaffold-eth) too!
 
 
-
-Documentation
-=============
-Read the library manual by the `manual <docs/moody/index.html>`__
-Documentation is available at `docs <https://moodyeth.readthedocs.io/en/latest/>`__.
-
-
-Donations
-=============
-
-Welcome for donation for the good works!
