@@ -87,7 +87,7 @@ class LooperBulk(BaseBulk):
                 self.__n += 1
                 self._line_progress(notify)
 
-                if batch_size == BaseBulk.batch_limit and self.wait_pause:
+                if batch_size == self.batch_limit and self.wait_pause:
                     print("====== result bulk_send_token, the next batch will start in 30 seconds")
                     time.sleep(30)
                 else:

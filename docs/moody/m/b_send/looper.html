@@ -115,7 +115,7 @@ class LooperBulk(BaseBulk):
                 self.__n += 1
                 self._line_progress(notify)
 
-                if batch_size == BaseBulk.batch_limit and self.wait_pause:
+                if batch_size == self.batch_limit and self.wait_pause:
                     print(&#34;====== result bulk_send_token, the next batch will start in 30 seconds&#34;)
                     time.sleep(30)
                 else:
@@ -980,7 +980,7 @@ Also note that your bot will not be able to send more than 20 messages per minut
                 self.__n += 1
                 self._line_progress(notify)
 
-                if batch_size == BaseBulk.batch_limit and self.wait_pause:
+                if batch_size == self.batch_limit and self.wait_pause:
                     print(&#34;====== result bulk_send_token, the next batch will start in 30 seconds&#34;)
                     time.sleep(30)
                 else:
@@ -1072,7 +1072,7 @@ Also note that your bot will not be able to send more than 20 messages per minut
             self.__n += 1
             self._line_progress(notify)
 
-            if batch_size == BaseBulk.batch_limit and self.wait_pause:
+            if batch_size == self.batch_limit and self.wait_pause:
                 print(&#34;====== result bulk_send_token, the next batch will start in 30 seconds&#34;)
                 time.sleep(30)
             else:
