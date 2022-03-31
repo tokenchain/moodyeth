@@ -26,6 +26,10 @@ class LooperBulk(BaseBulk):
         super().__init__()
         self.__n = 0
         self.__t = 0
+        self.wait_pause = False
+
+    def ActivateWaitPause(self):
+        self.wait_pause = True
 
     def _line_progress(self, notify=None) -> None:
         if notify is None:
@@ -82,9 +86,11 @@ class LooperBulk(BaseBulk):
                 self.__n += 1
                 self._line_progress(notify)
 
-                if batch_size == BaseBulk.batch_limit:
-                    print("====== result bulk_send_token, the next batch will start in 1 min")
-                    time.sleep(60)
+                if batch_size == BaseBulk.batch_limit and self.wait_pause:
+                    print("====== result bulk_send_token, the next batch will start in 30 seconds")
+                    time.sleep(30)
+                else:
+                    print("====== Now the next wave of token send will start immediately")
 
             except exceptions.CannotHandleRequest:
                 self._line_error(errorNotify, f"⚠️ request is not handled")
