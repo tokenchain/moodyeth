@@ -286,10 +286,11 @@ class ExcelBulkManagerClassic(ExcelBasic):
 
         """
         v = 0
+        vt = len(self.list_address)
         self._status_busy = True
 
         _timestamp = self.nowSec
-        if len(self.list_amount) != len(self.list_address):
+        if len(self.list_amount) != vt:
             errorNotify("error in checking the length of transaction list")
             return
         try:
@@ -300,11 +301,13 @@ class ExcelBulkManagerClassic(ExcelBasic):
                 token.transfer(recipient, report_amount)
                 v += 1
                 _dela = self.nowSec
-                if notify is not None and _dela > _timestamp + 5:
-                    _timestamp = self.nowSec
-                    self.processed_count = v
-                    _perc = "{0:.0f}%".format(v / self.transaction_count * 100)
-                    notify(v, self.transaction_count, _perc)
+
+                if notify is not None:
+                    if _dela > _timestamp + 5 or v >= vt:
+                        _timestamp = self.nowSec
+                        self.processed_count = v
+                        _perc = "{0:.0f}%".format(v / self.transaction_count * 100)
+                        notify(v, self.transaction_count, _perc)
 
                 if self._file_logger is not None:
                     self._file_logger(f"#{v} {recipient} {report_amount} 📤 ")

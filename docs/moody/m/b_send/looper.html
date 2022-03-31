@@ -314,10 +314,11 @@ class ExcelBulkManagerClassic(ExcelBasic):
 
         &#34;&#34;&#34;
         v = 0
+        vt = len(self.list_address)
         self._status_busy = True
 
         _timestamp = self.nowSec
-        if len(self.list_amount) != len(self.list_address):
+        if len(self.list_amount) != vt:
             errorNotify(&#34;error in checking the length of transaction list&#34;)
             return
         try:
@@ -328,11 +329,13 @@ class ExcelBulkManagerClassic(ExcelBasic):
                 token.transfer(recipient, report_amount)
                 v += 1
                 _dela = self.nowSec
-                if notify is not None and _dela &gt; _timestamp + 5:
-                    _timestamp = self.nowSec
-                    self.processed_count = v
-                    _perc = &#34;{0:.0f}%&#34;.format(v / self.transaction_count * 100)
-                    notify(v, self.transaction_count, _perc)
+
+                if notify is not None:
+                    if _dela &gt; _timestamp + 5 or v &gt;= vt:
+                        _timestamp = self.nowSec
+                        self.processed_count = v
+                        _perc = &#34;{0:.0f}%&#34;.format(v / self.transaction_count * 100)
+                        notify(v, self.transaction_count, _perc)
 
                 if self._file_logger is not None:
                     self._file_logger(f&#34;#{v} {recipient} {report_amount} 📤 &#34;)
@@ -685,10 +688,11 @@ class ExcelBulkManagerClassic(ExcelBasic):
 
         &#34;&#34;&#34;
         v = 0
+        vt = len(self.list_address)
         self._status_busy = True
 
         _timestamp = self.nowSec
-        if len(self.list_amount) != len(self.list_address):
+        if len(self.list_amount) != vt:
             errorNotify(&#34;error in checking the length of transaction list&#34;)
             return
         try:
@@ -699,11 +703,13 @@ class ExcelBulkManagerClassic(ExcelBasic):
                 token.transfer(recipient, report_amount)
                 v += 1
                 _dela = self.nowSec
-                if notify is not None and _dela &gt; _timestamp + 5:
-                    _timestamp = self.nowSec
-                    self.processed_count = v
-                    _perc = &#34;{0:.0f}%&#34;.format(v / self.transaction_count * 100)
-                    notify(v, self.transaction_count, _perc)
+
+                if notify is not None:
+                    if _dela &gt; _timestamp + 5 or v &gt;= vt:
+                        _timestamp = self.nowSec
+                        self.processed_count = v
+                        _perc = &#34;{0:.0f}%&#34;.format(v / self.transaction_count * 100)
+                        notify(v, self.transaction_count, _perc)
 
                 if self._file_logger is not None:
                     self._file_logger(f&#34;#{v} {recipient} {report_amount} 📤 &#34;)
@@ -776,10 +782,11 @@ Also note that your bot will not be able to send more than 20 messages per minut
 
     &#34;&#34;&#34;
     v = 0
+    vt = len(self.list_address)
     self._status_busy = True
 
     _timestamp = self.nowSec
-    if len(self.list_amount) != len(self.list_address):
+    if len(self.list_amount) != vt:
         errorNotify(&#34;error in checking the length of transaction list&#34;)
         return
     try:
@@ -790,11 +797,13 @@ Also note that your bot will not be able to send more than 20 messages per minut
             token.transfer(recipient, report_amount)
             v += 1
             _dela = self.nowSec
-            if notify is not None and _dela &gt; _timestamp + 5:
-                _timestamp = self.nowSec
-                self.processed_count = v
-                _perc = &#34;{0:.0f}%&#34;.format(v / self.transaction_count * 100)
-                notify(v, self.transaction_count, _perc)
+
+            if notify is not None:
+                if _dela &gt; _timestamp + 5 or v &gt;= vt:
+                    _timestamp = self.nowSec
+                    self.processed_count = v
+                    _perc = &#34;{0:.0f}%&#34;.format(v / self.transaction_count * 100)
+                    notify(v, self.transaction_count, _perc)
 
             if self._file_logger is not None:
                 self._file_logger(f&#34;#{v} {recipient} {report_amount} 📤 &#34;)
