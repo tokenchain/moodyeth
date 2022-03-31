@@ -218,9 +218,9 @@ class BaseBulk:
             addresses = []
             amountcode = []
             while k < self.batch_limit and w < self.transaction_count:
-                c_address = self.list_address[k]
+                c_address = self.list_address[w]
                 addresses.append(c_address)
-                c_amount_code = self.list_amount[k]
+                c_amount_code = self.list_amount[w]
                 amountcode.append(c_amount_code)
                 k += 1
                 w += 1
