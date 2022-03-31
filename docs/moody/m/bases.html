@@ -1,0 +1,956 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, minimum-scale=1" />
+<meta name="generator" content="pdoc 0.9.1" />
+<title>moody.m.bases API documentation</title>
+<meta name="description" content="Base wrapper class for accessing ethereum smart contracts." />
+<link rel="preload stylesheet" as="style" href="https://cdnjs.cloudflare.com/ajax/libs/10up-sanitize.css/11.0.1/sanitize.min.css" integrity="sha256-PK9q560IAAa6WVRRh76LtCaI8pjTJ2z11v0miyNNjrs=" crossorigin>
+<link rel="preload stylesheet" as="style" href="https://cdnjs.cloudflare.com/ajax/libs/10up-sanitize.css/11.0.1/typography.min.css" integrity="sha256-7l/o7C8jubJiy74VsKTidCy1yBkRtiUGbVkYBylBqUg=" crossorigin>
+<link rel="stylesheet preload" as="style" href="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/10.1.1/styles/github.min.css" crossorigin>
+<style>:root{--highlight-color:#fe9}.flex{display:flex !important}body{line-height:1.5em}#content{padding:20px}#sidebar{padding:30px;overflow:hidden}#sidebar > *:last-child{margin-bottom:2cm}.http-server-breadcrumbs{font-size:130%;margin:0 0 15px 0}#footer{font-size:.75em;padding:5px 30px;border-top:1px solid #ddd;text-align:right}#footer p{margin:0 0 0 1em;display:inline-block}#footer p:last-child{margin-right:30px}h1,h2,h3,h4,h5{font-weight:300}h1{font-size:2.5em;line-height:1.1em}h2{font-size:1.75em;margin:1em 0 .50em 0}h3{font-size:1.4em;margin:25px 0 10px 0}h4{margin:0;font-size:105%}h1:target,h2:target,h3:target,h4:target,h5:target,h6:target{background:var(--highlight-color);padding:.2em 0}a{color:#058;text-decoration:none;transition:color .3s ease-in-out}a:hover{color:#e82}.title code{font-weight:bold}h2[id^="header-"]{margin-top:2em}.ident{color:#900}pre code{background:#f8f8f8;font-size:.8em;line-height:1.4em}code{background:#f2f2f1;padding:1px 4px;overflow-wrap:break-word}h1 code{background:transparent}pre{background:#f8f8f8;border:0;border-top:1px solid #ccc;border-bottom:1px solid #ccc;margin:1em 0;padding:1ex}#http-server-module-list{display:flex;flex-flow:column}#http-server-module-list div{display:flex}#http-server-module-list dt{min-width:10%}#http-server-module-list p{margin-top:0}.toc ul,#index{list-style-type:none;margin:0;padding:0}#index code{background:transparent}#index h3{border-bottom:1px solid #ddd}#index ul{padding:0}#index h4{margin-top:.6em;font-weight:bold}@media (min-width:200ex){#index .two-column{column-count:2}}@media (min-width:300ex){#index .two-column{column-count:3}}dl{margin-bottom:2em}dl dl:last-child{margin-bottom:4em}dd{margin:0 0 1em 3em}#header-classes + dl > dd{margin-bottom:3em}dd dd{margin-left:2em}dd p{margin:10px 0}.name{background:#eee;font-weight:bold;font-size:.85em;padding:5px 10px;display:inline-block;min-width:40%}.name:hover{background:#e0e0e0}dt:target .name{background:var(--highlight-color)}.name > span:first-child{white-space:nowrap}.name.class > span:nth-child(2){margin-left:.4em}.inherited{color:#999;border-left:5px solid #eee;padding-left:1em}.inheritance em{font-style:normal;font-weight:bold}.desc h2{font-weight:400;font-size:1.25em}.desc h3{font-size:1em}.desc dt code{background:inherit}.source summary,.git-link-div{color:#666;text-align:right;font-weight:400;font-size:.8em;text-transform:uppercase}.source summary > *{white-space:nowrap;cursor:pointer}.git-link{color:inherit;margin-left:1em}.source pre{max-height:500px;overflow:auto;margin:0}.source pre code{font-size:12px;overflow:visible}.hlist{list-style:none}.hlist li{display:inline}.hlist li:after{content:',\2002'}.hlist li:last-child:after{content:none}.hlist .hlist{display:inline;padding-left:1em}img{max-width:100%}td{padding:0 .5em}.admonition{padding:.1em .5em;margin-bottom:1em}.admonition-title{font-weight:bold}.admonition.note,.admonition.info,.admonition.important{background:#aef}.admonition.todo,.admonition.versionadded,.admonition.tip,.admonition.hint{background:#dfd}.admonition.warning,.admonition.versionchanged,.admonition.deprecated{background:#fd4}.admonition.error,.admonition.danger,.admonition.caution{background:lightpink}</style>
+<style media="screen and (min-width: 700px)">@media screen and (min-width:700px){#sidebar{width:30%;height:100vh;overflow:auto;position:sticky;top:0}#content{width:70%;max-width:100ch;padding:3em 4em;border-left:1px solid #ddd}pre code{font-size:1em}.item .name{font-size:1em}main{display:flex;flex-direction:row-reverse;justify-content:flex-end}.toc ul ul,#index ul{padding-left:1.5em}.toc > ul > li{margin-top:.5em}}</style>
+<style media="print">@media print{#sidebar h1{page-break-before:always}.source{display:none}}@media print{*{background:transparent !important;color:#000 !important;box-shadow:none !important;text-shadow:none !important}a[href]:after{content:" (" attr(href) ")";font-size:90%}a[href][title]:after{content:none}abbr[title]:after{content:" (" attr(title) ")"}.ir a:after,a[href^="javascript:"]:after,a[href^="#"]:after{content:""}pre,blockquote{border:1px solid #999;page-break-inside:avoid}thead{display:table-header-group}tr,img{page-break-inside:avoid}img{max-width:100% !important}@page{margin:0.5cm}p,h2,h3{orphans:3;widows:3}h1,h2,h3,h4,h5,h6{page-break-after:avoid}}</style>
+<script defer src="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/10.1.1/highlight.min.js" integrity="sha256-Uv3H6lx7dJmRfRvH8TH6kJD1TSK1aFcwgx+mdg3epi8=" crossorigin></script>
+<script>window.addEventListener('DOMContentLoaded', () => hljs.initHighlighting())</script>
+</head>
+<body>
+<main>
+<article id="content">
+<header>
+<h1 class="title">Module <code>moody.m.bases</code></h1>
+</header>
+<section id="section-intro">
+<p>Base wrapper class for accessing ethereum smart contracts.</p>
+<details class="source">
+<summary>
+<span>Expand source code</span>
+</summary>
+<pre><code class="python">&#34;&#34;&#34;Base wrapper class for accessing ethereum smart contracts.&#34;&#34;&#34;
+
+from typing import Any
+
+from eth_utils import is_address, to_checksum_address
+from web3 import Web3
+
+from .tx_params import TxParams
+# from web3.providers.base import BaseProvider
+from ..libeb import MiliDoS
+
+
+class Signatures:
+    _function_signatures = {}
+
+    def __init__(self, abi: any):
+        for func in [obj for obj in abi if obj[&#39;type&#39;] == &#39;function&#39;]:
+            name = func[&#39;name&#39;]
+            types = [input[&#39;type&#39;] for input in func[&#39;inputs&#39;]]
+            self._function_signatures[name] = &#39;{}({})&#39;.format(name, &#39;,&#39;.join(types))
+
+    def fromSignatures(self) -&gt; dict:
+        return self._function_signatures
+
+
+class Validator:
+    &#34;&#34;&#34;Base class for validating inputs to methods.&#34;&#34;&#34;
+
+    def __init__(
+            self,
+            web3_or_provider: Web3,
+            contract_address: str,
+    ):
+        &#34;&#34;&#34;Initialize the instance.&#34;&#34;&#34;
+        pass
+
+    def assert_valid(
+            self, method_name: str, parameter_name: str, argument_value: Any
+    ):
+        &#34;&#34;&#34;Raise an exception if method input is not valid.
+
+        :param method_name: Name of the method whose input is to be validated.
+        :param parameter_name: Name of the parameter whose input is to be
+            validated.
+        :param argument_value: Value of argument to parameter to be validated.
+        &#34;&#34;&#34;
+
+    def bindSignatures(self, so: Signatures) -&gt; None:
+        self.binding: Signatures = so
+
+    def getSignature(self, sign_name: str) -&gt; str:
+        return self.binding.fromSignatures()[sign_name]
+
+
+class ContractMethod:
+    &#34;&#34;&#34;Base class for wrapping an Ethereum smart contract method.&#34;&#34;&#34;
+
+    def __init__(
+            self,
+            elib: MiliDoS,
+            contract_address: str,
+            validator: Validator = None,
+    ):
+        &#34;&#34;&#34;Instantiate the object.
+
+        :param provider: Instance of :class:`web3.providers.base.BaseProvider`
+        :param contract_address: Where the contract has been deployed to.
+        :param validator: Used to validate method inputs.
+        &#34;&#34;&#34;
+
+        self._web3_eth = elib.w3.eth  # pylint: disable=no-member
+        if validator is None:
+            validator = Validator(self._web3_eth, contract_address)
+        self.validator = validator
+        self._operate = elib.accountAddr
+        self._wait = 5
+
+    @staticmethod
+    def validate_and_checksum_address(address: str):
+        &#34;&#34;&#34;Validate the given address, and return it&#39;s checksum address.&#34;&#34;&#34;
+        if not is_address(address):
+            raise TypeError(&#34;Invalid address provided: {}&#34;.format(address))
+        return to_checksum_address(address)
+
+    def normalize_tx_params(self, tx_params) -&gt; TxParams:
+        &#34;&#34;&#34;Normalize and return the given transaction parameters.&#34;&#34;&#34;
+        if not tx_params:
+            tx_params = TxParams()
+        if not tx_params.from_:
+            tx_params.from_ = self._web3_eth.coinbase or (
+                self._web3_eth.accounts[0]
+                if len(self._web3_eth.accounts) &gt; 0
+                else None
+            )
+        if tx_params.from_:
+            tx_params.from_ = self.validate_and_checksum_address(
+                tx_params.from_
+            )
+        return tx_params
+
+    def setWait(self, t: int) -&gt; &#34;ContractMethod&#34;:
+        self._wait = t
+        return self
+
+
+class ContractBase:
+    SIGNATURES = None
+
+    def __init__(self):
+        self.call_contract_fee_amount: int = 2000000000
+        self.call_contract_fee_price: int = 105910000000
+        self.call_contract_debug_flag: bool = False
+        self.call_contract_enforce_tx_receipt: bool = True
+
+    def CallAutoConf(self, f: MiliDoS) -&gt; &#34;ContractBase&#34;:
+        self.call_contract_fee_amount = f.gas
+        self.call_contract_fee_price = f.gasPrice
+        return self
+
+    def CallContractFee(self, gas: int, price: int) -&gt; &#34;ContractBase&#34;:
+        self.call_contract_fee_amount = gas
+        self.call_contract_fee_price = price
+        return self
+
+    def CallDebug(self, yesno: bool) -&gt; &#34;ContractBase&#34;:
+        self.call_contract_debug_flag = yesno
+        return self
+
+    def EnforceTxReceipt(self, yesno: bool) -&gt; &#34;ContractBase&#34;:
+        self.call_contract_enforce_tx_receipt = yesno
+        return self</code></pre>
+</details>
+</section>
+<section>
+</section>
+<section>
+</section>
+<section>
+</section>
+<section>
+<h2 class="section-title" id="header-classes">Classes</h2>
+<dl>
+<dt id="moody.m.bases.ContractBase"><code class="flex name class">
+<span>class <span class="ident">ContractBase</span></span>
+</code></dt>
+<dd>
+<div class="desc"></div>
+<details class="source">
+<summary>
+<span>Expand source code</span>
+</summary>
+<pre><code class="python">class ContractBase:
+    SIGNATURES = None
+
+    def __init__(self):
+        self.call_contract_fee_amount: int = 2000000000
+        self.call_contract_fee_price: int = 105910000000
+        self.call_contract_debug_flag: bool = False
+        self.call_contract_enforce_tx_receipt: bool = True
+
+    def CallAutoConf(self, f: MiliDoS) -&gt; &#34;ContractBase&#34;:
+        self.call_contract_fee_amount = f.gas
+        self.call_contract_fee_price = f.gasPrice
+        return self
+
+    def CallContractFee(self, gas: int, price: int) -&gt; &#34;ContractBase&#34;:
+        self.call_contract_fee_amount = gas
+        self.call_contract_fee_price = price
+        return self
+
+    def CallDebug(self, yesno: bool) -&gt; &#34;ContractBase&#34;:
+        self.call_contract_debug_flag = yesno
+        return self
+
+    def EnforceTxReceipt(self, yesno: bool) -&gt; &#34;ContractBase&#34;:
+        self.call_contract_enforce_tx_receipt = yesno
+        return self</code></pre>
+</details>
+<h3>Subclasses</h3>
+<ul class="hlist">
+<li><a title="moody.m.b_send.BSend" href="b_send/index.html#moody.m.b_send.BSend">BSend</a></li>
+<li><a title="moody.m.beri_coin.BeriCoin" href="beri_coin/index.html#moody.m.beri_coin.BeriCoin">BeriCoin</a></li>
+<li><a title="moody.m.blockhash_store.BlockhashStore" href="blockhash_store/index.html#moody.m.blockhash_store.BlockhashStore">BlockhashStore</a></li>
+<li><a title="moody.m.c_token.CToken" href="c_token/index.html#moody.m.c_token.CToken">CToken</a></li>
+<li><a title="moody.m.eth2_multi_deposit.Eth2MultiDeposit" href="eth2_multi_deposit/index.html#moody.m.eth2_multi_deposit.Eth2MultiDeposit">Eth2MultiDeposit</a></li>
+<li><a title="moody.m.layer_zero_u_s_d_t.LayerZeroUSDT" href="layer_zero_u_s_d_t/index.html#moody.m.layer_zero_u_s_d_t.LayerZeroUSDT">LayerZeroUSDT</a></li>
+<li><a title="moody.m.multicall.Multicall" href="multicall/index.html#moody.m.multicall.Multicall">Multicall</a></li>
+<li><a title="moody.m.multicall2.Multicall2" href="multicall2/index.html#moody.m.multicall2.Multicall2">Multicall2</a></li>
+<li><a title="moody.m.oracle.Oracle" href="oracle/index.html#moody.m.oracle.Oracle">Oracle</a></li>
+<li><a title="moody.m.pharaohs.pharaohs" href="pharaohs/index.html#moody.m.pharaohs.pharaohs">pharaohs</a></li>
+<li><a title="moody.m.tc20.Tc20" href="tc20/index.html#moody.m.tc20.Tc20">Tc20</a></li>
+<li><a title="moody.m.tether_token2.TetherToken2" href="tether_token2/index.html#moody.m.tether_token2.TetherToken2">TetherToken2</a></li>
+<li><a title="moody.m.uniswap_v2_erc20.UniswapV2ERC20" href="uniswap_v2_erc20/index.html#moody.m.uniswap_v2_erc20.UniswapV2ERC20">UniswapV2ERC20</a></li>
+<li><a title="moody.m.uniswap_v2_factory.UniswapV2Factory" href="uniswap_v2_factory/index.html#moody.m.uniswap_v2_factory.UniswapV2Factory">UniswapV2Factory</a></li>
+<li><a title="moody.m.uniswap_v2_router02.UniswapV2Router02" href="uniswap_v2_router02/index.html#moody.m.uniswap_v2_router02.UniswapV2Router02">UniswapV2Router02</a></li>
+<li><a title="moody.m.v_r_f_consumer.VRFConsumer" href="v_r_f_consumer/index.html#moody.m.v_r_f_consumer.VRFConsumer">VRFConsumer</a></li>
+<li><a title="moody.m.v_r_f_coordinator.VRFCoordinator" href="v_r_f_coordinator/index.html#moody.m.v_r_f_coordinator.VRFCoordinator">VRFCoordinator</a></li>
+<li><a title="moody.openzeppelin.Timelock6h" href="../openzeppelin/index.html#moody.openzeppelin.Timelock6h">Timelock6h</a></li>
+</ul>
+<h3>Class variables</h3>
+<dl>
+<dt id="moody.m.bases.ContractBase.SIGNATURES"><code class="name">var <span class="ident">SIGNATURES</span></code></dt>
+<dd>
+<div class="desc"></div>
+</dd>
+</dl>
+<h3>Methods</h3>
+<dl>
+<dt id="moody.m.bases.ContractBase.CallAutoConf"><code class="name flex">
+<span>def <span class="ident">CallAutoConf</span></span>(<span>self, f: <a title="moody.libeb.MiliDoS" href="../libeb.html#moody.libeb.MiliDoS">MiliDoS</a>) ‑> <a title="moody.m.bases.ContractBase" href="#moody.m.bases.ContractBase">ContractBase</a></span>
+</code></dt>
+<dd>
+<div class="desc"></div>
+<details class="source">
+<summary>
+<span>Expand source code</span>
+</summary>
+<pre><code class="python">def CallAutoConf(self, f: MiliDoS) -&gt; &#34;ContractBase&#34;:
+    self.call_contract_fee_amount = f.gas
+    self.call_contract_fee_price = f.gasPrice
+    return self</code></pre>
+</details>
+</dd>
+<dt id="moody.m.bases.ContractBase.CallContractFee"><code class="name flex">
+<span>def <span class="ident">CallContractFee</span></span>(<span>self, gas: int, price: int) ‑> <a title="moody.m.bases.ContractBase" href="#moody.m.bases.ContractBase">ContractBase</a></span>
+</code></dt>
+<dd>
+<div class="desc"></div>
+<details class="source">
+<summary>
+<span>Expand source code</span>
+</summary>
+<pre><code class="python">def CallContractFee(self, gas: int, price: int) -&gt; &#34;ContractBase&#34;:
+    self.call_contract_fee_amount = gas
+    self.call_contract_fee_price = price
+    return self</code></pre>
+</details>
+</dd>
+<dt id="moody.m.bases.ContractBase.CallDebug"><code class="name flex">
+<span>def <span class="ident">CallDebug</span></span>(<span>self, yesno: bool) ‑> <a title="moody.m.bases.ContractBase" href="#moody.m.bases.ContractBase">ContractBase</a></span>
+</code></dt>
+<dd>
+<div class="desc"></div>
+<details class="source">
+<summary>
+<span>Expand source code</span>
+</summary>
+<pre><code class="python">def CallDebug(self, yesno: bool) -&gt; &#34;ContractBase&#34;:
+    self.call_contract_debug_flag = yesno
+    return self</code></pre>
+</details>
+</dd>
+<dt id="moody.m.bases.ContractBase.EnforceTxReceipt"><code class="name flex">
+<span>def <span class="ident">EnforceTxReceipt</span></span>(<span>self, yesno: bool) ‑> <a title="moody.m.bases.ContractBase" href="#moody.m.bases.ContractBase">ContractBase</a></span>
+</code></dt>
+<dd>
+<div class="desc"></div>
+<details class="source">
+<summary>
+<span>Expand source code</span>
+</summary>
+<pre><code class="python">def EnforceTxReceipt(self, yesno: bool) -&gt; &#34;ContractBase&#34;:
+    self.call_contract_enforce_tx_receipt = yesno
+    return self</code></pre>
+</details>
+</dd>
+</dl>
+</dd>
+<dt id="moody.m.bases.ContractMethod"><code class="flex name class">
+<span>class <span class="ident">ContractMethod</span></span>
+<span>(</span><span>elib: <a title="moody.libeb.MiliDoS" href="../libeb.html#moody.libeb.MiliDoS">MiliDoS</a>, contract_address: str, validator: <a title="moody.m.bases.Validator" href="#moody.m.bases.Validator">Validator</a> = None)</span>
+</code></dt>
+<dd>
+<div class="desc"><p>Base class for wrapping an Ethereum smart contract method.</p>
+<p>Instantiate the object.</p>
+<p>:param provider: Instance of :class:<code>web3.providers.base.BaseProvider</code>
+:param contract_address: Where the contract has been deployed to.
+:param validator: Used to validate method inputs.</p></div>
+<details class="source">
+<summary>
+<span>Expand source code</span>
+</summary>
+<pre><code class="python">class ContractMethod:
+    &#34;&#34;&#34;Base class for wrapping an Ethereum smart contract method.&#34;&#34;&#34;
+
+    def __init__(
+            self,
+            elib: MiliDoS,
+            contract_address: str,
+            validator: Validator = None,
+    ):
+        &#34;&#34;&#34;Instantiate the object.
+
+        :param provider: Instance of :class:`web3.providers.base.BaseProvider`
+        :param contract_address: Where the contract has been deployed to.
+        :param validator: Used to validate method inputs.
+        &#34;&#34;&#34;
+
+        self._web3_eth = elib.w3.eth  # pylint: disable=no-member
+        if validator is None:
+            validator = Validator(self._web3_eth, contract_address)
+        self.validator = validator
+        self._operate = elib.accountAddr
+        self._wait = 5
+
+    @staticmethod
+    def validate_and_checksum_address(address: str):
+        &#34;&#34;&#34;Validate the given address, and return it&#39;s checksum address.&#34;&#34;&#34;
+        if not is_address(address):
+            raise TypeError(&#34;Invalid address provided: {}&#34;.format(address))
+        return to_checksum_address(address)
+
+    def normalize_tx_params(self, tx_params) -&gt; TxParams:
+        &#34;&#34;&#34;Normalize and return the given transaction parameters.&#34;&#34;&#34;
+        if not tx_params:
+            tx_params = TxParams()
+        if not tx_params.from_:
+            tx_params.from_ = self._web3_eth.coinbase or (
+                self._web3_eth.accounts[0]
+                if len(self._web3_eth.accounts) &gt; 0
+                else None
+            )
+        if tx_params.from_:
+            tx_params.from_ = self.validate_and_checksum_address(
+                tx_params.from_
+            )
+        return tx_params
+
+    def setWait(self, t: int) -&gt; &#34;ContractMethod&#34;:
+        self._wait = t
+        return self</code></pre>
+</details>
+<h3>Subclasses</h3>
+<ul class="hlist">
+<li><a title="moody.m.b_send.AddSignerMethod" href="b_send/index.html#moody.m.b_send.AddSignerMethod">AddSignerMethod</a></li>
+<li><a title="moody.m.b_send.BulkSendTokenMethod" href="b_send/index.html#moody.m.b_send.BulkSendTokenMethod">BulkSendTokenMethod</a></li>
+<li><a title="moody.m.b_send.BulkSendTrxMethod" href="b_send/index.html#moody.m.b_send.BulkSendTrxMethod">BulkSendTrxMethod</a></li>
+<li><a title="moody.m.b_send.ClaimInitMethod" href="b_send/index.html#moody.m.b_send.ClaimInitMethod">ClaimInitMethod</a></li>
+<li><a title="moody.m.b_send.DepositMethod" href="b_send/index.html#moody.m.b_send.DepositMethod">DepositMethod</a></li>
+<li><a title="moody.m.b_send.EthSendFeeMethod" href="b_send/index.html#moody.m.b_send.EthSendFeeMethod">EthSendFeeMethod</a></li>
+<li><a title="moody.m.b_send.GetBalanceMethod" href="b_send/index.html#moody.m.b_send.GetBalanceMethod">GetBalanceMethod</a></li>
+<li><a title="moody.m.b_send.IsSignerMethod" href="b_send/index.html#moody.m.b_send.IsSignerMethod">IsSignerMethod</a></li>
+<li><a title="moody.m.b_send.RenounceSignerMethod" href="b_send/index.html#moody.m.b_send.RenounceSignerMethod">RenounceSignerMethod</a></li>
+<li><a title="moody.m.b_send.SetEthFeeMethod" href="b_send/index.html#moody.m.b_send.SetEthFeeMethod">SetEthFeeMethod</a></li>
+<li><a title="moody.m.b_send.SetTokenFeeMethod" href="b_send/index.html#moody.m.b_send.SetTokenFeeMethod">SetTokenFeeMethod</a></li>
+<li><a title="moody.m.b_send.TokenSendFeeMethod" href="b_send/index.html#moody.m.b_send.TokenSendFeeMethod">TokenSendFeeMethod</a></li>
+<li><a title="moody.m.b_send.WithdrawEtherMethod" href="b_send/index.html#moody.m.b_send.WithdrawEtherMethod">WithdrawEtherMethod</a></li>
+<li><a title="moody.m.b_send.WithdrawTokenMethod" href="b_send/index.html#moody.m.b_send.WithdrawTokenMethod">WithdrawTokenMethod</a></li>
+<li><a title="moody.m.beri_coin.AddAdminMethod" href="beri_coin/index.html#moody.m.beri_coin.AddAdminMethod">AddAdminMethod</a></li>
+<li><a title="moody.m.beri_coin.AdminRoleMethod" href="beri_coin/index.html#moody.m.beri_coin.AdminRoleMethod">AdminRoleMethod</a></li>
+<li><a title="moody.m.beri_coin.AllowanceMethod" href="beri_coin/index.html#moody.m.beri_coin.AllowanceMethod">AllowanceMethod</a></li>
+<li><a title="moody.m.beri_coin.ApproveMethod" href="beri_coin/index.html#moody.m.beri_coin.ApproveMethod">ApproveMethod</a></li>
+<li><a title="moody.m.beri_coin.BalanceOfMethod" href="beri_coin/index.html#moody.m.beri_coin.BalanceOfMethod">BalanceOfMethod</a></li>
+<li><a title="moody.m.beri_coin.CandyOfMethod" href="beri_coin/index.html#moody.m.beri_coin.CandyOfMethod">CandyOfMethod</a></li>
+<li><a title="moody.m.beri_coin.CloseMethod" href="beri_coin/index.html#moody.m.beri_coin.CloseMethod">CloseMethod</a></li>
+<li><a title="moody.m.beri_coin.DecimalsMethod" href="beri_coin/index.html#moody.m.beri_coin.DecimalsMethod">DecimalsMethod</a></li>
+<li><a title="moody.m.beri_coin.DecreaseAllowanceMethod" href="beri_coin/index.html#moody.m.beri_coin.DecreaseAllowanceMethod">DecreaseAllowanceMethod</a></li>
+<li><a title="moody.m.beri_coin.DefaultAdminRoleMethod" href="beri_coin/index.html#moody.m.beri_coin.DefaultAdminRoleMethod">DefaultAdminRoleMethod</a></li>
+<li><a title="moody.m.beri_coin.DomainTypehashMethod" href="beri_coin/index.html#moody.m.beri_coin.DomainTypehashMethod">DomainTypehashMethod</a></li>
+<li><a title="moody.m.beri_coin.GetRoleAdminMethod" href="beri_coin/index.html#moody.m.beri_coin.GetRoleAdminMethod">GetRoleAdminMethod</a></li>
+<li><a title="moody.m.beri_coin.GetRoleMemberCountMethod" href="beri_coin/index.html#moody.m.beri_coin.GetRoleMemberCountMethod">GetRoleMemberCountMethod</a></li>
+<li><a title="moody.m.beri_coin.GetRoleMemberMethod" href="beri_coin/index.html#moody.m.beri_coin.GetRoleMemberMethod">GetRoleMemberMethod</a></li>
+<li><a title="moody.m.beri_coin.GrantRoleMethod" href="beri_coin/index.html#moody.m.beri_coin.GrantRoleMethod">GrantRoleMethod</a></li>
+<li><a title="moody.m.beri_coin.HasRoleMethod" href="beri_coin/index.html#moody.m.beri_coin.HasRoleMethod">HasRoleMethod</a></li>
+<li><a title="moody.m.beri_coin.IncreaseAllowanceMethod" href="beri_coin/index.html#moody.m.beri_coin.IncreaseAllowanceMethod">IncreaseAllowanceMethod</a></li>
+<li><a title="moody.m.beri_coin.IsAdminMethod" href="beri_coin/index.html#moody.m.beri_coin.IsAdminMethod">IsAdminMethod</a></li>
+<li><a title="moody.m.beri_coin.MeMethod" href="beri_coin/index.html#moody.m.beri_coin.MeMethod">MeMethod</a></li>
+<li><a title="moody.m.beri_coin.NameMethod" href="beri_coin/index.html#moody.m.beri_coin.NameMethod">NameMethod</a></li>
+<li><a title="moody.m.beri_coin.NoncesMethod" href="beri_coin/index.html#moody.m.beri_coin.NoncesMethod">NoncesMethod</a></li>
+<li><a title="moody.m.beri_coin.PermitMethod" href="beri_coin/index.html#moody.m.beri_coin.PermitMethod">PermitMethod</a></li>
+<li><a title="moody.m.beri_coin.PermitTypehashMethod" href="beri_coin/index.html#moody.m.beri_coin.PermitTypehashMethod">PermitTypehashMethod</a></li>
+<li><a title="moody.m.beri_coin.RenounceAdminMethod" href="beri_coin/index.html#moody.m.beri_coin.RenounceAdminMethod">RenounceAdminMethod</a></li>
+<li><a title="moody.m.beri_coin.RenounceRoleMethod" href="beri_coin/index.html#moody.m.beri_coin.RenounceRoleMethod">RenounceRoleMethod</a></li>
+<li><a title="moody.m.beri_coin.RevokeRoleMethod" href="beri_coin/index.html#moody.m.beri_coin.RevokeRoleMethod">RevokeRoleMethod</a></li>
+<li><a title="moody.m.beri_coin.SafeBurnMethod" href="beri_coin/index.html#moody.m.beri_coin.SafeBurnMethod">SafeBurnMethod</a></li>
+<li><a title="moody.m.beri_coin.SafeMintMethod" href="beri_coin/index.html#moody.m.beri_coin.SafeMintMethod">SafeMintMethod</a></li>
+<li><a title="moody.m.beri_coin.SafeRefundMethod" href="beri_coin/index.html#moody.m.beri_coin.SafeRefundMethod">SafeRefundMethod</a></li>
+<li><a title="moody.m.beri_coin.SafeTransferMethod" href="beri_coin/index.html#moody.m.beri_coin.SafeTransferMethod">SafeTransferMethod</a></li>
+<li><a title="moody.m.beri_coin.SendCandyMethod" href="beri_coin/index.html#moody.m.beri_coin.SendCandyMethod">SendCandyMethod</a></li>
+<li><a title="moody.m.beri_coin.SuperRoleMethod" href="beri_coin/index.html#moody.m.beri_coin.SuperRoleMethod">SuperRoleMethod</a></li>
+<li><a title="moody.m.beri_coin.SymbolMethod" href="beri_coin/index.html#moody.m.beri_coin.SymbolMethod">SymbolMethod</a></li>
+<li><a title="moody.m.beri_coin.TokenOfMethod" href="beri_coin/index.html#moody.m.beri_coin.TokenOfMethod">TokenOfMethod</a></li>
+<li><a title="moody.m.beri_coin.TokenRateMethod" href="beri_coin/index.html#moody.m.beri_coin.TokenRateMethod">TokenRateMethod</a></li>
+<li><a title="moody.m.beri_coin.TotalSupplyMethod" href="beri_coin/index.html#moody.m.beri_coin.TotalSupplyMethod">TotalSupplyMethod</a></li>
+<li><a title="moody.m.beri_coin.TransferFromMethod" href="beri_coin/index.html#moody.m.beri_coin.TransferFromMethod">TransferFromMethod</a></li>
+<li><a title="moody.m.beri_coin.TransferMethod" href="beri_coin/index.html#moody.m.beri_coin.TransferMethod">TransferMethod</a></li>
+<li><a title="moody.m.blockhash_store.GetBlockhashMethod" href="blockhash_store/index.html#moody.m.blockhash_store.GetBlockhashMethod">GetBlockhashMethod</a></li>
+<li><a title="moody.m.blockhash_store.StoreEarliestMethod" href="blockhash_store/index.html#moody.m.blockhash_store.StoreEarliestMethod">StoreEarliestMethod</a></li>
+<li><a title="moody.m.blockhash_store.StoreMethod" href="blockhash_store/index.html#moody.m.blockhash_store.StoreMethod">StoreMethod</a></li>
+<li><a title="moody.m.blockhash_store.StoreVerifyHeaderMethod" href="blockhash_store/index.html#moody.m.blockhash_store.StoreVerifyHeaderMethod">StoreVerifyHeaderMethod</a></li>
+<li><a title="moody.m.c_token.AcceptAdmin_Method" href="c_token/index.html#moody.m.c_token.AcceptAdmin_Method">AcceptAdmin_Method</a></li>
+<li><a title="moody.m.c_token.AccrualBlockNumberMethod" href="c_token/index.html#moody.m.c_token.AccrualBlockNumberMethod">AccrualBlockNumberMethod</a></li>
+<li><a title="moody.m.c_token.AccrueInterestMethod" href="c_token/index.html#moody.m.c_token.AccrueInterestMethod">AccrueInterestMethod</a></li>
+<li><a title="moody.m.c_token.AdminMethod" href="c_token/index.html#moody.m.c_token.AdminMethod">AdminMethod</a></li>
+<li><a title="moody.m.c_token.AllowanceMethod" href="c_token/index.html#moody.m.c_token.AllowanceMethod">AllowanceMethod</a></li>
+<li><a title="moody.m.c_token.ApproveMethod" href="c_token/index.html#moody.m.c_token.ApproveMethod">ApproveMethod</a></li>
+<li><a title="moody.m.c_token.BalanceOfMethod" href="c_token/index.html#moody.m.c_token.BalanceOfMethod">BalanceOfMethod</a></li>
+<li><a title="moody.m.c_token.BalanceOfUnderlyingMethod" href="c_token/index.html#moody.m.c_token.BalanceOfUnderlyingMethod">BalanceOfUnderlyingMethod</a></li>
+<li><a title="moody.m.c_token.BorrowBalanceCurrentMethod" href="c_token/index.html#moody.m.c_token.BorrowBalanceCurrentMethod">BorrowBalanceCurrentMethod</a></li>
+<li><a title="moody.m.c_token.BorrowBalanceStoredMethod" href="c_token/index.html#moody.m.c_token.BorrowBalanceStoredMethod">BorrowBalanceStoredMethod</a></li>
+<li><a title="moody.m.c_token.BorrowIndexMethod" href="c_token/index.html#moody.m.c_token.BorrowIndexMethod">BorrowIndexMethod</a></li>
+<li><a title="moody.m.c_token.BorrowRatePerBlockMethod" href="c_token/index.html#moody.m.c_token.BorrowRatePerBlockMethod">BorrowRatePerBlockMethod</a></li>
+<li><a title="moody.m.c_token.ComptrollerMethod" href="c_token/index.html#moody.m.c_token.ComptrollerMethod">ComptrollerMethod</a></li>
+<li><a title="moody.m.c_token.DecimalsMethod" href="c_token/index.html#moody.m.c_token.DecimalsMethod">DecimalsMethod</a></li>
+<li><a title="moody.m.c_token.ExchangeRateCurrentMethod" href="c_token/index.html#moody.m.c_token.ExchangeRateCurrentMethod">ExchangeRateCurrentMethod</a></li>
+<li><a title="moody.m.c_token.ExchangeRateStoredMethod" href="c_token/index.html#moody.m.c_token.ExchangeRateStoredMethod">ExchangeRateStoredMethod</a></li>
+<li><a title="moody.m.c_token.GetAccountSnapshotMethod" href="c_token/index.html#moody.m.c_token.GetAccountSnapshotMethod">GetAccountSnapshotMethod</a></li>
+<li><a title="moody.m.c_token.GetCashMethod" href="c_token/index.html#moody.m.c_token.GetCashMethod">GetCashMethod</a></li>
+<li><a title="moody.m.c_token.InitializeMethod" href="c_token/index.html#moody.m.c_token.InitializeMethod">InitializeMethod</a></li>
+<li><a title="moody.m.c_token.InterestRateModelMethod" href="c_token/index.html#moody.m.c_token.InterestRateModelMethod">InterestRateModelMethod</a></li>
+<li><a title="moody.m.c_token.IsCTokenMethod" href="c_token/index.html#moody.m.c_token.IsCTokenMethod">IsCTokenMethod</a></li>
+<li><a title="moody.m.c_token.NameMethod" href="c_token/index.html#moody.m.c_token.NameMethod">NameMethod</a></li>
+<li><a title="moody.m.c_token.PendingAdminMethod" href="c_token/index.html#moody.m.c_token.PendingAdminMethod">PendingAdminMethod</a></li>
+<li><a title="moody.m.c_token.ProtocolSeizeShareMantissaMethod" href="c_token/index.html#moody.m.c_token.ProtocolSeizeShareMantissaMethod">ProtocolSeizeShareMantissaMethod</a></li>
+<li><a title="moody.m.c_token.ReduceReserves_Method" href="c_token/index.html#moody.m.c_token.ReduceReserves_Method">ReduceReserves_Method</a></li>
+<li><a title="moody.m.c_token.ReserveFactorMantissaMethod" href="c_token/index.html#moody.m.c_token.ReserveFactorMantissaMethod">ReserveFactorMantissaMethod</a></li>
+<li><a title="moody.m.c_token.SeizeMethod" href="c_token/index.html#moody.m.c_token.SeizeMethod">SeizeMethod</a></li>
+<li><a title="moody.m.c_token.SetComptroller_Method" href="c_token/index.html#moody.m.c_token.SetComptroller_Method">SetComptroller_Method</a></li>
+<li><a title="moody.m.c_token.SetInterestRateModel_Method" href="c_token/index.html#moody.m.c_token.SetInterestRateModel_Method">SetInterestRateModel_Method</a></li>
+<li><a title="moody.m.c_token.SetPendingAdmin_Method" href="c_token/index.html#moody.m.c_token.SetPendingAdmin_Method">SetPendingAdmin_Method</a></li>
+<li><a title="moody.m.c_token.SetReserveFactor_Method" href="c_token/index.html#moody.m.c_token.SetReserveFactor_Method">SetReserveFactor_Method</a></li>
+<li><a title="moody.m.c_token.SupplyRatePerBlockMethod" href="c_token/index.html#moody.m.c_token.SupplyRatePerBlockMethod">SupplyRatePerBlockMethod</a></li>
+<li><a title="moody.m.c_token.SymbolMethod" href="c_token/index.html#moody.m.c_token.SymbolMethod">SymbolMethod</a></li>
+<li><a title="moody.m.c_token.TotalBorrowsCurrentMethod" href="c_token/index.html#moody.m.c_token.TotalBorrowsCurrentMethod">TotalBorrowsCurrentMethod</a></li>
+<li><a title="moody.m.c_token.TotalBorrowsMethod" href="c_token/index.html#moody.m.c_token.TotalBorrowsMethod">TotalBorrowsMethod</a></li>
+<li><a title="moody.m.c_token.TotalReservesMethod" href="c_token/index.html#moody.m.c_token.TotalReservesMethod">TotalReservesMethod</a></li>
+<li><a title="moody.m.c_token.TotalSupplyMethod" href="c_token/index.html#moody.m.c_token.TotalSupplyMethod">TotalSupplyMethod</a></li>
+<li><a title="moody.m.c_token.TransferFromMethod" href="c_token/index.html#moody.m.c_token.TransferFromMethod">TransferFromMethod</a></li>
+<li><a title="moody.m.c_token.TransferMethod" href="c_token/index.html#moody.m.c_token.TransferMethod">TransferMethod</a></li>
+<li><a title="moody.m.eth2_multi_deposit.DepositMethod" href="eth2_multi_deposit/index.html#moody.m.eth2_multi_deposit.DepositMethod">DepositMethod</a></li>
+<li><a title="moody.m.layer_zero_u_s_d_t.AddBlackListMethod" href="layer_zero_u_s_d_t/index.html#moody.m.layer_zero_u_s_d_t.AddBlackListMethod">AddBlackListMethod</a></li>
+<li><a title="moody.m.layer_zero_u_s_d_t.AllowanceMethod" href="layer_zero_u_s_d_t/index.html#moody.m.layer_zero_u_s_d_t.AllowanceMethod">AllowanceMethod</a></li>
+<li><a title="moody.m.layer_zero_u_s_d_t.ApproveMethod" href="layer_zero_u_s_d_t/index.html#moody.m.layer_zero_u_s_d_t.ApproveMethod">ApproveMethod</a></li>
+<li><a title="moody.m.layer_zero_u_s_d_t.BalanceOfMethod" href="layer_zero_u_s_d_t/index.html#moody.m.layer_zero_u_s_d_t.BalanceOfMethod">BalanceOfMethod</a></li>
+<li><a title="moody.m.layer_zero_u_s_d_t.DecimalsMethod" href="layer_zero_u_s_d_t/index.html#moody.m.layer_zero_u_s_d_t.DecimalsMethod">DecimalsMethod</a></li>
+<li><a title="moody.m.layer_zero_u_s_d_t.DecreaseAllowanceMethod" href="layer_zero_u_s_d_t/index.html#moody.m.layer_zero_u_s_d_t.DecreaseAllowanceMethod">DecreaseAllowanceMethod</a></li>
+<li><a title="moody.m.layer_zero_u_s_d_t.DestroyBlackFundsMethod" href="layer_zero_u_s_d_t/index.html#moody.m.layer_zero_u_s_d_t.DestroyBlackFundsMethod">DestroyBlackFundsMethod</a></li>
+<li><a title="moody.m.layer_zero_u_s_d_t.DomainTypehashMethod" href="layer_zero_u_s_d_t/index.html#moody.m.layer_zero_u_s_d_t.DomainTypehashMethod">DomainTypehashMethod</a></li>
+<li><a title="moody.m.layer_zero_u_s_d_t.EndpointMethod" href="layer_zero_u_s_d_t/index.html#moody.m.layer_zero_u_s_d_t.EndpointMethod">EndpointMethod</a></li>
+<li><a title="moody.m.layer_zero_u_s_d_t.GetBlackListStatusMethod" href="layer_zero_u_s_d_t/index.html#moody.m.layer_zero_u_s_d_t.GetBlackListStatusMethod">GetBlackListStatusMethod</a></li>
+<li><a title="moody.m.layer_zero_u_s_d_t.GovernanceMethod" href="layer_zero_u_s_d_t/index.html#moody.m.layer_zero_u_s_d_t.GovernanceMethod">GovernanceMethod</a></li>
+<li><a title="moody.m.layer_zero_u_s_d_t.IncreaseAllowanceMethod" href="layer_zero_u_s_d_t/index.html#moody.m.layer_zero_u_s_d_t.IncreaseAllowanceMethod">IncreaseAllowanceMethod</a></li>
+<li><a title="moody.m.layer_zero_u_s_d_t.IsBlackListedMethod" href="layer_zero_u_s_d_t/index.html#moody.m.layer_zero_u_s_d_t.IsBlackListedMethod">IsBlackListedMethod</a></li>
+<li><a title="moody.m.layer_zero_u_s_d_t.LzReceiveMethod" href="layer_zero_u_s_d_t/index.html#moody.m.layer_zero_u_s_d_t.LzReceiveMethod">LzReceiveMethod</a></li>
+<li><a title="moody.m.layer_zero_u_s_d_t.MintersMethod" href="layer_zero_u_s_d_t/index.html#moody.m.layer_zero_u_s_d_t.MintersMethod">MintersMethod</a></li>
+<li><a title="moody.m.layer_zero_u_s_d_t.NameMethod" href="layer_zero_u_s_d_t/index.html#moody.m.layer_zero_u_s_d_t.NameMethod">NameMethod</a></li>
+<li><a title="moody.m.layer_zero_u_s_d_t.NoncesMethod" href="layer_zero_u_s_d_t/index.html#moody.m.layer_zero_u_s_d_t.NoncesMethod">NoncesMethod</a></li>
+<li><a title="moody.m.layer_zero_u_s_d_t.PermitMethod" href="layer_zero_u_s_d_t/index.html#moody.m.layer_zero_u_s_d_t.PermitMethod">PermitMethod</a></li>
+<li><a title="moody.m.layer_zero_u_s_d_t.PermitTypehashMethod" href="layer_zero_u_s_d_t/index.html#moody.m.layer_zero_u_s_d_t.PermitTypehashMethod">PermitTypehashMethod</a></li>
+<li><a title="moody.m.layer_zero_u_s_d_t.RemotesMethod" href="layer_zero_u_s_d_t/index.html#moody.m.layer_zero_u_s_d_t.RemotesMethod">RemotesMethod</a></li>
+<li><a title="moody.m.layer_zero_u_s_d_t.RemoveBlackListMethod" href="layer_zero_u_s_d_t/index.html#moody.m.layer_zero_u_s_d_t.RemoveBlackListMethod">RemoveBlackListMethod</a></li>
+<li><a title="moody.m.layer_zero_u_s_d_t.SendTokensMethod" href="layer_zero_u_s_d_t/index.html#moody.m.layer_zero_u_s_d_t.SendTokensMethod">SendTokensMethod</a></li>
+<li><a title="moody.m.layer_zero_u_s_d_t.SetGovernanceMethod" href="layer_zero_u_s_d_t/index.html#moody.m.layer_zero_u_s_d_t.SetGovernanceMethod">SetGovernanceMethod</a></li>
+<li><a title="moody.m.layer_zero_u_s_d_t.SetRemoteMethod" href="layer_zero_u_s_d_t/index.html#moody.m.layer_zero_u_s_d_t.SetRemoteMethod">SetRemoteMethod</a></li>
+<li><a title="moody.m.layer_zero_u_s_d_t.SymbolMethod" href="layer_zero_u_s_d_t/index.html#moody.m.layer_zero_u_s_d_t.SymbolMethod">SymbolMethod</a></li>
+<li><a title="moody.m.layer_zero_u_s_d_t.TotalSupplyMethod" href="layer_zero_u_s_d_t/index.html#moody.m.layer_zero_u_s_d_t.TotalSupplyMethod">TotalSupplyMethod</a></li>
+<li><a title="moody.m.layer_zero_u_s_d_t.TransferFromMethod" href="layer_zero_u_s_d_t/index.html#moody.m.layer_zero_u_s_d_t.TransferFromMethod">TransferFromMethod</a></li>
+<li><a title="moody.m.layer_zero_u_s_d_t.TransferMethod" href="layer_zero_u_s_d_t/index.html#moody.m.layer_zero_u_s_d_t.TransferMethod">TransferMethod</a></li>
+<li><a title="moody.m.multicall.AggregateMethod" href="multicall/index.html#moody.m.multicall.AggregateMethod">AggregateMethod</a></li>
+<li><a title="moody.m.multicall.GetBlockHashMethod" href="multicall/index.html#moody.m.multicall.GetBlockHashMethod">GetBlockHashMethod</a></li>
+<li><a title="moody.m.multicall.GetCurrentBlockCoinbaseMethod" href="multicall/index.html#moody.m.multicall.GetCurrentBlockCoinbaseMethod">GetCurrentBlockCoinbaseMethod</a></li>
+<li><a title="moody.m.multicall.GetCurrentBlockDifficultyMethod" href="multicall/index.html#moody.m.multicall.GetCurrentBlockDifficultyMethod">GetCurrentBlockDifficultyMethod</a></li>
+<li><a title="moody.m.multicall.GetCurrentBlockGasLimitMethod" href="multicall/index.html#moody.m.multicall.GetCurrentBlockGasLimitMethod">GetCurrentBlockGasLimitMethod</a></li>
+<li><a title="moody.m.multicall.GetCurrentBlockTimestampMethod" href="multicall/index.html#moody.m.multicall.GetCurrentBlockTimestampMethod">GetCurrentBlockTimestampMethod</a></li>
+<li><a title="moody.m.multicall.GetEthBalanceMethod" href="multicall/index.html#moody.m.multicall.GetEthBalanceMethod">GetEthBalanceMethod</a></li>
+<li><a title="moody.m.multicall.GetLastBlockHashMethod" href="multicall/index.html#moody.m.multicall.GetLastBlockHashMethod">GetLastBlockHashMethod</a></li>
+<li><a title="moody.m.multicall2.AggregateMethod" href="multicall2/index.html#moody.m.multicall2.AggregateMethod">AggregateMethod</a></li>
+<li><a title="moody.m.multicall2.BlockAndAggregateMethod" href="multicall2/index.html#moody.m.multicall2.BlockAndAggregateMethod">BlockAndAggregateMethod</a></li>
+<li><a title="moody.m.multicall2.GetBlockHashMethod" href="multicall2/index.html#moody.m.multicall2.GetBlockHashMethod">GetBlockHashMethod</a></li>
+<li><a title="moody.m.multicall2.GetBlockNumberMethod" href="multicall2/index.html#moody.m.multicall2.GetBlockNumberMethod">GetBlockNumberMethod</a></li>
+<li><a title="moody.m.multicall2.GetCurrentBlockCoinbaseMethod" href="multicall2/index.html#moody.m.multicall2.GetCurrentBlockCoinbaseMethod">GetCurrentBlockCoinbaseMethod</a></li>
+<li><a title="moody.m.multicall2.GetCurrentBlockDifficultyMethod" href="multicall2/index.html#moody.m.multicall2.GetCurrentBlockDifficultyMethod">GetCurrentBlockDifficultyMethod</a></li>
+<li><a title="moody.m.multicall2.GetCurrentBlockGasLimitMethod" href="multicall2/index.html#moody.m.multicall2.GetCurrentBlockGasLimitMethod">GetCurrentBlockGasLimitMethod</a></li>
+<li><a title="moody.m.multicall2.GetCurrentBlockTimestampMethod" href="multicall2/index.html#moody.m.multicall2.GetCurrentBlockTimestampMethod">GetCurrentBlockTimestampMethod</a></li>
+<li><a title="moody.m.multicall2.GetEthBalanceMethod" href="multicall2/index.html#moody.m.multicall2.GetEthBalanceMethod">GetEthBalanceMethod</a></li>
+<li><a title="moody.m.multicall2.GetLastBlockHashMethod" href="multicall2/index.html#moody.m.multicall2.GetLastBlockHashMethod">GetLastBlockHashMethod</a></li>
+<li><a title="moody.m.multicall2.TryAggregateMethod" href="multicall2/index.html#moody.m.multicall2.TryAggregateMethod">TryAggregateMethod</a></li>
+<li><a title="moody.m.multicall2.TryBlockAndAggregateMethod" href="multicall2/index.html#moody.m.multicall2.TryBlockAndAggregateMethod">TryBlockAndAggregateMethod</a></li>
+<li><a title="moody.m.oracle.CancelOracleRequestMethod" href="oracle/index.html#moody.m.oracle.CancelOracleRequestMethod">CancelOracleRequestMethod</a></li>
+<li><a title="moody.m.oracle.ExpiryTimeMethod" href="oracle/index.html#moody.m.oracle.ExpiryTimeMethod">ExpiryTimeMethod</a></li>
+<li><a title="moody.m.oracle.FulfillOracleRequestMethod" href="oracle/index.html#moody.m.oracle.FulfillOracleRequestMethod">FulfillOracleRequestMethod</a></li>
+<li><a title="moody.m.oracle.GetAuthorizationStatusMethod" href="oracle/index.html#moody.m.oracle.GetAuthorizationStatusMethod">GetAuthorizationStatusMethod</a></li>
+<li><a title="moody.m.oracle.GetChainlinkTokenMethod" href="oracle/index.html#moody.m.oracle.GetChainlinkTokenMethod">GetChainlinkTokenMethod</a></li>
+<li><a title="moody.m.oracle.IsOwnerMethod" href="oracle/index.html#moody.m.oracle.IsOwnerMethod">IsOwnerMethod</a></li>
+<li><a title="moody.m.oracle.OnTokenTransferMethod" href="oracle/index.html#moody.m.oracle.OnTokenTransferMethod">OnTokenTransferMethod</a></li>
+<li><a title="moody.m.oracle.OracleRequestMethod" href="oracle/index.html#moody.m.oracle.OracleRequestMethod">OracleRequestMethod</a></li>
+<li><a title="moody.m.oracle.OwnerMethod" href="oracle/index.html#moody.m.oracle.OwnerMethod">OwnerMethod</a></li>
+<li><a title="moody.m.oracle.SetFulfillmentPermissionMethod" href="oracle/index.html#moody.m.oracle.SetFulfillmentPermissionMethod">SetFulfillmentPermissionMethod</a></li>
+<li><a title="moody.m.oracle.TransferOwnershipMethod" href="oracle/index.html#moody.m.oracle.TransferOwnershipMethod">TransferOwnershipMethod</a></li>
+<li><a title="moody.m.oracle.WithdrawMethod" href="oracle/index.html#moody.m.oracle.WithdrawMethod">WithdrawMethod</a></li>
+<li><a title="moody.m.oracle.WithdrawableMethod" href="oracle/index.html#moody.m.oracle.WithdrawableMethod">WithdrawableMethod</a></li>
+<li><a title="moody.m.pharaohs.AllowanceMethod" href="pharaohs/index.html#moody.m.pharaohs.AllowanceMethod">AllowanceMethod</a></li>
+<li><a title="moody.m.pharaohs.ApproveMethod" href="pharaohs/index.html#moody.m.pharaohs.ApproveMethod">ApproveMethod</a></li>
+<li><a title="moody.m.pharaohs.BalanceOfMethod" href="pharaohs/index.html#moody.m.pharaohs.BalanceOfMethod">BalanceOfMethod</a></li>
+<li><a title="moody.m.pharaohs.CheckpointsMethod" href="pharaohs/index.html#moody.m.pharaohs.CheckpointsMethod">CheckpointsMethod</a></li>
+<li><a title="moody.m.pharaohs.DecimalsMethod" href="pharaohs/index.html#moody.m.pharaohs.DecimalsMethod">DecimalsMethod</a></li>
+<li><a title="moody.m.pharaohs.DelegateBySigMethod" href="pharaohs/index.html#moody.m.pharaohs.DelegateBySigMethod">DelegateBySigMethod</a></li>
+<li><a title="moody.m.pharaohs.DelegateMethod" href="pharaohs/index.html#moody.m.pharaohs.DelegateMethod">DelegateMethod</a></li>
+<li><a title="moody.m.pharaohs.DelegatesMethod" href="pharaohs/index.html#moody.m.pharaohs.DelegatesMethod">DelegatesMethod</a></li>
+<li><a title="moody.m.pharaohs.DelegationTypehashMethod" href="pharaohs/index.html#moody.m.pharaohs.DelegationTypehashMethod">DelegationTypehashMethod</a></li>
+<li><a title="moody.m.pharaohs.DomainTypehashMethod" href="pharaohs/index.html#moody.m.pharaohs.DomainTypehashMethod">DomainTypehashMethod</a></li>
+<li><a title="moody.m.pharaohs.GetCurrentVotesMethod" href="pharaohs/index.html#moody.m.pharaohs.GetCurrentVotesMethod">GetCurrentVotesMethod</a></li>
+<li><a title="moody.m.pharaohs.GetPriorVotesMethod" href="pharaohs/index.html#moody.m.pharaohs.GetPriorVotesMethod">GetPriorVotesMethod</a></li>
+<li><a title="moody.m.pharaohs.NameMethod" href="pharaohs/index.html#moody.m.pharaohs.NameMethod">NameMethod</a></li>
+<li><a title="moody.m.pharaohs.NoncesMethod" href="pharaohs/index.html#moody.m.pharaohs.NoncesMethod">NoncesMethod</a></li>
+<li><a title="moody.m.pharaohs.NumCheckpointsMethod" href="pharaohs/index.html#moody.m.pharaohs.NumCheckpointsMethod">NumCheckpointsMethod</a></li>
+<li><a title="moody.m.pharaohs.PermitMethod" href="pharaohs/index.html#moody.m.pharaohs.PermitMethod">PermitMethod</a></li>
+<li><a title="moody.m.pharaohs.PermitTypehashMethod" href="pharaohs/index.html#moody.m.pharaohs.PermitTypehashMethod">PermitTypehashMethod</a></li>
+<li><a title="moody.m.pharaohs.SymbolMethod" href="pharaohs/index.html#moody.m.pharaohs.SymbolMethod">SymbolMethod</a></li>
+<li><a title="moody.m.pharaohs.TotalSupplyMethod" href="pharaohs/index.html#moody.m.pharaohs.TotalSupplyMethod">TotalSupplyMethod</a></li>
+<li><a title="moody.m.pharaohs.TransferFromMethod" href="pharaohs/index.html#moody.m.pharaohs.TransferFromMethod">TransferFromMethod</a></li>
+<li><a title="moody.m.pharaohs.TransferMethod" href="pharaohs/index.html#moody.m.pharaohs.TransferMethod">TransferMethod</a></li>
+<li><a title="moody.m.tc20.AddMinterMethod" href="tc20/index.html#moody.m.tc20.AddMinterMethod">AddMinterMethod</a></li>
+<li><a title="moody.m.tc20.AllowanceMethod" href="tc20/index.html#moody.m.tc20.AllowanceMethod">AllowanceMethod</a></li>
+<li><a title="moody.m.tc20.ApproveMethod" href="tc20/index.html#moody.m.tc20.ApproveMethod">ApproveMethod</a></li>
+<li><a title="moody.m.tc20.BalanceOfMethod" href="tc20/index.html#moody.m.tc20.BalanceOfMethod">BalanceOfMethod</a></li>
+<li><a title="moody.m.tc20.DecimalsMethod" href="tc20/index.html#moody.m.tc20.DecimalsMethod">DecimalsMethod</a></li>
+<li><a title="moody.m.tc20.DecreaseAllowanceMethod" href="tc20/index.html#moody.m.tc20.DecreaseAllowanceMethod">DecreaseAllowanceMethod</a></li>
+<li><a title="moody.m.tc20.GovernanceMethod" href="tc20/index.html#moody.m.tc20.GovernanceMethod">GovernanceMethod</a></li>
+<li><a title="moody.m.tc20.IncreaseAllowanceMethod" href="tc20/index.html#moody.m.tc20.IncreaseAllowanceMethod">IncreaseAllowanceMethod</a></li>
+<li><a title="moody.m.tc20.MintMethod" href="tc20/index.html#moody.m.tc20.MintMethod">MintMethod</a></li>
+<li><a title="moody.m.tc20.MintersMethod" href="tc20/index.html#moody.m.tc20.MintersMethod">MintersMethod</a></li>
+<li><a title="moody.m.tc20.NameMethod" href="tc20/index.html#moody.m.tc20.NameMethod">NameMethod</a></li>
+<li><a title="moody.m.tc20.RemoveMinterMethod" href="tc20/index.html#moody.m.tc20.RemoveMinterMethod">RemoveMinterMethod</a></li>
+<li><a title="moody.m.tc20.SetGovernanceMethod" href="tc20/index.html#moody.m.tc20.SetGovernanceMethod">SetGovernanceMethod</a></li>
+<li><a title="moody.m.tc20.SymbolMethod" href="tc20/index.html#moody.m.tc20.SymbolMethod">SymbolMethod</a></li>
+<li><a title="moody.m.tc20.TotalSupplyMethod" href="tc20/index.html#moody.m.tc20.TotalSupplyMethod">TotalSupplyMethod</a></li>
+<li><a title="moody.m.tc20.TransferFromMethod" href="tc20/index.html#moody.m.tc20.TransferFromMethod">TransferFromMethod</a></li>
+<li><a title="moody.m.tc20.TransferMethod" href="tc20/index.html#moody.m.tc20.TransferMethod">TransferMethod</a></li>
+<li><a title="moody.m.tether_token2.AddBlackListMethod" href="tether_token2/index.html#moody.m.tether_token2.AddBlackListMethod">AddBlackListMethod</a></li>
+<li><a title="moody.m.tether_token2.AddMinterMethod" href="tether_token2/index.html#moody.m.tether_token2.AddMinterMethod">AddMinterMethod</a></li>
+<li><a title="moody.m.tether_token2.AllowanceMethod" href="tether_token2/index.html#moody.m.tether_token2.AllowanceMethod">AllowanceMethod</a></li>
+<li><a title="moody.m.tether_token2.ApproveMethod" href="tether_token2/index.html#moody.m.tether_token2.ApproveMethod">ApproveMethod</a></li>
+<li><a title="moody.m.tether_token2.BalanceOfMethod" href="tether_token2/index.html#moody.m.tether_token2.BalanceOfMethod">BalanceOfMethod</a></li>
+<li><a title="moody.m.tether_token2.DecimalsMethod" href="tether_token2/index.html#moody.m.tether_token2.DecimalsMethod">DecimalsMethod</a></li>
+<li><a title="moody.m.tether_token2.DecreaseAllowanceMethod" href="tether_token2/index.html#moody.m.tether_token2.DecreaseAllowanceMethod">DecreaseAllowanceMethod</a></li>
+<li><a title="moody.m.tether_token2.DestroyBlackFundsMethod" href="tether_token2/index.html#moody.m.tether_token2.DestroyBlackFundsMethod">DestroyBlackFundsMethod</a></li>
+<li><a title="moody.m.tether_token2.GetBlackListStatusMethod" href="tether_token2/index.html#moody.m.tether_token2.GetBlackListStatusMethod">GetBlackListStatusMethod</a></li>
+<li><a title="moody.m.tether_token2.GovernanceMethod" href="tether_token2/index.html#moody.m.tether_token2.GovernanceMethod">GovernanceMethod</a></li>
+<li><a title="moody.m.tether_token2.IncreaseAllowanceMethod" href="tether_token2/index.html#moody.m.tether_token2.IncreaseAllowanceMethod">IncreaseAllowanceMethod</a></li>
+<li><a title="moody.m.tether_token2.IsBlackListedMethod" href="tether_token2/index.html#moody.m.tether_token2.IsBlackListedMethod">IsBlackListedMethod</a></li>
+<li><a title="moody.m.tether_token2.IssueMethod" href="tether_token2/index.html#moody.m.tether_token2.IssueMethod">IssueMethod</a></li>
+<li><a title="moody.m.tether_token2.MintMethod" href="tether_token2/index.html#moody.m.tether_token2.MintMethod">MintMethod</a></li>
+<li><a title="moody.m.tether_token2.MintersMethod" href="tether_token2/index.html#moody.m.tether_token2.MintersMethod">MintersMethod</a></li>
+<li><a title="moody.m.tether_token2.NameMethod" href="tether_token2/index.html#moody.m.tether_token2.NameMethod">NameMethod</a></li>
+<li><a title="moody.m.tether_token2.RemoveBlackListMethod" href="tether_token2/index.html#moody.m.tether_token2.RemoveBlackListMethod">RemoveBlackListMethod</a></li>
+<li><a title="moody.m.tether_token2.RemoveMinterMethod" href="tether_token2/index.html#moody.m.tether_token2.RemoveMinterMethod">RemoveMinterMethod</a></li>
+<li><a title="moody.m.tether_token2.SetGovernanceMethod" href="tether_token2/index.html#moody.m.tether_token2.SetGovernanceMethod">SetGovernanceMethod</a></li>
+<li><a title="moody.m.tether_token2.SymbolMethod" href="tether_token2/index.html#moody.m.tether_token2.SymbolMethod">SymbolMethod</a></li>
+<li><a title="moody.m.tether_token2.TotalSupplyMethod" href="tether_token2/index.html#moody.m.tether_token2.TotalSupplyMethod">TotalSupplyMethod</a></li>
+<li><a title="moody.m.tether_token2.TransferFromMethod" href="tether_token2/index.html#moody.m.tether_token2.TransferFromMethod">TransferFromMethod</a></li>
+<li><a title="moody.m.tether_token2.TransferMethod" href="tether_token2/index.html#moody.m.tether_token2.TransferMethod">TransferMethod</a></li>
+<li><a title="moody.m.uniswap_v2_erc20.AllowanceMethod" href="uniswap_v2_erc20/index.html#moody.m.uniswap_v2_erc20.AllowanceMethod">AllowanceMethod</a></li>
+<li><a title="moody.m.uniswap_v2_erc20.ApproveMethod" href="uniswap_v2_erc20/index.html#moody.m.uniswap_v2_erc20.ApproveMethod">ApproveMethod</a></li>
+<li><a title="moody.m.uniswap_v2_erc20.BalanceOfMethod" href="uniswap_v2_erc20/index.html#moody.m.uniswap_v2_erc20.BalanceOfMethod">BalanceOfMethod</a></li>
+<li><a title="moody.m.uniswap_v2_erc20.DecimalsMethod" href="uniswap_v2_erc20/index.html#moody.m.uniswap_v2_erc20.DecimalsMethod">DecimalsMethod</a></li>
+<li><a title="moody.m.uniswap_v2_erc20.DomainSeparatorMethod" href="uniswap_v2_erc20/index.html#moody.m.uniswap_v2_erc20.DomainSeparatorMethod">DomainSeparatorMethod</a></li>
+<li><a title="moody.m.uniswap_v2_erc20.NameMethod" href="uniswap_v2_erc20/index.html#moody.m.uniswap_v2_erc20.NameMethod">NameMethod</a></li>
+<li><a title="moody.m.uniswap_v2_erc20.NoncesMethod" href="uniswap_v2_erc20/index.html#moody.m.uniswap_v2_erc20.NoncesMethod">NoncesMethod</a></li>
+<li><a title="moody.m.uniswap_v2_erc20.PermitMethod" href="uniswap_v2_erc20/index.html#moody.m.uniswap_v2_erc20.PermitMethod">PermitMethod</a></li>
+<li><a title="moody.m.uniswap_v2_erc20.PermitTypehashMethod" href="uniswap_v2_erc20/index.html#moody.m.uniswap_v2_erc20.PermitTypehashMethod">PermitTypehashMethod</a></li>
+<li><a title="moody.m.uniswap_v2_erc20.SymbolMethod" href="uniswap_v2_erc20/index.html#moody.m.uniswap_v2_erc20.SymbolMethod">SymbolMethod</a></li>
+<li><a title="moody.m.uniswap_v2_erc20.TotalSupplyMethod" href="uniswap_v2_erc20/index.html#moody.m.uniswap_v2_erc20.TotalSupplyMethod">TotalSupplyMethod</a></li>
+<li><a title="moody.m.uniswap_v2_erc20.TransferFromMethod" href="uniswap_v2_erc20/index.html#moody.m.uniswap_v2_erc20.TransferFromMethod">TransferFromMethod</a></li>
+<li><a title="moody.m.uniswap_v2_erc20.TransferMethod" href="uniswap_v2_erc20/index.html#moody.m.uniswap_v2_erc20.TransferMethod">TransferMethod</a></li>
+<li><a title="moody.m.uniswap_v2_factory.AllPairsLengthMethod" href="uniswap_v2_factory/index.html#moody.m.uniswap_v2_factory.AllPairsLengthMethod">AllPairsLengthMethod</a></li>
+<li><a title="moody.m.uniswap_v2_factory.AllPairsMethod" href="uniswap_v2_factory/index.html#moody.m.uniswap_v2_factory.AllPairsMethod">AllPairsMethod</a></li>
+<li><a title="moody.m.uniswap_v2_factory.CreatePairMethod" href="uniswap_v2_factory/index.html#moody.m.uniswap_v2_factory.CreatePairMethod">CreatePairMethod</a></li>
+<li><a title="moody.m.uniswap_v2_factory.FeeToMethod" href="uniswap_v2_factory/index.html#moody.m.uniswap_v2_factory.FeeToMethod">FeeToMethod</a></li>
+<li><a title="moody.m.uniswap_v2_factory.FeeToSetterMethod" href="uniswap_v2_factory/index.html#moody.m.uniswap_v2_factory.FeeToSetterMethod">FeeToSetterMethod</a></li>
+<li><a title="moody.m.uniswap_v2_factory.GetPairMethod" href="uniswap_v2_factory/index.html#moody.m.uniswap_v2_factory.GetPairMethod">GetPairMethod</a></li>
+<li><a title="moody.m.uniswap_v2_factory.MigratorMethod" href="uniswap_v2_factory/index.html#moody.m.uniswap_v2_factory.MigratorMethod">MigratorMethod</a></li>
+<li><a title="moody.m.uniswap_v2_factory.PairCodeHashMethod" href="uniswap_v2_factory/index.html#moody.m.uniswap_v2_factory.PairCodeHashMethod">PairCodeHashMethod</a></li>
+<li><a title="moody.m.uniswap_v2_factory.SetFeeToMethod" href="uniswap_v2_factory/index.html#moody.m.uniswap_v2_factory.SetFeeToMethod">SetFeeToMethod</a></li>
+<li><a title="moody.m.uniswap_v2_factory.SetFeeToSetterMethod" href="uniswap_v2_factory/index.html#moody.m.uniswap_v2_factory.SetFeeToSetterMethod">SetFeeToSetterMethod</a></li>
+<li><a title="moody.m.uniswap_v2_factory.SetMigratorMethod" href="uniswap_v2_factory/index.html#moody.m.uniswap_v2_factory.SetMigratorMethod">SetMigratorMethod</a></li>
+<li><a title="moody.m.uniswap_v2_router02.AddLiquidityEthMethod" href="uniswap_v2_router02/index.html#moody.m.uniswap_v2_router02.AddLiquidityEthMethod">AddLiquidityEthMethod</a></li>
+<li><a title="moody.m.uniswap_v2_router02.AddLiquidityMethod" href="uniswap_v2_router02/index.html#moody.m.uniswap_v2_router02.AddLiquidityMethod">AddLiquidityMethod</a></li>
+<li><a title="moody.m.uniswap_v2_router02.FactoryMethod" href="uniswap_v2_router02/index.html#moody.m.uniswap_v2_router02.FactoryMethod">FactoryMethod</a></li>
+<li><a title="moody.m.uniswap_v2_router02.GetAmountInMethod" href="uniswap_v2_router02/index.html#moody.m.uniswap_v2_router02.GetAmountInMethod">GetAmountInMethod</a></li>
+<li><a title="moody.m.uniswap_v2_router02.GetAmountOutMethod" href="uniswap_v2_router02/index.html#moody.m.uniswap_v2_router02.GetAmountOutMethod">GetAmountOutMethod</a></li>
+<li><a title="moody.m.uniswap_v2_router02.GetAmountsInMethod" href="uniswap_v2_router02/index.html#moody.m.uniswap_v2_router02.GetAmountsInMethod">GetAmountsInMethod</a></li>
+<li><a title="moody.m.uniswap_v2_router02.GetAmountsOutMethod" href="uniswap_v2_router02/index.html#moody.m.uniswap_v2_router02.GetAmountsOutMethod">GetAmountsOutMethod</a></li>
+<li><a title="moody.m.uniswap_v2_router02.QuoteMethod" href="uniswap_v2_router02/index.html#moody.m.uniswap_v2_router02.QuoteMethod">QuoteMethod</a></li>
+<li><a title="moody.m.uniswap_v2_router02.RemoveLiquidityEthMethod" href="uniswap_v2_router02/index.html#moody.m.uniswap_v2_router02.RemoveLiquidityEthMethod">RemoveLiquidityEthMethod</a></li>
+<li><a title="moody.m.uniswap_v2_router02.RemoveLiquidityEthSupportingFeeOnTransferTokensMethod" href="uniswap_v2_router02/index.html#moody.m.uniswap_v2_router02.RemoveLiquidityEthSupportingFeeOnTransferTokensMethod">RemoveLiquidityEthSupportingFeeOnTransferTokensMethod</a></li>
+<li><a title="moody.m.uniswap_v2_router02.RemoveLiquidityEthWithPermitMethod" href="uniswap_v2_router02/index.html#moody.m.uniswap_v2_router02.RemoveLiquidityEthWithPermitMethod">RemoveLiquidityEthWithPermitMethod</a></li>
+<li><a title="moody.m.uniswap_v2_router02.RemoveLiquidityEthWithPermitSupportingFeeOnTransferTokensMethod" href="uniswap_v2_router02/index.html#moody.m.uniswap_v2_router02.RemoveLiquidityEthWithPermitSupportingFeeOnTransferTokensMethod">RemoveLiquidityEthWithPermitSupportingFeeOnTransferTokensMethod</a></li>
+<li><a title="moody.m.uniswap_v2_router02.RemoveLiquidityMethod" href="uniswap_v2_router02/index.html#moody.m.uniswap_v2_router02.RemoveLiquidityMethod">RemoveLiquidityMethod</a></li>
+<li><a title="moody.m.uniswap_v2_router02.RemoveLiquidityWithPermitMethod" href="uniswap_v2_router02/index.html#moody.m.uniswap_v2_router02.RemoveLiquidityWithPermitMethod">RemoveLiquidityWithPermitMethod</a></li>
+<li><a title="moody.m.uniswap_v2_router02.SwapEthForExactTokensMethod" href="uniswap_v2_router02/index.html#moody.m.uniswap_v2_router02.SwapEthForExactTokensMethod">SwapEthForExactTokensMethod</a></li>
+<li><a title="moody.m.uniswap_v2_router02.SwapExactEthForTokensMethod" href="uniswap_v2_router02/index.html#moody.m.uniswap_v2_router02.SwapExactEthForTokensMethod">SwapExactEthForTokensMethod</a></li>
+<li><a title="moody.m.uniswap_v2_router02.SwapExactEthForTokensSupportingFeeOnTransferTokensMethod" href="uniswap_v2_router02/index.html#moody.m.uniswap_v2_router02.SwapExactEthForTokensSupportingFeeOnTransferTokensMethod">SwapExactEthForTokensSupportingFeeOnTransferTokensMethod</a></li>
+<li><a title="moody.m.uniswap_v2_router02.SwapExactTokensForEthMethod" href="uniswap_v2_router02/index.html#moody.m.uniswap_v2_router02.SwapExactTokensForEthMethod">SwapExactTokensForEthMethod</a></li>
+<li><a title="moody.m.uniswap_v2_router02.SwapExactTokensForEthSupportingFeeOnTransferTokensMethod" href="uniswap_v2_router02/index.html#moody.m.uniswap_v2_router02.SwapExactTokensForEthSupportingFeeOnTransferTokensMethod">SwapExactTokensForEthSupportingFeeOnTransferTokensMethod</a></li>
+<li><a title="moody.m.uniswap_v2_router02.SwapExactTokensForTokensMethod" href="uniswap_v2_router02/index.html#moody.m.uniswap_v2_router02.SwapExactTokensForTokensMethod">SwapExactTokensForTokensMethod</a></li>
+<li><a title="moody.m.uniswap_v2_router02.SwapExactTokensForTokensSupportingFeeOnTransferTokensMethod" href="uniswap_v2_router02/index.html#moody.m.uniswap_v2_router02.SwapExactTokensForTokensSupportingFeeOnTransferTokensMethod">SwapExactTokensForTokensSupportingFeeOnTransferTokensMethod</a></li>
+<li><a title="moody.m.uniswap_v2_router02.SwapTokensForExactEthMethod" href="uniswap_v2_router02/index.html#moody.m.uniswap_v2_router02.SwapTokensForExactEthMethod">SwapTokensForExactEthMethod</a></li>
+<li><a title="moody.m.uniswap_v2_router02.SwapTokensForExactTokensMethod" href="uniswap_v2_router02/index.html#moody.m.uniswap_v2_router02.SwapTokensForExactTokensMethod">SwapTokensForExactTokensMethod</a></li>
+<li><a title="moody.m.uniswap_v2_router02.WethMethod" href="uniswap_v2_router02/index.html#moody.m.uniswap_v2_router02.WethMethod">WethMethod</a></li>
+<li><a title="moody.m.v_r_f_consumer.GetRandomNumberMethod" href="v_r_f_consumer/index.html#moody.m.v_r_f_consumer.GetRandomNumberMethod">GetRandomNumberMethod</a></li>
+<li><a title="moody.m.v_r_f_consumer.RandomResultMethod" href="v_r_f_consumer/index.html#moody.m.v_r_f_consumer.RandomResultMethod">RandomResultMethod</a></li>
+<li><a title="moody.m.v_r_f_consumer.RawFulfillRandomnessMethod" href="v_r_f_consumer/index.html#moody.m.v_r_f_consumer.RawFulfillRandomnessMethod">RawFulfillRandomnessMethod</a></li>
+<li><a title="moody.m.v_r_f_coordinator.CallbacksMethod" href="v_r_f_coordinator/index.html#moody.m.v_r_f_coordinator.CallbacksMethod">CallbacksMethod</a></li>
+<li><a title="moody.m.v_r_f_coordinator.FulfillRandomnessRequestMethod" href="v_r_f_coordinator/index.html#moody.m.v_r_f_coordinator.FulfillRandomnessRequestMethod">FulfillRandomnessRequestMethod</a></li>
+<li><a title="moody.m.v_r_f_coordinator.HashOfKeyMethod" href="v_r_f_coordinator/index.html#moody.m.v_r_f_coordinator.HashOfKeyMethod">HashOfKeyMethod</a></li>
+<li><a title="moody.m.v_r_f_coordinator.IsOwnerMethod" href="v_r_f_coordinator/index.html#moody.m.v_r_f_coordinator.IsOwnerMethod">IsOwnerMethod</a></li>
+<li><a title="moody.m.v_r_f_coordinator.OnTokenTransferMethod" href="v_r_f_coordinator/index.html#moody.m.v_r_f_coordinator.OnTokenTransferMethod">OnTokenTransferMethod</a></li>
+<li><a title="moody.m.v_r_f_coordinator.OwnerMethod" href="v_r_f_coordinator/index.html#moody.m.v_r_f_coordinator.OwnerMethod">OwnerMethod</a></li>
+<li><a title="moody.m.v_r_f_coordinator.PreseedOffsetMethod" href="v_r_f_coordinator/index.html#moody.m.v_r_f_coordinator.PreseedOffsetMethod">PreseedOffsetMethod</a></li>
+<li><a title="moody.m.v_r_f_coordinator.ProofLengthMethod" href="v_r_f_coordinator/index.html#moody.m.v_r_f_coordinator.ProofLengthMethod">ProofLengthMethod</a></li>
+<li><a title="moody.m.v_r_f_coordinator.PublicKeyOffsetMethod" href="v_r_f_coordinator/index.html#moody.m.v_r_f_coordinator.PublicKeyOffsetMethod">PublicKeyOffsetMethod</a></li>
+<li><a title="moody.m.v_r_f_coordinator.RegisterProvingKeyMethod" href="v_r_f_coordinator/index.html#moody.m.v_r_f_coordinator.RegisterProvingKeyMethod">RegisterProvingKeyMethod</a></li>
+<li><a title="moody.m.v_r_f_coordinator.ServiceAgreementsMethod" href="v_r_f_coordinator/index.html#moody.m.v_r_f_coordinator.ServiceAgreementsMethod">ServiceAgreementsMethod</a></li>
+<li><a title="moody.m.v_r_f_coordinator.TransferOwnershipMethod" href="v_r_f_coordinator/index.html#moody.m.v_r_f_coordinator.TransferOwnershipMethod">TransferOwnershipMethod</a></li>
+<li><a title="moody.m.v_r_f_coordinator.WithdrawMethod" href="v_r_f_coordinator/index.html#moody.m.v_r_f_coordinator.WithdrawMethod">WithdrawMethod</a></li>
+<li><a title="moody.m.v_r_f_coordinator.WithdrawableTokensMethod" href="v_r_f_coordinator/index.html#moody.m.v_r_f_coordinator.WithdrawableTokensMethod">WithdrawableTokensMethod</a></li>
+<li><a title="moody.openzeppelin.AcceptAdminMethod" href="../openzeppelin/index.html#moody.openzeppelin.AcceptAdminMethod">AcceptAdminMethod</a></li>
+<li><a title="moody.openzeppelin.AdminMethod" href="../openzeppelin/index.html#moody.openzeppelin.AdminMethod">AdminMethod</a></li>
+<li><a title="moody.openzeppelin.CancelTransactionMethod" href="../openzeppelin/index.html#moody.openzeppelin.CancelTransactionMethod">CancelTransactionMethod</a></li>
+<li><a title="moody.openzeppelin.DelayMethod" href="../openzeppelin/index.html#moody.openzeppelin.DelayMethod">DelayMethod</a></li>
+<li><a title="moody.openzeppelin.ExecuteTransactionMethod" href="../openzeppelin/index.html#moody.openzeppelin.ExecuteTransactionMethod">ExecuteTransactionMethod</a></li>
+<li><a title="moody.openzeppelin.GracePeriodMethod" href="../openzeppelin/index.html#moody.openzeppelin.GracePeriodMethod">GracePeriodMethod</a></li>
+<li><a title="moody.openzeppelin.MaximumDelayMethod" href="../openzeppelin/index.html#moody.openzeppelin.MaximumDelayMethod">MaximumDelayMethod</a></li>
+<li><a title="moody.openzeppelin.MinimumDelayMethod" href="../openzeppelin/index.html#moody.openzeppelin.MinimumDelayMethod">MinimumDelayMethod</a></li>
+<li><a title="moody.openzeppelin.PendingAdminMethod" href="../openzeppelin/index.html#moody.openzeppelin.PendingAdminMethod">PendingAdminMethod</a></li>
+<li><a title="moody.openzeppelin.QueueTransactionMethod" href="../openzeppelin/index.html#moody.openzeppelin.QueueTransactionMethod">QueueTransactionMethod</a></li>
+<li><a title="moody.openzeppelin.QueuedTransactionsMethod" href="../openzeppelin/index.html#moody.openzeppelin.QueuedTransactionsMethod">QueuedTransactionsMethod</a></li>
+<li><a title="moody.openzeppelin.SetDelayMethod" href="../openzeppelin/index.html#moody.openzeppelin.SetDelayMethod">SetDelayMethod</a></li>
+<li><a title="moody.openzeppelin.SetPendingAdminMethod" href="../openzeppelin/index.html#moody.openzeppelin.SetPendingAdminMethod">SetPendingAdminMethod</a></li>
+</ul>
+<h3>Static methods</h3>
+<dl>
+<dt id="moody.m.bases.ContractMethod.validate_and_checksum_address"><code class="name flex">
+<span>def <span class="ident">validate_and_checksum_address</span></span>(<span>address: str)</span>
+</code></dt>
+<dd>
+<div class="desc"><p>Validate the given address, and return it's checksum address.</p></div>
+<details class="source">
+<summary>
+<span>Expand source code</span>
+</summary>
+<pre><code class="python">@staticmethod
+def validate_and_checksum_address(address: str):
+    &#34;&#34;&#34;Validate the given address, and return it&#39;s checksum address.&#34;&#34;&#34;
+    if not is_address(address):
+        raise TypeError(&#34;Invalid address provided: {}&#34;.format(address))
+    return to_checksum_address(address)</code></pre>
+</details>
+</dd>
+</dl>
+<h3>Methods</h3>
+<dl>
+<dt id="moody.m.bases.ContractMethod.normalize_tx_params"><code class="name flex">
+<span>def <span class="ident">normalize_tx_params</span></span>(<span>self, tx_params) ‑> <a title="moody.m.tx_params.TxParams" href="tx_params.html#moody.m.tx_params.TxParams">TxParams</a></span>
+</code></dt>
+<dd>
+<div class="desc"><p>Normalize and return the given transaction parameters.</p></div>
+<details class="source">
+<summary>
+<span>Expand source code</span>
+</summary>
+<pre><code class="python">def normalize_tx_params(self, tx_params) -&gt; TxParams:
+    &#34;&#34;&#34;Normalize and return the given transaction parameters.&#34;&#34;&#34;
+    if not tx_params:
+        tx_params = TxParams()
+    if not tx_params.from_:
+        tx_params.from_ = self._web3_eth.coinbase or (
+            self._web3_eth.accounts[0]
+            if len(self._web3_eth.accounts) &gt; 0
+            else None
+        )
+    if tx_params.from_:
+        tx_params.from_ = self.validate_and_checksum_address(
+            tx_params.from_
+        )
+    return tx_params</code></pre>
+</details>
+</dd>
+<dt id="moody.m.bases.ContractMethod.setWait"><code class="name flex">
+<span>def <span class="ident">setWait</span></span>(<span>self, t: int) ‑> <a title="moody.m.bases.ContractMethod" href="#moody.m.bases.ContractMethod">ContractMethod</a></span>
+</code></dt>
+<dd>
+<div class="desc"></div>
+<details class="source">
+<summary>
+<span>Expand source code</span>
+</summary>
+<pre><code class="python">def setWait(self, t: int) -&gt; &#34;ContractMethod&#34;:
+    self._wait = t
+    return self</code></pre>
+</details>
+</dd>
+</dl>
+</dd>
+<dt id="moody.m.bases.Signatures"><code class="flex name class">
+<span>class <span class="ident">Signatures</span></span>
+<span>(</span><span>abi: <built-in function any>)</span>
+</code></dt>
+<dd>
+<div class="desc"></div>
+<details class="source">
+<summary>
+<span>Expand source code</span>
+</summary>
+<pre><code class="python">class Signatures:
+    _function_signatures = {}
+
+    def __init__(self, abi: any):
+        for func in [obj for obj in abi if obj[&#39;type&#39;] == &#39;function&#39;]:
+            name = func[&#39;name&#39;]
+            types = [input[&#39;type&#39;] for input in func[&#39;inputs&#39;]]
+            self._function_signatures[name] = &#39;{}({})&#39;.format(name, &#39;,&#39;.join(types))
+
+    def fromSignatures(self) -&gt; dict:
+        return self._function_signatures</code></pre>
+</details>
+<h3>Subclasses</h3>
+<ul class="hlist">
+<li><a title="moody.m.b_send.SignatureGenerator" href="b_send/index.html#moody.m.b_send.SignatureGenerator">SignatureGenerator</a></li>
+<li><a title="moody.m.beri_coin.SignatureGenerator" href="beri_coin/index.html#moody.m.beri_coin.SignatureGenerator">SignatureGenerator</a></li>
+<li><a title="moody.m.blockhash_store.SignatureGenerator" href="blockhash_store/index.html#moody.m.blockhash_store.SignatureGenerator">SignatureGenerator</a></li>
+<li><a title="moody.m.c_token.SignatureGenerator" href="c_token/index.html#moody.m.c_token.SignatureGenerator">SignatureGenerator</a></li>
+<li><a title="moody.m.eth2_multi_deposit.SignatureGenerator" href="eth2_multi_deposit/index.html#moody.m.eth2_multi_deposit.SignatureGenerator">SignatureGenerator</a></li>
+<li><a title="moody.m.layer_zero_u_s_d_t.SignatureGenerator" href="layer_zero_u_s_d_t/index.html#moody.m.layer_zero_u_s_d_t.SignatureGenerator">SignatureGenerator</a></li>
+<li><a title="moody.m.multicall.SignatureGenerator" href="multicall/index.html#moody.m.multicall.SignatureGenerator">SignatureGenerator</a></li>
+<li><a title="moody.m.multicall2.SignatureGenerator" href="multicall2/index.html#moody.m.multicall2.SignatureGenerator">SignatureGenerator</a></li>
+<li><a title="moody.m.oracle.SignatureGenerator" href="oracle/index.html#moody.m.oracle.SignatureGenerator">SignatureGenerator</a></li>
+<li><a title="moody.m.pharaohs.SignatureGenerator" href="pharaohs/index.html#moody.m.pharaohs.SignatureGenerator">SignatureGenerator</a></li>
+<li><a title="moody.m.tc20.SignatureGenerator" href="tc20/index.html#moody.m.tc20.SignatureGenerator">SignatureGenerator</a></li>
+<li><a title="moody.m.tether_token2.SignatureGenerator" href="tether_token2/index.html#moody.m.tether_token2.SignatureGenerator">SignatureGenerator</a></li>
+<li><a title="moody.m.uniswap_v2_erc20.SignatureGenerator" href="uniswap_v2_erc20/index.html#moody.m.uniswap_v2_erc20.SignatureGenerator">SignatureGenerator</a></li>
+<li><a title="moody.m.uniswap_v2_factory.SignatureGenerator" href="uniswap_v2_factory/index.html#moody.m.uniswap_v2_factory.SignatureGenerator">SignatureGenerator</a></li>
+<li><a title="moody.m.uniswap_v2_router02.SignatureGenerator" href="uniswap_v2_router02/index.html#moody.m.uniswap_v2_router02.SignatureGenerator">SignatureGenerator</a></li>
+<li><a title="moody.m.v_r_f_consumer.SignatureGenerator" href="v_r_f_consumer/index.html#moody.m.v_r_f_consumer.SignatureGenerator">SignatureGenerator</a></li>
+<li><a title="moody.m.v_r_f_coordinator.SignatureGenerator" href="v_r_f_coordinator/index.html#moody.m.v_r_f_coordinator.SignatureGenerator">SignatureGenerator</a></li>
+</ul>
+<h3>Methods</h3>
+<dl>
+<dt id="moody.m.bases.Signatures.fromSignatures"><code class="name flex">
+<span>def <span class="ident">fromSignatures</span></span>(<span>self) ‑> dict</span>
+</code></dt>
+<dd>
+<div class="desc"></div>
+<details class="source">
+<summary>
+<span>Expand source code</span>
+</summary>
+<pre><code class="python">def fromSignatures(self) -&gt; dict:
+    return self._function_signatures</code></pre>
+</details>
+</dd>
+</dl>
+</dd>
+<dt id="moody.m.bases.Validator"><code class="flex name class">
+<span>class <span class="ident">Validator</span></span>
+<span>(</span><span>web3_or_provider: web3.main.Web3, contract_address: str)</span>
+</code></dt>
+<dd>
+<div class="desc"><p>Base class for validating inputs to methods.</p>
+<p>Initialize the instance.</p></div>
+<details class="source">
+<summary>
+<span>Expand source code</span>
+</summary>
+<pre><code class="python">class Validator:
+    &#34;&#34;&#34;Base class for validating inputs to methods.&#34;&#34;&#34;
+
+    def __init__(
+            self,
+            web3_or_provider: Web3,
+            contract_address: str,
+    ):
+        &#34;&#34;&#34;Initialize the instance.&#34;&#34;&#34;
+        pass
+
+    def assert_valid(
+            self, method_name: str, parameter_name: str, argument_value: Any
+    ):
+        &#34;&#34;&#34;Raise an exception if method input is not valid.
+
+        :param method_name: Name of the method whose input is to be validated.
+        :param parameter_name: Name of the parameter whose input is to be
+            validated.
+        :param argument_value: Value of argument to parameter to be validated.
+        &#34;&#34;&#34;
+
+    def bindSignatures(self, so: Signatures) -&gt; None:
+        self.binding: Signatures = so
+
+    def getSignature(self, sign_name: str) -&gt; str:
+        return self.binding.fromSignatures()[sign_name]</code></pre>
+</details>
+<h3>Subclasses</h3>
+<ul class="hlist">
+<li><a title="moody.m.b_send.BSendValidator" href="b_send/index.html#moody.m.b_send.BSendValidator">BSendValidator</a></li>
+<li><a title="moody.m.beri_coin.BeriCoinValidator" href="beri_coin/index.html#moody.m.beri_coin.BeriCoinValidator">BeriCoinValidator</a></li>
+<li><a title="moody.m.blockhash_store.BlockhashStoreValidator" href="blockhash_store/index.html#moody.m.blockhash_store.BlockhashStoreValidator">BlockhashStoreValidator</a></li>
+<li><a title="moody.m.c_token.CTokenValidator" href="c_token/index.html#moody.m.c_token.CTokenValidator">CTokenValidator</a></li>
+<li><a title="moody.m.eth2_multi_deposit.Eth2MultiDepositValidator" href="eth2_multi_deposit/index.html#moody.m.eth2_multi_deposit.Eth2MultiDepositValidator">Eth2MultiDepositValidator</a></li>
+<li><a title="moody.m.layer_zero_u_s_d_t.LayerZeroUSDTValidator" href="layer_zero_u_s_d_t/index.html#moody.m.layer_zero_u_s_d_t.LayerZeroUSDTValidator">LayerZeroUSDTValidator</a></li>
+<li><a title="moody.m.multicall.MulticallValidator" href="multicall/index.html#moody.m.multicall.MulticallValidator">MulticallValidator</a></li>
+<li><a title="moody.m.multicall2.Multicall2Validator" href="multicall2/index.html#moody.m.multicall2.Multicall2Validator">Multicall2Validator</a></li>
+<li><a title="moody.m.oracle.OracleValidator" href="oracle/index.html#moody.m.oracle.OracleValidator">OracleValidator</a></li>
+<li><a title="moody.m.pharaohs.pharaohsValidator" href="pharaohs/index.html#moody.m.pharaohs.pharaohsValidator">pharaohsValidator</a></li>
+<li><a title="moody.m.tc20.Tc20Validator" href="tc20/index.html#moody.m.tc20.Tc20Validator">Tc20Validator</a></li>
+<li><a title="moody.m.tether_token2.TetherToken2Validator" href="tether_token2/index.html#moody.m.tether_token2.TetherToken2Validator">TetherToken2Validator</a></li>
+<li><a title="moody.m.uniswap_v2_erc20.UniswapV2ERC20Validator" href="uniswap_v2_erc20/index.html#moody.m.uniswap_v2_erc20.UniswapV2ERC20Validator">UniswapV2ERC20Validator</a></li>
+<li><a title="moody.m.uniswap_v2_factory.UniswapV2FactoryValidator" href="uniswap_v2_factory/index.html#moody.m.uniswap_v2_factory.UniswapV2FactoryValidator">UniswapV2FactoryValidator</a></li>
+<li><a title="moody.m.uniswap_v2_router02.UniswapV2Router02Validator" href="uniswap_v2_router02/index.html#moody.m.uniswap_v2_router02.UniswapV2Router02Validator">UniswapV2Router02Validator</a></li>
+<li><a title="moody.m.v_r_f_consumer.VRFConsumerValidator" href="v_r_f_consumer/index.html#moody.m.v_r_f_consumer.VRFConsumerValidator">VRFConsumerValidator</a></li>
+<li><a title="moody.m.v_r_f_coordinator.VRFCoordinatorValidator" href="v_r_f_coordinator/index.html#moody.m.v_r_f_coordinator.VRFCoordinatorValidator">VRFCoordinatorValidator</a></li>
+<li><a title="moody.openzeppelin.Timelock6hValidator" href="../openzeppelin/index.html#moody.openzeppelin.Timelock6hValidator">Timelock6hValidator</a></li>
+</ul>
+<h3>Methods</h3>
+<dl>
+<dt id="moody.m.bases.Validator.assert_valid"><code class="name flex">
+<span>def <span class="ident">assert_valid</span></span>(<span>self, method_name: str, parameter_name: str, argument_value: Any)</span>
+</code></dt>
+<dd>
+<div class="desc"><p>Raise an exception if method input is not valid.</p>
+<p>:param method_name: Name of the method whose input is to be validated.
+:param parameter_name: Name of the parameter whose input is to be
+validated.
+:param argument_value: Value of argument to parameter to be validated.</p></div>
+<details class="source">
+<summary>
+<span>Expand source code</span>
+</summary>
+<pre><code class="python">def assert_valid(
+        self, method_name: str, parameter_name: str, argument_value: Any
+):
+    &#34;&#34;&#34;Raise an exception if method input is not valid.
+
+    :param method_name: Name of the method whose input is to be validated.
+    :param parameter_name: Name of the parameter whose input is to be
+        validated.
+    :param argument_value: Value of argument to parameter to be validated.
+    &#34;&#34;&#34;</code></pre>
+</details>
+</dd>
+<dt id="moody.m.bases.Validator.bindSignatures"><code class="name flex">
+<span>def <span class="ident">bindSignatures</span></span>(<span>self, so: <a title="moody.m.bases.Signatures" href="#moody.m.bases.Signatures">Signatures</a>) ‑> NoneType</span>
+</code></dt>
+<dd>
+<div class="desc"></div>
+<details class="source">
+<summary>
+<span>Expand source code</span>
+</summary>
+<pre><code class="python">def bindSignatures(self, so: Signatures) -&gt; None:
+    self.binding: Signatures = so</code></pre>
+</details>
+</dd>
+<dt id="moody.m.bases.Validator.getSignature"><code class="name flex">
+<span>def <span class="ident">getSignature</span></span>(<span>self, sign_name: str) ‑> str</span>
+</code></dt>
+<dd>
+<div class="desc"></div>
+<details class="source">
+<summary>
+<span>Expand source code</span>
+</summary>
+<pre><code class="python">def getSignature(self, sign_name: str) -&gt; str:
+    return self.binding.fromSignatures()[sign_name]</code></pre>
+</details>
+</dd>
+</dl>
+</dd>
+</dl>
+</section>
+</article>
+<nav id="sidebar">
+<h1>Index</h1>
+<div class="toc">
+<ul></ul>
+</div>
+<ul id="index">
+<li><h3>Super-module</h3>
+<ul>
+<li><code><a title="moody.m" href="index.html">moody.m</a></code></li>
+</ul>
+</li>
+<li><h3><a href="#header-classes">Classes</a></h3>
+<ul>
+<li>
+<h4><code><a title="moody.m.bases.ContractBase" href="#moody.m.bases.ContractBase">ContractBase</a></code></h4>
+<ul class="">
+<li><code><a title="moody.m.bases.ContractBase.CallAutoConf" href="#moody.m.bases.ContractBase.CallAutoConf">CallAutoConf</a></code></li>
+<li><code><a title="moody.m.bases.ContractBase.CallContractFee" href="#moody.m.bases.ContractBase.CallContractFee">CallContractFee</a></code></li>
+<li><code><a title="moody.m.bases.ContractBase.CallDebug" href="#moody.m.bases.ContractBase.CallDebug">CallDebug</a></code></li>
+<li><code><a title="moody.m.bases.ContractBase.EnforceTxReceipt" href="#moody.m.bases.ContractBase.EnforceTxReceipt">EnforceTxReceipt</a></code></li>
+<li><code><a title="moody.m.bases.ContractBase.SIGNATURES" href="#moody.m.bases.ContractBase.SIGNATURES">SIGNATURES</a></code></li>
+</ul>
+</li>
+<li>
+<h4><code><a title="moody.m.bases.ContractMethod" href="#moody.m.bases.ContractMethod">ContractMethod</a></code></h4>
+<ul class="">
+<li><code><a title="moody.m.bases.ContractMethod.normalize_tx_params" href="#moody.m.bases.ContractMethod.normalize_tx_params">normalize_tx_params</a></code></li>
+<li><code><a title="moody.m.bases.ContractMethod.setWait" href="#moody.m.bases.ContractMethod.setWait">setWait</a></code></li>
+<li><code><a title="moody.m.bases.ContractMethod.validate_and_checksum_address" href="#moody.m.bases.ContractMethod.validate_and_checksum_address">validate_and_checksum_address</a></code></li>
+</ul>
+</li>
+<li>
+<h4><code><a title="moody.m.bases.Signatures" href="#moody.m.bases.Signatures">Signatures</a></code></h4>
+<ul class="">
+<li><code><a title="moody.m.bases.Signatures.fromSignatures" href="#moody.m.bases.Signatures.fromSignatures">fromSignatures</a></code></li>
+</ul>
+</li>
+<li>
+<h4><code><a title="moody.m.bases.Validator" href="#moody.m.bases.Validator">Validator</a></code></h4>
+<ul class="">
+<li><code><a title="moody.m.bases.Validator.assert_valid" href="#moody.m.bases.Validator.assert_valid">assert_valid</a></code></li>
+<li><code><a title="moody.m.bases.Validator.bindSignatures" href="#moody.m.bases.Validator.bindSignatures">bindSignatures</a></code></li>
+<li><code><a title="moody.m.bases.Validator.getSignature" href="#moody.m.bases.Validator.getSignature">getSignature</a></code></li>
+</ul>
+</li>
+</ul>
+</li>
+</ul>
+</nav>
+</main>
+<footer id="footer">
+<p>Generated by <a href="https://pdoc3.github.io/pdoc"><cite>pdoc</cite> 0.9.1</a>.</p>
+</footer>
+</body>
+</html>

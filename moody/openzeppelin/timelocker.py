@@ -1,4 +1,4 @@
-from ..m.ori20 import Ori20
+from ..m.tc20 import Tc20
 
 
 class TimeLockerMs:
@@ -10,9 +10,10 @@ class TimeLockerMs:
         self.lock = True
 
     def appendAction(self, address_contract: str, method):
-        contract = Ori20(address_contract).CallDebug(False).CallContractFee(10000000)
-        contract.add_minter("sokcpokspdockpokd")
+        # contract = Tc20(address_contract).CallDebug(False).CallContractFee(10000000)
+        # contract.add_minter("sokcpokspdockpokd")
         ## get_function_by_signature
         # signature =
         # data =
         # value
+        pass

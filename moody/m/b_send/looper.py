@@ -44,10 +44,11 @@ class LooperBulk(BaseBulk):
         else:
             errorNotify(info)
 
-    def LoopBatchExecution(self,
-                           express_contract: BSend,
-                           coin_contract: pharaohs,
-                           notify=None, errorNotify=None) -> None:
+    def executeTokenTransferOnContractBusTg(
+            self,
+            express_contract: BSend,
+            coin_contract: pharaohs,
+            notify=None, errorNotify=None) -> None:
 
         coin_address = coin_contract.contract_address
         express_address = express_contract.contract_address

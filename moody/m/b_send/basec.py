@@ -36,9 +36,9 @@ class BaseBulk:
     wei = 1000000000000000000
     token_symbol = "xDai"
     fee_set = 9
-    batch_limit = 250
 
     def __init__(self):
+        self.batch_limit = 250
         self.list_address = list()
         self.list_amount = list()
         self.err_address = list()
@@ -66,11 +66,24 @@ class BaseBulk:
         self._batch = []
 
     def weiUpdate(self, decimal: int) -> "BaseBulk":
+        """
+        only update this for the change wei size of the native token.
+        :param decimal: the size of wei decimal in native token
+        :return:
+        """
         self.wei = 10 ** decimal
         return self
 
     def batchLimitUpdate(self, total_count: int) -> "BaseBulk":
         self.batch_limit = total_count
+
+        if total_count > 255:
+            self.batch_limit = 255
+            print("⚠️ You cannot set the count total to be more than 255")
+        if total_count < 10:
+            self.batch_limit = 10
+            print("⚠️ You cannot set the count total to be less than 10")
+
         return self
 
     def symbolUpdate(self, coin_symbol: str) -> "BaseBulk":
@@ -78,6 +91,11 @@ class BaseBulk:
         return self
 
     def withDecimal(self, dec: int) -> "BaseBulk":
+        """
+        the size of the token decimal
+        :param dec: number of decimal
+        :return:
+        """
         self.decimal = dec
         return self
 
@@ -191,7 +209,7 @@ class BaseBulk:
         if not self._batch_contract:
             return
 
-        batches = math.ceil(self.transaction_count / BaseBulk.batch_limit)
+        batches = math.ceil(self.transaction_count / self.batch_limit)
         batchslots = list()
 
         w = 0
@@ -199,7 +217,7 @@ class BaseBulk:
             k = 0
             addresses = []
             amountcode = []
-            while k < BaseBulk.batch_limit and w < self.transaction_count:
+            while k < self.batch_limit and w < self.transaction_count:
                 c_address = self.list_address[k]
                 addresses.append(c_address)
                 c_amount_code = self.list_amount[k]
