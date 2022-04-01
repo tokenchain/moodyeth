@@ -67,16 +67,16 @@ class MulticallCall(TypedDict):
     callData: Union[bytes, str]
 
 
-class AggregateMethod(ContractMethod): # pylint: disable=invalid-name
+class AggregateMethod(ContractMethod):  # pylint: disable=invalid-name
     """Various interfaces to the aggregate method."""
 
-    def __init__(self, elib: MiliDoS, contract_address: str, contract_function: ContractFunction, validator: Validator=None):
+    def __init__(self, elib: MiliDoS, contract_address: str, contract_function: ContractFunction, validator: Validator = None):
         """Persist instance data."""
         super().__init__(elib, contract_address, validator)
         self._underlying_method = contract_function
         self.sign = validator.getSignature("aggregate")
 
-    def validate_and_normalize_inputs(self, calls: List[MulticallCall])->any:
+    def validate_and_normalize_inputs(self, calls: List[MulticallCall]) -> any:
         """Validate the inputs to the aggregate method."""
         self.validator.assert_valid(
             method_name='aggregate',
@@ -85,9 +85,7 @@ class AggregateMethod(ContractMethod): # pylint: disable=invalid-name
         )
         return (calls)
 
-
-
-    def block_send(self, calls: List[MulticallCall],_gaswei:int,_pricewei:int,_valeth:int=0,_debugtx: bool = False,_receipList: bool = False) -> Tuple[int, List[Union[bytes, str]]]:
+    def block_send(self, calls: List[MulticallCall], _gaswei: int, _pricewei: int, _valeth: int = 0, _debugtx: bool = False, _receipList: bool = False) -> Tuple[int, List[Union[bytes, str]]]:
         """Execute underlying contract method via eth_call.
 
         :param tx_params: transaction parameters
@@ -143,7 +141,6 @@ class AggregateMethod(ContractMethod): # pylint: disable=invalid-name
             else:
                 print(f"{Bolors.FAIL}Error Revert {Bolors.RESET}, aggregate. Reason: Unknown")
 
-
     def send_transaction(self, calls: List[MulticallCall], tx_params: Optional[TxParams] = None) -> Union[HexBytes, bytes]:
         """Execute underlying contract method via eth_sendTransaction.
 
@@ -165,16 +162,17 @@ class AggregateMethod(ContractMethod): # pylint: disable=invalid-name
         tx_params = super().normalize_tx_params(tx_params)
         return self._underlying_method(calls).estimateGas(tx_params.as_dict())
 
-class GetBlockHashMethod(ContractMethod): # pylint: disable=invalid-name
+
+class GetBlockHashMethod(ContractMethod):  # pylint: disable=invalid-name
     """Various interfaces to the getBlockHash method."""
 
-    def __init__(self, elib: MiliDoS, contract_address: str, contract_function: ContractFunction, validator: Validator=None):
+    def __init__(self, elib: MiliDoS, contract_address: str, contract_function: ContractFunction, validator: Validator = None):
         """Persist instance data."""
         super().__init__(elib, contract_address, validator)
         self._underlying_method = contract_function
         self.sign = validator.getSignature("getBlockHash")
 
-    def validate_and_normalize_inputs(self, block_number: int)->any:
+    def validate_and_normalize_inputs(self, block_number: int) -> any:
         """Validate the inputs to the getBlockHash method."""
         self.validator.assert_valid(
             method_name='getBlockHash',
@@ -185,13 +183,11 @@ class GetBlockHashMethod(ContractMethod): # pylint: disable=invalid-name
         block_number = int(block_number)
         return (block_number)
 
-
-
-    def block_call(self,block_number: int, debug:bool=False) -> Union[bytes, str]:
+    def block_call(self, block_number: int, debug: bool = False) -> Union[bytes, str]:
         _fn = self._underlying_method(block_number)
         returned = _fn.call({
-                'from': self._operate
-            })
+            'from': self._operate
+        })
         return Union[bytes, str](returned)
 
     def estimate_gas(self, block_number: int, tx_params: Optional[TxParams] = None) -> int:
@@ -200,22 +196,21 @@ class GetBlockHashMethod(ContractMethod): # pylint: disable=invalid-name
         tx_params = super().normalize_tx_params(tx_params)
         return self._underlying_method(block_number).estimateGas(tx_params.as_dict())
 
-class GetCurrentBlockCoinbaseMethod(ContractMethod): # pylint: disable=invalid-name
+
+class GetCurrentBlockCoinbaseMethod(ContractMethod):  # pylint: disable=invalid-name
     """Various interfaces to the getCurrentBlockCoinbase method."""
 
-    def __init__(self, elib: MiliDoS, contract_address: str, contract_function: ContractFunction, validator: Validator=None):
+    def __init__(self, elib: MiliDoS, contract_address: str, contract_function: ContractFunction, validator: Validator = None):
         """Persist instance data."""
         super().__init__(elib, contract_address)
         self._underlying_method = contract_function
         self.sign = validator.getSignature("getCurrentBlockCoinbase")
 
-
-
-    def block_call(self, debug:bool=False) -> str:
+    def block_call(self, debug: bool = False) -> str:
         _fn = self._underlying_method()
         returned = _fn.call({
-                'from': self._operate
-            })
+            'from': self._operate
+        })
         return str(returned)
 
     def estimate_gas(self, tx_params: Optional[TxParams] = None) -> int:
@@ -223,22 +218,21 @@ class GetCurrentBlockCoinbaseMethod(ContractMethod): # pylint: disable=invalid-n
         tx_params = super().normalize_tx_params(tx_params)
         return self._underlying_method().estimateGas(tx_params.as_dict())
 
-class GetCurrentBlockDifficultyMethod(ContractMethod): # pylint: disable=invalid-name
+
+class GetCurrentBlockDifficultyMethod(ContractMethod):  # pylint: disable=invalid-name
     """Various interfaces to the getCurrentBlockDifficulty method."""
 
-    def __init__(self, elib: MiliDoS, contract_address: str, contract_function: ContractFunction, validator: Validator=None):
+    def __init__(self, elib: MiliDoS, contract_address: str, contract_function: ContractFunction, validator: Validator = None):
         """Persist instance data."""
         super().__init__(elib, contract_address)
         self._underlying_method = contract_function
         self.sign = validator.getSignature("getCurrentBlockDifficulty")
 
-
-
-    def block_call(self, debug:bool=False) -> int:
+    def block_call(self, debug: bool = False) -> int:
         _fn = self._underlying_method()
         returned = _fn.call({
-                'from': self._operate
-            })
+            'from': self._operate
+        })
         return int(returned)
 
     def estimate_gas(self, tx_params: Optional[TxParams] = None) -> int:
@@ -246,22 +240,21 @@ class GetCurrentBlockDifficultyMethod(ContractMethod): # pylint: disable=invalid
         tx_params = super().normalize_tx_params(tx_params)
         return self._underlying_method().estimateGas(tx_params.as_dict())
 
-class GetCurrentBlockGasLimitMethod(ContractMethod): # pylint: disable=invalid-name
+
+class GetCurrentBlockGasLimitMethod(ContractMethod):  # pylint: disable=invalid-name
     """Various interfaces to the getCurrentBlockGasLimit method."""
 
-    def __init__(self, elib: MiliDoS, contract_address: str, contract_function: ContractFunction, validator: Validator=None):
+    def __init__(self, elib: MiliDoS, contract_address: str, contract_function: ContractFunction, validator: Validator = None):
         """Persist instance data."""
         super().__init__(elib, contract_address)
         self._underlying_method = contract_function
         self.sign = validator.getSignature("getCurrentBlockGasLimit")
 
-
-
-    def block_call(self, debug:bool=False) -> int:
+    def block_call(self, debug: bool = False) -> int:
         _fn = self._underlying_method()
         returned = _fn.call({
-                'from': self._operate
-            })
+            'from': self._operate
+        })
         return int(returned)
 
     def estimate_gas(self, tx_params: Optional[TxParams] = None) -> int:
@@ -269,22 +262,21 @@ class GetCurrentBlockGasLimitMethod(ContractMethod): # pylint: disable=invalid-n
         tx_params = super().normalize_tx_params(tx_params)
         return self._underlying_method().estimateGas(tx_params.as_dict())
 
-class GetCurrentBlockTimestampMethod(ContractMethod): # pylint: disable=invalid-name
+
+class GetCurrentBlockTimestampMethod(ContractMethod):  # pylint: disable=invalid-name
     """Various interfaces to the getCurrentBlockTimestamp method."""
 
-    def __init__(self, elib: MiliDoS, contract_address: str, contract_function: ContractFunction, validator: Validator=None):
+    def __init__(self, elib: MiliDoS, contract_address: str, contract_function: ContractFunction, validator: Validator = None):
         """Persist instance data."""
         super().__init__(elib, contract_address)
         self._underlying_method = contract_function
         self.sign = validator.getSignature("getCurrentBlockTimestamp")
 
-
-
-    def block_call(self, debug:bool=False) -> int:
+    def block_call(self, debug: bool = False) -> int:
         _fn = self._underlying_method()
         returned = _fn.call({
-                'from': self._operate
-            })
+            'from': self._operate
+        })
         return int(returned)
 
     def estimate_gas(self, tx_params: Optional[TxParams] = None) -> int:
@@ -292,16 +284,17 @@ class GetCurrentBlockTimestampMethod(ContractMethod): # pylint: disable=invalid-
         tx_params = super().normalize_tx_params(tx_params)
         return self._underlying_method().estimateGas(tx_params.as_dict())
 
-class GetEthBalanceMethod(ContractMethod): # pylint: disable=invalid-name
+
+class GetEthBalanceMethod(ContractMethod):  # pylint: disable=invalid-name
     """Various interfaces to the getEthBalance method."""
 
-    def __init__(self, elib: MiliDoS, contract_address: str, contract_function: ContractFunction, validator: Validator=None):
+    def __init__(self, elib: MiliDoS, contract_address: str, contract_function: ContractFunction, validator: Validator = None):
         """Persist instance data."""
         super().__init__(elib, contract_address, validator)
         self._underlying_method = contract_function
         self.sign = validator.getSignature("getEthBalance")
 
-    def validate_and_normalize_inputs(self, addr: str)->any:
+    def validate_and_normalize_inputs(self, addr: str) -> any:
         """Validate the inputs to the getEthBalance method."""
         self.validator.assert_valid(
             method_name='getEthBalance',
@@ -311,13 +304,11 @@ class GetEthBalanceMethod(ContractMethod): # pylint: disable=invalid-name
         addr = self.validate_and_checksum_address(addr)
         return (addr)
 
-
-
-    def block_call(self,addr: str, debug:bool=False) -> int:
+    def block_call(self, addr: str, debug: bool = False) -> int:
         _fn = self._underlying_method(addr)
         returned = _fn.call({
-                'from': self._operate
-            })
+            'from': self._operate
+        })
         return int(returned)
 
     def estimate_gas(self, addr: str, tx_params: Optional[TxParams] = None) -> int:
@@ -326,22 +317,21 @@ class GetEthBalanceMethod(ContractMethod): # pylint: disable=invalid-name
         tx_params = super().normalize_tx_params(tx_params)
         return self._underlying_method(addr).estimateGas(tx_params.as_dict())
 
-class GetLastBlockHashMethod(ContractMethod): # pylint: disable=invalid-name
+
+class GetLastBlockHashMethod(ContractMethod):  # pylint: disable=invalid-name
     """Various interfaces to the getLastBlockHash method."""
 
-    def __init__(self, elib: MiliDoS, contract_address: str, contract_function: ContractFunction, validator: Validator=None):
+    def __init__(self, elib: MiliDoS, contract_address: str, contract_function: ContractFunction, validator: Validator = None):
         """Persist instance data."""
         super().__init__(elib, contract_address)
         self._underlying_method = contract_function
         self.sign = validator.getSignature("getLastBlockHash")
 
-
-
-    def block_call(self, debug:bool=False) -> Union[bytes, str]:
+    def block_call(self, debug: bool = False) -> Union[bytes, str]:
         _fn = self._underlying_method()
         returned = _fn.call({
-                'from': self._operate
-            })
+            'from': self._operate
+        })
         return Union[bytes, str](returned)
 
     def estimate_gas(self, tx_params: Optional[TxParams] = None) -> int:
@@ -349,29 +339,39 @@ class GetLastBlockHashMethod(ContractMethod): # pylint: disable=invalid-name
         tx_params = super().normalize_tx_params(tx_params)
         return self._underlying_method().estimateGas(tx_params.as_dict())
 
+
 class SignatureGenerator(Signatures):
     """
         The signature is generated for this and it is installed.
     """
+
     def __init__(self, abi: any):
         super().__init__(abi)
 
     def aggregate(self) -> str:
         return self._function_signatures["aggregate"]
+
     def get_block_hash(self) -> str:
         return self._function_signatures["getBlockHash"]
+
     def get_current_block_coinbase(self) -> str:
         return self._function_signatures["getCurrentBlockCoinbase"]
+
     def get_current_block_difficulty(self) -> str:
         return self._function_signatures["getCurrentBlockDifficulty"]
+
     def get_current_block_gas_limit(self) -> str:
         return self._function_signatures["getCurrentBlockGasLimit"]
+
     def get_current_block_timestamp(self) -> str:
         return self._function_signatures["getCurrentBlockTimestamp"]
+
     def get_eth_balance(self) -> str:
         return self._function_signatures["getEthBalance"]
+
     def get_last_block_hash(self) -> str:
         return self._function_signatures["getLastBlockHash"]
+
 
 # pylint: disable=too-many-public-methods,too-many-instance-attributes
 class Multicall(ContractBase):
@@ -416,13 +416,13 @@ class Multicall(ContractBase):
     :class:`GetLastBlockHashMethod`.
     """
 
-    SIGNATURES:SignatureGenerator = None
+    SIGNATURES: SignatureGenerator = None
 
     def __init__(
-        self,
-        core_lib: MiliDoS,
-        contract_address: str,
-        validator: MulticallValidator = None,
+            self,
+            core_lib: MiliDoS,
+            contract_address: str,
+            validator: MulticallValidator = None,
     ):
         """Get an instance of wrapper for smart contract.
         """
@@ -434,9 +434,6 @@ class Multicall(ContractBase):
         if not validator:
             validator = MulticallValidator(web3, contract_address)
 
-
-
-
         # if any middleware was imported, inject it
         try:
             MIDDLEWARE
@@ -446,7 +443,7 @@ class Multicall(ContractBase):
             try:
                 for middleware in MIDDLEWARE:
                     web3.middleware_onion.inject(
-                         middleware['function'], layer=middleware['layer'],
+                        middleware['function'], layer=middleware['layer'],
                     )
             except ValueError as value_error:
                 if value_error.args == ("You can't add the same un-named instance twice",):
@@ -466,10 +463,6 @@ class Multicall(ContractBase):
         self._fn_get_eth_balance = GetEthBalanceMethod(core_lib, contract_address, functions.getEthBalance, validator)
         self._fn_get_last_block_hash = GetLastBlockHashMethod(core_lib, contract_address, functions.getLastBlockHash, validator)
 
-
-    
-    
-    
     def aggregate(self, calls: List[MulticallCall]) -> Tuple[int, List[Union[bytes, str]]]:
         """
         Implementation of aggregate in contract Multicall
@@ -478,15 +471,9 @@ class Multicall(ContractBase):
     
     
         """
-    
-        return self._fn_aggregate.block_send(calls, self.call_contract_fee_amount,self.call_contract_fee_price,0,self.call_contract_debug_flag, self.call_contract_enforce_tx_receipt)
-    
-    
-    
-    
-    
-    
-    
+
+        return self._fn_aggregate.block_send(calls, self.call_contract_fee_amount, self.call_contract_fee_price, 0, self.call_contract_debug_flag, self.call_contract_enforce_tx_receipt)
+
     def get_block_hash(self, block_number: int) -> Union[bytes, str]:
         """
         Implementation of get_block_hash in contract Multicall
@@ -495,15 +482,9 @@ class Multicall(ContractBase):
     
     
         """
-    
-    
-    
-    
-    
+
         return self._fn_get_block_hash.block_call(block_number)
-    
-    
-    
+
     def get_current_block_coinbase(self) -> str:
         """
         Implementation of get_current_block_coinbase in contract Multicall
@@ -512,15 +493,9 @@ class Multicall(ContractBase):
     
     
         """
-    
-    
-    
-    
-    
+
         return self._fn_get_current_block_coinbase.block_call()
-    
-    
-    
+
     def get_current_block_difficulty(self) -> int:
         """
         Implementation of get_current_block_difficulty in contract Multicall
@@ -529,15 +504,9 @@ class Multicall(ContractBase):
     
     
         """
-    
-    
-    
-    
-    
+
         return self._fn_get_current_block_difficulty.block_call()
-    
-    
-    
+
     def get_current_block_gas_limit(self) -> int:
         """
         Implementation of get_current_block_gas_limit in contract Multicall
@@ -546,15 +515,9 @@ class Multicall(ContractBase):
     
     
         """
-    
-    
-    
-    
-    
+
         return self._fn_get_current_block_gas_limit.block_call()
-    
-    
-    
+
     def get_current_block_timestamp(self) -> int:
         """
         Implementation of get_current_block_timestamp in contract Multicall
@@ -563,15 +526,9 @@ class Multicall(ContractBase):
     
     
         """
-    
-    
-    
-    
-    
+
         return self._fn_get_current_block_timestamp.block_call()
-    
-    
-    
+
     def get_eth_balance(self, addr: str) -> int:
         """
         Implementation of get_eth_balance in contract Multicall
@@ -580,15 +537,9 @@ class Multicall(ContractBase):
     
     
         """
-    
-    
-    
-    
-    
+
         return self._fn_get_eth_balance.block_call(addr)
-    
-    
-    
+
     def get_last_block_hash(self) -> Union[bytes, str]:
         """
         Implementation of get_last_block_hash in contract Multicall
@@ -597,14 +548,10 @@ class Multicall(ContractBase):
     
     
         """
-    
-    
-    
-    
-    
+
         return self._fn_get_last_block_hash.block_call()
 
-    def CallContractWait(self, t_long:int)-> "Multicall":
+    def CallContractWait(self, t_long: int) -> "Multicall":
         self._fn_aggregate.setWait(t_long)
         self._fn_get_block_hash.setWait(t_long)
         self._fn_get_current_block_coinbase.setWait(t_long)
@@ -615,12 +562,12 @@ class Multicall(ContractBase):
         self._fn_get_last_block_hash.setWait(t_long)
         return self
 
-
     @staticmethod
     def abi():
         """Return the ABI to the underlying contract."""
         return json.loads(
-            '[{"constant":false,"inputs":[{"components":[{"internalType":"address","name":"target","type":"address"},{"internalType":"bytes","name":"callData","type":"bytes"}],"internalType":"struct Multicall.Call[]","name":"calls","type":"tuple[]"}],"name":"aggregate","outputs":[{"internalType":"uint256","name":"blockNumber","type":"uint256"},{"internalType":"bytes[]","name":"returnData","type":"bytes[]"}],"payable":false,"stateMutability":"nonpayable","type":"function"},{"constant":true,"inputs":[{"internalType":"uint256","name":"blockNumber","type":"uint256"}],"name":"getBlockHash","outputs":[{"internalType":"bytes32","name":"blockHash","type":"bytes32"}],"payable":false,"stateMutability":"view","type":"function"},{"constant":true,"inputs":[],"name":"getCurrentBlockCoinbase","outputs":[{"internalType":"address","name":"coinbase","type":"address"}],"payable":false,"stateMutability":"view","type":"function"},{"constant":true,"inputs":[],"name":"getCurrentBlockDifficulty","outputs":[{"internalType":"uint256","name":"difficulty","type":"uint256"}],"payable":false,"stateMutability":"view","type":"function"},{"constant":true,"inputs":[],"name":"getCurrentBlockGasLimit","outputs":[{"internalType":"uint256","name":"gaslimit","type":"uint256"}],"payable":false,"stateMutability":"view","type":"function"},{"constant":true,"inputs":[],"name":"getCurrentBlockTimestamp","outputs":[{"internalType":"uint256","name":"timestamp","type":"uint256"}],"payable":false,"stateMutability":"view","type":"function"},{"constant":true,"inputs":[{"internalType":"address","name":"addr","type":"address"}],"name":"getEthBalance","outputs":[{"internalType":"uint256","name":"balance","type":"uint256"}],"payable":false,"stateMutability":"view","type":"function"},{"constant":true,"inputs":[],"name":"getLastBlockHash","outputs":[{"internalType":"bytes32","name":"blockHash","type":"bytes32"}],"payable":false,"stateMutability":"view","type":"function"}]'  # noqa: E501 (line-too-long)
+            '[{"constant":false,"inputs":[{"components":[{"internalType":"address","name":"target","type":"address"},{"internalType":"bytes","name":"callData","type":"bytes"}],"internalType":"struct Multicall.Call[]","name":"calls","type":"tuple[]"}],"name":"aggregate","outputs":[{"internalType":"uint256","name":"blockNumber","type":"uint256"},{"internalType":"bytes[]","name":"returnData","type":"bytes[]"}],"payable":false,"stateMutability":"nonpayable","type":"function"},{"constant":true,"inputs":[{"internalType":"uint256","name":"blockNumber","type":"uint256"}],"name":"getBlockHash","outputs":[{"internalType":"bytes32","name":"blockHash","type":"bytes32"}],"payable":false,"stateMutability":"view","type":"function"},{"constant":true,"inputs":[],"name":"getCurrentBlockCoinbase","outputs":[{"internalType":"address","name":"coinbase","type":"address"}],"payable":false,"stateMutability":"view","type":"function"},{"constant":true,"inputs":[],"name":"getCurrentBlockDifficulty","outputs":[{"internalType":"uint256","name":"difficulty","type":"uint256"}],"payable":false,"stateMutability":"view","type":"function"},{"constant":true,"inputs":[],"name":"getCurrentBlockGasLimit","outputs":[{"internalType":"uint256","name":"gaslimit","type":"uint256"}],"payable":false,"stateMutability":"view","type":"function"},{"constant":true,"inputs":[],"name":"getCurrentBlockTimestamp","outputs":[{"internalType":"uint256","name":"timestamp","type":"uint256"}],"payable":false,"stateMutability":"view","type":"function"},{"constant":true,"inputs":[{"internalType":"address","name":"addr","type":"address"}],"name":"getEthBalance","outputs":[{"internalType":"uint256","name":"balance","type":"uint256"}],"payable":false,"stateMutability":"view","type":"function"},{"constant":true,"inputs":[],"name":"getLastBlockHash","outputs":[{"internalType":"bytes32","name":"blockHash","type":"bytes32"}],"payable":false,"stateMutability":"view","type":"function"}]'
+            # noqa: E501 (line-too-long)
         )
 
 # pylint: disable=too-many-lines

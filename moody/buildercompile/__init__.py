@@ -33,14 +33,14 @@ TRANS_LOCAL = """#!/bin/bash
 """
 ITEM = """
 echo "🍯 Compiling from {COMPILE_COIN} 🧀"
-SOLC_VERSION={SOLVER} solc --evm-version {EVMVERSION} --allow-paths {SOLCPATH} -o build --bin --bin-runtime --abi --optimize --metadata --overwrite {COMPILE_COIN}
+SOLC_VERSION={SOLVER} solc --evm-version {EVMVERSION} --allow-paths {SOLCPATH} -o build --bin --bin-runtime --abi --optimize-runs={RUNS} --metadata --overwrite {COMPILE_COIN}
 echo "=> 🍺🍺🍺 {COMPILE_COIN}"
 """
 
 ITEMLINK = """
 echo "🍰 Compiling with LINK from {COMPILE_COIN} 🧀"
 #solc --optimize --bin MetaCoin.sol | solc --link --libraries TestLib:<address>
-SOLC_VERSION={SOLVER} solc --allow-paths {SOLCPATH} -o build  --optimize --bin --abi --link --libraries "{FILES_CONFIG}" --overwrite {COMPILE_COIN}
+SOLC_VERSION={SOLVER} solc --allow-paths {SOLCPATH} -o build --optimize-runs={RUNS} --bin --abi --link --libraries "{FILES_CONFIG}" --overwrite {COMPILE_COIN}
 echo "=> 🍥🍥🍥 {COMPILE_COIN}"
 """
 

@@ -117,16 +117,16 @@ class Multicall2Result(TypedDict):
     returnData: Union[bytes, str]
 
 
-class AggregateMethod(ContractMethod): # pylint: disable=invalid-name
+class AggregateMethod(ContractMethod):  # pylint: disable=invalid-name
     &#34;&#34;&#34;Various interfaces to the aggregate method.&#34;&#34;&#34;
 
-    def __init__(self, elib: MiliDoS, contract_address: str, contract_function: ContractFunction, validator: Validator=None):
+    def __init__(self, elib: MiliDoS, contract_address: str, contract_function: ContractFunction, validator: Validator = None):
         &#34;&#34;&#34;Persist instance data.&#34;&#34;&#34;
         super().__init__(elib, contract_address, validator)
         self._underlying_method = contract_function
         self.sign = validator.getSignature(&#34;aggregate&#34;)
 
-    def validate_and_normalize_inputs(self, calls: List[Multicall2Call])-&gt;any:
+    def validate_and_normalize_inputs(self, calls: List[Multicall2Call]) -&gt; any:
         &#34;&#34;&#34;Validate the inputs to the aggregate method.&#34;&#34;&#34;
         self.validator.assert_valid(
             method_name=&#39;aggregate&#39;,
@@ -135,9 +135,7 @@ class AggregateMethod(ContractMethod): # pylint: disable=invalid-name
         )
         return (calls)
 
-
-
-    def block_send(self, calls: List[Multicall2Call],_gaswei:int,_pricewei:int,_valeth:int=0,_debugtx: bool = False,_receipList: bool = False) -&gt; Tuple[int, List[Union[bytes, str]]]:
+    def block_send(self, calls: List[Multicall2Call], _gaswei: int, _pricewei: int, _valeth: int = 0, _debugtx: bool = False, _receipList: bool = False) -&gt; Tuple[int, List[Union[bytes, str]]]:
         &#34;&#34;&#34;Execute underlying contract method via eth_call.
 
         :param tx_params: transaction parameters
@@ -193,7 +191,6 @@ class AggregateMethod(ContractMethod): # pylint: disable=invalid-name
             else:
                 print(f&#34;{Bolors.FAIL}Error Revert {Bolors.RESET}, aggregate. Reason: Unknown&#34;)
 
-
     def send_transaction(self, calls: List[Multicall2Call], tx_params: Optional[TxParams] = None) -&gt; Union[HexBytes, bytes]:
         &#34;&#34;&#34;Execute underlying contract method via eth_sendTransaction.
 
@@ -215,16 +212,17 @@ class AggregateMethod(ContractMethod): # pylint: disable=invalid-name
         tx_params = super().normalize_tx_params(tx_params)
         return self._underlying_method(calls).estimateGas(tx_params.as_dict())
 
-class BlockAndAggregateMethod(ContractMethod): # pylint: disable=invalid-name
+
+class BlockAndAggregateMethod(ContractMethod):  # pylint: disable=invalid-name
     &#34;&#34;&#34;Various interfaces to the blockAndAggregate method.&#34;&#34;&#34;
 
-    def __init__(self, elib: MiliDoS, contract_address: str, contract_function: ContractFunction, validator: Validator=None):
+    def __init__(self, elib: MiliDoS, contract_address: str, contract_function: ContractFunction, validator: Validator = None):
         &#34;&#34;&#34;Persist instance data.&#34;&#34;&#34;
         super().__init__(elib, contract_address, validator)
         self._underlying_method = contract_function
         self.sign = validator.getSignature(&#34;blockAndAggregate&#34;)
 
-    def validate_and_normalize_inputs(self, calls: List[Multicall2Call])-&gt;any:
+    def validate_and_normalize_inputs(self, calls: List[Multicall2Call]) -&gt; any:
         &#34;&#34;&#34;Validate the inputs to the blockAndAggregate method.&#34;&#34;&#34;
         self.validator.assert_valid(
             method_name=&#39;blockAndAggregate&#39;,
@@ -233,9 +231,7 @@ class BlockAndAggregateMethod(ContractMethod): # pylint: disable=invalid-name
         )
         return (calls)
 
-
-
-    def block_send(self, calls: List[Multicall2Call],_gaswei:int,_pricewei:int,_valeth:int=0,_debugtx: bool = False,_receipList: bool = False) -&gt; Tuple[int, Union[bytes, str], List[Multicall2Result]]:
+    def block_send(self, calls: List[Multicall2Call], _gaswei: int, _pricewei: int, _valeth: int = 0, _debugtx: bool = False, _receipList: bool = False) -&gt; Tuple[int, Union[bytes, str], List[Multicall2Result]]:
         &#34;&#34;&#34;Execute underlying contract method via eth_call.
 
         :param tx_params: transaction parameters
@@ -291,7 +287,6 @@ class BlockAndAggregateMethod(ContractMethod): # pylint: disable=invalid-name
             else:
                 print(f&#34;{Bolors.FAIL}Error Revert {Bolors.RESET}, block_and_aggregate. Reason: Unknown&#34;)
 
-
     def send_transaction(self, calls: List[Multicall2Call], tx_params: Optional[TxParams] = None) -&gt; Union[HexBytes, bytes]:
         &#34;&#34;&#34;Execute underlying contract method via eth_sendTransaction.
 
@@ -313,16 +308,17 @@ class BlockAndAggregateMethod(ContractMethod): # pylint: disable=invalid-name
         tx_params = super().normalize_tx_params(tx_params)
         return self._underlying_method(calls).estimateGas(tx_params.as_dict())
 
-class GetBlockHashMethod(ContractMethod): # pylint: disable=invalid-name
+
+class GetBlockHashMethod(ContractMethod):  # pylint: disable=invalid-name
     &#34;&#34;&#34;Various interfaces to the getBlockHash method.&#34;&#34;&#34;
 
-    def __init__(self, elib: MiliDoS, contract_address: str, contract_function: ContractFunction, validator: Validator=None):
+    def __init__(self, elib: MiliDoS, contract_address: str, contract_function: ContractFunction, validator: Validator = None):
         &#34;&#34;&#34;Persist instance data.&#34;&#34;&#34;
         super().__init__(elib, contract_address, validator)
         self._underlying_method = contract_function
         self.sign = validator.getSignature(&#34;getBlockHash&#34;)
 
-    def validate_and_normalize_inputs(self, block_number: int)-&gt;any:
+    def validate_and_normalize_inputs(self, block_number: int) -&gt; any:
         &#34;&#34;&#34;Validate the inputs to the getBlockHash method.&#34;&#34;&#34;
         self.validator.assert_valid(
             method_name=&#39;getBlockHash&#39;,
@@ -333,13 +329,11 @@ class GetBlockHashMethod(ContractMethod): # pylint: disable=invalid-name
         block_number = int(block_number)
         return (block_number)
 
-
-
-    def block_call(self,block_number: int, debug:bool=False) -&gt; Union[bytes, str]:
+    def block_call(self, block_number: int, debug: bool = False) -&gt; Union[bytes, str]:
         _fn = self._underlying_method(block_number)
         returned = _fn.call({
-                &#39;from&#39;: self._operate
-            })
+            &#39;from&#39;: self._operate
+        })
         return Union[bytes, str](returned)
 
     def estimate_gas(self, block_number: int, tx_params: Optional[TxParams] = None) -&gt; int:
@@ -348,22 +342,21 @@ class GetBlockHashMethod(ContractMethod): # pylint: disable=invalid-name
         tx_params = super().normalize_tx_params(tx_params)
         return self._underlying_method(block_number).estimateGas(tx_params.as_dict())
 
-class GetBlockNumberMethod(ContractMethod): # pylint: disable=invalid-name
+
+class GetBlockNumberMethod(ContractMethod):  # pylint: disable=invalid-name
     &#34;&#34;&#34;Various interfaces to the getBlockNumber method.&#34;&#34;&#34;
 
-    def __init__(self, elib: MiliDoS, contract_address: str, contract_function: ContractFunction, validator: Validator=None):
+    def __init__(self, elib: MiliDoS, contract_address: str, contract_function: ContractFunction, validator: Validator = None):
         &#34;&#34;&#34;Persist instance data.&#34;&#34;&#34;
         super().__init__(elib, contract_address)
         self._underlying_method = contract_function
         self.sign = validator.getSignature(&#34;getBlockNumber&#34;)
 
-
-
-    def block_call(self, debug:bool=False) -&gt; int:
+    def block_call(self, debug: bool = False) -&gt; int:
         _fn = self._underlying_method()
         returned = _fn.call({
-                &#39;from&#39;: self._operate
-            })
+            &#39;from&#39;: self._operate
+        })
         return int(returned)
 
     def estimate_gas(self, tx_params: Optional[TxParams] = None) -&gt; int:
@@ -371,22 +364,21 @@ class GetBlockNumberMethod(ContractMethod): # pylint: disable=invalid-name
         tx_params = super().normalize_tx_params(tx_params)
         return self._underlying_method().estimateGas(tx_params.as_dict())
 
-class GetCurrentBlockCoinbaseMethod(ContractMethod): # pylint: disable=invalid-name
+
+class GetCurrentBlockCoinbaseMethod(ContractMethod):  # pylint: disable=invalid-name
     &#34;&#34;&#34;Various interfaces to the getCurrentBlockCoinbase method.&#34;&#34;&#34;
 
-    def __init__(self, elib: MiliDoS, contract_address: str, contract_function: ContractFunction, validator: Validator=None):
+    def __init__(self, elib: MiliDoS, contract_address: str, contract_function: ContractFunction, validator: Validator = None):
         &#34;&#34;&#34;Persist instance data.&#34;&#34;&#34;
         super().__init__(elib, contract_address)
         self._underlying_method = contract_function
         self.sign = validator.getSignature(&#34;getCurrentBlockCoinbase&#34;)
 
-
-
-    def block_call(self, debug:bool=False) -&gt; str:
+    def block_call(self, debug: bool = False) -&gt; str:
         _fn = self._underlying_method()
         returned = _fn.call({
-                &#39;from&#39;: self._operate
-            })
+            &#39;from&#39;: self._operate
+        })
         return str(returned)
 
     def estimate_gas(self, tx_params: Optional[TxParams] = None) -&gt; int:
@@ -394,22 +386,21 @@ class GetCurrentBlockCoinbaseMethod(ContractMethod): # pylint: disable=invalid-n
         tx_params = super().normalize_tx_params(tx_params)
         return self._underlying_method().estimateGas(tx_params.as_dict())
 
-class GetCurrentBlockDifficultyMethod(ContractMethod): # pylint: disable=invalid-name
+
+class GetCurrentBlockDifficultyMethod(ContractMethod):  # pylint: disable=invalid-name
     &#34;&#34;&#34;Various interfaces to the getCurrentBlockDifficulty method.&#34;&#34;&#34;
 
-    def __init__(self, elib: MiliDoS, contract_address: str, contract_function: ContractFunction, validator: Validator=None):
+    def __init__(self, elib: MiliDoS, contract_address: str, contract_function: ContractFunction, validator: Validator = None):
         &#34;&#34;&#34;Persist instance data.&#34;&#34;&#34;
         super().__init__(elib, contract_address)
         self._underlying_method = contract_function
         self.sign = validator.getSignature(&#34;getCurrentBlockDifficulty&#34;)
 
-
-
-    def block_call(self, debug:bool=False) -&gt; int:
+    def block_call(self, debug: bool = False) -&gt; int:
         _fn = self._underlying_method()
         returned = _fn.call({
-                &#39;from&#39;: self._operate
-            })
+            &#39;from&#39;: self._operate
+        })
         return int(returned)
 
     def estimate_gas(self, tx_params: Optional[TxParams] = None) -&gt; int:
@@ -417,22 +408,21 @@ class GetCurrentBlockDifficultyMethod(ContractMethod): # pylint: disable=invalid
         tx_params = super().normalize_tx_params(tx_params)
         return self._underlying_method().estimateGas(tx_params.as_dict())
 
-class GetCurrentBlockGasLimitMethod(ContractMethod): # pylint: disable=invalid-name
+
+class GetCurrentBlockGasLimitMethod(ContractMethod):  # pylint: disable=invalid-name
     &#34;&#34;&#34;Various interfaces to the getCurrentBlockGasLimit method.&#34;&#34;&#34;
 
-    def __init__(self, elib: MiliDoS, contract_address: str, contract_function: ContractFunction, validator: Validator=None):
+    def __init__(self, elib: MiliDoS, contract_address: str, contract_function: ContractFunction, validator: Validator = None):
         &#34;&#34;&#34;Persist instance data.&#34;&#34;&#34;
         super().__init__(elib, contract_address)
         self._underlying_method = contract_function
         self.sign = validator.getSignature(&#34;getCurrentBlockGasLimit&#34;)
 
-
-
-    def block_call(self, debug:bool=False) -&gt; int:
+    def block_call(self, debug: bool = False) -&gt; int:
         _fn = self._underlying_method()
         returned = _fn.call({
-                &#39;from&#39;: self._operate
-            })
+            &#39;from&#39;: self._operate
+        })
         return int(returned)
 
     def estimate_gas(self, tx_params: Optional[TxParams] = None) -&gt; int:
@@ -440,22 +430,21 @@ class GetCurrentBlockGasLimitMethod(ContractMethod): # pylint: disable=invalid-n
         tx_params = super().normalize_tx_params(tx_params)
         return self._underlying_method().estimateGas(tx_params.as_dict())
 
-class GetCurrentBlockTimestampMethod(ContractMethod): # pylint: disable=invalid-name
+
+class GetCurrentBlockTimestampMethod(ContractMethod):  # pylint: disable=invalid-name
     &#34;&#34;&#34;Various interfaces to the getCurrentBlockTimestamp method.&#34;&#34;&#34;
 
-    def __init__(self, elib: MiliDoS, contract_address: str, contract_function: ContractFunction, validator: Validator=None):
+    def __init__(self, elib: MiliDoS, contract_address: str, contract_function: ContractFunction, validator: Validator = None):
         &#34;&#34;&#34;Persist instance data.&#34;&#34;&#34;
         super().__init__(elib, contract_address)
         self._underlying_method = contract_function
         self.sign = validator.getSignature(&#34;getCurrentBlockTimestamp&#34;)
 
-
-
-    def block_call(self, debug:bool=False) -&gt; int:
+    def block_call(self, debug: bool = False) -&gt; int:
         _fn = self._underlying_method()
         returned = _fn.call({
-                &#39;from&#39;: self._operate
-            })
+            &#39;from&#39;: self._operate
+        })
         return int(returned)
 
     def estimate_gas(self, tx_params: Optional[TxParams] = None) -&gt; int:
@@ -463,16 +452,17 @@ class GetCurrentBlockTimestampMethod(ContractMethod): # pylint: disable=invalid-
         tx_params = super().normalize_tx_params(tx_params)
         return self._underlying_method().estimateGas(tx_params.as_dict())
 
-class GetEthBalanceMethod(ContractMethod): # pylint: disable=invalid-name
+
+class GetEthBalanceMethod(ContractMethod):  # pylint: disable=invalid-name
     &#34;&#34;&#34;Various interfaces to the getEthBalance method.&#34;&#34;&#34;
 
-    def __init__(self, elib: MiliDoS, contract_address: str, contract_function: ContractFunction, validator: Validator=None):
+    def __init__(self, elib: MiliDoS, contract_address: str, contract_function: ContractFunction, validator: Validator = None):
         &#34;&#34;&#34;Persist instance data.&#34;&#34;&#34;
         super().__init__(elib, contract_address, validator)
         self._underlying_method = contract_function
         self.sign = validator.getSignature(&#34;getEthBalance&#34;)
 
-    def validate_and_normalize_inputs(self, addr: str)-&gt;any:
+    def validate_and_normalize_inputs(self, addr: str) -&gt; any:
         &#34;&#34;&#34;Validate the inputs to the getEthBalance method.&#34;&#34;&#34;
         self.validator.assert_valid(
             method_name=&#39;getEthBalance&#39;,
@@ -482,13 +472,11 @@ class GetEthBalanceMethod(ContractMethod): # pylint: disable=invalid-name
         addr = self.validate_and_checksum_address(addr)
         return (addr)
 
-
-
-    def block_call(self,addr: str, debug:bool=False) -&gt; int:
+    def block_call(self, addr: str, debug: bool = False) -&gt; int:
         _fn = self._underlying_method(addr)
         returned = _fn.call({
-                &#39;from&#39;: self._operate
-            })
+            &#39;from&#39;: self._operate
+        })
         return int(returned)
 
     def estimate_gas(self, addr: str, tx_params: Optional[TxParams] = None) -&gt; int:
@@ -497,22 +485,21 @@ class GetEthBalanceMethod(ContractMethod): # pylint: disable=invalid-name
         tx_params = super().normalize_tx_params(tx_params)
         return self._underlying_method(addr).estimateGas(tx_params.as_dict())
 
-class GetLastBlockHashMethod(ContractMethod): # pylint: disable=invalid-name
+
+class GetLastBlockHashMethod(ContractMethod):  # pylint: disable=invalid-name
     &#34;&#34;&#34;Various interfaces to the getLastBlockHash method.&#34;&#34;&#34;
 
-    def __init__(self, elib: MiliDoS, contract_address: str, contract_function: ContractFunction, validator: Validator=None):
+    def __init__(self, elib: MiliDoS, contract_address: str, contract_function: ContractFunction, validator: Validator = None):
         &#34;&#34;&#34;Persist instance data.&#34;&#34;&#34;
         super().__init__(elib, contract_address)
         self._underlying_method = contract_function
         self.sign = validator.getSignature(&#34;getLastBlockHash&#34;)
 
-
-
-    def block_call(self, debug:bool=False) -&gt; Union[bytes, str]:
+    def block_call(self, debug: bool = False) -&gt; Union[bytes, str]:
         _fn = self._underlying_method()
         returned = _fn.call({
-                &#39;from&#39;: self._operate
-            })
+            &#39;from&#39;: self._operate
+        })
         return Union[bytes, str](returned)
 
     def estimate_gas(self, tx_params: Optional[TxParams] = None) -&gt; int:
@@ -520,16 +507,17 @@ class GetLastBlockHashMethod(ContractMethod): # pylint: disable=invalid-name
         tx_params = super().normalize_tx_params(tx_params)
         return self._underlying_method().estimateGas(tx_params.as_dict())
 
-class TryAggregateMethod(ContractMethod): # pylint: disable=invalid-name
+
+class TryAggregateMethod(ContractMethod):  # pylint: disable=invalid-name
     &#34;&#34;&#34;Various interfaces to the tryAggregate method.&#34;&#34;&#34;
 
-    def __init__(self, elib: MiliDoS, contract_address: str, contract_function: ContractFunction, validator: Validator=None):
+    def __init__(self, elib: MiliDoS, contract_address: str, contract_function: ContractFunction, validator: Validator = None):
         &#34;&#34;&#34;Persist instance data.&#34;&#34;&#34;
         super().__init__(elib, contract_address, validator)
         self._underlying_method = contract_function
         self.sign = validator.getSignature(&#34;tryAggregate&#34;)
 
-    def validate_and_normalize_inputs(self, require_success: bool, calls: List[Multicall2Call])-&gt;any:
+    def validate_and_normalize_inputs(self, require_success: bool, calls: List[Multicall2Call]) -&gt; any:
         &#34;&#34;&#34;Validate the inputs to the tryAggregate method.&#34;&#34;&#34;
         self.validator.assert_valid(
             method_name=&#39;tryAggregate&#39;,
@@ -543,9 +531,7 @@ class TryAggregateMethod(ContractMethod): # pylint: disable=invalid-name
         )
         return (require_success, calls)
 
-
-
-    def block_send(self, require_success: bool, calls: List[Multicall2Call],_gaswei:int,_pricewei:int,_valeth:int=0,_debugtx: bool = False,_receipList: bool = False) -&gt; List[Multicall2Result]:
+    def block_send(self, require_success: bool, calls: List[Multicall2Call], _gaswei: int, _pricewei: int, _valeth: int = 0, _debugtx: bool = False, _receipList: bool = False) -&gt; List[Multicall2Result]:
         &#34;&#34;&#34;Execute underlying contract method via eth_call.
 
         :param tx_params: transaction parameters
@@ -601,7 +587,6 @@ class TryAggregateMethod(ContractMethod): # pylint: disable=invalid-name
             else:
                 print(f&#34;{Bolors.FAIL}Error Revert {Bolors.RESET}, try_aggregate. Reason: Unknown&#34;)
 
-
     def send_transaction(self, require_success: bool, calls: List[Multicall2Call], tx_params: Optional[TxParams] = None) -&gt; Union[HexBytes, bytes]:
         &#34;&#34;&#34;Execute underlying contract method via eth_sendTransaction.
 
@@ -623,16 +608,17 @@ class TryAggregateMethod(ContractMethod): # pylint: disable=invalid-name
         tx_params = super().normalize_tx_params(tx_params)
         return self._underlying_method(require_success, calls).estimateGas(tx_params.as_dict())
 
-class TryBlockAndAggregateMethod(ContractMethod): # pylint: disable=invalid-name
+
+class TryBlockAndAggregateMethod(ContractMethod):  # pylint: disable=invalid-name
     &#34;&#34;&#34;Various interfaces to the tryBlockAndAggregate method.&#34;&#34;&#34;
 
-    def __init__(self, elib: MiliDoS, contract_address: str, contract_function: ContractFunction, validator: Validator=None):
+    def __init__(self, elib: MiliDoS, contract_address: str, contract_function: ContractFunction, validator: Validator = None):
         &#34;&#34;&#34;Persist instance data.&#34;&#34;&#34;
         super().__init__(elib, contract_address, validator)
         self._underlying_method = contract_function
         self.sign = validator.getSignature(&#34;tryBlockAndAggregate&#34;)
 
-    def validate_and_normalize_inputs(self, require_success: bool, calls: List[Multicall2Call])-&gt;any:
+    def validate_and_normalize_inputs(self, require_success: bool, calls: List[Multicall2Call]) -&gt; any:
         &#34;&#34;&#34;Validate the inputs to the tryBlockAndAggregate method.&#34;&#34;&#34;
         self.validator.assert_valid(
             method_name=&#39;tryBlockAndAggregate&#39;,
@@ -646,9 +632,7 @@ class TryBlockAndAggregateMethod(ContractMethod): # pylint: disable=invalid-name
         )
         return (require_success, calls)
 
-
-
-    def block_send(self, require_success: bool, calls: List[Multicall2Call],_gaswei:int,_pricewei:int,_valeth:int=0,_debugtx: bool = False,_receipList: bool = False) -&gt; Tuple[int, Union[bytes, str], List[Multicall2Result]]:
+    def block_send(self, require_success: bool, calls: List[Multicall2Call], _gaswei: int, _pricewei: int, _valeth: int = 0, _debugtx: bool = False, _receipList: bool = False) -&gt; Tuple[int, Union[bytes, str], List[Multicall2Result]]:
         &#34;&#34;&#34;Execute underlying contract method via eth_call.
 
         :param tx_params: transaction parameters
@@ -704,7 +688,6 @@ class TryBlockAndAggregateMethod(ContractMethod): # pylint: disable=invalid-name
             else:
                 print(f&#34;{Bolors.FAIL}Error Revert {Bolors.RESET}, try_block_and_aggregate. Reason: Unknown&#34;)
 
-
     def send_transaction(self, require_success: bool, calls: List[Multicall2Call], tx_params: Optional[TxParams] = None) -&gt; Union[HexBytes, bytes]:
         &#34;&#34;&#34;Execute underlying contract method via eth_sendTransaction.
 
@@ -726,37 +709,51 @@ class TryBlockAndAggregateMethod(ContractMethod): # pylint: disable=invalid-name
         tx_params = super().normalize_tx_params(tx_params)
         return self._underlying_method(require_success, calls).estimateGas(tx_params.as_dict())
 
+
 class SignatureGenerator(Signatures):
     &#34;&#34;&#34;
         The signature is generated for this and it is installed.
     &#34;&#34;&#34;
+
     def __init__(self, abi: any):
         super().__init__(abi)
 
     def aggregate(self) -&gt; str:
         return self._function_signatures[&#34;aggregate&#34;]
+
     def block_and_aggregate(self) -&gt; str:
         return self._function_signatures[&#34;blockAndAggregate&#34;]
+
     def get_block_hash(self) -&gt; str:
         return self._function_signatures[&#34;getBlockHash&#34;]
+
     def get_block_number(self) -&gt; str:
         return self._function_signatures[&#34;getBlockNumber&#34;]
+
     def get_current_block_coinbase(self) -&gt; str:
         return self._function_signatures[&#34;getCurrentBlockCoinbase&#34;]
+
     def get_current_block_difficulty(self) -&gt; str:
         return self._function_signatures[&#34;getCurrentBlockDifficulty&#34;]
+
     def get_current_block_gas_limit(self) -&gt; str:
         return self._function_signatures[&#34;getCurrentBlockGasLimit&#34;]
+
     def get_current_block_timestamp(self) -&gt; str:
         return self._function_signatures[&#34;getCurrentBlockTimestamp&#34;]
+
     def get_eth_balance(self) -&gt; str:
         return self._function_signatures[&#34;getEthBalance&#34;]
+
     def get_last_block_hash(self) -&gt; str:
         return self._function_signatures[&#34;getLastBlockHash&#34;]
+
     def try_aggregate(self) -&gt; str:
         return self._function_signatures[&#34;tryAggregate&#34;]
+
     def try_block_and_aggregate(self) -&gt; str:
         return self._function_signatures[&#34;tryBlockAndAggregate&#34;]
+
 
 # pylint: disable=too-many-public-methods,too-many-instance-attributes
 class Multicall2(ContractBase):
@@ -821,13 +818,13 @@ class Multicall2(ContractBase):
     :class:`TryBlockAndAggregateMethod`.
     &#34;&#34;&#34;
 
-    SIGNATURES:SignatureGenerator = None
+    SIGNATURES: SignatureGenerator = None
 
     def __init__(
-        self,
-        core_lib: MiliDoS,
-        contract_address: str,
-        validator: Multicall2Validator = None,
+            self,
+            core_lib: MiliDoS,
+            contract_address: str,
+            validator: Multicall2Validator = None,
     ):
         &#34;&#34;&#34;Get an instance of wrapper for smart contract.
         &#34;&#34;&#34;
@@ -839,9 +836,6 @@ class Multicall2(ContractBase):
         if not validator:
             validator = Multicall2Validator(web3, contract_address)
 
-
-
-
         # if any middleware was imported, inject it
         try:
             MIDDLEWARE
@@ -851,7 +845,7 @@ class Multicall2(ContractBase):
             try:
                 for middleware in MIDDLEWARE:
                     web3.middleware_onion.inject(
-                         middleware[&#39;function&#39;], layer=middleware[&#39;layer&#39;],
+                        middleware[&#39;function&#39;], layer=middleware[&#39;layer&#39;],
                     )
             except ValueError as value_error:
                 if value_error.args == (&#34;You can&#39;t add the same un-named instance twice&#34;,):
@@ -875,10 +869,6 @@ class Multicall2(ContractBase):
         self._fn_try_aggregate = TryAggregateMethod(core_lib, contract_address, functions.tryAggregate, validator)
         self._fn_try_block_and_aggregate = TryBlockAndAggregateMethod(core_lib, contract_address, functions.tryBlockAndAggregate, validator)
 
-
-    
-    
-    
     def aggregate(self, calls: List[Multicall2Call]) -&gt; Tuple[int, List[Union[bytes, str]]]:
         &#34;&#34;&#34;
         Implementation of aggregate in contract Multicall2
@@ -887,15 +877,9 @@ class Multicall2(ContractBase):
     
     
         &#34;&#34;&#34;
-    
-        return self._fn_aggregate.block_send(calls, self.call_contract_fee_amount,self.call_contract_fee_price,0,self.call_contract_debug_flag, self.call_contract_enforce_tx_receipt)
-    
-    
-    
-    
-    
-    
-    
+
+        return self._fn_aggregate.block_send(calls, self.call_contract_fee_amount, self.call_contract_fee_price, 0, self.call_contract_debug_flag, self.call_contract_enforce_tx_receipt)
+
     def block_and_aggregate(self, calls: List[Multicall2Call]) -&gt; Tuple[int, Union[bytes, str], List[Multicall2Result]]:
         &#34;&#34;&#34;
         Implementation of block_and_aggregate in contract Multicall2
@@ -904,15 +888,9 @@ class Multicall2(ContractBase):
     
     
         &#34;&#34;&#34;
-    
-        return self._fn_block_and_aggregate.block_send(calls, self.call_contract_fee_amount,self.call_contract_fee_price,0,self.call_contract_debug_flag, self.call_contract_enforce_tx_receipt)
-    
-    
-    
-    
-    
-    
-    
+
+        return self._fn_block_and_aggregate.block_send(calls, self.call_contract_fee_amount, self.call_contract_fee_price, 0, self.call_contract_debug_flag, self.call_contract_enforce_tx_receipt)
+
     def get_block_hash(self, block_number: int) -&gt; Union[bytes, str]:
         &#34;&#34;&#34;
         Implementation of get_block_hash in contract Multicall2
@@ -921,15 +899,9 @@ class Multicall2(ContractBase):
     
     
         &#34;&#34;&#34;
-    
-    
-    
-    
-    
+
         return self._fn_get_block_hash.block_call(block_number)
-    
-    
-    
+
     def get_block_number(self) -&gt; int:
         &#34;&#34;&#34;
         Implementation of get_block_number in contract Multicall2
@@ -938,15 +910,9 @@ class Multicall2(ContractBase):
     
     
         &#34;&#34;&#34;
-    
-    
-    
-    
-    
+
         return self._fn_get_block_number.block_call()
-    
-    
-    
+
     def get_current_block_coinbase(self) -&gt; str:
         &#34;&#34;&#34;
         Implementation of get_current_block_coinbase in contract Multicall2
@@ -955,15 +921,9 @@ class Multicall2(ContractBase):
     
     
         &#34;&#34;&#34;
-    
-    
-    
-    
-    
+
         return self._fn_get_current_block_coinbase.block_call()
-    
-    
-    
+
     def get_current_block_difficulty(self) -&gt; int:
         &#34;&#34;&#34;
         Implementation of get_current_block_difficulty in contract Multicall2
@@ -972,15 +932,9 @@ class Multicall2(ContractBase):
     
     
         &#34;&#34;&#34;
-    
-    
-    
-    
-    
+
         return self._fn_get_current_block_difficulty.block_call()
-    
-    
-    
+
     def get_current_block_gas_limit(self) -&gt; int:
         &#34;&#34;&#34;
         Implementation of get_current_block_gas_limit in contract Multicall2
@@ -989,15 +943,9 @@ class Multicall2(ContractBase):
     
     
         &#34;&#34;&#34;
-    
-    
-    
-    
-    
+
         return self._fn_get_current_block_gas_limit.block_call()
-    
-    
-    
+
     def get_current_block_timestamp(self) -&gt; int:
         &#34;&#34;&#34;
         Implementation of get_current_block_timestamp in contract Multicall2
@@ -1006,15 +954,9 @@ class Multicall2(ContractBase):
     
     
         &#34;&#34;&#34;
-    
-    
-    
-    
-    
+
         return self._fn_get_current_block_timestamp.block_call()
-    
-    
-    
+
     def get_eth_balance(self, addr: str) -&gt; int:
         &#34;&#34;&#34;
         Implementation of get_eth_balance in contract Multicall2
@@ -1023,15 +965,9 @@ class Multicall2(ContractBase):
     
     
         &#34;&#34;&#34;
-    
-    
-    
-    
-    
+
         return self._fn_get_eth_balance.block_call(addr)
-    
-    
-    
+
     def get_last_block_hash(self) -&gt; Union[bytes, str]:
         &#34;&#34;&#34;
         Implementation of get_last_block_hash in contract Multicall2
@@ -1040,15 +976,9 @@ class Multicall2(ContractBase):
     
     
         &#34;&#34;&#34;
-    
-    
-    
-    
-    
+
         return self._fn_get_last_block_hash.block_call()
-    
-    
-    
+
     def try_aggregate(self, require_success: bool, calls: List[Multicall2Call]) -&gt; List[Multicall2Result]:
         &#34;&#34;&#34;
         Implementation of try_aggregate in contract Multicall2
@@ -1057,15 +987,9 @@ class Multicall2(ContractBase):
     
     
         &#34;&#34;&#34;
-    
-        return self._fn_try_aggregate.block_send(require_success, calls, self.call_contract_fee_amount,self.call_contract_fee_price,0,self.call_contract_debug_flag, self.call_contract_enforce_tx_receipt)
-    
-    
-    
-    
-    
-    
-    
+
+        return self._fn_try_aggregate.block_send(require_success, calls, self.call_contract_fee_amount, self.call_contract_fee_price, 0, self.call_contract_debug_flag, self.call_contract_enforce_tx_receipt)
+
     def try_block_and_aggregate(self, require_success: bool, calls: List[Multicall2Call]) -&gt; Tuple[int, Union[bytes, str], List[Multicall2Result]]:
         &#34;&#34;&#34;
         Implementation of try_block_and_aggregate in contract Multicall2
@@ -1074,14 +998,10 @@ class Multicall2(ContractBase):
     
     
         &#34;&#34;&#34;
-    
-        return self._fn_try_block_and_aggregate.block_send(require_success, calls, self.call_contract_fee_amount,self.call_contract_fee_price,0,self.call_contract_debug_flag, self.call_contract_enforce_tx_receipt)
-    
-    
-    
-    
 
-    def CallContractWait(self, t_long:int)-&gt; &#34;Multicall2&#34;:
+        return self._fn_try_block_and_aggregate.block_send(require_success, calls, self.call_contract_fee_amount, self.call_contract_fee_price, 0, self.call_contract_debug_flag, self.call_contract_enforce_tx_receipt)
+
+    def CallContractWait(self, t_long: int) -&gt; &#34;Multicall2&#34;:
         self._fn_aggregate.setWait(t_long)
         self._fn_block_and_aggregate.setWait(t_long)
         self._fn_get_block_hash.setWait(t_long)
@@ -1096,18 +1016,25 @@ class Multicall2(ContractBase):
         self._fn_try_block_and_aggregate.setWait(t_long)
         return self
 
-
     @staticmethod
     def abi():
         &#34;&#34;&#34;Return the ABI to the underlying contract.&#34;&#34;&#34;
         return json.loads(
-            &#39;[{&#34;constant&#34;:false,&#34;inputs&#34;:[{&#34;components&#34;:[{&#34;internalType&#34;:&#34;address&#34;,&#34;name&#34;:&#34;target&#34;,&#34;type&#34;:&#34;address&#34;},{&#34;internalType&#34;:&#34;bytes&#34;,&#34;name&#34;:&#34;callData&#34;,&#34;type&#34;:&#34;bytes&#34;}],&#34;internalType&#34;:&#34;struct Multicall2.Call[]&#34;,&#34;name&#34;:&#34;calls&#34;,&#34;type&#34;:&#34;tuple[]&#34;}],&#34;name&#34;:&#34;aggregate&#34;,&#34;outputs&#34;:[{&#34;internalType&#34;:&#34;uint256&#34;,&#34;name&#34;:&#34;blockNumber&#34;,&#34;type&#34;:&#34;uint256&#34;},{&#34;internalType&#34;:&#34;bytes[]&#34;,&#34;name&#34;:&#34;returnData&#34;,&#34;type&#34;:&#34;bytes[]&#34;}],&#34;payable&#34;:false,&#34;stateMutability&#34;:&#34;nonpayable&#34;,&#34;type&#34;:&#34;function&#34;},{&#34;constant&#34;:false,&#34;inputs&#34;:[{&#34;components&#34;:[{&#34;internalType&#34;:&#34;address&#34;,&#34;name&#34;:&#34;target&#34;,&#34;type&#34;:&#34;address&#34;},{&#34;internalType&#34;:&#34;bytes&#34;,&#34;name&#34;:&#34;callData&#34;,&#34;type&#34;:&#34;bytes&#34;}],&#34;internalType&#34;:&#34;struct Multicall2.Call[]&#34;,&#34;name&#34;:&#34;calls&#34;,&#34;type&#34;:&#34;tuple[]&#34;}],&#34;name&#34;:&#34;blockAndAggregate&#34;,&#34;outputs&#34;:[{&#34;internalType&#34;:&#34;uint256&#34;,&#34;name&#34;:&#34;blockNumber&#34;,&#34;type&#34;:&#34;uint256&#34;},{&#34;internalType&#34;:&#34;bytes32&#34;,&#34;name&#34;:&#34;blockHash&#34;,&#34;type&#34;:&#34;bytes32&#34;},{&#34;components&#34;:[{&#34;internalType&#34;:&#34;bool&#34;,&#34;name&#34;:&#34;success&#34;,&#34;type&#34;:&#34;bool&#34;},{&#34;internalType&#34;:&#34;bytes&#34;,&#34;name&#34;:&#34;returnData&#34;,&#34;type&#34;:&#34;bytes&#34;}],&#34;internalType&#34;:&#34;struct Multicall2.Result[]&#34;,&#34;name&#34;:&#34;returnData&#34;,&#34;type&#34;:&#34;tuple[]&#34;}],&#34;payable&#34;:false,&#34;stateMutability&#34;:&#34;nonpayable&#34;,&#34;type&#34;:&#34;function&#34;},{&#34;constant&#34;:true,&#34;inputs&#34;:[{&#34;internalType&#34;:&#34;uint256&#34;,&#34;name&#34;:&#34;blockNumber&#34;,&#34;type&#34;:&#34;uint256&#34;}],&#34;name&#34;:&#34;getBlockHash&#34;,&#34;outputs&#34;:[{&#34;internalType&#34;:&#34;bytes32&#34;,&#34;name&#34;:&#34;blockHash&#34;,&#34;type&#34;:&#34;bytes32&#34;}],&#34;payable&#34;:false,&#34;stateMutability&#34;:&#34;view&#34;,&#34;type&#34;:&#34;function&#34;},{&#34;constant&#34;:true,&#34;inputs&#34;:[],&#34;name&#34;:&#34;getBlockNumber&#34;,&#34;outputs&#34;:[{&#34;internalType&#34;:&#34;uint256&#34;,&#34;name&#34;:&#34;blockNumber&#34;,&#34;type&#34;:&#34;uint256&#34;}],&#34;payable&#34;:false,&#34;stateMutability&#34;:&#34;view&#34;,&#34;type&#34;:&#34;function&#34;},{&#34;constant&#34;:true,&#34;inputs&#34;:[],&#34;name&#34;:&#34;getCurrentBlockCoinbase&#34;,&#34;outputs&#34;:[{&#34;internalType&#34;:&#34;address&#34;,&#34;name&#34;:&#34;coinbase&#34;,&#34;type&#34;:&#34;address&#34;}],&#34;payable&#34;:false,&#34;stateMutability&#34;:&#34;view&#34;,&#34;type&#34;:&#34;function&#34;},{&#34;constant&#34;:true,&#34;inputs&#34;:[],&#34;name&#34;:&#34;getCurrentBlockDifficulty&#34;,&#34;outputs&#34;:[{&#34;internalType&#34;:&#34;uint256&#34;,&#34;name&#34;:&#34;difficulty&#34;,&#34;type&#34;:&#34;uint256&#34;}],&#34;payable&#34;:false,&#34;stateMutability&#34;:&#34;view&#34;,&#34;type&#34;:&#34;function&#34;},{&#34;constant&#34;:true,&#34;inputs&#34;:[],&#34;name&#34;:&#34;getCurrentBlockGasLimit&#34;,&#34;outputs&#34;:[{&#34;internalType&#34;:&#34;uint256&#34;,&#34;name&#34;:&#34;gaslimit&#34;,&#34;type&#34;:&#34;uint256&#34;}],&#34;payable&#34;:false,&#34;stateMutability&#34;:&#34;view&#34;,&#34;type&#34;:&#34;function&#34;},{&#34;constant&#34;:true,&#34;inputs&#34;:[],&#34;name&#34;:&#34;getCurrentBlockTimestamp&#34;,&#34;outputs&#34;:[{&#34;internalType&#34;:&#34;uint256&#34;,&#34;name&#34;:&#34;timestamp&#34;,&#34;type&#34;:&#34;uint256&#34;}],&#34;payable&#34;:false,&#34;stateMutability&#34;:&#34;view&#34;,&#34;type&#34;:&#34;function&#34;},{&#34;constant&#34;:true,&#34;inputs&#34;:[{&#34;internalType&#34;:&#34;address&#34;,&#34;name&#34;:&#34;addr&#34;,&#34;type&#34;:&#34;address&#34;}],&#34;name&#34;:&#34;getEthBalance&#34;,&#34;outputs&#34;:[{&#34;internalType&#34;:&#34;uint256&#34;,&#34;name&#34;:&#34;balance&#34;,&#34;type&#34;:&#34;uint256&#34;}],&#34;payable&#34;:false,&#34;stateMutability&#34;:&#34;view&#34;,&#34;type&#34;:&#34;function&#34;},{&#34;constant&#34;:true,&#34;inputs&#34;:[],&#34;name&#34;:&#34;getLastBlockHash&#34;,&#34;outputs&#34;:[{&#34;internalType&#34;:&#34;bytes32&#34;,&#34;name&#34;:&#34;blockHash&#34;,&#34;type&#34;:&#34;bytes32&#34;}],&#34;payable&#34;:false,&#34;stateMutability&#34;:&#34;view&#34;,&#34;type&#34;:&#34;function&#34;},{&#34;constant&#34;:false,&#34;inputs&#34;:[{&#34;internalType&#34;:&#34;bool&#34;,&#34;name&#34;:&#34;requireSuccess&#34;,&#34;type&#34;:&#34;bool&#34;},{&#34;components&#34;:[{&#34;internalType&#34;:&#34;address&#34;,&#34;name&#34;:&#34;target&#34;,&#34;type&#34;:&#34;address&#34;},{&#34;internalType&#34;:&#34;bytes&#34;,&#34;name&#34;:&#34;callData&#34;,&#34;type&#34;:&#34;bytes&#34;}],&#34;internalType&#34;:&#34;struct Multicall2.Call[]&#34;,&#34;name&#34;:&#34;calls&#34;,&#34;type&#34;:&#34;tuple[]&#34;}],&#34;name&#34;:&#34;tryAggregate&#34;,&#34;outputs&#34;:[{&#34;components&#34;:[{&#34;internalType&#34;:&#34;bool&#34;,&#34;name&#34;:&#34;success&#34;,&#34;type&#34;:&#34;bool&#34;},{&#34;internalType&#34;:&#34;bytes&#34;,&#34;name&#34;:&#34;returnData&#34;,&#34;type&#34;:&#34;bytes&#34;}],&#34;internalType&#34;:&#34;struct Multicall2.Result[]&#34;,&#34;name&#34;:&#34;returnData&#34;,&#34;type&#34;:&#34;tuple[]&#34;}],&#34;payable&#34;:false,&#34;stateMutability&#34;:&#34;nonpayable&#34;,&#34;type&#34;:&#34;function&#34;},{&#34;constant&#34;:false,&#34;inputs&#34;:[{&#34;internalType&#34;:&#34;bool&#34;,&#34;name&#34;:&#34;requireSuccess&#34;,&#34;type&#34;:&#34;bool&#34;},{&#34;components&#34;:[{&#34;internalType&#34;:&#34;address&#34;,&#34;name&#34;:&#34;target&#34;,&#34;type&#34;:&#34;address&#34;},{&#34;internalType&#34;:&#34;bytes&#34;,&#34;name&#34;:&#34;callData&#34;,&#34;type&#34;:&#34;bytes&#34;}],&#34;internalType&#34;:&#34;struct Multicall2.Call[]&#34;,&#34;name&#34;:&#34;calls&#34;,&#34;type&#34;:&#34;tuple[]&#34;}],&#34;name&#34;:&#34;tryBlockAndAggregate&#34;,&#34;outputs&#34;:[{&#34;internalType&#34;:&#34;uint256&#34;,&#34;name&#34;:&#34;blockNumber&#34;,&#34;type&#34;:&#34;uint256&#34;},{&#34;internalType&#34;:&#34;bytes32&#34;,&#34;name&#34;:&#34;blockHash&#34;,&#34;type&#34;:&#34;bytes32&#34;},{&#34;components&#34;:[{&#34;internalType&#34;:&#34;bool&#34;,&#34;name&#34;:&#34;success&#34;,&#34;type&#34;:&#34;bool&#34;},{&#34;internalType&#34;:&#34;bytes&#34;,&#34;name&#34;:&#34;returnData&#34;,&#34;type&#34;:&#34;bytes&#34;}],&#34;internalType&#34;:&#34;struct Multicall2.Result[]&#34;,&#34;name&#34;:&#34;returnData&#34;,&#34;type&#34;:&#34;tuple[]&#34;}],&#34;payable&#34;:false,&#34;stateMutability&#34;:&#34;nonpayable&#34;,&#34;type&#34;:&#34;function&#34;}]&#39;  # noqa: E501 (line-too-long)
+            &#39;[{&#34;constant&#34;:false,&#34;inputs&#34;:[{&#34;components&#34;:[{&#34;internalType&#34;:&#34;address&#34;,&#34;name&#34;:&#34;target&#34;,&#34;type&#34;:&#34;address&#34;},{&#34;internalType&#34;:&#34;bytes&#34;,&#34;name&#34;:&#34;callData&#34;,&#34;type&#34;:&#34;bytes&#34;}],&#34;internalType&#34;:&#34;struct Multicall2.Call[]&#34;,&#34;name&#34;:&#34;calls&#34;,&#34;type&#34;:&#34;tuple[]&#34;}],&#34;name&#34;:&#34;aggregate&#34;,&#34;outputs&#34;:[{&#34;internalType&#34;:&#34;uint256&#34;,&#34;name&#34;:&#34;blockNumber&#34;,&#34;type&#34;:&#34;uint256&#34;},{&#34;internalType&#34;:&#34;bytes[]&#34;,&#34;name&#34;:&#34;returnData&#34;,&#34;type&#34;:&#34;bytes[]&#34;}],&#34;payable&#34;:false,&#34;stateMutability&#34;:&#34;nonpayable&#34;,&#34;type&#34;:&#34;function&#34;},{&#34;constant&#34;:false,&#34;inputs&#34;:[{&#34;components&#34;:[{&#34;internalType&#34;:&#34;address&#34;,&#34;name&#34;:&#34;target&#34;,&#34;type&#34;:&#34;address&#34;},{&#34;internalType&#34;:&#34;bytes&#34;,&#34;name&#34;:&#34;callData&#34;,&#34;type&#34;:&#34;bytes&#34;}],&#34;internalType&#34;:&#34;struct Multicall2.Call[]&#34;,&#34;name&#34;:&#34;calls&#34;,&#34;type&#34;:&#34;tuple[]&#34;}],&#34;name&#34;:&#34;blockAndAggregate&#34;,&#34;outputs&#34;:[{&#34;internalType&#34;:&#34;uint256&#34;,&#34;name&#34;:&#34;blockNumber&#34;,&#34;type&#34;:&#34;uint256&#34;},{&#34;internalType&#34;:&#34;bytes32&#34;,&#34;name&#34;:&#34;blockHash&#34;,&#34;type&#34;:&#34;bytes32&#34;},{&#34;components&#34;:[{&#34;internalType&#34;:&#34;bool&#34;,&#34;name&#34;:&#34;success&#34;,&#34;type&#34;:&#34;bool&#34;},{&#34;internalType&#34;:&#34;bytes&#34;,&#34;name&#34;:&#34;returnData&#34;,&#34;type&#34;:&#34;bytes&#34;}],&#34;internalType&#34;:&#34;struct Multicall2.Result[]&#34;,&#34;name&#34;:&#34;returnData&#34;,&#34;type&#34;:&#34;tuple[]&#34;}],&#34;payable&#34;:false,&#34;stateMutability&#34;:&#34;nonpayable&#34;,&#34;type&#34;:&#34;function&#34;},{&#34;constant&#34;:true,&#34;inputs&#34;:[{&#34;internalType&#34;:&#34;uint256&#34;,&#34;name&#34;:&#34;blockNumber&#34;,&#34;type&#34;:&#34;uint256&#34;}],&#34;name&#34;:&#34;getBlockHash&#34;,&#34;outputs&#34;:[{&#34;internalType&#34;:&#34;bytes32&#34;,&#34;name&#34;:&#34;blockHash&#34;,&#34;type&#34;:&#34;bytes32&#34;}],&#34;payable&#34;:false,&#34;stateMutability&#34;:&#34;view&#34;,&#34;type&#34;:&#34;function&#34;},{&#34;constant&#34;:true,&#34;inputs&#34;:[],&#34;name&#34;:&#34;getBlockNumber&#34;,&#34;outputs&#34;:[{&#34;internalType&#34;:&#34;uint256&#34;,&#34;name&#34;:&#34;blockNumber&#34;,&#34;type&#34;:&#34;uint256&#34;}],&#34;payable&#34;:false,&#34;stateMutability&#34;:&#34;view&#34;,&#34;type&#34;:&#34;function&#34;},{&#34;constant&#34;:true,&#34;inputs&#34;:[],&#34;name&#34;:&#34;getCurrentBlockCoinbase&#34;,&#34;outputs&#34;:[{&#34;internalType&#34;:&#34;address&#34;,&#34;name&#34;:&#34;coinbase&#34;,&#34;type&#34;:&#34;address&#34;}],&#34;payable&#34;:false,&#34;stateMutability&#34;:&#34;view&#34;,&#34;type&#34;:&#34;function&#34;},{&#34;constant&#34;:true,&#34;inputs&#34;:[],&#34;name&#34;:&#34;getCurrentBlockDifficulty&#34;,&#34;outputs&#34;:[{&#34;internalType&#34;:&#34;uint256&#34;,&#34;name&#34;:&#34;difficulty&#34;,&#34;type&#34;:&#34;uint256&#34;}],&#34;payable&#34;:false,&#34;stateMutability&#34;:&#34;view&#34;,&#34;type&#34;:&#34;function&#34;},{&#34;constant&#34;:true,&#34;inputs&#34;:[],&#34;name&#34;:&#34;getCurrentBlockGasLimit&#34;,&#34;outputs&#34;:[{&#34;internalType&#34;:&#34;uint256&#34;,&#34;name&#34;:&#34;gaslimit&#34;,&#34;type&#34;:&#34;uint256&#34;}],&#34;payable&#34;:false,&#34;stateMutability&#34;:&#34;view&#34;,&#34;type&#34;:&#34;function&#34;},{&#34;constant&#34;:true,&#34;inputs&#34;:[],&#34;name&#34;:&#34;getCurrentBlockTimestamp&#34;,&#34;outputs&#34;:[{&#34;internalType&#34;:&#34;uint256&#34;,&#34;name&#34;:&#34;timestamp&#34;,&#34;type&#34;:&#34;uint256&#34;}],&#34;payable&#34;:false,&#34;stateMutability&#34;:&#34;view&#34;,&#34;type&#34;:&#34;function&#34;},{&#34;constant&#34;:true,&#34;inputs&#34;:[{&#34;internalType&#34;:&#34;address&#34;,&#34;name&#34;:&#34;addr&#34;,&#34;type&#34;:&#34;address&#34;}],&#34;name&#34;:&#34;getEthBalance&#34;,&#34;outputs&#34;:[{&#34;internalType&#34;:&#34;uint256&#34;,&#34;name&#34;:&#34;balance&#34;,&#34;type&#34;:&#34;uint256&#34;}],&#34;payable&#34;:false,&#34;stateMutability&#34;:&#34;view&#34;,&#34;type&#34;:&#34;function&#34;},{&#34;constant&#34;:true,&#34;inputs&#34;:[],&#34;name&#34;:&#34;getLastBlockHash&#34;,&#34;outputs&#34;:[{&#34;internalType&#34;:&#34;bytes32&#34;,&#34;name&#34;:&#34;blockHash&#34;,&#34;type&#34;:&#34;bytes32&#34;}],&#34;payable&#34;:false,&#34;stateMutability&#34;:&#34;view&#34;,&#34;type&#34;:&#34;function&#34;},{&#34;constant&#34;:false,&#34;inputs&#34;:[{&#34;internalType&#34;:&#34;bool&#34;,&#34;name&#34;:&#34;requireSuccess&#34;,&#34;type&#34;:&#34;bool&#34;},{&#34;components&#34;:[{&#34;internalType&#34;:&#34;address&#34;,&#34;name&#34;:&#34;target&#34;,&#34;type&#34;:&#34;address&#34;},{&#34;internalType&#34;:&#34;bytes&#34;,&#34;name&#34;:&#34;callData&#34;,&#34;type&#34;:&#34;bytes&#34;}],&#34;internalType&#34;:&#34;struct Multicall2.Call[]&#34;,&#34;name&#34;:&#34;calls&#34;,&#34;type&#34;:&#34;tuple[]&#34;}],&#34;name&#34;:&#34;tryAggregate&#34;,&#34;outputs&#34;:[{&#34;components&#34;:[{&#34;internalType&#34;:&#34;bool&#34;,&#34;name&#34;:&#34;success&#34;,&#34;type&#34;:&#34;bool&#34;},{&#34;internalType&#34;:&#34;bytes&#34;,&#34;name&#34;:&#34;returnData&#34;,&#34;type&#34;:&#34;bytes&#34;}],&#34;internalType&#34;:&#34;struct Multicall2.Result[]&#34;,&#34;name&#34;:&#34;returnData&#34;,&#34;type&#34;:&#34;tuple[]&#34;}],&#34;payable&#34;:false,&#34;stateMutability&#34;:&#34;nonpayable&#34;,&#34;type&#34;:&#34;function&#34;},{&#34;constant&#34;:false,&#34;inputs&#34;:[{&#34;internalType&#34;:&#34;bool&#34;,&#34;name&#34;:&#34;requireSuccess&#34;,&#34;type&#34;:&#34;bool&#34;},{&#34;components&#34;:[{&#34;internalType&#34;:&#34;address&#34;,&#34;name&#34;:&#34;target&#34;,&#34;type&#34;:&#34;address&#34;},{&#34;internalType&#34;:&#34;bytes&#34;,&#34;name&#34;:&#34;callData&#34;,&#34;type&#34;:&#34;bytes&#34;}],&#34;internalType&#34;:&#34;struct Multicall2.Call[]&#34;,&#34;name&#34;:&#34;calls&#34;,&#34;type&#34;:&#34;tuple[]&#34;}],&#34;name&#34;:&#34;tryBlockAndAggregate&#34;,&#34;outputs&#34;:[{&#34;internalType&#34;:&#34;uint256&#34;,&#34;name&#34;:&#34;blockNumber&#34;,&#34;type&#34;:&#34;uint256&#34;},{&#34;internalType&#34;:&#34;bytes32&#34;,&#34;name&#34;:&#34;blockHash&#34;,&#34;type&#34;:&#34;bytes32&#34;},{&#34;components&#34;:[{&#34;internalType&#34;:&#34;bool&#34;,&#34;name&#34;:&#34;success&#34;,&#34;type&#34;:&#34;bool&#34;},{&#34;internalType&#34;:&#34;bytes&#34;,&#34;name&#34;:&#34;returnData&#34;,&#34;type&#34;:&#34;bytes&#34;}],&#34;internalType&#34;:&#34;struct Multicall2.Result[]&#34;,&#34;name&#34;:&#34;returnData&#34;,&#34;type&#34;:&#34;tuple[]&#34;}],&#34;payable&#34;:false,&#34;stateMutability&#34;:&#34;nonpayable&#34;,&#34;type&#34;:&#34;function&#34;}]&#39;
+            # noqa: E501 (line-too-long)
         )
 
 # pylint: disable=too-many-lines</code></pre>
 </details>
 </section>
 <section>
+<h2 class="section-title" id="header-submodules">Sub-modules</h2>
+<dl>
+<dt><code class="name"><a title="moody.m.multicall2.execute" href="execute.html">moody.m.multicall2.execute</a></code></dt>
+<dd>
+<div class="desc"></div>
+</dd>
+</dl>
 </section>
 <section>
 </section>
@@ -1127,16 +1054,16 @@ class Multicall2(ContractBase):
 <summary>
 <span>Expand source code</span>
 </summary>
-<pre><code class="python">class AggregateMethod(ContractMethod): # pylint: disable=invalid-name
+<pre><code class="python">class AggregateMethod(ContractMethod):  # pylint: disable=invalid-name
     &#34;&#34;&#34;Various interfaces to the aggregate method.&#34;&#34;&#34;
 
-    def __init__(self, elib: MiliDoS, contract_address: str, contract_function: ContractFunction, validator: Validator=None):
+    def __init__(self, elib: MiliDoS, contract_address: str, contract_function: ContractFunction, validator: Validator = None):
         &#34;&#34;&#34;Persist instance data.&#34;&#34;&#34;
         super().__init__(elib, contract_address, validator)
         self._underlying_method = contract_function
         self.sign = validator.getSignature(&#34;aggregate&#34;)
 
-    def validate_and_normalize_inputs(self, calls: List[Multicall2Call])-&gt;any:
+    def validate_and_normalize_inputs(self, calls: List[Multicall2Call]) -&gt; any:
         &#34;&#34;&#34;Validate the inputs to the aggregate method.&#34;&#34;&#34;
         self.validator.assert_valid(
             method_name=&#39;aggregate&#39;,
@@ -1145,9 +1072,7 @@ class Multicall2(ContractBase):
         )
         return (calls)
 
-
-
-    def block_send(self, calls: List[Multicall2Call],_gaswei:int,_pricewei:int,_valeth:int=0,_debugtx: bool = False,_receipList: bool = False) -&gt; Tuple[int, List[Union[bytes, str]]]:
+    def block_send(self, calls: List[Multicall2Call], _gaswei: int, _pricewei: int, _valeth: int = 0, _debugtx: bool = False, _receipList: bool = False) -&gt; Tuple[int, List[Union[bytes, str]]]:
         &#34;&#34;&#34;Execute underlying contract method via eth_call.
 
         :param tx_params: transaction parameters
@@ -1203,7 +1128,6 @@ class Multicall2(ContractBase):
             else:
                 print(f&#34;{Bolors.FAIL}Error Revert {Bolors.RESET}, aggregate. Reason: Unknown&#34;)
 
-
     def send_transaction(self, calls: List[Multicall2Call], tx_params: Optional[TxParams] = None) -&gt; Union[HexBytes, bytes]:
         &#34;&#34;&#34;Execute underlying contract method via eth_sendTransaction.
 
@@ -1242,7 +1166,7 @@ class Multicall2(ContractBase):
 <summary>
 <span>Expand source code</span>
 </summary>
-<pre><code class="python">def block_send(self, calls: List[Multicall2Call],_gaswei:int,_pricewei:int,_valeth:int=0,_debugtx: bool = False,_receipList: bool = False) -&gt; Tuple[int, List[Union[bytes, str]]]:
+<pre><code class="python">def block_send(self, calls: List[Multicall2Call], _gaswei: int, _pricewei: int, _valeth: int = 0, _debugtx: bool = False, _receipList: bool = False) -&gt; Tuple[int, List[Union[bytes, str]]]:
     &#34;&#34;&#34;Execute underlying contract method via eth_call.
 
     :param tx_params: transaction parameters
@@ -1360,7 +1284,7 @@ class Multicall2(ContractBase):
 <summary>
 <span>Expand source code</span>
 </summary>
-<pre><code class="python">def validate_and_normalize_inputs(self, calls: List[Multicall2Call])-&gt;any:
+<pre><code class="python">def validate_and_normalize_inputs(self, calls: List[Multicall2Call]) -&gt; any:
     &#34;&#34;&#34;Validate the inputs to the aggregate method.&#34;&#34;&#34;
     self.validator.assert_valid(
         method_name=&#39;aggregate&#39;,
@@ -1392,16 +1316,16 @@ class Multicall2(ContractBase):
 <summary>
 <span>Expand source code</span>
 </summary>
-<pre><code class="python">class BlockAndAggregateMethod(ContractMethod): # pylint: disable=invalid-name
+<pre><code class="python">class BlockAndAggregateMethod(ContractMethod):  # pylint: disable=invalid-name
     &#34;&#34;&#34;Various interfaces to the blockAndAggregate method.&#34;&#34;&#34;
 
-    def __init__(self, elib: MiliDoS, contract_address: str, contract_function: ContractFunction, validator: Validator=None):
+    def __init__(self, elib: MiliDoS, contract_address: str, contract_function: ContractFunction, validator: Validator = None):
         &#34;&#34;&#34;Persist instance data.&#34;&#34;&#34;
         super().__init__(elib, contract_address, validator)
         self._underlying_method = contract_function
         self.sign = validator.getSignature(&#34;blockAndAggregate&#34;)
 
-    def validate_and_normalize_inputs(self, calls: List[Multicall2Call])-&gt;any:
+    def validate_and_normalize_inputs(self, calls: List[Multicall2Call]) -&gt; any:
         &#34;&#34;&#34;Validate the inputs to the blockAndAggregate method.&#34;&#34;&#34;
         self.validator.assert_valid(
             method_name=&#39;blockAndAggregate&#39;,
@@ -1410,9 +1334,7 @@ class Multicall2(ContractBase):
         )
         return (calls)
 
-
-
-    def block_send(self, calls: List[Multicall2Call],_gaswei:int,_pricewei:int,_valeth:int=0,_debugtx: bool = False,_receipList: bool = False) -&gt; Tuple[int, Union[bytes, str], List[Multicall2Result]]:
+    def block_send(self, calls: List[Multicall2Call], _gaswei: int, _pricewei: int, _valeth: int = 0, _debugtx: bool = False, _receipList: bool = False) -&gt; Tuple[int, Union[bytes, str], List[Multicall2Result]]:
         &#34;&#34;&#34;Execute underlying contract method via eth_call.
 
         :param tx_params: transaction parameters
@@ -1468,7 +1390,6 @@ class Multicall2(ContractBase):
             else:
                 print(f&#34;{Bolors.FAIL}Error Revert {Bolors.RESET}, block_and_aggregate. Reason: Unknown&#34;)
 
-
     def send_transaction(self, calls: List[Multicall2Call], tx_params: Optional[TxParams] = None) -&gt; Union[HexBytes, bytes]:
         &#34;&#34;&#34;Execute underlying contract method via eth_sendTransaction.
 
@@ -1507,7 +1428,7 @@ class Multicall2(ContractBase):
 <summary>
 <span>Expand source code</span>
 </summary>
-<pre><code class="python">def block_send(self, calls: List[Multicall2Call],_gaswei:int,_pricewei:int,_valeth:int=0,_debugtx: bool = False,_receipList: bool = False) -&gt; Tuple[int, Union[bytes, str], List[Multicall2Result]]:
+<pre><code class="python">def block_send(self, calls: List[Multicall2Call], _gaswei: int, _pricewei: int, _valeth: int = 0, _debugtx: bool = False, _receipList: bool = False) -&gt; Tuple[int, Union[bytes, str], List[Multicall2Result]]:
     &#34;&#34;&#34;Execute underlying contract method via eth_call.
 
     :param tx_params: transaction parameters
@@ -1625,7 +1546,7 @@ class Multicall2(ContractBase):
 <summary>
 <span>Expand source code</span>
 </summary>
-<pre><code class="python">def validate_and_normalize_inputs(self, calls: List[Multicall2Call])-&gt;any:
+<pre><code class="python">def validate_and_normalize_inputs(self, calls: List[Multicall2Call]) -&gt; any:
     &#34;&#34;&#34;Validate the inputs to the blockAndAggregate method.&#34;&#34;&#34;
     self.validator.assert_valid(
         method_name=&#39;blockAndAggregate&#39;,
@@ -1657,16 +1578,16 @@ class Multicall2(ContractBase):
 <summary>
 <span>Expand source code</span>
 </summary>
-<pre><code class="python">class GetBlockHashMethod(ContractMethod): # pylint: disable=invalid-name
+<pre><code class="python">class GetBlockHashMethod(ContractMethod):  # pylint: disable=invalid-name
     &#34;&#34;&#34;Various interfaces to the getBlockHash method.&#34;&#34;&#34;
 
-    def __init__(self, elib: MiliDoS, contract_address: str, contract_function: ContractFunction, validator: Validator=None):
+    def __init__(self, elib: MiliDoS, contract_address: str, contract_function: ContractFunction, validator: Validator = None):
         &#34;&#34;&#34;Persist instance data.&#34;&#34;&#34;
         super().__init__(elib, contract_address, validator)
         self._underlying_method = contract_function
         self.sign = validator.getSignature(&#34;getBlockHash&#34;)
 
-    def validate_and_normalize_inputs(self, block_number: int)-&gt;any:
+    def validate_and_normalize_inputs(self, block_number: int) -&gt; any:
         &#34;&#34;&#34;Validate the inputs to the getBlockHash method.&#34;&#34;&#34;
         self.validator.assert_valid(
             method_name=&#39;getBlockHash&#39;,
@@ -1677,13 +1598,11 @@ class Multicall2(ContractBase):
         block_number = int(block_number)
         return (block_number)
 
-
-
-    def block_call(self,block_number: int, debug:bool=False) -&gt; Union[bytes, str]:
+    def block_call(self, block_number: int, debug: bool = False) -&gt; Union[bytes, str]:
         _fn = self._underlying_method(block_number)
         returned = _fn.call({
-                &#39;from&#39;: self._operate
-            })
+            &#39;from&#39;: self._operate
+        })
         return Union[bytes, str](returned)
 
     def estimate_gas(self, block_number: int, tx_params: Optional[TxParams] = None) -&gt; int:
@@ -1707,11 +1626,11 @@ class Multicall2(ContractBase):
 <summary>
 <span>Expand source code</span>
 </summary>
-<pre><code class="python">def block_call(self,block_number: int, debug:bool=False) -&gt; Union[bytes, str]:
+<pre><code class="python">def block_call(self, block_number: int, debug: bool = False) -&gt; Union[bytes, str]:
     _fn = self._underlying_method(block_number)
     returned = _fn.call({
-            &#39;from&#39;: self._operate
-        })
+        &#39;from&#39;: self._operate
+    })
     return Union[bytes, str](returned)</code></pre>
 </details>
 </dd>
@@ -1740,7 +1659,7 @@ class Multicall2(ContractBase):
 <summary>
 <span>Expand source code</span>
 </summary>
-<pre><code class="python">def validate_and_normalize_inputs(self, block_number: int)-&gt;any:
+<pre><code class="python">def validate_and_normalize_inputs(self, block_number: int) -&gt; any:
     &#34;&#34;&#34;Validate the inputs to the getBlockHash method.&#34;&#34;&#34;
     self.validator.assert_valid(
         method_name=&#39;getBlockHash&#39;,
@@ -1774,22 +1693,20 @@ class Multicall2(ContractBase):
 <summary>
 <span>Expand source code</span>
 </summary>
-<pre><code class="python">class GetBlockNumberMethod(ContractMethod): # pylint: disable=invalid-name
+<pre><code class="python">class GetBlockNumberMethod(ContractMethod):  # pylint: disable=invalid-name
     &#34;&#34;&#34;Various interfaces to the getBlockNumber method.&#34;&#34;&#34;
 
-    def __init__(self, elib: MiliDoS, contract_address: str, contract_function: ContractFunction, validator: Validator=None):
+    def __init__(self, elib: MiliDoS, contract_address: str, contract_function: ContractFunction, validator: Validator = None):
         &#34;&#34;&#34;Persist instance data.&#34;&#34;&#34;
         super().__init__(elib, contract_address)
         self._underlying_method = contract_function
         self.sign = validator.getSignature(&#34;getBlockNumber&#34;)
 
-
-
-    def block_call(self, debug:bool=False) -&gt; int:
+    def block_call(self, debug: bool = False) -&gt; int:
         _fn = self._underlying_method()
         returned = _fn.call({
-                &#39;from&#39;: self._operate
-            })
+            &#39;from&#39;: self._operate
+        })
         return int(returned)
 
     def estimate_gas(self, tx_params: Optional[TxParams] = None) -&gt; int:
@@ -1812,11 +1729,11 @@ class Multicall2(ContractBase):
 <summary>
 <span>Expand source code</span>
 </summary>
-<pre><code class="python">def block_call(self, debug:bool=False) -&gt; int:
+<pre><code class="python">def block_call(self, debug: bool = False) -&gt; int:
     _fn = self._underlying_method()
     returned = _fn.call({
-            &#39;from&#39;: self._operate
-        })
+        &#39;from&#39;: self._operate
+    })
     return int(returned)</code></pre>
 </details>
 </dd>
@@ -1857,22 +1774,20 @@ class Multicall2(ContractBase):
 <summary>
 <span>Expand source code</span>
 </summary>
-<pre><code class="python">class GetCurrentBlockCoinbaseMethod(ContractMethod): # pylint: disable=invalid-name
+<pre><code class="python">class GetCurrentBlockCoinbaseMethod(ContractMethod):  # pylint: disable=invalid-name
     &#34;&#34;&#34;Various interfaces to the getCurrentBlockCoinbase method.&#34;&#34;&#34;
 
-    def __init__(self, elib: MiliDoS, contract_address: str, contract_function: ContractFunction, validator: Validator=None):
+    def __init__(self, elib: MiliDoS, contract_address: str, contract_function: ContractFunction, validator: Validator = None):
         &#34;&#34;&#34;Persist instance data.&#34;&#34;&#34;
         super().__init__(elib, contract_address)
         self._underlying_method = contract_function
         self.sign = validator.getSignature(&#34;getCurrentBlockCoinbase&#34;)
 
-
-
-    def block_call(self, debug:bool=False) -&gt; str:
+    def block_call(self, debug: bool = False) -&gt; str:
         _fn = self._underlying_method()
         returned = _fn.call({
-                &#39;from&#39;: self._operate
-            })
+            &#39;from&#39;: self._operate
+        })
         return str(returned)
 
     def estimate_gas(self, tx_params: Optional[TxParams] = None) -&gt; int:
@@ -1895,11 +1810,11 @@ class Multicall2(ContractBase):
 <summary>
 <span>Expand source code</span>
 </summary>
-<pre><code class="python">def block_call(self, debug:bool=False) -&gt; str:
+<pre><code class="python">def block_call(self, debug: bool = False) -&gt; str:
     _fn = self._underlying_method()
     returned = _fn.call({
-            &#39;from&#39;: self._operate
-        })
+        &#39;from&#39;: self._operate
+    })
     return str(returned)</code></pre>
 </details>
 </dd>
@@ -1940,22 +1855,20 @@ class Multicall2(ContractBase):
 <summary>
 <span>Expand source code</span>
 </summary>
-<pre><code class="python">class GetCurrentBlockDifficultyMethod(ContractMethod): # pylint: disable=invalid-name
+<pre><code class="python">class GetCurrentBlockDifficultyMethod(ContractMethod):  # pylint: disable=invalid-name
     &#34;&#34;&#34;Various interfaces to the getCurrentBlockDifficulty method.&#34;&#34;&#34;
 
-    def __init__(self, elib: MiliDoS, contract_address: str, contract_function: ContractFunction, validator: Validator=None):
+    def __init__(self, elib: MiliDoS, contract_address: str, contract_function: ContractFunction, validator: Validator = None):
         &#34;&#34;&#34;Persist instance data.&#34;&#34;&#34;
         super().__init__(elib, contract_address)
         self._underlying_method = contract_function
         self.sign = validator.getSignature(&#34;getCurrentBlockDifficulty&#34;)
 
-
-
-    def block_call(self, debug:bool=False) -&gt; int:
+    def block_call(self, debug: bool = False) -&gt; int:
         _fn = self._underlying_method()
         returned = _fn.call({
-                &#39;from&#39;: self._operate
-            })
+            &#39;from&#39;: self._operate
+        })
         return int(returned)
 
     def estimate_gas(self, tx_params: Optional[TxParams] = None) -&gt; int:
@@ -1978,11 +1891,11 @@ class Multicall2(ContractBase):
 <summary>
 <span>Expand source code</span>
 </summary>
-<pre><code class="python">def block_call(self, debug:bool=False) -&gt; int:
+<pre><code class="python">def block_call(self, debug: bool = False) -&gt; int:
     _fn = self._underlying_method()
     returned = _fn.call({
-            &#39;from&#39;: self._operate
-        })
+        &#39;from&#39;: self._operate
+    })
     return int(returned)</code></pre>
 </details>
 </dd>
@@ -2023,22 +1936,20 @@ class Multicall2(ContractBase):
 <summary>
 <span>Expand source code</span>
 </summary>
-<pre><code class="python">class GetCurrentBlockGasLimitMethod(ContractMethod): # pylint: disable=invalid-name
+<pre><code class="python">class GetCurrentBlockGasLimitMethod(ContractMethod):  # pylint: disable=invalid-name
     &#34;&#34;&#34;Various interfaces to the getCurrentBlockGasLimit method.&#34;&#34;&#34;
 
-    def __init__(self, elib: MiliDoS, contract_address: str, contract_function: ContractFunction, validator: Validator=None):
+    def __init__(self, elib: MiliDoS, contract_address: str, contract_function: ContractFunction, validator: Validator = None):
         &#34;&#34;&#34;Persist instance data.&#34;&#34;&#34;
         super().__init__(elib, contract_address)
         self._underlying_method = contract_function
         self.sign = validator.getSignature(&#34;getCurrentBlockGasLimit&#34;)
 
-
-
-    def block_call(self, debug:bool=False) -&gt; int:
+    def block_call(self, debug: bool = False) -&gt; int:
         _fn = self._underlying_method()
         returned = _fn.call({
-                &#39;from&#39;: self._operate
-            })
+            &#39;from&#39;: self._operate
+        })
         return int(returned)
 
     def estimate_gas(self, tx_params: Optional[TxParams] = None) -&gt; int:
@@ -2061,11 +1972,11 @@ class Multicall2(ContractBase):
 <summary>
 <span>Expand source code</span>
 </summary>
-<pre><code class="python">def block_call(self, debug:bool=False) -&gt; int:
+<pre><code class="python">def block_call(self, debug: bool = False) -&gt; int:
     _fn = self._underlying_method()
     returned = _fn.call({
-            &#39;from&#39;: self._operate
-        })
+        &#39;from&#39;: self._operate
+    })
     return int(returned)</code></pre>
 </details>
 </dd>
@@ -2106,22 +2017,20 @@ class Multicall2(ContractBase):
 <summary>
 <span>Expand source code</span>
 </summary>
-<pre><code class="python">class GetCurrentBlockTimestampMethod(ContractMethod): # pylint: disable=invalid-name
+<pre><code class="python">class GetCurrentBlockTimestampMethod(ContractMethod):  # pylint: disable=invalid-name
     &#34;&#34;&#34;Various interfaces to the getCurrentBlockTimestamp method.&#34;&#34;&#34;
 
-    def __init__(self, elib: MiliDoS, contract_address: str, contract_function: ContractFunction, validator: Validator=None):
+    def __init__(self, elib: MiliDoS, contract_address: str, contract_function: ContractFunction, validator: Validator = None):
         &#34;&#34;&#34;Persist instance data.&#34;&#34;&#34;
         super().__init__(elib, contract_address)
         self._underlying_method = contract_function
         self.sign = validator.getSignature(&#34;getCurrentBlockTimestamp&#34;)
 
-
-
-    def block_call(self, debug:bool=False) -&gt; int:
+    def block_call(self, debug: bool = False) -&gt; int:
         _fn = self._underlying_method()
         returned = _fn.call({
-                &#39;from&#39;: self._operate
-            })
+            &#39;from&#39;: self._operate
+        })
         return int(returned)
 
     def estimate_gas(self, tx_params: Optional[TxParams] = None) -&gt; int:
@@ -2144,11 +2053,11 @@ class Multicall2(ContractBase):
 <summary>
 <span>Expand source code</span>
 </summary>
-<pre><code class="python">def block_call(self, debug:bool=False) -&gt; int:
+<pre><code class="python">def block_call(self, debug: bool = False) -&gt; int:
     _fn = self._underlying_method()
     returned = _fn.call({
-            &#39;from&#39;: self._operate
-        })
+        &#39;from&#39;: self._operate
+    })
     return int(returned)</code></pre>
 </details>
 </dd>
@@ -2189,16 +2098,16 @@ class Multicall2(ContractBase):
 <summary>
 <span>Expand source code</span>
 </summary>
-<pre><code class="python">class GetEthBalanceMethod(ContractMethod): # pylint: disable=invalid-name
+<pre><code class="python">class GetEthBalanceMethod(ContractMethod):  # pylint: disable=invalid-name
     &#34;&#34;&#34;Various interfaces to the getEthBalance method.&#34;&#34;&#34;
 
-    def __init__(self, elib: MiliDoS, contract_address: str, contract_function: ContractFunction, validator: Validator=None):
+    def __init__(self, elib: MiliDoS, contract_address: str, contract_function: ContractFunction, validator: Validator = None):
         &#34;&#34;&#34;Persist instance data.&#34;&#34;&#34;
         super().__init__(elib, contract_address, validator)
         self._underlying_method = contract_function
         self.sign = validator.getSignature(&#34;getEthBalance&#34;)
 
-    def validate_and_normalize_inputs(self, addr: str)-&gt;any:
+    def validate_and_normalize_inputs(self, addr: str) -&gt; any:
         &#34;&#34;&#34;Validate the inputs to the getEthBalance method.&#34;&#34;&#34;
         self.validator.assert_valid(
             method_name=&#39;getEthBalance&#39;,
@@ -2208,13 +2117,11 @@ class Multicall2(ContractBase):
         addr = self.validate_and_checksum_address(addr)
         return (addr)
 
-
-
-    def block_call(self,addr: str, debug:bool=False) -&gt; int:
+    def block_call(self, addr: str, debug: bool = False) -&gt; int:
         _fn = self._underlying_method(addr)
         returned = _fn.call({
-                &#39;from&#39;: self._operate
-            })
+            &#39;from&#39;: self._operate
+        })
         return int(returned)
 
     def estimate_gas(self, addr: str, tx_params: Optional[TxParams] = None) -&gt; int:
@@ -2238,11 +2145,11 @@ class Multicall2(ContractBase):
 <summary>
 <span>Expand source code</span>
 </summary>
-<pre><code class="python">def block_call(self,addr: str, debug:bool=False) -&gt; int:
+<pre><code class="python">def block_call(self, addr: str, debug: bool = False) -&gt; int:
     _fn = self._underlying_method(addr)
     returned = _fn.call({
-            &#39;from&#39;: self._operate
-        })
+        &#39;from&#39;: self._operate
+    })
     return int(returned)</code></pre>
 </details>
 </dd>
@@ -2271,7 +2178,7 @@ class Multicall2(ContractBase):
 <summary>
 <span>Expand source code</span>
 </summary>
-<pre><code class="python">def validate_and_normalize_inputs(self, addr: str)-&gt;any:
+<pre><code class="python">def validate_and_normalize_inputs(self, addr: str) -&gt; any:
     &#34;&#34;&#34;Validate the inputs to the getEthBalance method.&#34;&#34;&#34;
     self.validator.assert_valid(
         method_name=&#39;getEthBalance&#39;,
@@ -2304,22 +2211,20 @@ class Multicall2(ContractBase):
 <summary>
 <span>Expand source code</span>
 </summary>
-<pre><code class="python">class GetLastBlockHashMethod(ContractMethod): # pylint: disable=invalid-name
+<pre><code class="python">class GetLastBlockHashMethod(ContractMethod):  # pylint: disable=invalid-name
     &#34;&#34;&#34;Various interfaces to the getLastBlockHash method.&#34;&#34;&#34;
 
-    def __init__(self, elib: MiliDoS, contract_address: str, contract_function: ContractFunction, validator: Validator=None):
+    def __init__(self, elib: MiliDoS, contract_address: str, contract_function: ContractFunction, validator: Validator = None):
         &#34;&#34;&#34;Persist instance data.&#34;&#34;&#34;
         super().__init__(elib, contract_address)
         self._underlying_method = contract_function
         self.sign = validator.getSignature(&#34;getLastBlockHash&#34;)
 
-
-
-    def block_call(self, debug:bool=False) -&gt; Union[bytes, str]:
+    def block_call(self, debug: bool = False) -&gt; Union[bytes, str]:
         _fn = self._underlying_method()
         returned = _fn.call({
-                &#39;from&#39;: self._operate
-            })
+            &#39;from&#39;: self._operate
+        })
         return Union[bytes, str](returned)
 
     def estimate_gas(self, tx_params: Optional[TxParams] = None) -&gt; int:
@@ -2342,11 +2247,11 @@ class Multicall2(ContractBase):
 <summary>
 <span>Expand source code</span>
 </summary>
-<pre><code class="python">def block_call(self, debug:bool=False) -&gt; Union[bytes, str]:
+<pre><code class="python">def block_call(self, debug: bool = False) -&gt; Union[bytes, str]:
     _fn = self._underlying_method()
     returned = _fn.call({
-            &#39;from&#39;: self._operate
-        })
+        &#39;from&#39;: self._operate
+    })
     return Union[bytes, str](returned)</code></pre>
 </details>
 </dd>
@@ -2449,13 +2354,13 @@ class Multicall2(ContractBase):
     :class:`TryBlockAndAggregateMethod`.
     &#34;&#34;&#34;
 
-    SIGNATURES:SignatureGenerator = None
+    SIGNATURES: SignatureGenerator = None
 
     def __init__(
-        self,
-        core_lib: MiliDoS,
-        contract_address: str,
-        validator: Multicall2Validator = None,
+            self,
+            core_lib: MiliDoS,
+            contract_address: str,
+            validator: Multicall2Validator = None,
     ):
         &#34;&#34;&#34;Get an instance of wrapper for smart contract.
         &#34;&#34;&#34;
@@ -2467,9 +2372,6 @@ class Multicall2(ContractBase):
         if not validator:
             validator = Multicall2Validator(web3, contract_address)
 
-
-
-
         # if any middleware was imported, inject it
         try:
             MIDDLEWARE
@@ -2479,7 +2381,7 @@ class Multicall2(ContractBase):
             try:
                 for middleware in MIDDLEWARE:
                     web3.middleware_onion.inject(
-                         middleware[&#39;function&#39;], layer=middleware[&#39;layer&#39;],
+                        middleware[&#39;function&#39;], layer=middleware[&#39;layer&#39;],
                     )
             except ValueError as value_error:
                 if value_error.args == (&#34;You can&#39;t add the same un-named instance twice&#34;,):
@@ -2503,10 +2405,6 @@ class Multicall2(ContractBase):
         self._fn_try_aggregate = TryAggregateMethod(core_lib, contract_address, functions.tryAggregate, validator)
         self._fn_try_block_and_aggregate = TryBlockAndAggregateMethod(core_lib, contract_address, functions.tryBlockAndAggregate, validator)
 
-
-    
-    
-    
     def aggregate(self, calls: List[Multicall2Call]) -&gt; Tuple[int, List[Union[bytes, str]]]:
         &#34;&#34;&#34;
         Implementation of aggregate in contract Multicall2
@@ -2515,15 +2413,9 @@ class Multicall2(ContractBase):
     
     
         &#34;&#34;&#34;
-    
-        return self._fn_aggregate.block_send(calls, self.call_contract_fee_amount,self.call_contract_fee_price,0,self.call_contract_debug_flag, self.call_contract_enforce_tx_receipt)
-    
-    
-    
-    
-    
-    
-    
+
+        return self._fn_aggregate.block_send(calls, self.call_contract_fee_amount, self.call_contract_fee_price, 0, self.call_contract_debug_flag, self.call_contract_enforce_tx_receipt)
+
     def block_and_aggregate(self, calls: List[Multicall2Call]) -&gt; Tuple[int, Union[bytes, str], List[Multicall2Result]]:
         &#34;&#34;&#34;
         Implementation of block_and_aggregate in contract Multicall2
@@ -2532,15 +2424,9 @@ class Multicall2(ContractBase):
     
     
         &#34;&#34;&#34;
-    
-        return self._fn_block_and_aggregate.block_send(calls, self.call_contract_fee_amount,self.call_contract_fee_price,0,self.call_contract_debug_flag, self.call_contract_enforce_tx_receipt)
-    
-    
-    
-    
-    
-    
-    
+
+        return self._fn_block_and_aggregate.block_send(calls, self.call_contract_fee_amount, self.call_contract_fee_price, 0, self.call_contract_debug_flag, self.call_contract_enforce_tx_receipt)
+
     def get_block_hash(self, block_number: int) -&gt; Union[bytes, str]:
         &#34;&#34;&#34;
         Implementation of get_block_hash in contract Multicall2
@@ -2549,15 +2435,9 @@ class Multicall2(ContractBase):
     
     
         &#34;&#34;&#34;
-    
-    
-    
-    
-    
+
         return self._fn_get_block_hash.block_call(block_number)
-    
-    
-    
+
     def get_block_number(self) -&gt; int:
         &#34;&#34;&#34;
         Implementation of get_block_number in contract Multicall2
@@ -2566,15 +2446,9 @@ class Multicall2(ContractBase):
     
     
         &#34;&#34;&#34;
-    
-    
-    
-    
-    
+
         return self._fn_get_block_number.block_call()
-    
-    
-    
+
     def get_current_block_coinbase(self) -&gt; str:
         &#34;&#34;&#34;
         Implementation of get_current_block_coinbase in contract Multicall2
@@ -2583,15 +2457,9 @@ class Multicall2(ContractBase):
     
     
         &#34;&#34;&#34;
-    
-    
-    
-    
-    
+
         return self._fn_get_current_block_coinbase.block_call()
-    
-    
-    
+
     def get_current_block_difficulty(self) -&gt; int:
         &#34;&#34;&#34;
         Implementation of get_current_block_difficulty in contract Multicall2
@@ -2600,15 +2468,9 @@ class Multicall2(ContractBase):
     
     
         &#34;&#34;&#34;
-    
-    
-    
-    
-    
+
         return self._fn_get_current_block_difficulty.block_call()
-    
-    
-    
+
     def get_current_block_gas_limit(self) -&gt; int:
         &#34;&#34;&#34;
         Implementation of get_current_block_gas_limit in contract Multicall2
@@ -2617,15 +2479,9 @@ class Multicall2(ContractBase):
     
     
         &#34;&#34;&#34;
-    
-    
-    
-    
-    
+
         return self._fn_get_current_block_gas_limit.block_call()
-    
-    
-    
+
     def get_current_block_timestamp(self) -&gt; int:
         &#34;&#34;&#34;
         Implementation of get_current_block_timestamp in contract Multicall2
@@ -2634,15 +2490,9 @@ class Multicall2(ContractBase):
     
     
         &#34;&#34;&#34;
-    
-    
-    
-    
-    
+
         return self._fn_get_current_block_timestamp.block_call()
-    
-    
-    
+
     def get_eth_balance(self, addr: str) -&gt; int:
         &#34;&#34;&#34;
         Implementation of get_eth_balance in contract Multicall2
@@ -2651,15 +2501,9 @@ class Multicall2(ContractBase):
     
     
         &#34;&#34;&#34;
-    
-    
-    
-    
-    
+
         return self._fn_get_eth_balance.block_call(addr)
-    
-    
-    
+
     def get_last_block_hash(self) -&gt; Union[bytes, str]:
         &#34;&#34;&#34;
         Implementation of get_last_block_hash in contract Multicall2
@@ -2668,15 +2512,9 @@ class Multicall2(ContractBase):
     
     
         &#34;&#34;&#34;
-    
-    
-    
-    
-    
+
         return self._fn_get_last_block_hash.block_call()
-    
-    
-    
+
     def try_aggregate(self, require_success: bool, calls: List[Multicall2Call]) -&gt; List[Multicall2Result]:
         &#34;&#34;&#34;
         Implementation of try_aggregate in contract Multicall2
@@ -2685,15 +2523,9 @@ class Multicall2(ContractBase):
     
     
         &#34;&#34;&#34;
-    
-        return self._fn_try_aggregate.block_send(require_success, calls, self.call_contract_fee_amount,self.call_contract_fee_price,0,self.call_contract_debug_flag, self.call_contract_enforce_tx_receipt)
-    
-    
-    
-    
-    
-    
-    
+
+        return self._fn_try_aggregate.block_send(require_success, calls, self.call_contract_fee_amount, self.call_contract_fee_price, 0, self.call_contract_debug_flag, self.call_contract_enforce_tx_receipt)
+
     def try_block_and_aggregate(self, require_success: bool, calls: List[Multicall2Call]) -&gt; Tuple[int, Union[bytes, str], List[Multicall2Result]]:
         &#34;&#34;&#34;
         Implementation of try_block_and_aggregate in contract Multicall2
@@ -2702,14 +2534,10 @@ class Multicall2(ContractBase):
     
     
         &#34;&#34;&#34;
-    
-        return self._fn_try_block_and_aggregate.block_send(require_success, calls, self.call_contract_fee_amount,self.call_contract_fee_price,0,self.call_contract_debug_flag, self.call_contract_enforce_tx_receipt)
-    
-    
-    
-    
 
-    def CallContractWait(self, t_long:int)-&gt; &#34;Multicall2&#34;:
+        return self._fn_try_block_and_aggregate.block_send(require_success, calls, self.call_contract_fee_amount, self.call_contract_fee_price, 0, self.call_contract_debug_flag, self.call_contract_enforce_tx_receipt)
+
+    def CallContractWait(self, t_long: int) -&gt; &#34;Multicall2&#34;:
         self._fn_aggregate.setWait(t_long)
         self._fn_block_and_aggregate.setWait(t_long)
         self._fn_get_block_hash.setWait(t_long)
@@ -2724,12 +2552,12 @@ class Multicall2(ContractBase):
         self._fn_try_block_and_aggregate.setWait(t_long)
         return self
 
-
     @staticmethod
     def abi():
         &#34;&#34;&#34;Return the ABI to the underlying contract.&#34;&#34;&#34;
         return json.loads(
-            &#39;[{&#34;constant&#34;:false,&#34;inputs&#34;:[{&#34;components&#34;:[{&#34;internalType&#34;:&#34;address&#34;,&#34;name&#34;:&#34;target&#34;,&#34;type&#34;:&#34;address&#34;},{&#34;internalType&#34;:&#34;bytes&#34;,&#34;name&#34;:&#34;callData&#34;,&#34;type&#34;:&#34;bytes&#34;}],&#34;internalType&#34;:&#34;struct Multicall2.Call[]&#34;,&#34;name&#34;:&#34;calls&#34;,&#34;type&#34;:&#34;tuple[]&#34;}],&#34;name&#34;:&#34;aggregate&#34;,&#34;outputs&#34;:[{&#34;internalType&#34;:&#34;uint256&#34;,&#34;name&#34;:&#34;blockNumber&#34;,&#34;type&#34;:&#34;uint256&#34;},{&#34;internalType&#34;:&#34;bytes[]&#34;,&#34;name&#34;:&#34;returnData&#34;,&#34;type&#34;:&#34;bytes[]&#34;}],&#34;payable&#34;:false,&#34;stateMutability&#34;:&#34;nonpayable&#34;,&#34;type&#34;:&#34;function&#34;},{&#34;constant&#34;:false,&#34;inputs&#34;:[{&#34;components&#34;:[{&#34;internalType&#34;:&#34;address&#34;,&#34;name&#34;:&#34;target&#34;,&#34;type&#34;:&#34;address&#34;},{&#34;internalType&#34;:&#34;bytes&#34;,&#34;name&#34;:&#34;callData&#34;,&#34;type&#34;:&#34;bytes&#34;}],&#34;internalType&#34;:&#34;struct Multicall2.Call[]&#34;,&#34;name&#34;:&#34;calls&#34;,&#34;type&#34;:&#34;tuple[]&#34;}],&#34;name&#34;:&#34;blockAndAggregate&#34;,&#34;outputs&#34;:[{&#34;internalType&#34;:&#34;uint256&#34;,&#34;name&#34;:&#34;blockNumber&#34;,&#34;type&#34;:&#34;uint256&#34;},{&#34;internalType&#34;:&#34;bytes32&#34;,&#34;name&#34;:&#34;blockHash&#34;,&#34;type&#34;:&#34;bytes32&#34;},{&#34;components&#34;:[{&#34;internalType&#34;:&#34;bool&#34;,&#34;name&#34;:&#34;success&#34;,&#34;type&#34;:&#34;bool&#34;},{&#34;internalType&#34;:&#34;bytes&#34;,&#34;name&#34;:&#34;returnData&#34;,&#34;type&#34;:&#34;bytes&#34;}],&#34;internalType&#34;:&#34;struct Multicall2.Result[]&#34;,&#34;name&#34;:&#34;returnData&#34;,&#34;type&#34;:&#34;tuple[]&#34;}],&#34;payable&#34;:false,&#34;stateMutability&#34;:&#34;nonpayable&#34;,&#34;type&#34;:&#34;function&#34;},{&#34;constant&#34;:true,&#34;inputs&#34;:[{&#34;internalType&#34;:&#34;uint256&#34;,&#34;name&#34;:&#34;blockNumber&#34;,&#34;type&#34;:&#34;uint256&#34;}],&#34;name&#34;:&#34;getBlockHash&#34;,&#34;outputs&#34;:[{&#34;internalType&#34;:&#34;bytes32&#34;,&#34;name&#34;:&#34;blockHash&#34;,&#34;type&#34;:&#34;bytes32&#34;}],&#34;payable&#34;:false,&#34;stateMutability&#34;:&#34;view&#34;,&#34;type&#34;:&#34;function&#34;},{&#34;constant&#34;:true,&#34;inputs&#34;:[],&#34;name&#34;:&#34;getBlockNumber&#34;,&#34;outputs&#34;:[{&#34;internalType&#34;:&#34;uint256&#34;,&#34;name&#34;:&#34;blockNumber&#34;,&#34;type&#34;:&#34;uint256&#34;}],&#34;payable&#34;:false,&#34;stateMutability&#34;:&#34;view&#34;,&#34;type&#34;:&#34;function&#34;},{&#34;constant&#34;:true,&#34;inputs&#34;:[],&#34;name&#34;:&#34;getCurrentBlockCoinbase&#34;,&#34;outputs&#34;:[{&#34;internalType&#34;:&#34;address&#34;,&#34;name&#34;:&#34;coinbase&#34;,&#34;type&#34;:&#34;address&#34;}],&#34;payable&#34;:false,&#34;stateMutability&#34;:&#34;view&#34;,&#34;type&#34;:&#34;function&#34;},{&#34;constant&#34;:true,&#34;inputs&#34;:[],&#34;name&#34;:&#34;getCurrentBlockDifficulty&#34;,&#34;outputs&#34;:[{&#34;internalType&#34;:&#34;uint256&#34;,&#34;name&#34;:&#34;difficulty&#34;,&#34;type&#34;:&#34;uint256&#34;}],&#34;payable&#34;:false,&#34;stateMutability&#34;:&#34;view&#34;,&#34;type&#34;:&#34;function&#34;},{&#34;constant&#34;:true,&#34;inputs&#34;:[],&#34;name&#34;:&#34;getCurrentBlockGasLimit&#34;,&#34;outputs&#34;:[{&#34;internalType&#34;:&#34;uint256&#34;,&#34;name&#34;:&#34;gaslimit&#34;,&#34;type&#34;:&#34;uint256&#34;}],&#34;payable&#34;:false,&#34;stateMutability&#34;:&#34;view&#34;,&#34;type&#34;:&#34;function&#34;},{&#34;constant&#34;:true,&#34;inputs&#34;:[],&#34;name&#34;:&#34;getCurrentBlockTimestamp&#34;,&#34;outputs&#34;:[{&#34;internalType&#34;:&#34;uint256&#34;,&#34;name&#34;:&#34;timestamp&#34;,&#34;type&#34;:&#34;uint256&#34;}],&#34;payable&#34;:false,&#34;stateMutability&#34;:&#34;view&#34;,&#34;type&#34;:&#34;function&#34;},{&#34;constant&#34;:true,&#34;inputs&#34;:[{&#34;internalType&#34;:&#34;address&#34;,&#34;name&#34;:&#34;addr&#34;,&#34;type&#34;:&#34;address&#34;}],&#34;name&#34;:&#34;getEthBalance&#34;,&#34;outputs&#34;:[{&#34;internalType&#34;:&#34;uint256&#34;,&#34;name&#34;:&#34;balance&#34;,&#34;type&#34;:&#34;uint256&#34;}],&#34;payable&#34;:false,&#34;stateMutability&#34;:&#34;view&#34;,&#34;type&#34;:&#34;function&#34;},{&#34;constant&#34;:true,&#34;inputs&#34;:[],&#34;name&#34;:&#34;getLastBlockHash&#34;,&#34;outputs&#34;:[{&#34;internalType&#34;:&#34;bytes32&#34;,&#34;name&#34;:&#34;blockHash&#34;,&#34;type&#34;:&#34;bytes32&#34;}],&#34;payable&#34;:false,&#34;stateMutability&#34;:&#34;view&#34;,&#34;type&#34;:&#34;function&#34;},{&#34;constant&#34;:false,&#34;inputs&#34;:[{&#34;internalType&#34;:&#34;bool&#34;,&#34;name&#34;:&#34;requireSuccess&#34;,&#34;type&#34;:&#34;bool&#34;},{&#34;components&#34;:[{&#34;internalType&#34;:&#34;address&#34;,&#34;name&#34;:&#34;target&#34;,&#34;type&#34;:&#34;address&#34;},{&#34;internalType&#34;:&#34;bytes&#34;,&#34;name&#34;:&#34;callData&#34;,&#34;type&#34;:&#34;bytes&#34;}],&#34;internalType&#34;:&#34;struct Multicall2.Call[]&#34;,&#34;name&#34;:&#34;calls&#34;,&#34;type&#34;:&#34;tuple[]&#34;}],&#34;name&#34;:&#34;tryAggregate&#34;,&#34;outputs&#34;:[{&#34;components&#34;:[{&#34;internalType&#34;:&#34;bool&#34;,&#34;name&#34;:&#34;success&#34;,&#34;type&#34;:&#34;bool&#34;},{&#34;internalType&#34;:&#34;bytes&#34;,&#34;name&#34;:&#34;returnData&#34;,&#34;type&#34;:&#34;bytes&#34;}],&#34;internalType&#34;:&#34;struct Multicall2.Result[]&#34;,&#34;name&#34;:&#34;returnData&#34;,&#34;type&#34;:&#34;tuple[]&#34;}],&#34;payable&#34;:false,&#34;stateMutability&#34;:&#34;nonpayable&#34;,&#34;type&#34;:&#34;function&#34;},{&#34;constant&#34;:false,&#34;inputs&#34;:[{&#34;internalType&#34;:&#34;bool&#34;,&#34;name&#34;:&#34;requireSuccess&#34;,&#34;type&#34;:&#34;bool&#34;},{&#34;components&#34;:[{&#34;internalType&#34;:&#34;address&#34;,&#34;name&#34;:&#34;target&#34;,&#34;type&#34;:&#34;address&#34;},{&#34;internalType&#34;:&#34;bytes&#34;,&#34;name&#34;:&#34;callData&#34;,&#34;type&#34;:&#34;bytes&#34;}],&#34;internalType&#34;:&#34;struct Multicall2.Call[]&#34;,&#34;name&#34;:&#34;calls&#34;,&#34;type&#34;:&#34;tuple[]&#34;}],&#34;name&#34;:&#34;tryBlockAndAggregate&#34;,&#34;outputs&#34;:[{&#34;internalType&#34;:&#34;uint256&#34;,&#34;name&#34;:&#34;blockNumber&#34;,&#34;type&#34;:&#34;uint256&#34;},{&#34;internalType&#34;:&#34;bytes32&#34;,&#34;name&#34;:&#34;blockHash&#34;,&#34;type&#34;:&#34;bytes32&#34;},{&#34;components&#34;:[{&#34;internalType&#34;:&#34;bool&#34;,&#34;name&#34;:&#34;success&#34;,&#34;type&#34;:&#34;bool&#34;},{&#34;internalType&#34;:&#34;bytes&#34;,&#34;name&#34;:&#34;returnData&#34;,&#34;type&#34;:&#34;bytes&#34;}],&#34;internalType&#34;:&#34;struct Multicall2.Result[]&#34;,&#34;name&#34;:&#34;returnData&#34;,&#34;type&#34;:&#34;tuple[]&#34;}],&#34;payable&#34;:false,&#34;stateMutability&#34;:&#34;nonpayable&#34;,&#34;type&#34;:&#34;function&#34;}]&#39;  # noqa: E501 (line-too-long)
+            &#39;[{&#34;constant&#34;:false,&#34;inputs&#34;:[{&#34;components&#34;:[{&#34;internalType&#34;:&#34;address&#34;,&#34;name&#34;:&#34;target&#34;,&#34;type&#34;:&#34;address&#34;},{&#34;internalType&#34;:&#34;bytes&#34;,&#34;name&#34;:&#34;callData&#34;,&#34;type&#34;:&#34;bytes&#34;}],&#34;internalType&#34;:&#34;struct Multicall2.Call[]&#34;,&#34;name&#34;:&#34;calls&#34;,&#34;type&#34;:&#34;tuple[]&#34;}],&#34;name&#34;:&#34;aggregate&#34;,&#34;outputs&#34;:[{&#34;internalType&#34;:&#34;uint256&#34;,&#34;name&#34;:&#34;blockNumber&#34;,&#34;type&#34;:&#34;uint256&#34;},{&#34;internalType&#34;:&#34;bytes[]&#34;,&#34;name&#34;:&#34;returnData&#34;,&#34;type&#34;:&#34;bytes[]&#34;}],&#34;payable&#34;:false,&#34;stateMutability&#34;:&#34;nonpayable&#34;,&#34;type&#34;:&#34;function&#34;},{&#34;constant&#34;:false,&#34;inputs&#34;:[{&#34;components&#34;:[{&#34;internalType&#34;:&#34;address&#34;,&#34;name&#34;:&#34;target&#34;,&#34;type&#34;:&#34;address&#34;},{&#34;internalType&#34;:&#34;bytes&#34;,&#34;name&#34;:&#34;callData&#34;,&#34;type&#34;:&#34;bytes&#34;}],&#34;internalType&#34;:&#34;struct Multicall2.Call[]&#34;,&#34;name&#34;:&#34;calls&#34;,&#34;type&#34;:&#34;tuple[]&#34;}],&#34;name&#34;:&#34;blockAndAggregate&#34;,&#34;outputs&#34;:[{&#34;internalType&#34;:&#34;uint256&#34;,&#34;name&#34;:&#34;blockNumber&#34;,&#34;type&#34;:&#34;uint256&#34;},{&#34;internalType&#34;:&#34;bytes32&#34;,&#34;name&#34;:&#34;blockHash&#34;,&#34;type&#34;:&#34;bytes32&#34;},{&#34;components&#34;:[{&#34;internalType&#34;:&#34;bool&#34;,&#34;name&#34;:&#34;success&#34;,&#34;type&#34;:&#34;bool&#34;},{&#34;internalType&#34;:&#34;bytes&#34;,&#34;name&#34;:&#34;returnData&#34;,&#34;type&#34;:&#34;bytes&#34;}],&#34;internalType&#34;:&#34;struct Multicall2.Result[]&#34;,&#34;name&#34;:&#34;returnData&#34;,&#34;type&#34;:&#34;tuple[]&#34;}],&#34;payable&#34;:false,&#34;stateMutability&#34;:&#34;nonpayable&#34;,&#34;type&#34;:&#34;function&#34;},{&#34;constant&#34;:true,&#34;inputs&#34;:[{&#34;internalType&#34;:&#34;uint256&#34;,&#34;name&#34;:&#34;blockNumber&#34;,&#34;type&#34;:&#34;uint256&#34;}],&#34;name&#34;:&#34;getBlockHash&#34;,&#34;outputs&#34;:[{&#34;internalType&#34;:&#34;bytes32&#34;,&#34;name&#34;:&#34;blockHash&#34;,&#34;type&#34;:&#34;bytes32&#34;}],&#34;payable&#34;:false,&#34;stateMutability&#34;:&#34;view&#34;,&#34;type&#34;:&#34;function&#34;},{&#34;constant&#34;:true,&#34;inputs&#34;:[],&#34;name&#34;:&#34;getBlockNumber&#34;,&#34;outputs&#34;:[{&#34;internalType&#34;:&#34;uint256&#34;,&#34;name&#34;:&#34;blockNumber&#34;,&#34;type&#34;:&#34;uint256&#34;}],&#34;payable&#34;:false,&#34;stateMutability&#34;:&#34;view&#34;,&#34;type&#34;:&#34;function&#34;},{&#34;constant&#34;:true,&#34;inputs&#34;:[],&#34;name&#34;:&#34;getCurrentBlockCoinbase&#34;,&#34;outputs&#34;:[{&#34;internalType&#34;:&#34;address&#34;,&#34;name&#34;:&#34;coinbase&#34;,&#34;type&#34;:&#34;address&#34;}],&#34;payable&#34;:false,&#34;stateMutability&#34;:&#34;view&#34;,&#34;type&#34;:&#34;function&#34;},{&#34;constant&#34;:true,&#34;inputs&#34;:[],&#34;name&#34;:&#34;getCurrentBlockDifficulty&#34;,&#34;outputs&#34;:[{&#34;internalType&#34;:&#34;uint256&#34;,&#34;name&#34;:&#34;difficulty&#34;,&#34;type&#34;:&#34;uint256&#34;}],&#34;payable&#34;:false,&#34;stateMutability&#34;:&#34;view&#34;,&#34;type&#34;:&#34;function&#34;},{&#34;constant&#34;:true,&#34;inputs&#34;:[],&#34;name&#34;:&#34;getCurrentBlockGasLimit&#34;,&#34;outputs&#34;:[{&#34;internalType&#34;:&#34;uint256&#34;,&#34;name&#34;:&#34;gaslimit&#34;,&#34;type&#34;:&#34;uint256&#34;}],&#34;payable&#34;:false,&#34;stateMutability&#34;:&#34;view&#34;,&#34;type&#34;:&#34;function&#34;},{&#34;constant&#34;:true,&#34;inputs&#34;:[],&#34;name&#34;:&#34;getCurrentBlockTimestamp&#34;,&#34;outputs&#34;:[{&#34;internalType&#34;:&#34;uint256&#34;,&#34;name&#34;:&#34;timestamp&#34;,&#34;type&#34;:&#34;uint256&#34;}],&#34;payable&#34;:false,&#34;stateMutability&#34;:&#34;view&#34;,&#34;type&#34;:&#34;function&#34;},{&#34;constant&#34;:true,&#34;inputs&#34;:[{&#34;internalType&#34;:&#34;address&#34;,&#34;name&#34;:&#34;addr&#34;,&#34;type&#34;:&#34;address&#34;}],&#34;name&#34;:&#34;getEthBalance&#34;,&#34;outputs&#34;:[{&#34;internalType&#34;:&#34;uint256&#34;,&#34;name&#34;:&#34;balance&#34;,&#34;type&#34;:&#34;uint256&#34;}],&#34;payable&#34;:false,&#34;stateMutability&#34;:&#34;view&#34;,&#34;type&#34;:&#34;function&#34;},{&#34;constant&#34;:true,&#34;inputs&#34;:[],&#34;name&#34;:&#34;getLastBlockHash&#34;,&#34;outputs&#34;:[{&#34;internalType&#34;:&#34;bytes32&#34;,&#34;name&#34;:&#34;blockHash&#34;,&#34;type&#34;:&#34;bytes32&#34;}],&#34;payable&#34;:false,&#34;stateMutability&#34;:&#34;view&#34;,&#34;type&#34;:&#34;function&#34;},{&#34;constant&#34;:false,&#34;inputs&#34;:[{&#34;internalType&#34;:&#34;bool&#34;,&#34;name&#34;:&#34;requireSuccess&#34;,&#34;type&#34;:&#34;bool&#34;},{&#34;components&#34;:[{&#34;internalType&#34;:&#34;address&#34;,&#34;name&#34;:&#34;target&#34;,&#34;type&#34;:&#34;address&#34;},{&#34;internalType&#34;:&#34;bytes&#34;,&#34;name&#34;:&#34;callData&#34;,&#34;type&#34;:&#34;bytes&#34;}],&#34;internalType&#34;:&#34;struct Multicall2.Call[]&#34;,&#34;name&#34;:&#34;calls&#34;,&#34;type&#34;:&#34;tuple[]&#34;}],&#34;name&#34;:&#34;tryAggregate&#34;,&#34;outputs&#34;:[{&#34;components&#34;:[{&#34;internalType&#34;:&#34;bool&#34;,&#34;name&#34;:&#34;success&#34;,&#34;type&#34;:&#34;bool&#34;},{&#34;internalType&#34;:&#34;bytes&#34;,&#34;name&#34;:&#34;returnData&#34;,&#34;type&#34;:&#34;bytes&#34;}],&#34;internalType&#34;:&#34;struct Multicall2.Result[]&#34;,&#34;name&#34;:&#34;returnData&#34;,&#34;type&#34;:&#34;tuple[]&#34;}],&#34;payable&#34;:false,&#34;stateMutability&#34;:&#34;nonpayable&#34;,&#34;type&#34;:&#34;function&#34;},{&#34;constant&#34;:false,&#34;inputs&#34;:[{&#34;internalType&#34;:&#34;bool&#34;,&#34;name&#34;:&#34;requireSuccess&#34;,&#34;type&#34;:&#34;bool&#34;},{&#34;components&#34;:[{&#34;internalType&#34;:&#34;address&#34;,&#34;name&#34;:&#34;target&#34;,&#34;type&#34;:&#34;address&#34;},{&#34;internalType&#34;:&#34;bytes&#34;,&#34;name&#34;:&#34;callData&#34;,&#34;type&#34;:&#34;bytes&#34;}],&#34;internalType&#34;:&#34;struct Multicall2.Call[]&#34;,&#34;name&#34;:&#34;calls&#34;,&#34;type&#34;:&#34;tuple[]&#34;}],&#34;name&#34;:&#34;tryBlockAndAggregate&#34;,&#34;outputs&#34;:[{&#34;internalType&#34;:&#34;uint256&#34;,&#34;name&#34;:&#34;blockNumber&#34;,&#34;type&#34;:&#34;uint256&#34;},{&#34;internalType&#34;:&#34;bytes32&#34;,&#34;name&#34;:&#34;blockHash&#34;,&#34;type&#34;:&#34;bytes32&#34;},{&#34;components&#34;:[{&#34;internalType&#34;:&#34;bool&#34;,&#34;name&#34;:&#34;success&#34;,&#34;type&#34;:&#34;bool&#34;},{&#34;internalType&#34;:&#34;bytes&#34;,&#34;name&#34;:&#34;returnData&#34;,&#34;type&#34;:&#34;bytes&#34;}],&#34;internalType&#34;:&#34;struct Multicall2.Result[]&#34;,&#34;name&#34;:&#34;returnData&#34;,&#34;type&#34;:&#34;tuple[]&#34;}],&#34;payable&#34;:false,&#34;stateMutability&#34;:&#34;nonpayable&#34;,&#34;type&#34;:&#34;function&#34;}]&#39;
+            # noqa: E501 (line-too-long)
         )</code></pre>
 </details>
 <h3>Ancestors</h3>
@@ -2758,7 +2586,8 @@ class Multicall2(ContractBase):
 def abi():
     &#34;&#34;&#34;Return the ABI to the underlying contract.&#34;&#34;&#34;
     return json.loads(
-        &#39;[{&#34;constant&#34;:false,&#34;inputs&#34;:[{&#34;components&#34;:[{&#34;internalType&#34;:&#34;address&#34;,&#34;name&#34;:&#34;target&#34;,&#34;type&#34;:&#34;address&#34;},{&#34;internalType&#34;:&#34;bytes&#34;,&#34;name&#34;:&#34;callData&#34;,&#34;type&#34;:&#34;bytes&#34;}],&#34;internalType&#34;:&#34;struct Multicall2.Call[]&#34;,&#34;name&#34;:&#34;calls&#34;,&#34;type&#34;:&#34;tuple[]&#34;}],&#34;name&#34;:&#34;aggregate&#34;,&#34;outputs&#34;:[{&#34;internalType&#34;:&#34;uint256&#34;,&#34;name&#34;:&#34;blockNumber&#34;,&#34;type&#34;:&#34;uint256&#34;},{&#34;internalType&#34;:&#34;bytes[]&#34;,&#34;name&#34;:&#34;returnData&#34;,&#34;type&#34;:&#34;bytes[]&#34;}],&#34;payable&#34;:false,&#34;stateMutability&#34;:&#34;nonpayable&#34;,&#34;type&#34;:&#34;function&#34;},{&#34;constant&#34;:false,&#34;inputs&#34;:[{&#34;components&#34;:[{&#34;internalType&#34;:&#34;address&#34;,&#34;name&#34;:&#34;target&#34;,&#34;type&#34;:&#34;address&#34;},{&#34;internalType&#34;:&#34;bytes&#34;,&#34;name&#34;:&#34;callData&#34;,&#34;type&#34;:&#34;bytes&#34;}],&#34;internalType&#34;:&#34;struct Multicall2.Call[]&#34;,&#34;name&#34;:&#34;calls&#34;,&#34;type&#34;:&#34;tuple[]&#34;}],&#34;name&#34;:&#34;blockAndAggregate&#34;,&#34;outputs&#34;:[{&#34;internalType&#34;:&#34;uint256&#34;,&#34;name&#34;:&#34;blockNumber&#34;,&#34;type&#34;:&#34;uint256&#34;},{&#34;internalType&#34;:&#34;bytes32&#34;,&#34;name&#34;:&#34;blockHash&#34;,&#34;type&#34;:&#34;bytes32&#34;},{&#34;components&#34;:[{&#34;internalType&#34;:&#34;bool&#34;,&#34;name&#34;:&#34;success&#34;,&#34;type&#34;:&#34;bool&#34;},{&#34;internalType&#34;:&#34;bytes&#34;,&#34;name&#34;:&#34;returnData&#34;,&#34;type&#34;:&#34;bytes&#34;}],&#34;internalType&#34;:&#34;struct Multicall2.Result[]&#34;,&#34;name&#34;:&#34;returnData&#34;,&#34;type&#34;:&#34;tuple[]&#34;}],&#34;payable&#34;:false,&#34;stateMutability&#34;:&#34;nonpayable&#34;,&#34;type&#34;:&#34;function&#34;},{&#34;constant&#34;:true,&#34;inputs&#34;:[{&#34;internalType&#34;:&#34;uint256&#34;,&#34;name&#34;:&#34;blockNumber&#34;,&#34;type&#34;:&#34;uint256&#34;}],&#34;name&#34;:&#34;getBlockHash&#34;,&#34;outputs&#34;:[{&#34;internalType&#34;:&#34;bytes32&#34;,&#34;name&#34;:&#34;blockHash&#34;,&#34;type&#34;:&#34;bytes32&#34;}],&#34;payable&#34;:false,&#34;stateMutability&#34;:&#34;view&#34;,&#34;type&#34;:&#34;function&#34;},{&#34;constant&#34;:true,&#34;inputs&#34;:[],&#34;name&#34;:&#34;getBlockNumber&#34;,&#34;outputs&#34;:[{&#34;internalType&#34;:&#34;uint256&#34;,&#34;name&#34;:&#34;blockNumber&#34;,&#34;type&#34;:&#34;uint256&#34;}],&#34;payable&#34;:false,&#34;stateMutability&#34;:&#34;view&#34;,&#34;type&#34;:&#34;function&#34;},{&#34;constant&#34;:true,&#34;inputs&#34;:[],&#34;name&#34;:&#34;getCurrentBlockCoinbase&#34;,&#34;outputs&#34;:[{&#34;internalType&#34;:&#34;address&#34;,&#34;name&#34;:&#34;coinbase&#34;,&#34;type&#34;:&#34;address&#34;}],&#34;payable&#34;:false,&#34;stateMutability&#34;:&#34;view&#34;,&#34;type&#34;:&#34;function&#34;},{&#34;constant&#34;:true,&#34;inputs&#34;:[],&#34;name&#34;:&#34;getCurrentBlockDifficulty&#34;,&#34;outputs&#34;:[{&#34;internalType&#34;:&#34;uint256&#34;,&#34;name&#34;:&#34;difficulty&#34;,&#34;type&#34;:&#34;uint256&#34;}],&#34;payable&#34;:false,&#34;stateMutability&#34;:&#34;view&#34;,&#34;type&#34;:&#34;function&#34;},{&#34;constant&#34;:true,&#34;inputs&#34;:[],&#34;name&#34;:&#34;getCurrentBlockGasLimit&#34;,&#34;outputs&#34;:[{&#34;internalType&#34;:&#34;uint256&#34;,&#34;name&#34;:&#34;gaslimit&#34;,&#34;type&#34;:&#34;uint256&#34;}],&#34;payable&#34;:false,&#34;stateMutability&#34;:&#34;view&#34;,&#34;type&#34;:&#34;function&#34;},{&#34;constant&#34;:true,&#34;inputs&#34;:[],&#34;name&#34;:&#34;getCurrentBlockTimestamp&#34;,&#34;outputs&#34;:[{&#34;internalType&#34;:&#34;uint256&#34;,&#34;name&#34;:&#34;timestamp&#34;,&#34;type&#34;:&#34;uint256&#34;}],&#34;payable&#34;:false,&#34;stateMutability&#34;:&#34;view&#34;,&#34;type&#34;:&#34;function&#34;},{&#34;constant&#34;:true,&#34;inputs&#34;:[{&#34;internalType&#34;:&#34;address&#34;,&#34;name&#34;:&#34;addr&#34;,&#34;type&#34;:&#34;address&#34;}],&#34;name&#34;:&#34;getEthBalance&#34;,&#34;outputs&#34;:[{&#34;internalType&#34;:&#34;uint256&#34;,&#34;name&#34;:&#34;balance&#34;,&#34;type&#34;:&#34;uint256&#34;}],&#34;payable&#34;:false,&#34;stateMutability&#34;:&#34;view&#34;,&#34;type&#34;:&#34;function&#34;},{&#34;constant&#34;:true,&#34;inputs&#34;:[],&#34;name&#34;:&#34;getLastBlockHash&#34;,&#34;outputs&#34;:[{&#34;internalType&#34;:&#34;bytes32&#34;,&#34;name&#34;:&#34;blockHash&#34;,&#34;type&#34;:&#34;bytes32&#34;}],&#34;payable&#34;:false,&#34;stateMutability&#34;:&#34;view&#34;,&#34;type&#34;:&#34;function&#34;},{&#34;constant&#34;:false,&#34;inputs&#34;:[{&#34;internalType&#34;:&#34;bool&#34;,&#34;name&#34;:&#34;requireSuccess&#34;,&#34;type&#34;:&#34;bool&#34;},{&#34;components&#34;:[{&#34;internalType&#34;:&#34;address&#34;,&#34;name&#34;:&#34;target&#34;,&#34;type&#34;:&#34;address&#34;},{&#34;internalType&#34;:&#34;bytes&#34;,&#34;name&#34;:&#34;callData&#34;,&#34;type&#34;:&#34;bytes&#34;}],&#34;internalType&#34;:&#34;struct Multicall2.Call[]&#34;,&#34;name&#34;:&#34;calls&#34;,&#34;type&#34;:&#34;tuple[]&#34;}],&#34;name&#34;:&#34;tryAggregate&#34;,&#34;outputs&#34;:[{&#34;components&#34;:[{&#34;internalType&#34;:&#34;bool&#34;,&#34;name&#34;:&#34;success&#34;,&#34;type&#34;:&#34;bool&#34;},{&#34;internalType&#34;:&#34;bytes&#34;,&#34;name&#34;:&#34;returnData&#34;,&#34;type&#34;:&#34;bytes&#34;}],&#34;internalType&#34;:&#34;struct Multicall2.Result[]&#34;,&#34;name&#34;:&#34;returnData&#34;,&#34;type&#34;:&#34;tuple[]&#34;}],&#34;payable&#34;:false,&#34;stateMutability&#34;:&#34;nonpayable&#34;,&#34;type&#34;:&#34;function&#34;},{&#34;constant&#34;:false,&#34;inputs&#34;:[{&#34;internalType&#34;:&#34;bool&#34;,&#34;name&#34;:&#34;requireSuccess&#34;,&#34;type&#34;:&#34;bool&#34;},{&#34;components&#34;:[{&#34;internalType&#34;:&#34;address&#34;,&#34;name&#34;:&#34;target&#34;,&#34;type&#34;:&#34;address&#34;},{&#34;internalType&#34;:&#34;bytes&#34;,&#34;name&#34;:&#34;callData&#34;,&#34;type&#34;:&#34;bytes&#34;}],&#34;internalType&#34;:&#34;struct Multicall2.Call[]&#34;,&#34;name&#34;:&#34;calls&#34;,&#34;type&#34;:&#34;tuple[]&#34;}],&#34;name&#34;:&#34;tryBlockAndAggregate&#34;,&#34;outputs&#34;:[{&#34;internalType&#34;:&#34;uint256&#34;,&#34;name&#34;:&#34;blockNumber&#34;,&#34;type&#34;:&#34;uint256&#34;},{&#34;internalType&#34;:&#34;bytes32&#34;,&#34;name&#34;:&#34;blockHash&#34;,&#34;type&#34;:&#34;bytes32&#34;},{&#34;components&#34;:[{&#34;internalType&#34;:&#34;bool&#34;,&#34;name&#34;:&#34;success&#34;,&#34;type&#34;:&#34;bool&#34;},{&#34;internalType&#34;:&#34;bytes&#34;,&#34;name&#34;:&#34;returnData&#34;,&#34;type&#34;:&#34;bytes&#34;}],&#34;internalType&#34;:&#34;struct Multicall2.Result[]&#34;,&#34;name&#34;:&#34;returnData&#34;,&#34;type&#34;:&#34;tuple[]&#34;}],&#34;payable&#34;:false,&#34;stateMutability&#34;:&#34;nonpayable&#34;,&#34;type&#34;:&#34;function&#34;}]&#39;  # noqa: E501 (line-too-long)
+        &#39;[{&#34;constant&#34;:false,&#34;inputs&#34;:[{&#34;components&#34;:[{&#34;internalType&#34;:&#34;address&#34;,&#34;name&#34;:&#34;target&#34;,&#34;type&#34;:&#34;address&#34;},{&#34;internalType&#34;:&#34;bytes&#34;,&#34;name&#34;:&#34;callData&#34;,&#34;type&#34;:&#34;bytes&#34;}],&#34;internalType&#34;:&#34;struct Multicall2.Call[]&#34;,&#34;name&#34;:&#34;calls&#34;,&#34;type&#34;:&#34;tuple[]&#34;}],&#34;name&#34;:&#34;aggregate&#34;,&#34;outputs&#34;:[{&#34;internalType&#34;:&#34;uint256&#34;,&#34;name&#34;:&#34;blockNumber&#34;,&#34;type&#34;:&#34;uint256&#34;},{&#34;internalType&#34;:&#34;bytes[]&#34;,&#34;name&#34;:&#34;returnData&#34;,&#34;type&#34;:&#34;bytes[]&#34;}],&#34;payable&#34;:false,&#34;stateMutability&#34;:&#34;nonpayable&#34;,&#34;type&#34;:&#34;function&#34;},{&#34;constant&#34;:false,&#34;inputs&#34;:[{&#34;components&#34;:[{&#34;internalType&#34;:&#34;address&#34;,&#34;name&#34;:&#34;target&#34;,&#34;type&#34;:&#34;address&#34;},{&#34;internalType&#34;:&#34;bytes&#34;,&#34;name&#34;:&#34;callData&#34;,&#34;type&#34;:&#34;bytes&#34;}],&#34;internalType&#34;:&#34;struct Multicall2.Call[]&#34;,&#34;name&#34;:&#34;calls&#34;,&#34;type&#34;:&#34;tuple[]&#34;}],&#34;name&#34;:&#34;blockAndAggregate&#34;,&#34;outputs&#34;:[{&#34;internalType&#34;:&#34;uint256&#34;,&#34;name&#34;:&#34;blockNumber&#34;,&#34;type&#34;:&#34;uint256&#34;},{&#34;internalType&#34;:&#34;bytes32&#34;,&#34;name&#34;:&#34;blockHash&#34;,&#34;type&#34;:&#34;bytes32&#34;},{&#34;components&#34;:[{&#34;internalType&#34;:&#34;bool&#34;,&#34;name&#34;:&#34;success&#34;,&#34;type&#34;:&#34;bool&#34;},{&#34;internalType&#34;:&#34;bytes&#34;,&#34;name&#34;:&#34;returnData&#34;,&#34;type&#34;:&#34;bytes&#34;}],&#34;internalType&#34;:&#34;struct Multicall2.Result[]&#34;,&#34;name&#34;:&#34;returnData&#34;,&#34;type&#34;:&#34;tuple[]&#34;}],&#34;payable&#34;:false,&#34;stateMutability&#34;:&#34;nonpayable&#34;,&#34;type&#34;:&#34;function&#34;},{&#34;constant&#34;:true,&#34;inputs&#34;:[{&#34;internalType&#34;:&#34;uint256&#34;,&#34;name&#34;:&#34;blockNumber&#34;,&#34;type&#34;:&#34;uint256&#34;}],&#34;name&#34;:&#34;getBlockHash&#34;,&#34;outputs&#34;:[{&#34;internalType&#34;:&#34;bytes32&#34;,&#34;name&#34;:&#34;blockHash&#34;,&#34;type&#34;:&#34;bytes32&#34;}],&#34;payable&#34;:false,&#34;stateMutability&#34;:&#34;view&#34;,&#34;type&#34;:&#34;function&#34;},{&#34;constant&#34;:true,&#34;inputs&#34;:[],&#34;name&#34;:&#34;getBlockNumber&#34;,&#34;outputs&#34;:[{&#34;internalType&#34;:&#34;uint256&#34;,&#34;name&#34;:&#34;blockNumber&#34;,&#34;type&#34;:&#34;uint256&#34;}],&#34;payable&#34;:false,&#34;stateMutability&#34;:&#34;view&#34;,&#34;type&#34;:&#34;function&#34;},{&#34;constant&#34;:true,&#34;inputs&#34;:[],&#34;name&#34;:&#34;getCurrentBlockCoinbase&#34;,&#34;outputs&#34;:[{&#34;internalType&#34;:&#34;address&#34;,&#34;name&#34;:&#34;coinbase&#34;,&#34;type&#34;:&#34;address&#34;}],&#34;payable&#34;:false,&#34;stateMutability&#34;:&#34;view&#34;,&#34;type&#34;:&#34;function&#34;},{&#34;constant&#34;:true,&#34;inputs&#34;:[],&#34;name&#34;:&#34;getCurrentBlockDifficulty&#34;,&#34;outputs&#34;:[{&#34;internalType&#34;:&#34;uint256&#34;,&#34;name&#34;:&#34;difficulty&#34;,&#34;type&#34;:&#34;uint256&#34;}],&#34;payable&#34;:false,&#34;stateMutability&#34;:&#34;view&#34;,&#34;type&#34;:&#34;function&#34;},{&#34;constant&#34;:true,&#34;inputs&#34;:[],&#34;name&#34;:&#34;getCurrentBlockGasLimit&#34;,&#34;outputs&#34;:[{&#34;internalType&#34;:&#34;uint256&#34;,&#34;name&#34;:&#34;gaslimit&#34;,&#34;type&#34;:&#34;uint256&#34;}],&#34;payable&#34;:false,&#34;stateMutability&#34;:&#34;view&#34;,&#34;type&#34;:&#34;function&#34;},{&#34;constant&#34;:true,&#34;inputs&#34;:[],&#34;name&#34;:&#34;getCurrentBlockTimestamp&#34;,&#34;outputs&#34;:[{&#34;internalType&#34;:&#34;uint256&#34;,&#34;name&#34;:&#34;timestamp&#34;,&#34;type&#34;:&#34;uint256&#34;}],&#34;payable&#34;:false,&#34;stateMutability&#34;:&#34;view&#34;,&#34;type&#34;:&#34;function&#34;},{&#34;constant&#34;:true,&#34;inputs&#34;:[{&#34;internalType&#34;:&#34;address&#34;,&#34;name&#34;:&#34;addr&#34;,&#34;type&#34;:&#34;address&#34;}],&#34;name&#34;:&#34;getEthBalance&#34;,&#34;outputs&#34;:[{&#34;internalType&#34;:&#34;uint256&#34;,&#34;name&#34;:&#34;balance&#34;,&#34;type&#34;:&#34;uint256&#34;}],&#34;payable&#34;:false,&#34;stateMutability&#34;:&#34;view&#34;,&#34;type&#34;:&#34;function&#34;},{&#34;constant&#34;:true,&#34;inputs&#34;:[],&#34;name&#34;:&#34;getLastBlockHash&#34;,&#34;outputs&#34;:[{&#34;internalType&#34;:&#34;bytes32&#34;,&#34;name&#34;:&#34;blockHash&#34;,&#34;type&#34;:&#34;bytes32&#34;}],&#34;payable&#34;:false,&#34;stateMutability&#34;:&#34;view&#34;,&#34;type&#34;:&#34;function&#34;},{&#34;constant&#34;:false,&#34;inputs&#34;:[{&#34;internalType&#34;:&#34;bool&#34;,&#34;name&#34;:&#34;requireSuccess&#34;,&#34;type&#34;:&#34;bool&#34;},{&#34;components&#34;:[{&#34;internalType&#34;:&#34;address&#34;,&#34;name&#34;:&#34;target&#34;,&#34;type&#34;:&#34;address&#34;},{&#34;internalType&#34;:&#34;bytes&#34;,&#34;name&#34;:&#34;callData&#34;,&#34;type&#34;:&#34;bytes&#34;}],&#34;internalType&#34;:&#34;struct Multicall2.Call[]&#34;,&#34;name&#34;:&#34;calls&#34;,&#34;type&#34;:&#34;tuple[]&#34;}],&#34;name&#34;:&#34;tryAggregate&#34;,&#34;outputs&#34;:[{&#34;components&#34;:[{&#34;internalType&#34;:&#34;bool&#34;,&#34;name&#34;:&#34;success&#34;,&#34;type&#34;:&#34;bool&#34;},{&#34;internalType&#34;:&#34;bytes&#34;,&#34;name&#34;:&#34;returnData&#34;,&#34;type&#34;:&#34;bytes&#34;}],&#34;internalType&#34;:&#34;struct Multicall2.Result[]&#34;,&#34;name&#34;:&#34;returnData&#34;,&#34;type&#34;:&#34;tuple[]&#34;}],&#34;payable&#34;:false,&#34;stateMutability&#34;:&#34;nonpayable&#34;,&#34;type&#34;:&#34;function&#34;},{&#34;constant&#34;:false,&#34;inputs&#34;:[{&#34;internalType&#34;:&#34;bool&#34;,&#34;name&#34;:&#34;requireSuccess&#34;,&#34;type&#34;:&#34;bool&#34;},{&#34;components&#34;:[{&#34;internalType&#34;:&#34;address&#34;,&#34;name&#34;:&#34;target&#34;,&#34;type&#34;:&#34;address&#34;},{&#34;internalType&#34;:&#34;bytes&#34;,&#34;name&#34;:&#34;callData&#34;,&#34;type&#34;:&#34;bytes&#34;}],&#34;internalType&#34;:&#34;struct Multicall2.Call[]&#34;,&#34;name&#34;:&#34;calls&#34;,&#34;type&#34;:&#34;tuple[]&#34;}],&#34;name&#34;:&#34;tryBlockAndAggregate&#34;,&#34;outputs&#34;:[{&#34;internalType&#34;:&#34;uint256&#34;,&#34;name&#34;:&#34;blockNumber&#34;,&#34;type&#34;:&#34;uint256&#34;},{&#34;internalType&#34;:&#34;bytes32&#34;,&#34;name&#34;:&#34;blockHash&#34;,&#34;type&#34;:&#34;bytes32&#34;},{&#34;components&#34;:[{&#34;internalType&#34;:&#34;bool&#34;,&#34;name&#34;:&#34;success&#34;,&#34;type&#34;:&#34;bool&#34;},{&#34;internalType&#34;:&#34;bytes&#34;,&#34;name&#34;:&#34;returnData&#34;,&#34;type&#34;:&#34;bytes&#34;}],&#34;internalType&#34;:&#34;struct Multicall2.Result[]&#34;,&#34;name&#34;:&#34;returnData&#34;,&#34;type&#34;:&#34;tuple[]&#34;}],&#34;payable&#34;:false,&#34;stateMutability&#34;:&#34;nonpayable&#34;,&#34;type&#34;:&#34;function&#34;}]&#39;
+        # noqa: E501 (line-too-long)
     )</code></pre>
 </details>
 </dd>
@@ -2774,7 +2603,7 @@ def abi():
 <summary>
 <span>Expand source code</span>
 </summary>
-<pre><code class="python">def CallContractWait(self, t_long:int)-&gt; &#34;Multicall2&#34;:
+<pre><code class="python">def CallContractWait(self, t_long: int) -&gt; &#34;Multicall2&#34;:
     self._fn_aggregate.setWait(t_long)
     self._fn_block_and_aggregate.setWait(t_long)
     self._fn_get_block_hash.setWait(t_long)
@@ -2809,7 +2638,7 @@ Method of the function</p></div>
 
     &#34;&#34;&#34;
 
-    return self._fn_aggregate.block_send(calls, self.call_contract_fee_amount,self.call_contract_fee_price,0,self.call_contract_debug_flag, self.call_contract_enforce_tx_receipt)</code></pre>
+    return self._fn_aggregate.block_send(calls, self.call_contract_fee_amount, self.call_contract_fee_price, 0, self.call_contract_debug_flag, self.call_contract_enforce_tx_receipt)</code></pre>
 </details>
 </dd>
 <dt id="moody.m.multicall2.Multicall2.block_and_aggregate"><code class="name flex">
@@ -2831,7 +2660,7 @@ Method of the function</p></div>
 
     &#34;&#34;&#34;
 
-    return self._fn_block_and_aggregate.block_send(calls, self.call_contract_fee_amount,self.call_contract_fee_price,0,self.call_contract_debug_flag, self.call_contract_enforce_tx_receipt)</code></pre>
+    return self._fn_block_and_aggregate.block_send(calls, self.call_contract_fee_amount, self.call_contract_fee_price, 0, self.call_contract_debug_flag, self.call_contract_enforce_tx_receipt)</code></pre>
 </details>
 </dd>
 <dt id="moody.m.multicall2.Multicall2.get_block_hash"><code class="name flex">
@@ -2852,10 +2681,6 @@ Method of the function</p></div>
 
 
     &#34;&#34;&#34;
-
-
-
-
 
     return self._fn_get_block_hash.block_call(block_number)</code></pre>
 </details>
@@ -2879,10 +2704,6 @@ Method of the function</p></div>
 
     &#34;&#34;&#34;
 
-
-
-
-
     return self._fn_get_block_number.block_call()</code></pre>
 </details>
 </dd>
@@ -2904,10 +2725,6 @@ Method of the function</p></div>
 
 
     &#34;&#34;&#34;
-
-
-
-
 
     return self._fn_get_current_block_coinbase.block_call()</code></pre>
 </details>
@@ -2931,10 +2748,6 @@ Method of the function</p></div>
 
     &#34;&#34;&#34;
 
-
-
-
-
     return self._fn_get_current_block_difficulty.block_call()</code></pre>
 </details>
 </dd>
@@ -2956,10 +2769,6 @@ Method of the function</p></div>
 
 
     &#34;&#34;&#34;
-
-
-
-
 
     return self._fn_get_current_block_gas_limit.block_call()</code></pre>
 </details>
@@ -2983,10 +2792,6 @@ Method of the function</p></div>
 
     &#34;&#34;&#34;
 
-
-
-
-
     return self._fn_get_current_block_timestamp.block_call()</code></pre>
 </details>
 </dd>
@@ -3008,10 +2813,6 @@ Method of the function</p></div>
 
 
     &#34;&#34;&#34;
-
-
-
-
 
     return self._fn_get_eth_balance.block_call(addr)</code></pre>
 </details>
@@ -3035,10 +2836,6 @@ Method of the function</p></div>
 
     &#34;&#34;&#34;
 
-
-
-
-
     return self._fn_get_last_block_hash.block_call()</code></pre>
 </details>
 </dd>
@@ -3061,7 +2858,7 @@ Method of the function</p></div>
 
     &#34;&#34;&#34;
 
-    return self._fn_try_aggregate.block_send(require_success, calls, self.call_contract_fee_amount,self.call_contract_fee_price,0,self.call_contract_debug_flag, self.call_contract_enforce_tx_receipt)</code></pre>
+    return self._fn_try_aggregate.block_send(require_success, calls, self.call_contract_fee_amount, self.call_contract_fee_price, 0, self.call_contract_debug_flag, self.call_contract_enforce_tx_receipt)</code></pre>
 </details>
 </dd>
 <dt id="moody.m.multicall2.Multicall2.try_block_and_aggregate"><code class="name flex">
@@ -3083,7 +2880,7 @@ Method of the function</p></div>
 
     &#34;&#34;&#34;
 
-    return self._fn_try_block_and_aggregate.block_send(require_success, calls, self.call_contract_fee_amount,self.call_contract_fee_price,0,self.call_contract_debug_flag, self.call_contract_enforce_tx_receipt)</code></pre>
+    return self._fn_try_block_and_aggregate.block_send(require_success, calls, self.call_contract_fee_amount, self.call_contract_fee_price, 0, self.call_contract_debug_flag, self.call_contract_enforce_tx_receipt)</code></pre>
 </details>
 </dd>
 </dl>
@@ -3249,31 +3046,43 @@ accomplished via <code>str.encode("utf_8")</code>:code:</p></div>
     &#34;&#34;&#34;
         The signature is generated for this and it is installed.
     &#34;&#34;&#34;
+
     def __init__(self, abi: any):
         super().__init__(abi)
 
     def aggregate(self) -&gt; str:
         return self._function_signatures[&#34;aggregate&#34;]
+
     def block_and_aggregate(self) -&gt; str:
         return self._function_signatures[&#34;blockAndAggregate&#34;]
+
     def get_block_hash(self) -&gt; str:
         return self._function_signatures[&#34;getBlockHash&#34;]
+
     def get_block_number(self) -&gt; str:
         return self._function_signatures[&#34;getBlockNumber&#34;]
+
     def get_current_block_coinbase(self) -&gt; str:
         return self._function_signatures[&#34;getCurrentBlockCoinbase&#34;]
+
     def get_current_block_difficulty(self) -&gt; str:
         return self._function_signatures[&#34;getCurrentBlockDifficulty&#34;]
+
     def get_current_block_gas_limit(self) -&gt; str:
         return self._function_signatures[&#34;getCurrentBlockGasLimit&#34;]
+
     def get_current_block_timestamp(self) -&gt; str:
         return self._function_signatures[&#34;getCurrentBlockTimestamp&#34;]
+
     def get_eth_balance(self) -&gt; str:
         return self._function_signatures[&#34;getEthBalance&#34;]
+
     def get_last_block_hash(self) -&gt; str:
         return self._function_signatures[&#34;getLastBlockHash&#34;]
+
     def try_aggregate(self) -&gt; str:
         return self._function_signatures[&#34;tryAggregate&#34;]
+
     def try_block_and_aggregate(self) -&gt; str:
         return self._function_signatures[&#34;tryBlockAndAggregate&#34;]</code></pre>
 </details>
@@ -3452,16 +3261,16 @@ accomplished via <code>str.encode("utf_8")</code>:code:</p></div>
 <summary>
 <span>Expand source code</span>
 </summary>
-<pre><code class="python">class TryAggregateMethod(ContractMethod): # pylint: disable=invalid-name
+<pre><code class="python">class TryAggregateMethod(ContractMethod):  # pylint: disable=invalid-name
     &#34;&#34;&#34;Various interfaces to the tryAggregate method.&#34;&#34;&#34;
 
-    def __init__(self, elib: MiliDoS, contract_address: str, contract_function: ContractFunction, validator: Validator=None):
+    def __init__(self, elib: MiliDoS, contract_address: str, contract_function: ContractFunction, validator: Validator = None):
         &#34;&#34;&#34;Persist instance data.&#34;&#34;&#34;
         super().__init__(elib, contract_address, validator)
         self._underlying_method = contract_function
         self.sign = validator.getSignature(&#34;tryAggregate&#34;)
 
-    def validate_and_normalize_inputs(self, require_success: bool, calls: List[Multicall2Call])-&gt;any:
+    def validate_and_normalize_inputs(self, require_success: bool, calls: List[Multicall2Call]) -&gt; any:
         &#34;&#34;&#34;Validate the inputs to the tryAggregate method.&#34;&#34;&#34;
         self.validator.assert_valid(
             method_name=&#39;tryAggregate&#39;,
@@ -3475,9 +3284,7 @@ accomplished via <code>str.encode("utf_8")</code>:code:</p></div>
         )
         return (require_success, calls)
 
-
-
-    def block_send(self, require_success: bool, calls: List[Multicall2Call],_gaswei:int,_pricewei:int,_valeth:int=0,_debugtx: bool = False,_receipList: bool = False) -&gt; List[Multicall2Result]:
+    def block_send(self, require_success: bool, calls: List[Multicall2Call], _gaswei: int, _pricewei: int, _valeth: int = 0, _debugtx: bool = False, _receipList: bool = False) -&gt; List[Multicall2Result]:
         &#34;&#34;&#34;Execute underlying contract method via eth_call.
 
         :param tx_params: transaction parameters
@@ -3533,7 +3340,6 @@ accomplished via <code>str.encode("utf_8")</code>:code:</p></div>
             else:
                 print(f&#34;{Bolors.FAIL}Error Revert {Bolors.RESET}, try_aggregate. Reason: Unknown&#34;)
 
-
     def send_transaction(self, require_success: bool, calls: List[Multicall2Call], tx_params: Optional[TxParams] = None) -&gt; Union[HexBytes, bytes]:
         &#34;&#34;&#34;Execute underlying contract method via eth_sendTransaction.
 
@@ -3572,7 +3378,7 @@ accomplished via <code>str.encode("utf_8")</code>:code:</p></div>
 <summary>
 <span>Expand source code</span>
 </summary>
-<pre><code class="python">def block_send(self, require_success: bool, calls: List[Multicall2Call],_gaswei:int,_pricewei:int,_valeth:int=0,_debugtx: bool = False,_receipList: bool = False) -&gt; List[Multicall2Result]:
+<pre><code class="python">def block_send(self, require_success: bool, calls: List[Multicall2Call], _gaswei: int, _pricewei: int, _valeth: int = 0, _debugtx: bool = False, _receipList: bool = False) -&gt; List[Multicall2Result]:
     &#34;&#34;&#34;Execute underlying contract method via eth_call.
 
     :param tx_params: transaction parameters
@@ -3690,7 +3496,7 @@ accomplished via <code>str.encode("utf_8")</code>:code:</p></div>
 <summary>
 <span>Expand source code</span>
 </summary>
-<pre><code class="python">def validate_and_normalize_inputs(self, require_success: bool, calls: List[Multicall2Call])-&gt;any:
+<pre><code class="python">def validate_and_normalize_inputs(self, require_success: bool, calls: List[Multicall2Call]) -&gt; any:
     &#34;&#34;&#34;Validate the inputs to the tryAggregate method.&#34;&#34;&#34;
     self.validator.assert_valid(
         method_name=&#39;tryAggregate&#39;,
@@ -3727,16 +3533,16 @@ accomplished via <code>str.encode("utf_8")</code>:code:</p></div>
 <summary>
 <span>Expand source code</span>
 </summary>
-<pre><code class="python">class TryBlockAndAggregateMethod(ContractMethod): # pylint: disable=invalid-name
+<pre><code class="python">class TryBlockAndAggregateMethod(ContractMethod):  # pylint: disable=invalid-name
     &#34;&#34;&#34;Various interfaces to the tryBlockAndAggregate method.&#34;&#34;&#34;
 
-    def __init__(self, elib: MiliDoS, contract_address: str, contract_function: ContractFunction, validator: Validator=None):
+    def __init__(self, elib: MiliDoS, contract_address: str, contract_function: ContractFunction, validator: Validator = None):
         &#34;&#34;&#34;Persist instance data.&#34;&#34;&#34;
         super().__init__(elib, contract_address, validator)
         self._underlying_method = contract_function
         self.sign = validator.getSignature(&#34;tryBlockAndAggregate&#34;)
 
-    def validate_and_normalize_inputs(self, require_success: bool, calls: List[Multicall2Call])-&gt;any:
+    def validate_and_normalize_inputs(self, require_success: bool, calls: List[Multicall2Call]) -&gt; any:
         &#34;&#34;&#34;Validate the inputs to the tryBlockAndAggregate method.&#34;&#34;&#34;
         self.validator.assert_valid(
             method_name=&#39;tryBlockAndAggregate&#39;,
@@ -3750,9 +3556,7 @@ accomplished via <code>str.encode("utf_8")</code>:code:</p></div>
         )
         return (require_success, calls)
 
-
-
-    def block_send(self, require_success: bool, calls: List[Multicall2Call],_gaswei:int,_pricewei:int,_valeth:int=0,_debugtx: bool = False,_receipList: bool = False) -&gt; Tuple[int, Union[bytes, str], List[Multicall2Result]]:
+    def block_send(self, require_success: bool, calls: List[Multicall2Call], _gaswei: int, _pricewei: int, _valeth: int = 0, _debugtx: bool = False, _receipList: bool = False) -&gt; Tuple[int, Union[bytes, str], List[Multicall2Result]]:
         &#34;&#34;&#34;Execute underlying contract method via eth_call.
 
         :param tx_params: transaction parameters
@@ -3808,7 +3612,6 @@ accomplished via <code>str.encode("utf_8")</code>:code:</p></div>
             else:
                 print(f&#34;{Bolors.FAIL}Error Revert {Bolors.RESET}, try_block_and_aggregate. Reason: Unknown&#34;)
 
-
     def send_transaction(self, require_success: bool, calls: List[Multicall2Call], tx_params: Optional[TxParams] = None) -&gt; Union[HexBytes, bytes]:
         &#34;&#34;&#34;Execute underlying contract method via eth_sendTransaction.
 
@@ -3847,7 +3650,7 @@ accomplished via <code>str.encode("utf_8")</code>:code:</p></div>
 <summary>
 <span>Expand source code</span>
 </summary>
-<pre><code class="python">def block_send(self, require_success: bool, calls: List[Multicall2Call],_gaswei:int,_pricewei:int,_valeth:int=0,_debugtx: bool = False,_receipList: bool = False) -&gt; Tuple[int, Union[bytes, str], List[Multicall2Result]]:
+<pre><code class="python">def block_send(self, require_success: bool, calls: List[Multicall2Call], _gaswei: int, _pricewei: int, _valeth: int = 0, _debugtx: bool = False, _receipList: bool = False) -&gt; Tuple[int, Union[bytes, str], List[Multicall2Result]]:
     &#34;&#34;&#34;Execute underlying contract method via eth_call.
 
     :param tx_params: transaction parameters
@@ -3965,7 +3768,7 @@ accomplished via <code>str.encode("utf_8")</code>:code:</p></div>
 <summary>
 <span>Expand source code</span>
 </summary>
-<pre><code class="python">def validate_and_normalize_inputs(self, require_success: bool, calls: List[Multicall2Call])-&gt;any:
+<pre><code class="python">def validate_and_normalize_inputs(self, require_success: bool, calls: List[Multicall2Call]) -&gt; any:
     &#34;&#34;&#34;Validate the inputs to the tryBlockAndAggregate method.&#34;&#34;&#34;
     self.validator.assert_valid(
         method_name=&#39;tryBlockAndAggregate&#39;,
@@ -4003,6 +3806,11 @@ accomplished via <code>str.encode("utf_8")</code>:code:</p></div>
 <li><h3>Super-module</h3>
 <ul>
 <li><code><a title="moody.m" href="../index.html">moody.m</a></code></li>
+</ul>
+</li>
+<li><h3><a href="#header-submodules">Sub-modules</a></h3>
+<ul>
+<li><code><a title="moody.m.multicall2.execute" href="execute.html">moody.m.multicall2.execute</a></code></li>
 </ul>
 </li>
 <li><h3><a href="#header-classes">Classes</a></h3>

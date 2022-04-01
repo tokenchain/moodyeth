@@ -30,7 +30,7 @@
 from . import REC, ITEM, ITEMLINK
 
 
-def compileItem1(tar: Paths, k0: str) -&gt; str:
+def compileItem1(tar: Paths, k0: str, optimzations: int) -&gt; str:
     &#34;&#34;&#34;
     list the item content
     :param tar:
@@ -41,11 +41,12 @@ def compileItem1(tar: Paths, k0: str) -&gt; str:
         SOLCPATH=tar.SOLCPATH,
         COMPILE_COIN=k0,
         SOLVER=tar.SOLC_VER,
-        EVMVERSION=tar.EVM_VERSION
+        EVMVERSION=tar.EVM_VERSION,
+        RUNS=optimzations
     )
 
 
-def compileItem2(tar: Paths, k0: str, link_lib_conf: str) -&gt; str:
+def compileItem2(tar: Paths, k0: str, link_lib_conf: str, optimzations: int) -&gt; str:
     &#34;&#34;&#34;
 
     :param tar:
@@ -59,6 +60,7 @@ def compileItem2(tar: Paths, k0: str, link_lib_conf: str) -&gt; str:
         COMPILE_COIN=k0,
         FILES_CONFIG=link_lib_conf,
         SOLVER=tar.SOLC_VER,
+        RUNS=optimzations
     )
 
 
@@ -77,7 +79,7 @@ def wrapContent(tar: Paths, compile_list: list) -&gt; str:
     )
 
 
-def BuildRemoteLinuxCommand(p: Paths, list_files: list = None, linked: dict = None) -&gt; None:
+def BuildRemoteLinuxCommand(p: Paths, optimize: int, list_files: list = None, linked: dict = None) -&gt; None:
     &#34;&#34;&#34;
     building the remote linux command line
     :param p:
@@ -88,7 +90,7 @@ def BuildRemoteLinuxCommand(p: Paths, list_files: list = None, linked: dict = No
     # ==================================================
     if list_files is not None:
         for v in list_files:
-            k.append(compileItem1(p, v))
+            k.append(compileItem1(p, v, optimize))
     # ==================================================
     if linked is not None:
         for c in linked:
@@ -112,7 +114,7 @@ def BuildRemoteLinuxCommand(p: Paths, list_files: list = None, linked: dict = No
                             source_line = &#34;{}:{}:{}&#34;.format(b[&#34;src&#34;], b[&#34;class&#34;], b[&#34;address&#34;])
                         lib_cmds.append(source_line)
                 library_link_cmd = &#34; &#34;.join(lib_cmds)
-                k.append(compileItem2(p, compile_file, library_link_cmd))
+                k.append(compileItem2(p, compile_file, library_link_cmd, optimize))
     # ==================================================
     with open(p.workspaceFilename(&#34;remotesolc&#34;), &#39;w&#39;) as f:
         f.write(wrapContent(p, k))
@@ -128,7 +130,7 @@ def BuildRemoteLinuxCommand(p: Paths, list_files: list = None, linked: dict = No
 <h2 class="section-title" id="header-functions">Functions</h2>
 <dl>
 <dt id="moody.buildercompile.remotecompile.BuildRemoteLinuxCommand"><code class="name flex">
-<span>def <span class="ident">BuildRemoteLinuxCommand</span></span>(<span>p: <a title="moody.paths.Paths" href="../paths.html#moody.paths.Paths">Paths</a>, list_files: list = None, linked: dict = None) ‑> NoneType</span>
+<span>def <span class="ident">BuildRemoteLinuxCommand</span></span>(<span>p: <a title="moody.paths.Paths" href="../paths.html#moody.paths.Paths">Paths</a>, optimize: int, list_files: list = None, linked: dict = None) ‑> NoneType</span>
 </code></dt>
 <dd>
 <div class="desc"><p>building the remote linux command line
@@ -139,7 +141,7 @@ def BuildRemoteLinuxCommand(p: Paths, list_files: list = None, linked: dict = No
 <summary>
 <span>Expand source code</span>
 </summary>
-<pre><code class="python">def BuildRemoteLinuxCommand(p: Paths, list_files: list = None, linked: dict = None) -&gt; None:
+<pre><code class="python">def BuildRemoteLinuxCommand(p: Paths, optimize: int, list_files: list = None, linked: dict = None) -&gt; None:
     &#34;&#34;&#34;
     building the remote linux command line
     :param p:
@@ -150,7 +152,7 @@ def BuildRemoteLinuxCommand(p: Paths, list_files: list = None, linked: dict = No
     # ==================================================
     if list_files is not None:
         for v in list_files:
-            k.append(compileItem1(p, v))
+            k.append(compileItem1(p, v, optimize))
     # ==================================================
     if linked is not None:
         for c in linked:
@@ -174,7 +176,7 @@ def BuildRemoteLinuxCommand(p: Paths, list_files: list = None, linked: dict = No
                             source_line = &#34;{}:{}:{}&#34;.format(b[&#34;src&#34;], b[&#34;class&#34;], b[&#34;address&#34;])
                         lib_cmds.append(source_line)
                 library_link_cmd = &#34; &#34;.join(lib_cmds)
-                k.append(compileItem2(p, compile_file, library_link_cmd))
+                k.append(compileItem2(p, compile_file, library_link_cmd, optimize))
     # ==================================================
     with open(p.workspaceFilename(&#34;remotesolc&#34;), &#39;w&#39;) as f:
         f.write(wrapContent(p, k))
@@ -182,7 +184,7 @@ def BuildRemoteLinuxCommand(p: Paths, list_files: list = None, linked: dict = No
 </details>
 </dd>
 <dt id="moody.buildercompile.remotecompile.compileItem1"><code class="name flex">
-<span>def <span class="ident">compileItem1</span></span>(<span>tar: <a title="moody.paths.Paths" href="../paths.html#moody.paths.Paths">Paths</a>, k0: str) ‑> str</span>
+<span>def <span class="ident">compileItem1</span></span>(<span>tar: <a title="moody.paths.Paths" href="../paths.html#moody.paths.Paths">Paths</a>, k0: str, optimzations: int) ‑> str</span>
 </code></dt>
 <dd>
 <div class="desc"><p>list the item content
@@ -193,7 +195,7 @@ def BuildRemoteLinuxCommand(p: Paths, list_files: list = None, linked: dict = No
 <summary>
 <span>Expand source code</span>
 </summary>
-<pre><code class="python">def compileItem1(tar: Paths, k0: str) -&gt; str:
+<pre><code class="python">def compileItem1(tar: Paths, k0: str, optimzations: int) -&gt; str:
     &#34;&#34;&#34;
     list the item content
     :param tar:
@@ -204,12 +206,13 @@ def BuildRemoteLinuxCommand(p: Paths, list_files: list = None, linked: dict = No
         SOLCPATH=tar.SOLCPATH,
         COMPILE_COIN=k0,
         SOLVER=tar.SOLC_VER,
-        EVMVERSION=tar.EVM_VERSION
+        EVMVERSION=tar.EVM_VERSION,
+        RUNS=optimzations
     )</code></pre>
 </details>
 </dd>
 <dt id="moody.buildercompile.remotecompile.compileItem2"><code class="name flex">
-<span>def <span class="ident">compileItem2</span></span>(<span>tar: <a title="moody.paths.Paths" href="../paths.html#moody.paths.Paths">Paths</a>, k0: str, link_lib_conf: str) ‑> str</span>
+<span>def <span class="ident">compileItem2</span></span>(<span>tar: <a title="moody.paths.Paths" href="../paths.html#moody.paths.Paths">Paths</a>, k0: str, link_lib_conf: str, optimzations: int) ‑> str</span>
 </code></dt>
 <dd>
 <div class="desc"><p>:param tar:
@@ -220,7 +223,7 @@ def BuildRemoteLinuxCommand(p: Paths, list_files: list = None, linked: dict = No
 <summary>
 <span>Expand source code</span>
 </summary>
-<pre><code class="python">def compileItem2(tar: Paths, k0: str, link_lib_conf: str) -&gt; str:
+<pre><code class="python">def compileItem2(tar: Paths, k0: str, link_lib_conf: str, optimzations: int) -&gt; str:
     &#34;&#34;&#34;
 
     :param tar:
@@ -234,6 +237,7 @@ def BuildRemoteLinuxCommand(p: Paths, list_files: list = None, linked: dict = No
         COMPILE_COIN=k0,
         FILES_CONFIG=link_lib_conf,
         SOLVER=tar.SOLC_VER,
+        RUNS=optimzations
     )</code></pre>
 </details>
 </dd>

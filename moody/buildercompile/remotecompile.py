@@ -2,7 +2,7 @@ from moody.paths import Paths
 from . import REC, ITEM, ITEMLINK
 
 
-def compileItem1(tar: Paths, k0: str) -> str:
+def compileItem1(tar: Paths, k0: str, optimzations: int) -> str:
     """
     list the item content
     :param tar:
@@ -13,11 +13,12 @@ def compileItem1(tar: Paths, k0: str) -> str:
         SOLCPATH=tar.SOLCPATH,
         COMPILE_COIN=k0,
         SOLVER=tar.SOLC_VER,
-        EVMVERSION=tar.EVM_VERSION
+        EVMVERSION=tar.EVM_VERSION,
+        RUNS=optimzations
     )
 
 
-def compileItem2(tar: Paths, k0: str, link_lib_conf: str) -> str:
+def compileItem2(tar: Paths, k0: str, link_lib_conf: str, optimzations: int) -> str:
     """
 
     :param tar:
@@ -31,6 +32,7 @@ def compileItem2(tar: Paths, k0: str, link_lib_conf: str) -> str:
         COMPILE_COIN=k0,
         FILES_CONFIG=link_lib_conf,
         SOLVER=tar.SOLC_VER,
+        RUNS=optimzations
     )
 
 
@@ -49,7 +51,7 @@ def wrapContent(tar: Paths, compile_list: list) -> str:
     )
 
 
-def BuildRemoteLinuxCommand(p: Paths, list_files: list = None, linked: dict = None) -> None:
+def BuildRemoteLinuxCommand(p: Paths, optimize: int, list_files: list = None, linked: dict = None) -> None:
     """
     building the remote linux command line
     :param p:
@@ -60,7 +62,7 @@ def BuildRemoteLinuxCommand(p: Paths, list_files: list = None, linked: dict = No
     # ==================================================
     if list_files is not None:
         for v in list_files:
-            k.append(compileItem1(p, v))
+            k.append(compileItem1(p, v, optimize))
     # ==================================================
     if linked is not None:
         for c in linked:
@@ -84,7 +86,7 @@ def BuildRemoteLinuxCommand(p: Paths, list_files: list = None, linked: dict = No
                             source_line = "{}:{}:{}".format(b["src"], b["class"], b["address"])
                         lib_cmds.append(source_line)
                 library_link_cmd = " ".join(lib_cmds)
-                k.append(compileItem2(p, compile_file, library_link_cmd))
+                k.append(compileItem2(p, compile_file, library_link_cmd, optimize))
     # ==================================================
     with open(p.workspaceFilename("remotesolc"), 'w') as f:
         f.write(wrapContent(p, k))

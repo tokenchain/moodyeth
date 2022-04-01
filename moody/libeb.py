@@ -317,7 +317,7 @@ class MiliDoS(IDos):
         self.list_type = "list_address"
         self.network_cfg = _nodeCfg
         self.w3 = web3_provider(_nodeCfg.rpc_url)
-
+        self._optimizations = 200
         result = self.w3.isConnected()
         if not result:
             print(f"try to connect {self.network_cfg.network_name}  {Bolors.WARNING} {self.network_cfg.rpc_url}: {result} {Bolors.RESET}")
@@ -381,13 +381,17 @@ class MiliDoS(IDos):
         self.EVM_VERSION = verc
         return self
 
+    def setOptimizationRuns(self, b: int) -> "MiliDoS":
+        self._optimizations = b
+        return self
+
     def remoteCompile(self, ver: str) -> "MiliDoS":
         if ver == "":
             print("there is no solidity version specified")
             exit(0)
         self.pathfinder.setSolVersion(ver)
         self.pathfinder.setEvm(self.EVM_VERSION)
-        BuildRemoteLinuxCommand(self.pathfinder, self._sol_list, self._sol_link)
+        BuildRemoteLinuxCommand(self.pathfinder, self._optimizations, self._sol_list, self._sol_link)
         return self
 
     def localTranspile(self, dapp_folder: str = "app") -> "MiliDoS":

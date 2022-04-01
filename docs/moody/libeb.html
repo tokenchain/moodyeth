@@ -345,7 +345,7 @@ class MiliDoS(IDos):
         self.list_type = &#34;list_address&#34;
         self.network_cfg = _nodeCfg
         self.w3 = web3_provider(_nodeCfg.rpc_url)
-
+        self._optimizations = 200
         result = self.w3.isConnected()
         if not result:
             print(f&#34;try to connect {self.network_cfg.network_name}  {Bolors.WARNING} {self.network_cfg.rpc_url}: {result} {Bolors.RESET}&#34;)
@@ -409,13 +409,17 @@ class MiliDoS(IDos):
         self.EVM_VERSION = verc
         return self
 
+    def setOptimizationRuns(self, b: int) -&gt; &#34;MiliDoS&#34;:
+        self._optimizations = b
+        return self
+
     def remoteCompile(self, ver: str) -&gt; &#34;MiliDoS&#34;:
         if ver == &#34;&#34;:
             print(&#34;there is no solidity version specified&#34;)
             exit(0)
         self.pathfinder.setSolVersion(ver)
         self.pathfinder.setEvm(self.EVM_VERSION)
-        BuildRemoteLinuxCommand(self.pathfinder, self._sol_list, self._sol_link)
+        BuildRemoteLinuxCommand(self.pathfinder, self._optimizations, self._sol_list, self._sol_link)
         return self
 
     def localTranspile(self, dapp_folder: str = &#34;app&#34;) -&gt; &#34;MiliDoS&#34;:
@@ -1419,7 +1423,7 @@ implement default like this::</p>
         self.list_type = &#34;list_address&#34;
         self.network_cfg = _nodeCfg
         self.w3 = web3_provider(_nodeCfg.rpc_url)
-
+        self._optimizations = 200
         result = self.w3.isConnected()
         if not result:
             print(f&#34;try to connect {self.network_cfg.network_name}  {Bolors.WARNING} {self.network_cfg.rpc_url}: {result} {Bolors.RESET}&#34;)
@@ -1483,13 +1487,17 @@ implement default like this::</p>
         self.EVM_VERSION = verc
         return self
 
+    def setOptimizationRuns(self, b: int) -&gt; &#34;MiliDoS&#34;:
+        self._optimizations = b
+        return self
+
     def remoteCompile(self, ver: str) -&gt; &#34;MiliDoS&#34;:
         if ver == &#34;&#34;:
             print(&#34;there is no solidity version specified&#34;)
             exit(0)
         self.pathfinder.setSolVersion(ver)
         self.pathfinder.setEvm(self.EVM_VERSION)
-        BuildRemoteLinuxCommand(self.pathfinder, self._sol_list, self._sol_link)
+        BuildRemoteLinuxCommand(self.pathfinder, self._optimizations, self._sol_list, self._sol_link)
         return self
 
     def localTranspile(self, dapp_folder: str = &#34;app&#34;) -&gt; &#34;MiliDoS&#34;:
@@ -2752,7 +2760,7 @@ Note: Be cautions with the range provided, as the logic creates query for each b
         exit(0)
     self.pathfinder.setSolVersion(ver)
     self.pathfinder.setEvm(self.EVM_VERSION)
-    BuildRemoteLinuxCommand(self.pathfinder, self._sol_list, self._sol_link)
+    BuildRemoteLinuxCommand(self.pathfinder, self._optimizations, self._sol_list, self._sol_link)
     return self</code></pre>
 </details>
 </dd>
@@ -2859,6 +2867,20 @@ Note: Be cautions with the range provided, as the logic creates query for each b
         self._contract_dict[self.__kv_label] = dict()
 
     self._contract_dict[self.__kv_label][key] = value
+    return self</code></pre>
+</details>
+</dd>
+<dt id="moody.libeb.MiliDoS.setOptimizationRuns"><code class="name flex">
+<span>def <span class="ident">setOptimizationRuns</span></span>(<span>self, b: int) ‑> <a title="moody.libeb.MiliDoS" href="#moody.libeb.MiliDoS">MiliDoS</a></span>
+</code></dt>
+<dd>
+<div class="desc"></div>
+<details class="source">
+<summary>
+<span>Expand source code</span>
+</summary>
+<pre><code class="python">def setOptimizationRuns(self, b: int) -&gt; &#34;MiliDoS&#34;:
+    self._optimizations = b
     return self</code></pre>
 </details>
 </dd>
@@ -3345,6 +3367,7 @@ all works will be done with the remote server or using the docker</p></div>
 <li><code><a title="moody.libeb.MiliDoS.setClassSolNames" href="#moody.libeb.MiliDoS.setClassSolNames">setClassSolNames</a></code></li>
 <li><code><a title="moody.libeb.MiliDoS.setEvm" href="#moody.libeb.MiliDoS.setEvm">setEvm</a></code></li>
 <li><code><a title="moody.libeb.MiliDoS.setKV" href="#moody.libeb.MiliDoS.setKV">setKV</a></code></li>
+<li><code><a title="moody.libeb.MiliDoS.setOptimizationRuns" href="#moody.libeb.MiliDoS.setOptimizationRuns">setOptimizationRuns</a></code></li>
 <li><code><a title="moody.libeb.MiliDoS.setTargetClass" href="#moody.libeb.MiliDoS.setTargetClass">setTargetClass</a></code></li>
 <li><code><a title="moody.libeb.MiliDoS.setTargetListName" href="#moody.libeb.MiliDoS.setTargetListName">setTargetListName</a></code></li>
 <li><code><a title="moody.libeb.MiliDoS.setWorkspace" href="#moody.libeb.MiliDoS.setWorkspace">setWorkspace</a></code></li>

@@ -12,15 +12,21 @@ from ..libeb import MiliDoS
 
 class Signatures:
     _function_signatures = {}
+    _abi_store = {}
 
     def __init__(self, abi: any):
         for func in [obj for obj in abi if obj['type'] == 'function']:
             name = func['name']
             types = [input['type'] for input in func['inputs']]
             self._function_signatures[name] = '{}({})'.format(name, ','.join(types))
+        self._abi_store = abi
 
     def fromSignatures(self) -> dict:
         return self._function_signatures
+
+    @property
+    def fromAbi(self) -> any:
+        return self._abi_store
 
 
 class Validator:
@@ -104,7 +110,8 @@ class ContractMethod:
 
 
 class ContractBase:
-    SIGNATURES = None
+    SIGNATURES: Signatures = None
+    contract_address: str = None
 
     def __init__(self):
         self.call_contract_fee_amount: int = 2000000000
@@ -129,3 +136,7 @@ class ContractBase:
     def EnforceTxReceipt(self, yesno: bool) -> "ContractBase":
         self.call_contract_enforce_tx_receipt = yesno
         return self
+
+    def CallSignatureModel(self) -> Signatures:
+        return self.SIGNATURES
+

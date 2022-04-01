@@ -75,27 +75,23 @@ except ImportError:
     pass
 
 
-
-
-
-class ExpiryTimeMethod(ContractMethod): # pylint: disable=invalid-name
+class ExpiryTimeMethod(ContractMethod):  # pylint: disable=invalid-name
     &#34;&#34;&#34;Various interfaces to the EXPIRY_TIME method.&#34;&#34;&#34;
 
-    def __init__(self, elib: MiliDoS, contract_address: str, contract_function: ContractFunction, validator: Validator=None):
+    def __init__(self, elib: MiliDoS, contract_address: str, contract_function: ContractFunction, validator: Validator = None):
         &#34;&#34;&#34;Persist instance data.&#34;&#34;&#34;
         super().__init__(elib, contract_address)
         self._underlying_method = contract_function
         self.sign = validator.getSignature(&#34;EXPIRY_TIME&#34;)
 
-
-
-    def block_call(self, debug:bool=False) -&gt; int:
+    def block_call(self, debug: bool = False) -&gt; int:
         _fn = self._underlying_method()
         returned = _fn.call({
-                &#39;from&#39;: self._operate
-            })
+            &#39;from&#39;: self._operate
+        })
         return int(returned)
-    def block_send(self, _gaswei:int,_pricewei:int,_valeth:int=0,_debugtx: bool = False,_receipList: bool = False) -&gt; int:
+
+    def block_send(self, _gaswei: int, _pricewei: int, _valeth: int = 0, _debugtx: bool = False, _receipList: bool = False) -&gt; int:
         &#34;&#34;&#34;Execute underlying contract method via eth_call.
 
         :param tx_params: transaction parameters
@@ -151,7 +147,6 @@ class ExpiryTimeMethod(ContractMethod): # pylint: disable=invalid-name
             else:
                 print(f&#34;{Bolors.FAIL}Error Revert {Bolors.RESET}, expiry_time. Reason: Unknown&#34;)
 
-
     def send_transaction(self, tx_params: Optional[TxParams] = None) -&gt; Union[HexBytes, bytes]:
         &#34;&#34;&#34;Execute underlying contract method via eth_sendTransaction.
 
@@ -170,16 +165,17 @@ class ExpiryTimeMethod(ContractMethod): # pylint: disable=invalid-name
         tx_params = super().normalize_tx_params(tx_params)
         return self._underlying_method().estimateGas(tx_params.as_dict())
 
-class CancelOracleRequestMethod(ContractMethod): # pylint: disable=invalid-name
+
+class CancelOracleRequestMethod(ContractMethod):  # pylint: disable=invalid-name
     &#34;&#34;&#34;Various interfaces to the cancelOracleRequest method.&#34;&#34;&#34;
 
-    def __init__(self, elib: MiliDoS, contract_address: str, contract_function: ContractFunction, validator: Validator=None):
+    def __init__(self, elib: MiliDoS, contract_address: str, contract_function: ContractFunction, validator: Validator = None):
         &#34;&#34;&#34;Persist instance data.&#34;&#34;&#34;
         super().__init__(elib, contract_address, validator)
         self._underlying_method = contract_function
         self.sign = validator.getSignature(&#34;cancelOracleRequest&#34;)
 
-    def validate_and_normalize_inputs(self, request_id: Union[bytes, str], payment: int, callback_func: Union[bytes, str], expiration: int)-&gt;any:
+    def validate_and_normalize_inputs(self, request_id: Union[bytes, str], payment: int, callback_func: Union[bytes, str], expiration: int) -&gt; any:
         &#34;&#34;&#34;Validate the inputs to the cancelOracleRequest method.&#34;&#34;&#34;
         self.validator.assert_valid(
             method_name=&#39;cancelOracleRequest&#39;,
@@ -207,9 +203,7 @@ class CancelOracleRequestMethod(ContractMethod): # pylint: disable=invalid-name
         expiration = int(expiration)
         return (request_id, payment, callback_func, expiration)
 
-
-
-    def block_send(self, request_id: Union[bytes, str], payment: int, callback_func: Union[bytes, str], expiration: int,_gaswei:int,_pricewei:int,_valeth:int=0,_debugtx: bool = False,_receipList: bool = False) -&gt; None:
+    def block_send(self, request_id: Union[bytes, str], payment: int, callback_func: Union[bytes, str], expiration: int, _gaswei: int, _pricewei: int, _valeth: int = 0, _debugtx: bool = False, _receipList: bool = False) -&gt; None:
         &#34;&#34;&#34;Execute underlying contract method via eth_call.
 
         :param tx_params: transaction parameters
@@ -265,7 +259,6 @@ class CancelOracleRequestMethod(ContractMethod): # pylint: disable=invalid-name
             else:
                 print(f&#34;{Bolors.FAIL}Error Revert {Bolors.RESET}, cancel_oracle_request. Reason: Unknown&#34;)
 
-
     def send_transaction(self, request_id: Union[bytes, str], payment: int, callback_func: Union[bytes, str], expiration: int, tx_params: Optional[TxParams] = None) -&gt; Union[HexBytes, bytes]:
         &#34;&#34;&#34;Execute underlying contract method via eth_sendTransaction.
 
@@ -287,16 +280,17 @@ class CancelOracleRequestMethod(ContractMethod): # pylint: disable=invalid-name
         tx_params = super().normalize_tx_params(tx_params)
         return self._underlying_method(request_id, payment, callback_func, expiration).estimateGas(tx_params.as_dict())
 
-class FulfillOracleRequestMethod(ContractMethod): # pylint: disable=invalid-name
+
+class FulfillOracleRequestMethod(ContractMethod):  # pylint: disable=invalid-name
     &#34;&#34;&#34;Various interfaces to the fulfillOracleRequest method.&#34;&#34;&#34;
 
-    def __init__(self, elib: MiliDoS, contract_address: str, contract_function: ContractFunction, validator: Validator=None):
+    def __init__(self, elib: MiliDoS, contract_address: str, contract_function: ContractFunction, validator: Validator = None):
         &#34;&#34;&#34;Persist instance data.&#34;&#34;&#34;
         super().__init__(elib, contract_address, validator)
         self._underlying_method = contract_function
         self.sign = validator.getSignature(&#34;fulfillOracleRequest&#34;)
 
-    def validate_and_normalize_inputs(self, request_id: Union[bytes, str], payment: int, callback_address: str, callback_function_id: Union[bytes, str], expiration: int, data: Union[bytes, str])-&gt;any:
+    def validate_and_normalize_inputs(self, request_id: Union[bytes, str], payment: int, callback_address: str, callback_function_id: Union[bytes, str], expiration: int, data: Union[bytes, str]) -&gt; any:
         &#34;&#34;&#34;Validate the inputs to the fulfillOracleRequest method.&#34;&#34;&#34;
         self.validator.assert_valid(
             method_name=&#39;fulfillOracleRequest&#39;,
@@ -335,9 +329,7 @@ class FulfillOracleRequestMethod(ContractMethod): # pylint: disable=invalid-name
         )
         return (request_id, payment, callback_address, callback_function_id, expiration, data)
 
-
-
-    def block_send(self, request_id: Union[bytes, str], payment: int, callback_address: str, callback_function_id: Union[bytes, str], expiration: int, data: Union[bytes, str],_gaswei:int,_pricewei:int,_valeth:int=0,_debugtx: bool = False,_receipList: bool = False) -&gt; bool:
+    def block_send(self, request_id: Union[bytes, str], payment: int, callback_address: str, callback_function_id: Union[bytes, str], expiration: int, data: Union[bytes, str], _gaswei: int, _pricewei: int, _valeth: int = 0, _debugtx: bool = False, _receipList: bool = False) -&gt; bool:
         &#34;&#34;&#34;Execute underlying contract method via eth_call.
 
         :param tx_params: transaction parameters
@@ -393,7 +385,6 @@ class FulfillOracleRequestMethod(ContractMethod): # pylint: disable=invalid-name
             else:
                 print(f&#34;{Bolors.FAIL}Error Revert {Bolors.RESET}, fulfill_oracle_request. Reason: Unknown&#34;)
 
-
     def send_transaction(self, request_id: Union[bytes, str], payment: int, callback_address: str, callback_function_id: Union[bytes, str], expiration: int, data: Union[bytes, str], tx_params: Optional[TxParams] = None) -&gt; Union[HexBytes, bytes]:
         &#34;&#34;&#34;Execute underlying contract method via eth_sendTransaction.
 
@@ -415,16 +406,17 @@ class FulfillOracleRequestMethod(ContractMethod): # pylint: disable=invalid-name
         tx_params = super().normalize_tx_params(tx_params)
         return self._underlying_method(request_id, payment, callback_address, callback_function_id, expiration, data).estimateGas(tx_params.as_dict())
 
-class GetAuthorizationStatusMethod(ContractMethod): # pylint: disable=invalid-name
+
+class GetAuthorizationStatusMethod(ContractMethod):  # pylint: disable=invalid-name
     &#34;&#34;&#34;Various interfaces to the getAuthorizationStatus method.&#34;&#34;&#34;
 
-    def __init__(self, elib: MiliDoS, contract_address: str, contract_function: ContractFunction, validator: Validator=None):
+    def __init__(self, elib: MiliDoS, contract_address: str, contract_function: ContractFunction, validator: Validator = None):
         &#34;&#34;&#34;Persist instance data.&#34;&#34;&#34;
         super().__init__(elib, contract_address, validator)
         self._underlying_method = contract_function
         self.sign = validator.getSignature(&#34;getAuthorizationStatus&#34;)
 
-    def validate_and_normalize_inputs(self, node: str)-&gt;any:
+    def validate_and_normalize_inputs(self, node: str) -&gt; any:
         &#34;&#34;&#34;Validate the inputs to the getAuthorizationStatus method.&#34;&#34;&#34;
         self.validator.assert_valid(
             method_name=&#39;getAuthorizationStatus&#39;,
@@ -434,15 +426,14 @@ class GetAuthorizationStatusMethod(ContractMethod): # pylint: disable=invalid-na
         node = self.validate_and_checksum_address(node)
         return (node)
 
-
-
-    def block_call(self,node: str, debug:bool=False) -&gt; bool:
+    def block_call(self, node: str, debug: bool = False) -&gt; bool:
         _fn = self._underlying_method(node)
         returned = _fn.call({
-                &#39;from&#39;: self._operate
-            })
+            &#39;from&#39;: self._operate
+        })
         return bool(returned)
-    def block_send(self, node: str,_gaswei:int,_pricewei:int,_valeth:int=0,_debugtx: bool = False,_receipList: bool = False) -&gt; bool:
+
+    def block_send(self, node: str, _gaswei: int, _pricewei: int, _valeth: int = 0, _debugtx: bool = False, _receipList: bool = False) -&gt; bool:
         &#34;&#34;&#34;Execute underlying contract method via eth_call.
 
         :param tx_params: transaction parameters
@@ -498,7 +489,6 @@ class GetAuthorizationStatusMethod(ContractMethod): # pylint: disable=invalid-na
             else:
                 print(f&#34;{Bolors.FAIL}Error Revert {Bolors.RESET}, get_authorization_status. Reason: Unknown&#34;)
 
-
     def send_transaction(self, node: str, tx_params: Optional[TxParams] = None) -&gt; Union[HexBytes, bytes]:
         &#34;&#34;&#34;Execute underlying contract method via eth_sendTransaction.
 
@@ -520,24 +510,24 @@ class GetAuthorizationStatusMethod(ContractMethod): # pylint: disable=invalid-na
         tx_params = super().normalize_tx_params(tx_params)
         return self._underlying_method(node).estimateGas(tx_params.as_dict())
 
-class GetChainlinkTokenMethod(ContractMethod): # pylint: disable=invalid-name
+
+class GetChainlinkTokenMethod(ContractMethod):  # pylint: disable=invalid-name
     &#34;&#34;&#34;Various interfaces to the getChainlinkToken method.&#34;&#34;&#34;
 
-    def __init__(self, elib: MiliDoS, contract_address: str, contract_function: ContractFunction, validator: Validator=None):
+    def __init__(self, elib: MiliDoS, contract_address: str, contract_function: ContractFunction, validator: Validator = None):
         &#34;&#34;&#34;Persist instance data.&#34;&#34;&#34;
         super().__init__(elib, contract_address)
         self._underlying_method = contract_function
         self.sign = validator.getSignature(&#34;getChainlinkToken&#34;)
 
-
-
-    def block_call(self, debug:bool=False) -&gt; str:
+    def block_call(self, debug: bool = False) -&gt; str:
         _fn = self._underlying_method()
         returned = _fn.call({
-                &#39;from&#39;: self._operate
-            })
+            &#39;from&#39;: self._operate
+        })
         return str(returned)
-    def block_send(self, _gaswei:int,_pricewei:int,_valeth:int=0,_debugtx: bool = False,_receipList: bool = False) -&gt; str:
+
+    def block_send(self, _gaswei: int, _pricewei: int, _valeth: int = 0, _debugtx: bool = False, _receipList: bool = False) -&gt; str:
         &#34;&#34;&#34;Execute underlying contract method via eth_call.
 
         :param tx_params: transaction parameters
@@ -593,7 +583,6 @@ class GetChainlinkTokenMethod(ContractMethod): # pylint: disable=invalid-name
             else:
                 print(f&#34;{Bolors.FAIL}Error Revert {Bolors.RESET}, get_chainlink_token. Reason: Unknown&#34;)
 
-
     def send_transaction(self, tx_params: Optional[TxParams] = None) -&gt; Union[HexBytes, bytes]:
         &#34;&#34;&#34;Execute underlying contract method via eth_sendTransaction.
 
@@ -612,24 +601,24 @@ class GetChainlinkTokenMethod(ContractMethod): # pylint: disable=invalid-name
         tx_params = super().normalize_tx_params(tx_params)
         return self._underlying_method().estimateGas(tx_params.as_dict())
 
-class IsOwnerMethod(ContractMethod): # pylint: disable=invalid-name
+
+class IsOwnerMethod(ContractMethod):  # pylint: disable=invalid-name
     &#34;&#34;&#34;Various interfaces to the isOwner method.&#34;&#34;&#34;
 
-    def __init__(self, elib: MiliDoS, contract_address: str, contract_function: ContractFunction, validator: Validator=None):
+    def __init__(self, elib: MiliDoS, contract_address: str, contract_function: ContractFunction, validator: Validator = None):
         &#34;&#34;&#34;Persist instance data.&#34;&#34;&#34;
         super().__init__(elib, contract_address)
         self._underlying_method = contract_function
         self.sign = validator.getSignature(&#34;isOwner&#34;)
 
-
-
-    def block_call(self, debug:bool=False) -&gt; bool:
+    def block_call(self, debug: bool = False) -&gt; bool:
         _fn = self._underlying_method()
         returned = _fn.call({
-                &#39;from&#39;: self._operate
-            })
+            &#39;from&#39;: self._operate
+        })
         return bool(returned)
-    def block_send(self, _gaswei:int,_pricewei:int,_valeth:int=0,_debugtx: bool = False,_receipList: bool = False) -&gt; bool:
+
+    def block_send(self, _gaswei: int, _pricewei: int, _valeth: int = 0, _debugtx: bool = False, _receipList: bool = False) -&gt; bool:
         &#34;&#34;&#34;Execute underlying contract method via eth_call.
 
         :param tx_params: transaction parameters
@@ -685,7 +674,6 @@ class IsOwnerMethod(ContractMethod): # pylint: disable=invalid-name
             else:
                 print(f&#34;{Bolors.FAIL}Error Revert {Bolors.RESET}, is_owner. Reason: Unknown&#34;)
 
-
     def send_transaction(self, tx_params: Optional[TxParams] = None) -&gt; Union[HexBytes, bytes]:
         &#34;&#34;&#34;Execute underlying contract method via eth_sendTransaction.
 
@@ -704,16 +692,17 @@ class IsOwnerMethod(ContractMethod): # pylint: disable=invalid-name
         tx_params = super().normalize_tx_params(tx_params)
         return self._underlying_method().estimateGas(tx_params.as_dict())
 
-class OnTokenTransferMethod(ContractMethod): # pylint: disable=invalid-name
+
+class OnTokenTransferMethod(ContractMethod):  # pylint: disable=invalid-name
     &#34;&#34;&#34;Various interfaces to the onTokenTransfer method.&#34;&#34;&#34;
 
-    def __init__(self, elib: MiliDoS, contract_address: str, contract_function: ContractFunction, validator: Validator=None):
+    def __init__(self, elib: MiliDoS, contract_address: str, contract_function: ContractFunction, validator: Validator = None):
         &#34;&#34;&#34;Persist instance data.&#34;&#34;&#34;
         super().__init__(elib, contract_address, validator)
         self._underlying_method = contract_function
         self.sign = validator.getSignature(&#34;onTokenTransfer&#34;)
 
-    def validate_and_normalize_inputs(self, sender: str, amount: int, data: Union[bytes, str])-&gt;any:
+    def validate_and_normalize_inputs(self, sender: str, amount: int, data: Union[bytes, str]) -&gt; any:
         &#34;&#34;&#34;Validate the inputs to the onTokenTransfer method.&#34;&#34;&#34;
         self.validator.assert_valid(
             method_name=&#39;onTokenTransfer&#39;,
@@ -735,9 +724,7 @@ class OnTokenTransferMethod(ContractMethod): # pylint: disable=invalid-name
         )
         return (sender, amount, data)
 
-
-
-    def block_send(self, sender: str, amount: int, data: Union[bytes, str],_gaswei:int,_pricewei:int,_valeth:int=0,_debugtx: bool = False,_receipList: bool = False) -&gt; None:
+    def block_send(self, sender: str, amount: int, data: Union[bytes, str], _gaswei: int, _pricewei: int, _valeth: int = 0, _debugtx: bool = False, _receipList: bool = False) -&gt; None:
         &#34;&#34;&#34;Execute underlying contract method via eth_call.
 
         :param tx_params: transaction parameters
@@ -793,7 +780,6 @@ class OnTokenTransferMethod(ContractMethod): # pylint: disable=invalid-name
             else:
                 print(f&#34;{Bolors.FAIL}Error Revert {Bolors.RESET}, on_token_transfer. Reason: Unknown&#34;)
 
-
     def send_transaction(self, sender: str, amount: int, data: Union[bytes, str], tx_params: Optional[TxParams] = None) -&gt; Union[HexBytes, bytes]:
         &#34;&#34;&#34;Execute underlying contract method via eth_sendTransaction.
 
@@ -815,16 +801,17 @@ class OnTokenTransferMethod(ContractMethod): # pylint: disable=invalid-name
         tx_params = super().normalize_tx_params(tx_params)
         return self._underlying_method(sender, amount, data).estimateGas(tx_params.as_dict())
 
-class OracleRequestMethod(ContractMethod): # pylint: disable=invalid-name
+
+class OracleRequestMethod(ContractMethod):  # pylint: disable=invalid-name
     &#34;&#34;&#34;Various interfaces to the oracleRequest method.&#34;&#34;&#34;
 
-    def __init__(self, elib: MiliDoS, contract_address: str, contract_function: ContractFunction, validator: Validator=None):
+    def __init__(self, elib: MiliDoS, contract_address: str, contract_function: ContractFunction, validator: Validator = None):
         &#34;&#34;&#34;Persist instance data.&#34;&#34;&#34;
         super().__init__(elib, contract_address, validator)
         self._underlying_method = contract_function
         self.sign = validator.getSignature(&#34;oracleRequest&#34;)
 
-    def validate_and_normalize_inputs(self, sender: str, payment: int, spec_id: Union[bytes, str], callback_address: str, callback_function_id: Union[bytes, str], nonce: int, data_version: int, data: Union[bytes, str])-&gt;any:
+    def validate_and_normalize_inputs(self, sender: str, payment: int, spec_id: Union[bytes, str], callback_address: str, callback_function_id: Union[bytes, str], nonce: int, data_version: int, data: Union[bytes, str]) -&gt; any:
         &#34;&#34;&#34;Validate the inputs to the oracleRequest method.&#34;&#34;&#34;
         self.validator.assert_valid(
             method_name=&#39;oracleRequest&#39;,
@@ -876,9 +863,7 @@ class OracleRequestMethod(ContractMethod): # pylint: disable=invalid-name
         )
         return (sender, payment, spec_id, callback_address, callback_function_id, nonce, data_version, data)
 
-
-
-    def block_send(self, sender: str, payment: int, spec_id: Union[bytes, str], callback_address: str, callback_function_id: Union[bytes, str], nonce: int, data_version: int, data: Union[bytes, str],_gaswei:int,_pricewei:int,_valeth:int=0,_debugtx: bool = False,_receipList: bool = False) -&gt; None:
+    def block_send(self, sender: str, payment: int, spec_id: Union[bytes, str], callback_address: str, callback_function_id: Union[bytes, str], nonce: int, data_version: int, data: Union[bytes, str], _gaswei: int, _pricewei: int, _valeth: int = 0, _debugtx: bool = False, _receipList: bool = False) -&gt; None:
         &#34;&#34;&#34;Execute underlying contract method via eth_call.
 
         :param tx_params: transaction parameters
@@ -934,7 +919,6 @@ class OracleRequestMethod(ContractMethod): # pylint: disable=invalid-name
             else:
                 print(f&#34;{Bolors.FAIL}Error Revert {Bolors.RESET}, oracle_request. Reason: Unknown&#34;)
 
-
     def send_transaction(self, sender: str, payment: int, spec_id: Union[bytes, str], callback_address: str, callback_function_id: Union[bytes, str], nonce: int, data_version: int, data: Union[bytes, str], tx_params: Optional[TxParams] = None) -&gt; Union[HexBytes, bytes]:
         &#34;&#34;&#34;Execute underlying contract method via eth_sendTransaction.
 
@@ -956,24 +940,24 @@ class OracleRequestMethod(ContractMethod): # pylint: disable=invalid-name
         tx_params = super().normalize_tx_params(tx_params)
         return self._underlying_method(sender, payment, spec_id, callback_address, callback_function_id, nonce, data_version, data).estimateGas(tx_params.as_dict())
 
-class OwnerMethod(ContractMethod): # pylint: disable=invalid-name
+
+class OwnerMethod(ContractMethod):  # pylint: disable=invalid-name
     &#34;&#34;&#34;Various interfaces to the owner method.&#34;&#34;&#34;
 
-    def __init__(self, elib: MiliDoS, contract_address: str, contract_function: ContractFunction, validator: Validator=None):
+    def __init__(self, elib: MiliDoS, contract_address: str, contract_function: ContractFunction, validator: Validator = None):
         &#34;&#34;&#34;Persist instance data.&#34;&#34;&#34;
         super().__init__(elib, contract_address)
         self._underlying_method = contract_function
         self.sign = validator.getSignature(&#34;owner&#34;)
 
-
-
-    def block_call(self, debug:bool=False) -&gt; str:
+    def block_call(self, debug: bool = False) -&gt; str:
         _fn = self._underlying_method()
         returned = _fn.call({
-                &#39;from&#39;: self._operate
-            })
+            &#39;from&#39;: self._operate
+        })
         return str(returned)
-    def block_send(self, _gaswei:int,_pricewei:int,_valeth:int=0,_debugtx: bool = False,_receipList: bool = False) -&gt; str:
+
+    def block_send(self, _gaswei: int, _pricewei: int, _valeth: int = 0, _debugtx: bool = False, _receipList: bool = False) -&gt; str:
         &#34;&#34;&#34;Execute underlying contract method via eth_call.
 
         :param tx_params: transaction parameters
@@ -1029,7 +1013,6 @@ class OwnerMethod(ContractMethod): # pylint: disable=invalid-name
             else:
                 print(f&#34;{Bolors.FAIL}Error Revert {Bolors.RESET}, owner. Reason: Unknown&#34;)
 
-
     def send_transaction(self, tx_params: Optional[TxParams] = None) -&gt; Union[HexBytes, bytes]:
         &#34;&#34;&#34;Execute underlying contract method via eth_sendTransaction.
 
@@ -1048,16 +1031,17 @@ class OwnerMethod(ContractMethod): # pylint: disable=invalid-name
         tx_params = super().normalize_tx_params(tx_params)
         return self._underlying_method().estimateGas(tx_params.as_dict())
 
-class SetFulfillmentPermissionMethod(ContractMethod): # pylint: disable=invalid-name
+
+class SetFulfillmentPermissionMethod(ContractMethod):  # pylint: disable=invalid-name
     &#34;&#34;&#34;Various interfaces to the setFulfillmentPermission method.&#34;&#34;&#34;
 
-    def __init__(self, elib: MiliDoS, contract_address: str, contract_function: ContractFunction, validator: Validator=None):
+    def __init__(self, elib: MiliDoS, contract_address: str, contract_function: ContractFunction, validator: Validator = None):
         &#34;&#34;&#34;Persist instance data.&#34;&#34;&#34;
         super().__init__(elib, contract_address, validator)
         self._underlying_method = contract_function
         self.sign = validator.getSignature(&#34;setFulfillmentPermission&#34;)
 
-    def validate_and_normalize_inputs(self, node: str, allowed: bool)-&gt;any:
+    def validate_and_normalize_inputs(self, node: str, allowed: bool) -&gt; any:
         &#34;&#34;&#34;Validate the inputs to the setFulfillmentPermission method.&#34;&#34;&#34;
         self.validator.assert_valid(
             method_name=&#39;setFulfillmentPermission&#39;,
@@ -1072,9 +1056,7 @@ class SetFulfillmentPermissionMethod(ContractMethod): # pylint: disable=invalid-
         )
         return (node, allowed)
 
-
-
-    def block_send(self, node: str, allowed: bool,_gaswei:int,_pricewei:int,_valeth:int=0,_debugtx: bool = False,_receipList: bool = False) -&gt; None:
+    def block_send(self, node: str, allowed: bool, _gaswei: int, _pricewei: int, _valeth: int = 0, _debugtx: bool = False, _receipList: bool = False) -&gt; None:
         &#34;&#34;&#34;Execute underlying contract method via eth_call.
 
         :param tx_params: transaction parameters
@@ -1130,7 +1112,6 @@ class SetFulfillmentPermissionMethod(ContractMethod): # pylint: disable=invalid-
             else:
                 print(f&#34;{Bolors.FAIL}Error Revert {Bolors.RESET}, set_fulfillment_permission. Reason: Unknown&#34;)
 
-
     def send_transaction(self, node: str, allowed: bool, tx_params: Optional[TxParams] = None) -&gt; Union[HexBytes, bytes]:
         &#34;&#34;&#34;Execute underlying contract method via eth_sendTransaction.
 
@@ -1152,16 +1133,17 @@ class SetFulfillmentPermissionMethod(ContractMethod): # pylint: disable=invalid-
         tx_params = super().normalize_tx_params(tx_params)
         return self._underlying_method(node, allowed).estimateGas(tx_params.as_dict())
 
-class TransferOwnershipMethod(ContractMethod): # pylint: disable=invalid-name
+
+class TransferOwnershipMethod(ContractMethod):  # pylint: disable=invalid-name
     &#34;&#34;&#34;Various interfaces to the transferOwnership method.&#34;&#34;&#34;
 
-    def __init__(self, elib: MiliDoS, contract_address: str, contract_function: ContractFunction, validator: Validator=None):
+    def __init__(self, elib: MiliDoS, contract_address: str, contract_function: ContractFunction, validator: Validator = None):
         &#34;&#34;&#34;Persist instance data.&#34;&#34;&#34;
         super().__init__(elib, contract_address, validator)
         self._underlying_method = contract_function
         self.sign = validator.getSignature(&#34;transferOwnership&#34;)
 
-    def validate_and_normalize_inputs(self, new_owner: str)-&gt;any:
+    def validate_and_normalize_inputs(self, new_owner: str) -&gt; any:
         &#34;&#34;&#34;Validate the inputs to the transferOwnership method.&#34;&#34;&#34;
         self.validator.assert_valid(
             method_name=&#39;transferOwnership&#39;,
@@ -1171,9 +1153,7 @@ class TransferOwnershipMethod(ContractMethod): # pylint: disable=invalid-name
         new_owner = self.validate_and_checksum_address(new_owner)
         return (new_owner)
 
-
-
-    def block_send(self, new_owner: str,_gaswei:int,_pricewei:int,_valeth:int=0,_debugtx: bool = False,_receipList: bool = False) -&gt; None:
+    def block_send(self, new_owner: str, _gaswei: int, _pricewei: int, _valeth: int = 0, _debugtx: bool = False, _receipList: bool = False) -&gt; None:
         &#34;&#34;&#34;Execute underlying contract method via eth_call.
 
         :param tx_params: transaction parameters
@@ -1229,7 +1209,6 @@ class TransferOwnershipMethod(ContractMethod): # pylint: disable=invalid-name
             else:
                 print(f&#34;{Bolors.FAIL}Error Revert {Bolors.RESET}, transfer_ownership. Reason: Unknown&#34;)
 
-
     def send_transaction(self, new_owner: str, tx_params: Optional[TxParams] = None) -&gt; Union[HexBytes, bytes]:
         &#34;&#34;&#34;Execute underlying contract method via eth_sendTransaction.
 
@@ -1251,16 +1230,17 @@ class TransferOwnershipMethod(ContractMethod): # pylint: disable=invalid-name
         tx_params = super().normalize_tx_params(tx_params)
         return self._underlying_method(new_owner).estimateGas(tx_params.as_dict())
 
-class WithdrawMethod(ContractMethod): # pylint: disable=invalid-name
+
+class WithdrawMethod(ContractMethod):  # pylint: disable=invalid-name
     &#34;&#34;&#34;Various interfaces to the withdraw method.&#34;&#34;&#34;
 
-    def __init__(self, elib: MiliDoS, contract_address: str, contract_function: ContractFunction, validator: Validator=None):
+    def __init__(self, elib: MiliDoS, contract_address: str, contract_function: ContractFunction, validator: Validator = None):
         &#34;&#34;&#34;Persist instance data.&#34;&#34;&#34;
         super().__init__(elib, contract_address, validator)
         self._underlying_method = contract_function
         self.sign = validator.getSignature(&#34;withdraw&#34;)
 
-    def validate_and_normalize_inputs(self, recipient: str, amount: int)-&gt;any:
+    def validate_and_normalize_inputs(self, recipient: str, amount: int) -&gt; any:
         &#34;&#34;&#34;Validate the inputs to the withdraw method.&#34;&#34;&#34;
         self.validator.assert_valid(
             method_name=&#39;withdraw&#39;,
@@ -1277,9 +1257,7 @@ class WithdrawMethod(ContractMethod): # pylint: disable=invalid-name
         amount = int(amount)
         return (recipient, amount)
 
-
-
-    def block_send(self, recipient: str, amount: int,_gaswei:int,_pricewei:int,_valeth:int=0,_debugtx: bool = False,_receipList: bool = False) -&gt; None:
+    def block_send(self, recipient: str, amount: int, _gaswei: int, _pricewei: int, _valeth: int = 0, _debugtx: bool = False, _receipList: bool = False) -&gt; None:
         &#34;&#34;&#34;Execute underlying contract method via eth_call.
 
         :param tx_params: transaction parameters
@@ -1335,7 +1313,6 @@ class WithdrawMethod(ContractMethod): # pylint: disable=invalid-name
             else:
                 print(f&#34;{Bolors.FAIL}Error Revert {Bolors.RESET}, withdraw. Reason: Unknown&#34;)
 
-
     def send_transaction(self, recipient: str, amount: int, tx_params: Optional[TxParams] = None) -&gt; Union[HexBytes, bytes]:
         &#34;&#34;&#34;Execute underlying contract method via eth_sendTransaction.
 
@@ -1357,24 +1334,24 @@ class WithdrawMethod(ContractMethod): # pylint: disable=invalid-name
         tx_params = super().normalize_tx_params(tx_params)
         return self._underlying_method(recipient, amount).estimateGas(tx_params.as_dict())
 
-class WithdrawableMethod(ContractMethod): # pylint: disable=invalid-name
+
+class WithdrawableMethod(ContractMethod):  # pylint: disable=invalid-name
     &#34;&#34;&#34;Various interfaces to the withdrawable method.&#34;&#34;&#34;
 
-    def __init__(self, elib: MiliDoS, contract_address: str, contract_function: ContractFunction, validator: Validator=None):
+    def __init__(self, elib: MiliDoS, contract_address: str, contract_function: ContractFunction, validator: Validator = None):
         &#34;&#34;&#34;Persist instance data.&#34;&#34;&#34;
         super().__init__(elib, contract_address)
         self._underlying_method = contract_function
         self.sign = validator.getSignature(&#34;withdrawable&#34;)
 
-
-
-    def block_call(self, debug:bool=False) -&gt; int:
+    def block_call(self, debug: bool = False) -&gt; int:
         _fn = self._underlying_method()
         returned = _fn.call({
-                &#39;from&#39;: self._operate
-            })
+            &#39;from&#39;: self._operate
+        })
         return int(returned)
-    def block_send(self, _gaswei:int,_pricewei:int,_valeth:int=0,_debugtx: bool = False,_receipList: bool = False) -&gt; int:
+
+    def block_send(self, _gaswei: int, _pricewei: int, _valeth: int = 0, _debugtx: bool = False, _receipList: bool = False) -&gt; int:
         &#34;&#34;&#34;Execute underlying contract method via eth_call.
 
         :param tx_params: transaction parameters
@@ -1430,7 +1407,6 @@ class WithdrawableMethod(ContractMethod): # pylint: disable=invalid-name
             else:
                 print(f&#34;{Bolors.FAIL}Error Revert {Bolors.RESET}, withdrawable. Reason: Unknown&#34;)
 
-
     def send_transaction(self, tx_params: Optional[TxParams] = None) -&gt; Union[HexBytes, bytes]:
         &#34;&#34;&#34;Execute underlying contract method via eth_sendTransaction.
 
@@ -1449,39 +1425,54 @@ class WithdrawableMethod(ContractMethod): # pylint: disable=invalid-name
         tx_params = super().normalize_tx_params(tx_params)
         return self._underlying_method().estimateGas(tx_params.as_dict())
 
+
 class SignatureGenerator(Signatures):
     &#34;&#34;&#34;
         The signature is generated for this and it is installed.
     &#34;&#34;&#34;
+
     def __init__(self, abi: any):
         super().__init__(abi)
 
     def expiry_time(self) -&gt; str:
         return self._function_signatures[&#34;EXPIRY_TIME&#34;]
+
     def cancel_oracle_request(self) -&gt; str:
         return self._function_signatures[&#34;cancelOracleRequest&#34;]
+
     def fulfill_oracle_request(self) -&gt; str:
         return self._function_signatures[&#34;fulfillOracleRequest&#34;]
+
     def get_authorization_status(self) -&gt; str:
         return self._function_signatures[&#34;getAuthorizationStatus&#34;]
+
     def get_chainlink_token(self) -&gt; str:
         return self._function_signatures[&#34;getChainlinkToken&#34;]
+
     def is_owner(self) -&gt; str:
         return self._function_signatures[&#34;isOwner&#34;]
+
     def on_token_transfer(self) -&gt; str:
         return self._function_signatures[&#34;onTokenTransfer&#34;]
+
     def oracle_request(self) -&gt; str:
         return self._function_signatures[&#34;oracleRequest&#34;]
+
     def owner(self) -&gt; str:
         return self._function_signatures[&#34;owner&#34;]
+
     def set_fulfillment_permission(self) -&gt; str:
         return self._function_signatures[&#34;setFulfillmentPermission&#34;]
+
     def transfer_ownership(self) -&gt; str:
         return self._function_signatures[&#34;transferOwnership&#34;]
+
     def withdraw(self) -&gt; str:
         return self._function_signatures[&#34;withdraw&#34;]
+
     def withdrawable(self) -&gt; str:
         return self._function_signatures[&#34;withdrawable&#34;]
+
 
 # pylint: disable=too-many-public-methods,too-many-instance-attributes
 class Oracle(ContractBase):
@@ -1555,13 +1546,13 @@ class Oracle(ContractBase):
     :class:`WithdrawableMethod`.
     &#34;&#34;&#34;
 
-    SIGNATURES:SignatureGenerator = None
+    SIGNATURES: SignatureGenerator = None
 
     def __init__(
-        self,
-        core_lib: MiliDoS,
-        contract_address: str,
-        validator: OracleValidator = None,
+            self,
+            core_lib: MiliDoS,
+            contract_address: str,
+            validator: OracleValidator = None,
     ):
         &#34;&#34;&#34;Get an instance of wrapper for smart contract.
         &#34;&#34;&#34;
@@ -1573,9 +1564,6 @@ class Oracle(ContractBase):
         if not validator:
             validator = OracleValidator(web3, contract_address)
 
-
-
-
         # if any middleware was imported, inject it
         try:
             MIDDLEWARE
@@ -1585,7 +1573,7 @@ class Oracle(ContractBase):
             try:
                 for middleware in MIDDLEWARE:
                     web3.middleware_onion.inject(
-                         middleware[&#39;function&#39;], layer=middleware[&#39;layer&#39;],
+                        middleware[&#39;function&#39;], layer=middleware[&#39;layer&#39;],
                     )
             except ValueError as value_error:
                 if value_error.args == (&#34;You can&#39;t add the same un-named instance twice&#34;,):
@@ -1610,8 +1598,6 @@ class Oracle(ContractBase):
         self._fn_withdraw = WithdrawMethod(core_lib, contract_address, functions.withdraw, validator)
         self._fn_withdrawable = WithdrawableMethod(core_lib, contract_address, functions.withdrawable, validator)
 
-    
-    
     def event_cancel_oracle_request(
             self, tx_hash: Union[HexBytes, bytes]
     ) -&gt; Tuple[AttributeDict]:
@@ -1622,8 +1608,7 @@ class Oracle(ContractBase):
         &#34;&#34;&#34;
         tx_receipt = self._web3_eth.getTransactionReceipt(tx_hash)
         return self._web3_eth.contract(address=to_checksum_address(self.contract_address), abi=Oracle.abi()).events.CancelOracleRequest().processReceipt(tx_receipt)
-    
-    
+
     def event_oracle_request(
             self, tx_hash: Union[HexBytes, bytes]
     ) -&gt; Tuple[AttributeDict]:
@@ -1634,8 +1619,7 @@ class Oracle(ContractBase):
         &#34;&#34;&#34;
         tx_receipt = self._web3_eth.getTransactionReceipt(tx_hash)
         return self._web3_eth.contract(address=to_checksum_address(self.contract_address), abi=Oracle.abi()).events.OracleRequest().processReceipt(tx_receipt)
-    
-    
+
     def event_ownership_transferred(
             self, tx_hash: Union[HexBytes, bytes]
     ) -&gt; Tuple[AttributeDict]:
@@ -1647,9 +1631,6 @@ class Oracle(ContractBase):
         tx_receipt = self._web3_eth.getTransactionReceipt(tx_hash)
         return self._web3_eth.contract(address=to_checksum_address(self.contract_address), abi=Oracle.abi()).events.OwnershipTransferred().processReceipt(tx_receipt)
 
-    
-    
-    
     def expiry_time(self) -&gt; int:
         &#34;&#34;&#34;
         Implementation of expiry_time in contract Oracle
@@ -1658,15 +1639,9 @@ class Oracle(ContractBase):
     
     
         &#34;&#34;&#34;
-    
-    
-    
-    
-    
+
         return self._fn_expiry_time.block_call()
-    
-    
-    
+
     def cancel_oracle_request(self, request_id: Union[bytes, str], payment: int, callback_func: Union[bytes, str], expiration: int) -&gt; None:
         &#34;&#34;&#34;
         Implementation of cancel_oracle_request in contract Oracle
@@ -1675,15 +1650,9 @@ class Oracle(ContractBase):
     
     
         &#34;&#34;&#34;
-    
-        return self._fn_cancel_oracle_request.block_send(request_id, payment, callback_func, expiration, self.call_contract_fee_amount,self.call_contract_fee_price,0,self.call_contract_debug_flag, self.call_contract_enforce_tx_receipt)
-    
-    
-    
-    
-    
-    
-    
+
+        return self._fn_cancel_oracle_request.block_send(request_id, payment, callback_func, expiration, self.call_contract_fee_amount, self.call_contract_fee_price, 0, self.call_contract_debug_flag, self.call_contract_enforce_tx_receipt)
+
     def fulfill_oracle_request(self, request_id: Union[bytes, str], payment: int, callback_address: str, callback_function_id: Union[bytes, str], expiration: int, data: Union[bytes, str]) -&gt; bool:
         &#34;&#34;&#34;
         Implementation of fulfill_oracle_request in contract Oracle
@@ -1692,15 +1661,9 @@ class Oracle(ContractBase):
     
     
         &#34;&#34;&#34;
-    
-        return self._fn_fulfill_oracle_request.block_send(request_id, payment, callback_address, callback_function_id, expiration, data, self.call_contract_fee_amount,self.call_contract_fee_price,0,self.call_contract_debug_flag, self.call_contract_enforce_tx_receipt)
-    
-    
-    
-    
-    
-    
-    
+
+        return self._fn_fulfill_oracle_request.block_send(request_id, payment, callback_address, callback_function_id, expiration, data, self.call_contract_fee_amount, self.call_contract_fee_price, 0, self.call_contract_debug_flag, self.call_contract_enforce_tx_receipt)
+
     def get_authorization_status(self, node: str) -&gt; bool:
         &#34;&#34;&#34;
         Implementation of get_authorization_status in contract Oracle
@@ -1709,15 +1672,9 @@ class Oracle(ContractBase):
     
     
         &#34;&#34;&#34;
-    
-    
-    
-    
-    
+
         return self._fn_get_authorization_status.block_call(node)
-    
-    
-    
+
     def get_chainlink_token(self) -&gt; str:
         &#34;&#34;&#34;
         Implementation of get_chainlink_token in contract Oracle
@@ -1726,15 +1683,9 @@ class Oracle(ContractBase):
     
     
         &#34;&#34;&#34;
-    
-    
-    
-    
-    
+
         return self._fn_get_chainlink_token.block_call()
-    
-    
-    
+
     def is_owner(self) -&gt; bool:
         &#34;&#34;&#34;
         Implementation of is_owner in contract Oracle
@@ -1743,15 +1694,9 @@ class Oracle(ContractBase):
     
     
         &#34;&#34;&#34;
-    
-    
-    
-    
-    
+
         return self._fn_is_owner.block_call()
-    
-    
-    
+
     def on_token_transfer(self, sender: str, amount: int, data: Union[bytes, str]) -&gt; None:
         &#34;&#34;&#34;
         Implementation of on_token_transfer in contract Oracle
@@ -1760,15 +1705,9 @@ class Oracle(ContractBase):
     
     
         &#34;&#34;&#34;
-    
-        return self._fn_on_token_transfer.block_send(sender, amount, data, self.call_contract_fee_amount,self.call_contract_fee_price,0,self.call_contract_debug_flag, self.call_contract_enforce_tx_receipt)
-    
-    
-    
-    
-    
-    
-    
+
+        return self._fn_on_token_transfer.block_send(sender, amount, data, self.call_contract_fee_amount, self.call_contract_fee_price, 0, self.call_contract_debug_flag, self.call_contract_enforce_tx_receipt)
+
     def oracle_request(self, sender: str, payment: int, spec_id: Union[bytes, str], callback_address: str, callback_function_id: Union[bytes, str], nonce: int, data_version: int, data: Union[bytes, str]) -&gt; None:
         &#34;&#34;&#34;
         Implementation of oracle_request in contract Oracle
@@ -1777,15 +1716,9 @@ class Oracle(ContractBase):
     
     
         &#34;&#34;&#34;
-    
-        return self._fn_oracle_request.block_send(sender, payment, spec_id, callback_address, callback_function_id, nonce, data_version, data, self.call_contract_fee_amount,self.call_contract_fee_price,0,self.call_contract_debug_flag, self.call_contract_enforce_tx_receipt)
-    
-    
-    
-    
-    
-    
-    
+
+        return self._fn_oracle_request.block_send(sender, payment, spec_id, callback_address, callback_function_id, nonce, data_version, data, self.call_contract_fee_amount, self.call_contract_fee_price, 0, self.call_contract_debug_flag, self.call_contract_enforce_tx_receipt)
+
     def owner(self) -&gt; str:
         &#34;&#34;&#34;
         Implementation of owner in contract Oracle
@@ -1794,15 +1727,9 @@ class Oracle(ContractBase):
     
     
         &#34;&#34;&#34;
-    
-    
-    
-    
-    
+
         return self._fn_owner.block_call()
-    
-    
-    
+
     def set_fulfillment_permission(self, node: str, allowed: bool) -&gt; None:
         &#34;&#34;&#34;
         Implementation of set_fulfillment_permission in contract Oracle
@@ -1811,15 +1738,9 @@ class Oracle(ContractBase):
     
     
         &#34;&#34;&#34;
-    
-        return self._fn_set_fulfillment_permission.block_send(node, allowed, self.call_contract_fee_amount,self.call_contract_fee_price,0,self.call_contract_debug_flag, self.call_contract_enforce_tx_receipt)
-    
-    
-    
-    
-    
-    
-    
+
+        return self._fn_set_fulfillment_permission.block_send(node, allowed, self.call_contract_fee_amount, self.call_contract_fee_price, 0, self.call_contract_debug_flag, self.call_contract_enforce_tx_receipt)
+
     def transfer_ownership(self, new_owner: str) -&gt; None:
         &#34;&#34;&#34;
         Implementation of transfer_ownership in contract Oracle
@@ -1828,15 +1749,9 @@ class Oracle(ContractBase):
     
     
         &#34;&#34;&#34;
-    
-        return self._fn_transfer_ownership.block_send(new_owner, self.call_contract_fee_amount,self.call_contract_fee_price,0,self.call_contract_debug_flag, self.call_contract_enforce_tx_receipt)
-    
-    
-    
-    
-    
-    
-    
+
+        return self._fn_transfer_ownership.block_send(new_owner, self.call_contract_fee_amount, self.call_contract_fee_price, 0, self.call_contract_debug_flag, self.call_contract_enforce_tx_receipt)
+
     def withdraw(self, recipient: str, amount: int) -&gt; None:
         &#34;&#34;&#34;
         Implementation of withdraw in contract Oracle
@@ -1845,15 +1760,9 @@ class Oracle(ContractBase):
     
     
         &#34;&#34;&#34;
-    
-        return self._fn_withdraw.block_send(recipient, amount, self.call_contract_fee_amount,self.call_contract_fee_price,0,self.call_contract_debug_flag, self.call_contract_enforce_tx_receipt)
-    
-    
-    
-    
-    
-    
-    
+
+        return self._fn_withdraw.block_send(recipient, amount, self.call_contract_fee_amount, self.call_contract_fee_price, 0, self.call_contract_debug_flag, self.call_contract_enforce_tx_receipt)
+
     def withdrawable(self) -&gt; int:
         &#34;&#34;&#34;
         Implementation of withdrawable in contract Oracle
@@ -1862,14 +1771,10 @@ class Oracle(ContractBase):
     
     
         &#34;&#34;&#34;
-    
-    
-    
-    
-    
+
         return self._fn_withdrawable.block_call()
 
-    def CallContractWait(self, t_long:int)-&gt; &#34;Oracle&#34;:
+    def CallContractWait(self, t_long: int) -&gt; &#34;Oracle&#34;:
         self._fn_expiry_time.setWait(t_long)
         self._fn_cancel_oracle_request.setWait(t_long)
         self._fn_fulfill_oracle_request.setWait(t_long)
@@ -1885,12 +1790,12 @@ class Oracle(ContractBase):
         self._fn_withdrawable.setWait(t_long)
         return self
 
-
     @staticmethod
     def abi():
         &#34;&#34;&#34;Return the ABI to the underlying contract.&#34;&#34;&#34;
         return json.loads(
-            &#39;[{&#34;inputs&#34;:[{&#34;internalType&#34;:&#34;address&#34;,&#34;name&#34;:&#34;_link&#34;,&#34;type&#34;:&#34;address&#34;}],&#34;stateMutability&#34;:&#34;nonpayable&#34;,&#34;type&#34;:&#34;constructor&#34;},{&#34;anonymous&#34;:false,&#34;inputs&#34;:[{&#34;indexed&#34;:true,&#34;internalType&#34;:&#34;bytes32&#34;,&#34;name&#34;:&#34;requestId&#34;,&#34;type&#34;:&#34;bytes32&#34;}],&#34;name&#34;:&#34;CancelOracleRequest&#34;,&#34;type&#34;:&#34;event&#34;},{&#34;anonymous&#34;:false,&#34;inputs&#34;:[{&#34;indexed&#34;:true,&#34;internalType&#34;:&#34;bytes32&#34;,&#34;name&#34;:&#34;specId&#34;,&#34;type&#34;:&#34;bytes32&#34;},{&#34;indexed&#34;:false,&#34;internalType&#34;:&#34;address&#34;,&#34;name&#34;:&#34;requester&#34;,&#34;type&#34;:&#34;address&#34;},{&#34;indexed&#34;:false,&#34;internalType&#34;:&#34;bytes32&#34;,&#34;name&#34;:&#34;requestId&#34;,&#34;type&#34;:&#34;bytes32&#34;},{&#34;indexed&#34;:false,&#34;internalType&#34;:&#34;uint256&#34;,&#34;name&#34;:&#34;payment&#34;,&#34;type&#34;:&#34;uint256&#34;},{&#34;indexed&#34;:false,&#34;internalType&#34;:&#34;address&#34;,&#34;name&#34;:&#34;callbackAddr&#34;,&#34;type&#34;:&#34;address&#34;},{&#34;indexed&#34;:false,&#34;internalType&#34;:&#34;bytes4&#34;,&#34;name&#34;:&#34;callbackFunctionId&#34;,&#34;type&#34;:&#34;bytes4&#34;},{&#34;indexed&#34;:false,&#34;internalType&#34;:&#34;uint256&#34;,&#34;name&#34;:&#34;cancelExpiration&#34;,&#34;type&#34;:&#34;uint256&#34;},{&#34;indexed&#34;:false,&#34;internalType&#34;:&#34;uint256&#34;,&#34;name&#34;:&#34;dataVersion&#34;,&#34;type&#34;:&#34;uint256&#34;},{&#34;indexed&#34;:false,&#34;internalType&#34;:&#34;bytes&#34;,&#34;name&#34;:&#34;data&#34;,&#34;type&#34;:&#34;bytes&#34;}],&#34;name&#34;:&#34;OracleRequest&#34;,&#34;type&#34;:&#34;event&#34;},{&#34;anonymous&#34;:false,&#34;inputs&#34;:[{&#34;indexed&#34;:true,&#34;internalType&#34;:&#34;address&#34;,&#34;name&#34;:&#34;previousOwner&#34;,&#34;type&#34;:&#34;address&#34;},{&#34;indexed&#34;:true,&#34;internalType&#34;:&#34;address&#34;,&#34;name&#34;:&#34;newOwner&#34;,&#34;type&#34;:&#34;address&#34;}],&#34;name&#34;:&#34;OwnershipTransferred&#34;,&#34;type&#34;:&#34;event&#34;},{&#34;inputs&#34;:[],&#34;name&#34;:&#34;EXPIRY_TIME&#34;,&#34;outputs&#34;:[{&#34;internalType&#34;:&#34;uint256&#34;,&#34;name&#34;:&#34;&#34;,&#34;type&#34;:&#34;uint256&#34;}],&#34;stateMutability&#34;:&#34;view&#34;,&#34;type&#34;:&#34;function&#34;},{&#34;inputs&#34;:[{&#34;internalType&#34;:&#34;bytes32&#34;,&#34;name&#34;:&#34;_requestId&#34;,&#34;type&#34;:&#34;bytes32&#34;},{&#34;internalType&#34;:&#34;uint256&#34;,&#34;name&#34;:&#34;_payment&#34;,&#34;type&#34;:&#34;uint256&#34;},{&#34;internalType&#34;:&#34;bytes4&#34;,&#34;name&#34;:&#34;_callbackFunc&#34;,&#34;type&#34;:&#34;bytes4&#34;},{&#34;internalType&#34;:&#34;uint256&#34;,&#34;name&#34;:&#34;_expiration&#34;,&#34;type&#34;:&#34;uint256&#34;}],&#34;name&#34;:&#34;cancelOracleRequest&#34;,&#34;outputs&#34;:[],&#34;stateMutability&#34;:&#34;nonpayable&#34;,&#34;type&#34;:&#34;function&#34;},{&#34;inputs&#34;:[{&#34;internalType&#34;:&#34;bytes32&#34;,&#34;name&#34;:&#34;_requestId&#34;,&#34;type&#34;:&#34;bytes32&#34;},{&#34;internalType&#34;:&#34;uint256&#34;,&#34;name&#34;:&#34;_payment&#34;,&#34;type&#34;:&#34;uint256&#34;},{&#34;internalType&#34;:&#34;address&#34;,&#34;name&#34;:&#34;_callbackAddress&#34;,&#34;type&#34;:&#34;address&#34;},{&#34;internalType&#34;:&#34;bytes4&#34;,&#34;name&#34;:&#34;_callbackFunctionId&#34;,&#34;type&#34;:&#34;bytes4&#34;},{&#34;internalType&#34;:&#34;uint256&#34;,&#34;name&#34;:&#34;_expiration&#34;,&#34;type&#34;:&#34;uint256&#34;},{&#34;internalType&#34;:&#34;bytes32&#34;,&#34;name&#34;:&#34;_data&#34;,&#34;type&#34;:&#34;bytes32&#34;}],&#34;name&#34;:&#34;fulfillOracleRequest&#34;,&#34;outputs&#34;:[{&#34;internalType&#34;:&#34;bool&#34;,&#34;name&#34;:&#34;&#34;,&#34;type&#34;:&#34;bool&#34;}],&#34;stateMutability&#34;:&#34;nonpayable&#34;,&#34;type&#34;:&#34;function&#34;},{&#34;inputs&#34;:[{&#34;internalType&#34;:&#34;address&#34;,&#34;name&#34;:&#34;_node&#34;,&#34;type&#34;:&#34;address&#34;}],&#34;name&#34;:&#34;getAuthorizationStatus&#34;,&#34;outputs&#34;:[{&#34;internalType&#34;:&#34;bool&#34;,&#34;name&#34;:&#34;&#34;,&#34;type&#34;:&#34;bool&#34;}],&#34;stateMutability&#34;:&#34;view&#34;,&#34;type&#34;:&#34;function&#34;},{&#34;inputs&#34;:[],&#34;name&#34;:&#34;getChainlinkToken&#34;,&#34;outputs&#34;:[{&#34;internalType&#34;:&#34;address&#34;,&#34;name&#34;:&#34;&#34;,&#34;type&#34;:&#34;address&#34;}],&#34;stateMutability&#34;:&#34;view&#34;,&#34;type&#34;:&#34;function&#34;},{&#34;inputs&#34;:[],&#34;name&#34;:&#34;isOwner&#34;,&#34;outputs&#34;:[{&#34;internalType&#34;:&#34;bool&#34;,&#34;name&#34;:&#34;&#34;,&#34;type&#34;:&#34;bool&#34;}],&#34;stateMutability&#34;:&#34;view&#34;,&#34;type&#34;:&#34;function&#34;},{&#34;inputs&#34;:[{&#34;internalType&#34;:&#34;address&#34;,&#34;name&#34;:&#34;_sender&#34;,&#34;type&#34;:&#34;address&#34;},{&#34;internalType&#34;:&#34;uint256&#34;,&#34;name&#34;:&#34;_amount&#34;,&#34;type&#34;:&#34;uint256&#34;},{&#34;internalType&#34;:&#34;bytes&#34;,&#34;name&#34;:&#34;_data&#34;,&#34;type&#34;:&#34;bytes&#34;}],&#34;name&#34;:&#34;onTokenTransfer&#34;,&#34;outputs&#34;:[],&#34;stateMutability&#34;:&#34;nonpayable&#34;,&#34;type&#34;:&#34;function&#34;},{&#34;inputs&#34;:[{&#34;internalType&#34;:&#34;address&#34;,&#34;name&#34;:&#34;_sender&#34;,&#34;type&#34;:&#34;address&#34;},{&#34;internalType&#34;:&#34;uint256&#34;,&#34;name&#34;:&#34;_payment&#34;,&#34;type&#34;:&#34;uint256&#34;},{&#34;internalType&#34;:&#34;bytes32&#34;,&#34;name&#34;:&#34;_specId&#34;,&#34;type&#34;:&#34;bytes32&#34;},{&#34;internalType&#34;:&#34;address&#34;,&#34;name&#34;:&#34;_callbackAddress&#34;,&#34;type&#34;:&#34;address&#34;},{&#34;internalType&#34;:&#34;bytes4&#34;,&#34;name&#34;:&#34;_callbackFunctionId&#34;,&#34;type&#34;:&#34;bytes4&#34;},{&#34;internalType&#34;:&#34;uint256&#34;,&#34;name&#34;:&#34;_nonce&#34;,&#34;type&#34;:&#34;uint256&#34;},{&#34;internalType&#34;:&#34;uint256&#34;,&#34;name&#34;:&#34;_dataVersion&#34;,&#34;type&#34;:&#34;uint256&#34;},{&#34;internalType&#34;:&#34;bytes&#34;,&#34;name&#34;:&#34;_data&#34;,&#34;type&#34;:&#34;bytes&#34;}],&#34;name&#34;:&#34;oracleRequest&#34;,&#34;outputs&#34;:[],&#34;stateMutability&#34;:&#34;nonpayable&#34;,&#34;type&#34;:&#34;function&#34;},{&#34;inputs&#34;:[],&#34;name&#34;:&#34;owner&#34;,&#34;outputs&#34;:[{&#34;internalType&#34;:&#34;address&#34;,&#34;name&#34;:&#34;&#34;,&#34;type&#34;:&#34;address&#34;}],&#34;stateMutability&#34;:&#34;view&#34;,&#34;type&#34;:&#34;function&#34;},{&#34;inputs&#34;:[{&#34;internalType&#34;:&#34;address&#34;,&#34;name&#34;:&#34;_node&#34;,&#34;type&#34;:&#34;address&#34;},{&#34;internalType&#34;:&#34;bool&#34;,&#34;name&#34;:&#34;_allowed&#34;,&#34;type&#34;:&#34;bool&#34;}],&#34;name&#34;:&#34;setFulfillmentPermission&#34;,&#34;outputs&#34;:[],&#34;stateMutability&#34;:&#34;nonpayable&#34;,&#34;type&#34;:&#34;function&#34;},{&#34;inputs&#34;:[{&#34;internalType&#34;:&#34;address&#34;,&#34;name&#34;:&#34;newOwner&#34;,&#34;type&#34;:&#34;address&#34;}],&#34;name&#34;:&#34;transferOwnership&#34;,&#34;outputs&#34;:[],&#34;stateMutability&#34;:&#34;nonpayable&#34;,&#34;type&#34;:&#34;function&#34;},{&#34;inputs&#34;:[{&#34;internalType&#34;:&#34;address&#34;,&#34;name&#34;:&#34;_recipient&#34;,&#34;type&#34;:&#34;address&#34;},{&#34;internalType&#34;:&#34;uint256&#34;,&#34;name&#34;:&#34;_amount&#34;,&#34;type&#34;:&#34;uint256&#34;}],&#34;name&#34;:&#34;withdraw&#34;,&#34;outputs&#34;:[],&#34;stateMutability&#34;:&#34;nonpayable&#34;,&#34;type&#34;:&#34;function&#34;},{&#34;inputs&#34;:[],&#34;name&#34;:&#34;withdrawable&#34;,&#34;outputs&#34;:[{&#34;internalType&#34;:&#34;uint256&#34;,&#34;name&#34;:&#34;&#34;,&#34;type&#34;:&#34;uint256&#34;}],&#34;stateMutability&#34;:&#34;view&#34;,&#34;type&#34;:&#34;function&#34;}]&#39;  # noqa: E501 (line-too-long)
+            &#39;[{&#34;inputs&#34;:[{&#34;internalType&#34;:&#34;address&#34;,&#34;name&#34;:&#34;_link&#34;,&#34;type&#34;:&#34;address&#34;}],&#34;stateMutability&#34;:&#34;nonpayable&#34;,&#34;type&#34;:&#34;constructor&#34;},{&#34;anonymous&#34;:false,&#34;inputs&#34;:[{&#34;indexed&#34;:true,&#34;internalType&#34;:&#34;bytes32&#34;,&#34;name&#34;:&#34;requestId&#34;,&#34;type&#34;:&#34;bytes32&#34;}],&#34;name&#34;:&#34;CancelOracleRequest&#34;,&#34;type&#34;:&#34;event&#34;},{&#34;anonymous&#34;:false,&#34;inputs&#34;:[{&#34;indexed&#34;:true,&#34;internalType&#34;:&#34;bytes32&#34;,&#34;name&#34;:&#34;specId&#34;,&#34;type&#34;:&#34;bytes32&#34;},{&#34;indexed&#34;:false,&#34;internalType&#34;:&#34;address&#34;,&#34;name&#34;:&#34;requester&#34;,&#34;type&#34;:&#34;address&#34;},{&#34;indexed&#34;:false,&#34;internalType&#34;:&#34;bytes32&#34;,&#34;name&#34;:&#34;requestId&#34;,&#34;type&#34;:&#34;bytes32&#34;},{&#34;indexed&#34;:false,&#34;internalType&#34;:&#34;uint256&#34;,&#34;name&#34;:&#34;payment&#34;,&#34;type&#34;:&#34;uint256&#34;},{&#34;indexed&#34;:false,&#34;internalType&#34;:&#34;address&#34;,&#34;name&#34;:&#34;callbackAddr&#34;,&#34;type&#34;:&#34;address&#34;},{&#34;indexed&#34;:false,&#34;internalType&#34;:&#34;bytes4&#34;,&#34;name&#34;:&#34;callbackFunctionId&#34;,&#34;type&#34;:&#34;bytes4&#34;},{&#34;indexed&#34;:false,&#34;internalType&#34;:&#34;uint256&#34;,&#34;name&#34;:&#34;cancelExpiration&#34;,&#34;type&#34;:&#34;uint256&#34;},{&#34;indexed&#34;:false,&#34;internalType&#34;:&#34;uint256&#34;,&#34;name&#34;:&#34;dataVersion&#34;,&#34;type&#34;:&#34;uint256&#34;},{&#34;indexed&#34;:false,&#34;internalType&#34;:&#34;bytes&#34;,&#34;name&#34;:&#34;data&#34;,&#34;type&#34;:&#34;bytes&#34;}],&#34;name&#34;:&#34;OracleRequest&#34;,&#34;type&#34;:&#34;event&#34;},{&#34;anonymous&#34;:false,&#34;inputs&#34;:[{&#34;indexed&#34;:true,&#34;internalType&#34;:&#34;address&#34;,&#34;name&#34;:&#34;previousOwner&#34;,&#34;type&#34;:&#34;address&#34;},{&#34;indexed&#34;:true,&#34;internalType&#34;:&#34;address&#34;,&#34;name&#34;:&#34;newOwner&#34;,&#34;type&#34;:&#34;address&#34;}],&#34;name&#34;:&#34;OwnershipTransferred&#34;,&#34;type&#34;:&#34;event&#34;},{&#34;inputs&#34;:[],&#34;name&#34;:&#34;EXPIRY_TIME&#34;,&#34;outputs&#34;:[{&#34;internalType&#34;:&#34;uint256&#34;,&#34;name&#34;:&#34;&#34;,&#34;type&#34;:&#34;uint256&#34;}],&#34;stateMutability&#34;:&#34;view&#34;,&#34;type&#34;:&#34;function&#34;},{&#34;inputs&#34;:[{&#34;internalType&#34;:&#34;bytes32&#34;,&#34;name&#34;:&#34;_requestId&#34;,&#34;type&#34;:&#34;bytes32&#34;},{&#34;internalType&#34;:&#34;uint256&#34;,&#34;name&#34;:&#34;_payment&#34;,&#34;type&#34;:&#34;uint256&#34;},{&#34;internalType&#34;:&#34;bytes4&#34;,&#34;name&#34;:&#34;_callbackFunc&#34;,&#34;type&#34;:&#34;bytes4&#34;},{&#34;internalType&#34;:&#34;uint256&#34;,&#34;name&#34;:&#34;_expiration&#34;,&#34;type&#34;:&#34;uint256&#34;}],&#34;name&#34;:&#34;cancelOracleRequest&#34;,&#34;outputs&#34;:[],&#34;stateMutability&#34;:&#34;nonpayable&#34;,&#34;type&#34;:&#34;function&#34;},{&#34;inputs&#34;:[{&#34;internalType&#34;:&#34;bytes32&#34;,&#34;name&#34;:&#34;_requestId&#34;,&#34;type&#34;:&#34;bytes32&#34;},{&#34;internalType&#34;:&#34;uint256&#34;,&#34;name&#34;:&#34;_payment&#34;,&#34;type&#34;:&#34;uint256&#34;},{&#34;internalType&#34;:&#34;address&#34;,&#34;name&#34;:&#34;_callbackAddress&#34;,&#34;type&#34;:&#34;address&#34;},{&#34;internalType&#34;:&#34;bytes4&#34;,&#34;name&#34;:&#34;_callbackFunctionId&#34;,&#34;type&#34;:&#34;bytes4&#34;},{&#34;internalType&#34;:&#34;uint256&#34;,&#34;name&#34;:&#34;_expiration&#34;,&#34;type&#34;:&#34;uint256&#34;},{&#34;internalType&#34;:&#34;bytes32&#34;,&#34;name&#34;:&#34;_data&#34;,&#34;type&#34;:&#34;bytes32&#34;}],&#34;name&#34;:&#34;fulfillOracleRequest&#34;,&#34;outputs&#34;:[{&#34;internalType&#34;:&#34;bool&#34;,&#34;name&#34;:&#34;&#34;,&#34;type&#34;:&#34;bool&#34;}],&#34;stateMutability&#34;:&#34;nonpayable&#34;,&#34;type&#34;:&#34;function&#34;},{&#34;inputs&#34;:[{&#34;internalType&#34;:&#34;address&#34;,&#34;name&#34;:&#34;_node&#34;,&#34;type&#34;:&#34;address&#34;}],&#34;name&#34;:&#34;getAuthorizationStatus&#34;,&#34;outputs&#34;:[{&#34;internalType&#34;:&#34;bool&#34;,&#34;name&#34;:&#34;&#34;,&#34;type&#34;:&#34;bool&#34;}],&#34;stateMutability&#34;:&#34;view&#34;,&#34;type&#34;:&#34;function&#34;},{&#34;inputs&#34;:[],&#34;name&#34;:&#34;getChainlinkToken&#34;,&#34;outputs&#34;:[{&#34;internalType&#34;:&#34;address&#34;,&#34;name&#34;:&#34;&#34;,&#34;type&#34;:&#34;address&#34;}],&#34;stateMutability&#34;:&#34;view&#34;,&#34;type&#34;:&#34;function&#34;},{&#34;inputs&#34;:[],&#34;name&#34;:&#34;isOwner&#34;,&#34;outputs&#34;:[{&#34;internalType&#34;:&#34;bool&#34;,&#34;name&#34;:&#34;&#34;,&#34;type&#34;:&#34;bool&#34;}],&#34;stateMutability&#34;:&#34;view&#34;,&#34;type&#34;:&#34;function&#34;},{&#34;inputs&#34;:[{&#34;internalType&#34;:&#34;address&#34;,&#34;name&#34;:&#34;_sender&#34;,&#34;type&#34;:&#34;address&#34;},{&#34;internalType&#34;:&#34;uint256&#34;,&#34;name&#34;:&#34;_amount&#34;,&#34;type&#34;:&#34;uint256&#34;},{&#34;internalType&#34;:&#34;bytes&#34;,&#34;name&#34;:&#34;_data&#34;,&#34;type&#34;:&#34;bytes&#34;}],&#34;name&#34;:&#34;onTokenTransfer&#34;,&#34;outputs&#34;:[],&#34;stateMutability&#34;:&#34;nonpayable&#34;,&#34;type&#34;:&#34;function&#34;},{&#34;inputs&#34;:[{&#34;internalType&#34;:&#34;address&#34;,&#34;name&#34;:&#34;_sender&#34;,&#34;type&#34;:&#34;address&#34;},{&#34;internalType&#34;:&#34;uint256&#34;,&#34;name&#34;:&#34;_payment&#34;,&#34;type&#34;:&#34;uint256&#34;},{&#34;internalType&#34;:&#34;bytes32&#34;,&#34;name&#34;:&#34;_specId&#34;,&#34;type&#34;:&#34;bytes32&#34;},{&#34;internalType&#34;:&#34;address&#34;,&#34;name&#34;:&#34;_callbackAddress&#34;,&#34;type&#34;:&#34;address&#34;},{&#34;internalType&#34;:&#34;bytes4&#34;,&#34;name&#34;:&#34;_callbackFunctionId&#34;,&#34;type&#34;:&#34;bytes4&#34;},{&#34;internalType&#34;:&#34;uint256&#34;,&#34;name&#34;:&#34;_nonce&#34;,&#34;type&#34;:&#34;uint256&#34;},{&#34;internalType&#34;:&#34;uint256&#34;,&#34;name&#34;:&#34;_dataVersion&#34;,&#34;type&#34;:&#34;uint256&#34;},{&#34;internalType&#34;:&#34;bytes&#34;,&#34;name&#34;:&#34;_data&#34;,&#34;type&#34;:&#34;bytes&#34;}],&#34;name&#34;:&#34;oracleRequest&#34;,&#34;outputs&#34;:[],&#34;stateMutability&#34;:&#34;nonpayable&#34;,&#34;type&#34;:&#34;function&#34;},{&#34;inputs&#34;:[],&#34;name&#34;:&#34;owner&#34;,&#34;outputs&#34;:[{&#34;internalType&#34;:&#34;address&#34;,&#34;name&#34;:&#34;&#34;,&#34;type&#34;:&#34;address&#34;}],&#34;stateMutability&#34;:&#34;view&#34;,&#34;type&#34;:&#34;function&#34;},{&#34;inputs&#34;:[{&#34;internalType&#34;:&#34;address&#34;,&#34;name&#34;:&#34;_node&#34;,&#34;type&#34;:&#34;address&#34;},{&#34;internalType&#34;:&#34;bool&#34;,&#34;name&#34;:&#34;_allowed&#34;,&#34;type&#34;:&#34;bool&#34;}],&#34;name&#34;:&#34;setFulfillmentPermission&#34;,&#34;outputs&#34;:[],&#34;stateMutability&#34;:&#34;nonpayable&#34;,&#34;type&#34;:&#34;function&#34;},{&#34;inputs&#34;:[{&#34;internalType&#34;:&#34;address&#34;,&#34;name&#34;:&#34;newOwner&#34;,&#34;type&#34;:&#34;address&#34;}],&#34;name&#34;:&#34;transferOwnership&#34;,&#34;outputs&#34;:[],&#34;stateMutability&#34;:&#34;nonpayable&#34;,&#34;type&#34;:&#34;function&#34;},{&#34;inputs&#34;:[{&#34;internalType&#34;:&#34;address&#34;,&#34;name&#34;:&#34;_recipient&#34;,&#34;type&#34;:&#34;address&#34;},{&#34;internalType&#34;:&#34;uint256&#34;,&#34;name&#34;:&#34;_amount&#34;,&#34;type&#34;:&#34;uint256&#34;}],&#34;name&#34;:&#34;withdraw&#34;,&#34;outputs&#34;:[],&#34;stateMutability&#34;:&#34;nonpayable&#34;,&#34;type&#34;:&#34;function&#34;},{&#34;inputs&#34;:[],&#34;name&#34;:&#34;withdrawable&#34;,&#34;outputs&#34;:[{&#34;internalType&#34;:&#34;uint256&#34;,&#34;name&#34;:&#34;&#34;,&#34;type&#34;:&#34;uint256&#34;}],&#34;stateMutability&#34;:&#34;view&#34;,&#34;type&#34;:&#34;function&#34;}]&#39;
+            # noqa: E501 (line-too-long)
         )
 
 # pylint: disable=too-many-lines</code></pre>
@@ -1916,16 +1821,16 @@ class Oracle(ContractBase):
 <summary>
 <span>Expand source code</span>
 </summary>
-<pre><code class="python">class CancelOracleRequestMethod(ContractMethod): # pylint: disable=invalid-name
+<pre><code class="python">class CancelOracleRequestMethod(ContractMethod):  # pylint: disable=invalid-name
     &#34;&#34;&#34;Various interfaces to the cancelOracleRequest method.&#34;&#34;&#34;
 
-    def __init__(self, elib: MiliDoS, contract_address: str, contract_function: ContractFunction, validator: Validator=None):
+    def __init__(self, elib: MiliDoS, contract_address: str, contract_function: ContractFunction, validator: Validator = None):
         &#34;&#34;&#34;Persist instance data.&#34;&#34;&#34;
         super().__init__(elib, contract_address, validator)
         self._underlying_method = contract_function
         self.sign = validator.getSignature(&#34;cancelOracleRequest&#34;)
 
-    def validate_and_normalize_inputs(self, request_id: Union[bytes, str], payment: int, callback_func: Union[bytes, str], expiration: int)-&gt;any:
+    def validate_and_normalize_inputs(self, request_id: Union[bytes, str], payment: int, callback_func: Union[bytes, str], expiration: int) -&gt; any:
         &#34;&#34;&#34;Validate the inputs to the cancelOracleRequest method.&#34;&#34;&#34;
         self.validator.assert_valid(
             method_name=&#39;cancelOracleRequest&#39;,
@@ -1953,9 +1858,7 @@ class Oracle(ContractBase):
         expiration = int(expiration)
         return (request_id, payment, callback_func, expiration)
 
-
-
-    def block_send(self, request_id: Union[bytes, str], payment: int, callback_func: Union[bytes, str], expiration: int,_gaswei:int,_pricewei:int,_valeth:int=0,_debugtx: bool = False,_receipList: bool = False) -&gt; None:
+    def block_send(self, request_id: Union[bytes, str], payment: int, callback_func: Union[bytes, str], expiration: int, _gaswei: int, _pricewei: int, _valeth: int = 0, _debugtx: bool = False, _receipList: bool = False) -&gt; None:
         &#34;&#34;&#34;Execute underlying contract method via eth_call.
 
         :param tx_params: transaction parameters
@@ -2011,7 +1914,6 @@ class Oracle(ContractBase):
             else:
                 print(f&#34;{Bolors.FAIL}Error Revert {Bolors.RESET}, cancel_oracle_request. Reason: Unknown&#34;)
 
-
     def send_transaction(self, request_id: Union[bytes, str], payment: int, callback_func: Union[bytes, str], expiration: int, tx_params: Optional[TxParams] = None) -&gt; Union[HexBytes, bytes]:
         &#34;&#34;&#34;Execute underlying contract method via eth_sendTransaction.
 
@@ -2050,7 +1952,7 @@ class Oracle(ContractBase):
 <summary>
 <span>Expand source code</span>
 </summary>
-<pre><code class="python">def block_send(self, request_id: Union[bytes, str], payment: int, callback_func: Union[bytes, str], expiration: int,_gaswei:int,_pricewei:int,_valeth:int=0,_debugtx: bool = False,_receipList: bool = False) -&gt; None:
+<pre><code class="python">def block_send(self, request_id: Union[bytes, str], payment: int, callback_func: Union[bytes, str], expiration: int, _gaswei: int, _pricewei: int, _valeth: int = 0, _debugtx: bool = False, _receipList: bool = False) -&gt; None:
     &#34;&#34;&#34;Execute underlying contract method via eth_call.
 
     :param tx_params: transaction parameters
@@ -2168,7 +2070,7 @@ class Oracle(ContractBase):
 <summary>
 <span>Expand source code</span>
 </summary>
-<pre><code class="python">def validate_and_normalize_inputs(self, request_id: Union[bytes, str], payment: int, callback_func: Union[bytes, str], expiration: int)-&gt;any:
+<pre><code class="python">def validate_and_normalize_inputs(self, request_id: Union[bytes, str], payment: int, callback_func: Union[bytes, str], expiration: int) -&gt; any:
     &#34;&#34;&#34;Validate the inputs to the cancelOracleRequest method.&#34;&#34;&#34;
     self.validator.assert_valid(
         method_name=&#39;cancelOracleRequest&#39;,
@@ -2219,24 +2121,23 @@ class Oracle(ContractBase):
 <summary>
 <span>Expand source code</span>
 </summary>
-<pre><code class="python">class ExpiryTimeMethod(ContractMethod): # pylint: disable=invalid-name
+<pre><code class="python">class ExpiryTimeMethod(ContractMethod):  # pylint: disable=invalid-name
     &#34;&#34;&#34;Various interfaces to the EXPIRY_TIME method.&#34;&#34;&#34;
 
-    def __init__(self, elib: MiliDoS, contract_address: str, contract_function: ContractFunction, validator: Validator=None):
+    def __init__(self, elib: MiliDoS, contract_address: str, contract_function: ContractFunction, validator: Validator = None):
         &#34;&#34;&#34;Persist instance data.&#34;&#34;&#34;
         super().__init__(elib, contract_address)
         self._underlying_method = contract_function
         self.sign = validator.getSignature(&#34;EXPIRY_TIME&#34;)
 
-
-
-    def block_call(self, debug:bool=False) -&gt; int:
+    def block_call(self, debug: bool = False) -&gt; int:
         _fn = self._underlying_method()
         returned = _fn.call({
-                &#39;from&#39;: self._operate
-            })
+            &#39;from&#39;: self._operate
+        })
         return int(returned)
-    def block_send(self, _gaswei:int,_pricewei:int,_valeth:int=0,_debugtx: bool = False,_receipList: bool = False) -&gt; int:
+
+    def block_send(self, _gaswei: int, _pricewei: int, _valeth: int = 0, _debugtx: bool = False, _receipList: bool = False) -&gt; int:
         &#34;&#34;&#34;Execute underlying contract method via eth_call.
 
         :param tx_params: transaction parameters
@@ -2292,7 +2193,6 @@ class Oracle(ContractBase):
             else:
                 print(f&#34;{Bolors.FAIL}Error Revert {Bolors.RESET}, expiry_time. Reason: Unknown&#34;)
 
-
     def send_transaction(self, tx_params: Optional[TxParams] = None) -&gt; Union[HexBytes, bytes]:
         &#34;&#34;&#34;Execute underlying contract method via eth_sendTransaction.
 
@@ -2326,11 +2226,11 @@ class Oracle(ContractBase):
 <summary>
 <span>Expand source code</span>
 </summary>
-<pre><code class="python">def block_call(self, debug:bool=False) -&gt; int:
+<pre><code class="python">def block_call(self, debug: bool = False) -&gt; int:
     _fn = self._underlying_method()
     returned = _fn.call({
-            &#39;from&#39;: self._operate
-        })
+        &#39;from&#39;: self._operate
+    })
     return int(returned)</code></pre>
 </details>
 </dd>
@@ -2345,7 +2245,7 @@ class Oracle(ContractBase):
 <summary>
 <span>Expand source code</span>
 </summary>
-<pre><code class="python">def block_send(self, _gaswei:int,_pricewei:int,_valeth:int=0,_debugtx: bool = False,_receipList: bool = False) -&gt; int:
+<pre><code class="python">def block_send(self, _gaswei: int, _pricewei: int, _valeth: int = 0, _debugtx: bool = False, _receipList: bool = False) -&gt; int:
     &#34;&#34;&#34;Execute underlying contract method via eth_call.
 
     :param tx_params: transaction parameters
@@ -2473,16 +2373,16 @@ class Oracle(ContractBase):
 <summary>
 <span>Expand source code</span>
 </summary>
-<pre><code class="python">class FulfillOracleRequestMethod(ContractMethod): # pylint: disable=invalid-name
+<pre><code class="python">class FulfillOracleRequestMethod(ContractMethod):  # pylint: disable=invalid-name
     &#34;&#34;&#34;Various interfaces to the fulfillOracleRequest method.&#34;&#34;&#34;
 
-    def __init__(self, elib: MiliDoS, contract_address: str, contract_function: ContractFunction, validator: Validator=None):
+    def __init__(self, elib: MiliDoS, contract_address: str, contract_function: ContractFunction, validator: Validator = None):
         &#34;&#34;&#34;Persist instance data.&#34;&#34;&#34;
         super().__init__(elib, contract_address, validator)
         self._underlying_method = contract_function
         self.sign = validator.getSignature(&#34;fulfillOracleRequest&#34;)
 
-    def validate_and_normalize_inputs(self, request_id: Union[bytes, str], payment: int, callback_address: str, callback_function_id: Union[bytes, str], expiration: int, data: Union[bytes, str])-&gt;any:
+    def validate_and_normalize_inputs(self, request_id: Union[bytes, str], payment: int, callback_address: str, callback_function_id: Union[bytes, str], expiration: int, data: Union[bytes, str]) -&gt; any:
         &#34;&#34;&#34;Validate the inputs to the fulfillOracleRequest method.&#34;&#34;&#34;
         self.validator.assert_valid(
             method_name=&#39;fulfillOracleRequest&#39;,
@@ -2521,9 +2421,7 @@ class Oracle(ContractBase):
         )
         return (request_id, payment, callback_address, callback_function_id, expiration, data)
 
-
-
-    def block_send(self, request_id: Union[bytes, str], payment: int, callback_address: str, callback_function_id: Union[bytes, str], expiration: int, data: Union[bytes, str],_gaswei:int,_pricewei:int,_valeth:int=0,_debugtx: bool = False,_receipList: bool = False) -&gt; bool:
+    def block_send(self, request_id: Union[bytes, str], payment: int, callback_address: str, callback_function_id: Union[bytes, str], expiration: int, data: Union[bytes, str], _gaswei: int, _pricewei: int, _valeth: int = 0, _debugtx: bool = False, _receipList: bool = False) -&gt; bool:
         &#34;&#34;&#34;Execute underlying contract method via eth_call.
 
         :param tx_params: transaction parameters
@@ -2579,7 +2477,6 @@ class Oracle(ContractBase):
             else:
                 print(f&#34;{Bolors.FAIL}Error Revert {Bolors.RESET}, fulfill_oracle_request. Reason: Unknown&#34;)
 
-
     def send_transaction(self, request_id: Union[bytes, str], payment: int, callback_address: str, callback_function_id: Union[bytes, str], expiration: int, data: Union[bytes, str], tx_params: Optional[TxParams] = None) -&gt; Union[HexBytes, bytes]:
         &#34;&#34;&#34;Execute underlying contract method via eth_sendTransaction.
 
@@ -2618,7 +2515,7 @@ class Oracle(ContractBase):
 <summary>
 <span>Expand source code</span>
 </summary>
-<pre><code class="python">def block_send(self, request_id: Union[bytes, str], payment: int, callback_address: str, callback_function_id: Union[bytes, str], expiration: int, data: Union[bytes, str],_gaswei:int,_pricewei:int,_valeth:int=0,_debugtx: bool = False,_receipList: bool = False) -&gt; bool:
+<pre><code class="python">def block_send(self, request_id: Union[bytes, str], payment: int, callback_address: str, callback_function_id: Union[bytes, str], expiration: int, data: Union[bytes, str], _gaswei: int, _pricewei: int, _valeth: int = 0, _debugtx: bool = False, _receipList: bool = False) -&gt; bool:
     &#34;&#34;&#34;Execute underlying contract method via eth_call.
 
     :param tx_params: transaction parameters
@@ -2736,7 +2633,7 @@ class Oracle(ContractBase):
 <summary>
 <span>Expand source code</span>
 </summary>
-<pre><code class="python">def validate_and_normalize_inputs(self, request_id: Union[bytes, str], payment: int, callback_address: str, callback_function_id: Union[bytes, str], expiration: int, data: Union[bytes, str])-&gt;any:
+<pre><code class="python">def validate_and_normalize_inputs(self, request_id: Union[bytes, str], payment: int, callback_address: str, callback_function_id: Union[bytes, str], expiration: int, data: Union[bytes, str]) -&gt; any:
     &#34;&#34;&#34;Validate the inputs to the fulfillOracleRequest method.&#34;&#34;&#34;
     self.validator.assert_valid(
         method_name=&#39;fulfillOracleRequest&#39;,
@@ -2798,16 +2695,16 @@ class Oracle(ContractBase):
 <summary>
 <span>Expand source code</span>
 </summary>
-<pre><code class="python">class GetAuthorizationStatusMethod(ContractMethod): # pylint: disable=invalid-name
+<pre><code class="python">class GetAuthorizationStatusMethod(ContractMethod):  # pylint: disable=invalid-name
     &#34;&#34;&#34;Various interfaces to the getAuthorizationStatus method.&#34;&#34;&#34;
 
-    def __init__(self, elib: MiliDoS, contract_address: str, contract_function: ContractFunction, validator: Validator=None):
+    def __init__(self, elib: MiliDoS, contract_address: str, contract_function: ContractFunction, validator: Validator = None):
         &#34;&#34;&#34;Persist instance data.&#34;&#34;&#34;
         super().__init__(elib, contract_address, validator)
         self._underlying_method = contract_function
         self.sign = validator.getSignature(&#34;getAuthorizationStatus&#34;)
 
-    def validate_and_normalize_inputs(self, node: str)-&gt;any:
+    def validate_and_normalize_inputs(self, node: str) -&gt; any:
         &#34;&#34;&#34;Validate the inputs to the getAuthorizationStatus method.&#34;&#34;&#34;
         self.validator.assert_valid(
             method_name=&#39;getAuthorizationStatus&#39;,
@@ -2817,15 +2714,14 @@ class Oracle(ContractBase):
         node = self.validate_and_checksum_address(node)
         return (node)
 
-
-
-    def block_call(self,node: str, debug:bool=False) -&gt; bool:
+    def block_call(self, node: str, debug: bool = False) -&gt; bool:
         _fn = self._underlying_method(node)
         returned = _fn.call({
-                &#39;from&#39;: self._operate
-            })
+            &#39;from&#39;: self._operate
+        })
         return bool(returned)
-    def block_send(self, node: str,_gaswei:int,_pricewei:int,_valeth:int=0,_debugtx: bool = False,_receipList: bool = False) -&gt; bool:
+
+    def block_send(self, node: str, _gaswei: int, _pricewei: int, _valeth: int = 0, _debugtx: bool = False, _receipList: bool = False) -&gt; bool:
         &#34;&#34;&#34;Execute underlying contract method via eth_call.
 
         :param tx_params: transaction parameters
@@ -2881,7 +2777,6 @@ class Oracle(ContractBase):
             else:
                 print(f&#34;{Bolors.FAIL}Error Revert {Bolors.RESET}, get_authorization_status. Reason: Unknown&#34;)
 
-
     def send_transaction(self, node: str, tx_params: Optional[TxParams] = None) -&gt; Union[HexBytes, bytes]:
         &#34;&#34;&#34;Execute underlying contract method via eth_sendTransaction.
 
@@ -2918,11 +2813,11 @@ class Oracle(ContractBase):
 <summary>
 <span>Expand source code</span>
 </summary>
-<pre><code class="python">def block_call(self,node: str, debug:bool=False) -&gt; bool:
+<pre><code class="python">def block_call(self, node: str, debug: bool = False) -&gt; bool:
     _fn = self._underlying_method(node)
     returned = _fn.call({
-            &#39;from&#39;: self._operate
-        })
+        &#39;from&#39;: self._operate
+    })
     return bool(returned)</code></pre>
 </details>
 </dd>
@@ -2937,7 +2832,7 @@ class Oracle(ContractBase):
 <summary>
 <span>Expand source code</span>
 </summary>
-<pre><code class="python">def block_send(self, node: str,_gaswei:int,_pricewei:int,_valeth:int=0,_debugtx: bool = False,_receipList: bool = False) -&gt; bool:
+<pre><code class="python">def block_send(self, node: str, _gaswei: int, _pricewei: int, _valeth: int = 0, _debugtx: bool = False, _receipList: bool = False) -&gt; bool:
     &#34;&#34;&#34;Execute underlying contract method via eth_call.
 
     :param tx_params: transaction parameters
@@ -3055,7 +2950,7 @@ class Oracle(ContractBase):
 <summary>
 <span>Expand source code</span>
 </summary>
-<pre><code class="python">def validate_and_normalize_inputs(self, node: str)-&gt;any:
+<pre><code class="python">def validate_and_normalize_inputs(self, node: str) -&gt; any:
     &#34;&#34;&#34;Validate the inputs to the getAuthorizationStatus method.&#34;&#34;&#34;
     self.validator.assert_valid(
         method_name=&#39;getAuthorizationStatus&#39;,
@@ -3088,24 +2983,23 @@ class Oracle(ContractBase):
 <summary>
 <span>Expand source code</span>
 </summary>
-<pre><code class="python">class GetChainlinkTokenMethod(ContractMethod): # pylint: disable=invalid-name
+<pre><code class="python">class GetChainlinkTokenMethod(ContractMethod):  # pylint: disable=invalid-name
     &#34;&#34;&#34;Various interfaces to the getChainlinkToken method.&#34;&#34;&#34;
 
-    def __init__(self, elib: MiliDoS, contract_address: str, contract_function: ContractFunction, validator: Validator=None):
+    def __init__(self, elib: MiliDoS, contract_address: str, contract_function: ContractFunction, validator: Validator = None):
         &#34;&#34;&#34;Persist instance data.&#34;&#34;&#34;
         super().__init__(elib, contract_address)
         self._underlying_method = contract_function
         self.sign = validator.getSignature(&#34;getChainlinkToken&#34;)
 
-
-
-    def block_call(self, debug:bool=False) -&gt; str:
+    def block_call(self, debug: bool = False) -&gt; str:
         _fn = self._underlying_method()
         returned = _fn.call({
-                &#39;from&#39;: self._operate
-            })
+            &#39;from&#39;: self._operate
+        })
         return str(returned)
-    def block_send(self, _gaswei:int,_pricewei:int,_valeth:int=0,_debugtx: bool = False,_receipList: bool = False) -&gt; str:
+
+    def block_send(self, _gaswei: int, _pricewei: int, _valeth: int = 0, _debugtx: bool = False, _receipList: bool = False) -&gt; str:
         &#34;&#34;&#34;Execute underlying contract method via eth_call.
 
         :param tx_params: transaction parameters
@@ -3161,7 +3055,6 @@ class Oracle(ContractBase):
             else:
                 print(f&#34;{Bolors.FAIL}Error Revert {Bolors.RESET}, get_chainlink_token. Reason: Unknown&#34;)
 
-
     def send_transaction(self, tx_params: Optional[TxParams] = None) -&gt; Union[HexBytes, bytes]:
         &#34;&#34;&#34;Execute underlying contract method via eth_sendTransaction.
 
@@ -3195,11 +3088,11 @@ class Oracle(ContractBase):
 <summary>
 <span>Expand source code</span>
 </summary>
-<pre><code class="python">def block_call(self, debug:bool=False) -&gt; str:
+<pre><code class="python">def block_call(self, debug: bool = False) -&gt; str:
     _fn = self._underlying_method()
     returned = _fn.call({
-            &#39;from&#39;: self._operate
-        })
+        &#39;from&#39;: self._operate
+    })
     return str(returned)</code></pre>
 </details>
 </dd>
@@ -3214,7 +3107,7 @@ class Oracle(ContractBase):
 <summary>
 <span>Expand source code</span>
 </summary>
-<pre><code class="python">def block_send(self, _gaswei:int,_pricewei:int,_valeth:int=0,_debugtx: bool = False,_receipList: bool = False) -&gt; str:
+<pre><code class="python">def block_send(self, _gaswei: int, _pricewei: int, _valeth: int = 0, _debugtx: bool = False, _receipList: bool = False) -&gt; str:
     &#34;&#34;&#34;Execute underlying contract method via eth_call.
 
     :param tx_params: transaction parameters
@@ -3342,24 +3235,23 @@ class Oracle(ContractBase):
 <summary>
 <span>Expand source code</span>
 </summary>
-<pre><code class="python">class IsOwnerMethod(ContractMethod): # pylint: disable=invalid-name
+<pre><code class="python">class IsOwnerMethod(ContractMethod):  # pylint: disable=invalid-name
     &#34;&#34;&#34;Various interfaces to the isOwner method.&#34;&#34;&#34;
 
-    def __init__(self, elib: MiliDoS, contract_address: str, contract_function: ContractFunction, validator: Validator=None):
+    def __init__(self, elib: MiliDoS, contract_address: str, contract_function: ContractFunction, validator: Validator = None):
         &#34;&#34;&#34;Persist instance data.&#34;&#34;&#34;
         super().__init__(elib, contract_address)
         self._underlying_method = contract_function
         self.sign = validator.getSignature(&#34;isOwner&#34;)
 
-
-
-    def block_call(self, debug:bool=False) -&gt; bool:
+    def block_call(self, debug: bool = False) -&gt; bool:
         _fn = self._underlying_method()
         returned = _fn.call({
-                &#39;from&#39;: self._operate
-            })
+            &#39;from&#39;: self._operate
+        })
         return bool(returned)
-    def block_send(self, _gaswei:int,_pricewei:int,_valeth:int=0,_debugtx: bool = False,_receipList: bool = False) -&gt; bool:
+
+    def block_send(self, _gaswei: int, _pricewei: int, _valeth: int = 0, _debugtx: bool = False, _receipList: bool = False) -&gt; bool:
         &#34;&#34;&#34;Execute underlying contract method via eth_call.
 
         :param tx_params: transaction parameters
@@ -3415,7 +3307,6 @@ class Oracle(ContractBase):
             else:
                 print(f&#34;{Bolors.FAIL}Error Revert {Bolors.RESET}, is_owner. Reason: Unknown&#34;)
 
-
     def send_transaction(self, tx_params: Optional[TxParams] = None) -&gt; Union[HexBytes, bytes]:
         &#34;&#34;&#34;Execute underlying contract method via eth_sendTransaction.
 
@@ -3449,11 +3340,11 @@ class Oracle(ContractBase):
 <summary>
 <span>Expand source code</span>
 </summary>
-<pre><code class="python">def block_call(self, debug:bool=False) -&gt; bool:
+<pre><code class="python">def block_call(self, debug: bool = False) -&gt; bool:
     _fn = self._underlying_method()
     returned = _fn.call({
-            &#39;from&#39;: self._operate
-        })
+        &#39;from&#39;: self._operate
+    })
     return bool(returned)</code></pre>
 </details>
 </dd>
@@ -3468,7 +3359,7 @@ class Oracle(ContractBase):
 <summary>
 <span>Expand source code</span>
 </summary>
-<pre><code class="python">def block_send(self, _gaswei:int,_pricewei:int,_valeth:int=0,_debugtx: bool = False,_receipList: bool = False) -&gt; bool:
+<pre><code class="python">def block_send(self, _gaswei: int, _pricewei: int, _valeth: int = 0, _debugtx: bool = False, _receipList: bool = False) -&gt; bool:
     &#34;&#34;&#34;Execute underlying contract method via eth_call.
 
     :param tx_params: transaction parameters
@@ -3596,16 +3487,16 @@ class Oracle(ContractBase):
 <summary>
 <span>Expand source code</span>
 </summary>
-<pre><code class="python">class OnTokenTransferMethod(ContractMethod): # pylint: disable=invalid-name
+<pre><code class="python">class OnTokenTransferMethod(ContractMethod):  # pylint: disable=invalid-name
     &#34;&#34;&#34;Various interfaces to the onTokenTransfer method.&#34;&#34;&#34;
 
-    def __init__(self, elib: MiliDoS, contract_address: str, contract_function: ContractFunction, validator: Validator=None):
+    def __init__(self, elib: MiliDoS, contract_address: str, contract_function: ContractFunction, validator: Validator = None):
         &#34;&#34;&#34;Persist instance data.&#34;&#34;&#34;
         super().__init__(elib, contract_address, validator)
         self._underlying_method = contract_function
         self.sign = validator.getSignature(&#34;onTokenTransfer&#34;)
 
-    def validate_and_normalize_inputs(self, sender: str, amount: int, data: Union[bytes, str])-&gt;any:
+    def validate_and_normalize_inputs(self, sender: str, amount: int, data: Union[bytes, str]) -&gt; any:
         &#34;&#34;&#34;Validate the inputs to the onTokenTransfer method.&#34;&#34;&#34;
         self.validator.assert_valid(
             method_name=&#39;onTokenTransfer&#39;,
@@ -3627,9 +3518,7 @@ class Oracle(ContractBase):
         )
         return (sender, amount, data)
 
-
-
-    def block_send(self, sender: str, amount: int, data: Union[bytes, str],_gaswei:int,_pricewei:int,_valeth:int=0,_debugtx: bool = False,_receipList: bool = False) -&gt; None:
+    def block_send(self, sender: str, amount: int, data: Union[bytes, str], _gaswei: int, _pricewei: int, _valeth: int = 0, _debugtx: bool = False, _receipList: bool = False) -&gt; None:
         &#34;&#34;&#34;Execute underlying contract method via eth_call.
 
         :param tx_params: transaction parameters
@@ -3685,7 +3574,6 @@ class Oracle(ContractBase):
             else:
                 print(f&#34;{Bolors.FAIL}Error Revert {Bolors.RESET}, on_token_transfer. Reason: Unknown&#34;)
 
-
     def send_transaction(self, sender: str, amount: int, data: Union[bytes, str], tx_params: Optional[TxParams] = None) -&gt; Union[HexBytes, bytes]:
         &#34;&#34;&#34;Execute underlying contract method via eth_sendTransaction.
 
@@ -3724,7 +3612,7 @@ class Oracle(ContractBase):
 <summary>
 <span>Expand source code</span>
 </summary>
-<pre><code class="python">def block_send(self, sender: str, amount: int, data: Union[bytes, str],_gaswei:int,_pricewei:int,_valeth:int=0,_debugtx: bool = False,_receipList: bool = False) -&gt; None:
+<pre><code class="python">def block_send(self, sender: str, amount: int, data: Union[bytes, str], _gaswei: int, _pricewei: int, _valeth: int = 0, _debugtx: bool = False, _receipList: bool = False) -&gt; None:
     &#34;&#34;&#34;Execute underlying contract method via eth_call.
 
     :param tx_params: transaction parameters
@@ -3842,7 +3730,7 @@ class Oracle(ContractBase):
 <summary>
 <span>Expand source code</span>
 </summary>
-<pre><code class="python">def validate_and_normalize_inputs(self, sender: str, amount: int, data: Union[bytes, str])-&gt;any:
+<pre><code class="python">def validate_and_normalize_inputs(self, sender: str, amount: int, data: Union[bytes, str]) -&gt; any:
     &#34;&#34;&#34;Validate the inputs to the onTokenTransfer method.&#34;&#34;&#34;
     self.validator.assert_valid(
         method_name=&#39;onTokenTransfer&#39;,
@@ -3960,13 +3848,13 @@ which can be accomplished via <code>str.encode("utf_8")</code>:code:.</p>
     :class:`WithdrawableMethod`.
     &#34;&#34;&#34;
 
-    SIGNATURES:SignatureGenerator = None
+    SIGNATURES: SignatureGenerator = None
 
     def __init__(
-        self,
-        core_lib: MiliDoS,
-        contract_address: str,
-        validator: OracleValidator = None,
+            self,
+            core_lib: MiliDoS,
+            contract_address: str,
+            validator: OracleValidator = None,
     ):
         &#34;&#34;&#34;Get an instance of wrapper for smart contract.
         &#34;&#34;&#34;
@@ -3978,9 +3866,6 @@ which can be accomplished via <code>str.encode("utf_8")</code>:code:.</p>
         if not validator:
             validator = OracleValidator(web3, contract_address)
 
-
-
-
         # if any middleware was imported, inject it
         try:
             MIDDLEWARE
@@ -3990,7 +3875,7 @@ which can be accomplished via <code>str.encode("utf_8")</code>:code:.</p>
             try:
                 for middleware in MIDDLEWARE:
                     web3.middleware_onion.inject(
-                         middleware[&#39;function&#39;], layer=middleware[&#39;layer&#39;],
+                        middleware[&#39;function&#39;], layer=middleware[&#39;layer&#39;],
                     )
             except ValueError as value_error:
                 if value_error.args == (&#34;You can&#39;t add the same un-named instance twice&#34;,):
@@ -4015,8 +3900,6 @@ which can be accomplished via <code>str.encode("utf_8")</code>:code:.</p>
         self._fn_withdraw = WithdrawMethod(core_lib, contract_address, functions.withdraw, validator)
         self._fn_withdrawable = WithdrawableMethod(core_lib, contract_address, functions.withdrawable, validator)
 
-    
-    
     def event_cancel_oracle_request(
             self, tx_hash: Union[HexBytes, bytes]
     ) -&gt; Tuple[AttributeDict]:
@@ -4027,8 +3910,7 @@ which can be accomplished via <code>str.encode("utf_8")</code>:code:.</p>
         &#34;&#34;&#34;
         tx_receipt = self._web3_eth.getTransactionReceipt(tx_hash)
         return self._web3_eth.contract(address=to_checksum_address(self.contract_address), abi=Oracle.abi()).events.CancelOracleRequest().processReceipt(tx_receipt)
-    
-    
+
     def event_oracle_request(
             self, tx_hash: Union[HexBytes, bytes]
     ) -&gt; Tuple[AttributeDict]:
@@ -4039,8 +3921,7 @@ which can be accomplished via <code>str.encode("utf_8")</code>:code:.</p>
         &#34;&#34;&#34;
         tx_receipt = self._web3_eth.getTransactionReceipt(tx_hash)
         return self._web3_eth.contract(address=to_checksum_address(self.contract_address), abi=Oracle.abi()).events.OracleRequest().processReceipt(tx_receipt)
-    
-    
+
     def event_ownership_transferred(
             self, tx_hash: Union[HexBytes, bytes]
     ) -&gt; Tuple[AttributeDict]:
@@ -4052,9 +3933,6 @@ which can be accomplished via <code>str.encode("utf_8")</code>:code:.</p>
         tx_receipt = self._web3_eth.getTransactionReceipt(tx_hash)
         return self._web3_eth.contract(address=to_checksum_address(self.contract_address), abi=Oracle.abi()).events.OwnershipTransferred().processReceipt(tx_receipt)
 
-    
-    
-    
     def expiry_time(self) -&gt; int:
         &#34;&#34;&#34;
         Implementation of expiry_time in contract Oracle
@@ -4063,15 +3941,9 @@ which can be accomplished via <code>str.encode("utf_8")</code>:code:.</p>
     
     
         &#34;&#34;&#34;
-    
-    
-    
-    
-    
+
         return self._fn_expiry_time.block_call()
-    
-    
-    
+
     def cancel_oracle_request(self, request_id: Union[bytes, str], payment: int, callback_func: Union[bytes, str], expiration: int) -&gt; None:
         &#34;&#34;&#34;
         Implementation of cancel_oracle_request in contract Oracle
@@ -4080,15 +3952,9 @@ which can be accomplished via <code>str.encode("utf_8")</code>:code:.</p>
     
     
         &#34;&#34;&#34;
-    
-        return self._fn_cancel_oracle_request.block_send(request_id, payment, callback_func, expiration, self.call_contract_fee_amount,self.call_contract_fee_price,0,self.call_contract_debug_flag, self.call_contract_enforce_tx_receipt)
-    
-    
-    
-    
-    
-    
-    
+
+        return self._fn_cancel_oracle_request.block_send(request_id, payment, callback_func, expiration, self.call_contract_fee_amount, self.call_contract_fee_price, 0, self.call_contract_debug_flag, self.call_contract_enforce_tx_receipt)
+
     def fulfill_oracle_request(self, request_id: Union[bytes, str], payment: int, callback_address: str, callback_function_id: Union[bytes, str], expiration: int, data: Union[bytes, str]) -&gt; bool:
         &#34;&#34;&#34;
         Implementation of fulfill_oracle_request in contract Oracle
@@ -4097,15 +3963,9 @@ which can be accomplished via <code>str.encode("utf_8")</code>:code:.</p>
     
     
         &#34;&#34;&#34;
-    
-        return self._fn_fulfill_oracle_request.block_send(request_id, payment, callback_address, callback_function_id, expiration, data, self.call_contract_fee_amount,self.call_contract_fee_price,0,self.call_contract_debug_flag, self.call_contract_enforce_tx_receipt)
-    
-    
-    
-    
-    
-    
-    
+
+        return self._fn_fulfill_oracle_request.block_send(request_id, payment, callback_address, callback_function_id, expiration, data, self.call_contract_fee_amount, self.call_contract_fee_price, 0, self.call_contract_debug_flag, self.call_contract_enforce_tx_receipt)
+
     def get_authorization_status(self, node: str) -&gt; bool:
         &#34;&#34;&#34;
         Implementation of get_authorization_status in contract Oracle
@@ -4114,15 +3974,9 @@ which can be accomplished via <code>str.encode("utf_8")</code>:code:.</p>
     
     
         &#34;&#34;&#34;
-    
-    
-    
-    
-    
+
         return self._fn_get_authorization_status.block_call(node)
-    
-    
-    
+
     def get_chainlink_token(self) -&gt; str:
         &#34;&#34;&#34;
         Implementation of get_chainlink_token in contract Oracle
@@ -4131,15 +3985,9 @@ which can be accomplished via <code>str.encode("utf_8")</code>:code:.</p>
     
     
         &#34;&#34;&#34;
-    
-    
-    
-    
-    
+
         return self._fn_get_chainlink_token.block_call()
-    
-    
-    
+
     def is_owner(self) -&gt; bool:
         &#34;&#34;&#34;
         Implementation of is_owner in contract Oracle
@@ -4148,15 +3996,9 @@ which can be accomplished via <code>str.encode("utf_8")</code>:code:.</p>
     
     
         &#34;&#34;&#34;
-    
-    
-    
-    
-    
+
         return self._fn_is_owner.block_call()
-    
-    
-    
+
     def on_token_transfer(self, sender: str, amount: int, data: Union[bytes, str]) -&gt; None:
         &#34;&#34;&#34;
         Implementation of on_token_transfer in contract Oracle
@@ -4165,15 +4007,9 @@ which can be accomplished via <code>str.encode("utf_8")</code>:code:.</p>
     
     
         &#34;&#34;&#34;
-    
-        return self._fn_on_token_transfer.block_send(sender, amount, data, self.call_contract_fee_amount,self.call_contract_fee_price,0,self.call_contract_debug_flag, self.call_contract_enforce_tx_receipt)
-    
-    
-    
-    
-    
-    
-    
+
+        return self._fn_on_token_transfer.block_send(sender, amount, data, self.call_contract_fee_amount, self.call_contract_fee_price, 0, self.call_contract_debug_flag, self.call_contract_enforce_tx_receipt)
+
     def oracle_request(self, sender: str, payment: int, spec_id: Union[bytes, str], callback_address: str, callback_function_id: Union[bytes, str], nonce: int, data_version: int, data: Union[bytes, str]) -&gt; None:
         &#34;&#34;&#34;
         Implementation of oracle_request in contract Oracle
@@ -4182,15 +4018,9 @@ which can be accomplished via <code>str.encode("utf_8")</code>:code:.</p>
     
     
         &#34;&#34;&#34;
-    
-        return self._fn_oracle_request.block_send(sender, payment, spec_id, callback_address, callback_function_id, nonce, data_version, data, self.call_contract_fee_amount,self.call_contract_fee_price,0,self.call_contract_debug_flag, self.call_contract_enforce_tx_receipt)
-    
-    
-    
-    
-    
-    
-    
+
+        return self._fn_oracle_request.block_send(sender, payment, spec_id, callback_address, callback_function_id, nonce, data_version, data, self.call_contract_fee_amount, self.call_contract_fee_price, 0, self.call_contract_debug_flag, self.call_contract_enforce_tx_receipt)
+
     def owner(self) -&gt; str:
         &#34;&#34;&#34;
         Implementation of owner in contract Oracle
@@ -4199,15 +4029,9 @@ which can be accomplished via <code>str.encode("utf_8")</code>:code:.</p>
     
     
         &#34;&#34;&#34;
-    
-    
-    
-    
-    
+
         return self._fn_owner.block_call()
-    
-    
-    
+
     def set_fulfillment_permission(self, node: str, allowed: bool) -&gt; None:
         &#34;&#34;&#34;
         Implementation of set_fulfillment_permission in contract Oracle
@@ -4216,15 +4040,9 @@ which can be accomplished via <code>str.encode("utf_8")</code>:code:.</p>
     
     
         &#34;&#34;&#34;
-    
-        return self._fn_set_fulfillment_permission.block_send(node, allowed, self.call_contract_fee_amount,self.call_contract_fee_price,0,self.call_contract_debug_flag, self.call_contract_enforce_tx_receipt)
-    
-    
-    
-    
-    
-    
-    
+
+        return self._fn_set_fulfillment_permission.block_send(node, allowed, self.call_contract_fee_amount, self.call_contract_fee_price, 0, self.call_contract_debug_flag, self.call_contract_enforce_tx_receipt)
+
     def transfer_ownership(self, new_owner: str) -&gt; None:
         &#34;&#34;&#34;
         Implementation of transfer_ownership in contract Oracle
@@ -4233,15 +4051,9 @@ which can be accomplished via <code>str.encode("utf_8")</code>:code:.</p>
     
     
         &#34;&#34;&#34;
-    
-        return self._fn_transfer_ownership.block_send(new_owner, self.call_contract_fee_amount,self.call_contract_fee_price,0,self.call_contract_debug_flag, self.call_contract_enforce_tx_receipt)
-    
-    
-    
-    
-    
-    
-    
+
+        return self._fn_transfer_ownership.block_send(new_owner, self.call_contract_fee_amount, self.call_contract_fee_price, 0, self.call_contract_debug_flag, self.call_contract_enforce_tx_receipt)
+
     def withdraw(self, recipient: str, amount: int) -&gt; None:
         &#34;&#34;&#34;
         Implementation of withdraw in contract Oracle
@@ -4250,15 +4062,9 @@ which can be accomplished via <code>str.encode("utf_8")</code>:code:.</p>
     
     
         &#34;&#34;&#34;
-    
-        return self._fn_withdraw.block_send(recipient, amount, self.call_contract_fee_amount,self.call_contract_fee_price,0,self.call_contract_debug_flag, self.call_contract_enforce_tx_receipt)
-    
-    
-    
-    
-    
-    
-    
+
+        return self._fn_withdraw.block_send(recipient, amount, self.call_contract_fee_amount, self.call_contract_fee_price, 0, self.call_contract_debug_flag, self.call_contract_enforce_tx_receipt)
+
     def withdrawable(self) -&gt; int:
         &#34;&#34;&#34;
         Implementation of withdrawable in contract Oracle
@@ -4267,14 +4073,10 @@ which can be accomplished via <code>str.encode("utf_8")</code>:code:.</p>
     
     
         &#34;&#34;&#34;
-    
-    
-    
-    
-    
+
         return self._fn_withdrawable.block_call()
 
-    def CallContractWait(self, t_long:int)-&gt; &#34;Oracle&#34;:
+    def CallContractWait(self, t_long: int) -&gt; &#34;Oracle&#34;:
         self._fn_expiry_time.setWait(t_long)
         self._fn_cancel_oracle_request.setWait(t_long)
         self._fn_fulfill_oracle_request.setWait(t_long)
@@ -4290,12 +4092,12 @@ which can be accomplished via <code>str.encode("utf_8")</code>:code:.</p>
         self._fn_withdrawable.setWait(t_long)
         return self
 
-
     @staticmethod
     def abi():
         &#34;&#34;&#34;Return the ABI to the underlying contract.&#34;&#34;&#34;
         return json.loads(
-            &#39;[{&#34;inputs&#34;:[{&#34;internalType&#34;:&#34;address&#34;,&#34;name&#34;:&#34;_link&#34;,&#34;type&#34;:&#34;address&#34;}],&#34;stateMutability&#34;:&#34;nonpayable&#34;,&#34;type&#34;:&#34;constructor&#34;},{&#34;anonymous&#34;:false,&#34;inputs&#34;:[{&#34;indexed&#34;:true,&#34;internalType&#34;:&#34;bytes32&#34;,&#34;name&#34;:&#34;requestId&#34;,&#34;type&#34;:&#34;bytes32&#34;}],&#34;name&#34;:&#34;CancelOracleRequest&#34;,&#34;type&#34;:&#34;event&#34;},{&#34;anonymous&#34;:false,&#34;inputs&#34;:[{&#34;indexed&#34;:true,&#34;internalType&#34;:&#34;bytes32&#34;,&#34;name&#34;:&#34;specId&#34;,&#34;type&#34;:&#34;bytes32&#34;},{&#34;indexed&#34;:false,&#34;internalType&#34;:&#34;address&#34;,&#34;name&#34;:&#34;requester&#34;,&#34;type&#34;:&#34;address&#34;},{&#34;indexed&#34;:false,&#34;internalType&#34;:&#34;bytes32&#34;,&#34;name&#34;:&#34;requestId&#34;,&#34;type&#34;:&#34;bytes32&#34;},{&#34;indexed&#34;:false,&#34;internalType&#34;:&#34;uint256&#34;,&#34;name&#34;:&#34;payment&#34;,&#34;type&#34;:&#34;uint256&#34;},{&#34;indexed&#34;:false,&#34;internalType&#34;:&#34;address&#34;,&#34;name&#34;:&#34;callbackAddr&#34;,&#34;type&#34;:&#34;address&#34;},{&#34;indexed&#34;:false,&#34;internalType&#34;:&#34;bytes4&#34;,&#34;name&#34;:&#34;callbackFunctionId&#34;,&#34;type&#34;:&#34;bytes4&#34;},{&#34;indexed&#34;:false,&#34;internalType&#34;:&#34;uint256&#34;,&#34;name&#34;:&#34;cancelExpiration&#34;,&#34;type&#34;:&#34;uint256&#34;},{&#34;indexed&#34;:false,&#34;internalType&#34;:&#34;uint256&#34;,&#34;name&#34;:&#34;dataVersion&#34;,&#34;type&#34;:&#34;uint256&#34;},{&#34;indexed&#34;:false,&#34;internalType&#34;:&#34;bytes&#34;,&#34;name&#34;:&#34;data&#34;,&#34;type&#34;:&#34;bytes&#34;}],&#34;name&#34;:&#34;OracleRequest&#34;,&#34;type&#34;:&#34;event&#34;},{&#34;anonymous&#34;:false,&#34;inputs&#34;:[{&#34;indexed&#34;:true,&#34;internalType&#34;:&#34;address&#34;,&#34;name&#34;:&#34;previousOwner&#34;,&#34;type&#34;:&#34;address&#34;},{&#34;indexed&#34;:true,&#34;internalType&#34;:&#34;address&#34;,&#34;name&#34;:&#34;newOwner&#34;,&#34;type&#34;:&#34;address&#34;}],&#34;name&#34;:&#34;OwnershipTransferred&#34;,&#34;type&#34;:&#34;event&#34;},{&#34;inputs&#34;:[],&#34;name&#34;:&#34;EXPIRY_TIME&#34;,&#34;outputs&#34;:[{&#34;internalType&#34;:&#34;uint256&#34;,&#34;name&#34;:&#34;&#34;,&#34;type&#34;:&#34;uint256&#34;}],&#34;stateMutability&#34;:&#34;view&#34;,&#34;type&#34;:&#34;function&#34;},{&#34;inputs&#34;:[{&#34;internalType&#34;:&#34;bytes32&#34;,&#34;name&#34;:&#34;_requestId&#34;,&#34;type&#34;:&#34;bytes32&#34;},{&#34;internalType&#34;:&#34;uint256&#34;,&#34;name&#34;:&#34;_payment&#34;,&#34;type&#34;:&#34;uint256&#34;},{&#34;internalType&#34;:&#34;bytes4&#34;,&#34;name&#34;:&#34;_callbackFunc&#34;,&#34;type&#34;:&#34;bytes4&#34;},{&#34;internalType&#34;:&#34;uint256&#34;,&#34;name&#34;:&#34;_expiration&#34;,&#34;type&#34;:&#34;uint256&#34;}],&#34;name&#34;:&#34;cancelOracleRequest&#34;,&#34;outputs&#34;:[],&#34;stateMutability&#34;:&#34;nonpayable&#34;,&#34;type&#34;:&#34;function&#34;},{&#34;inputs&#34;:[{&#34;internalType&#34;:&#34;bytes32&#34;,&#34;name&#34;:&#34;_requestId&#34;,&#34;type&#34;:&#34;bytes32&#34;},{&#34;internalType&#34;:&#34;uint256&#34;,&#34;name&#34;:&#34;_payment&#34;,&#34;type&#34;:&#34;uint256&#34;},{&#34;internalType&#34;:&#34;address&#34;,&#34;name&#34;:&#34;_callbackAddress&#34;,&#34;type&#34;:&#34;address&#34;},{&#34;internalType&#34;:&#34;bytes4&#34;,&#34;name&#34;:&#34;_callbackFunctionId&#34;,&#34;type&#34;:&#34;bytes4&#34;},{&#34;internalType&#34;:&#34;uint256&#34;,&#34;name&#34;:&#34;_expiration&#34;,&#34;type&#34;:&#34;uint256&#34;},{&#34;internalType&#34;:&#34;bytes32&#34;,&#34;name&#34;:&#34;_data&#34;,&#34;type&#34;:&#34;bytes32&#34;}],&#34;name&#34;:&#34;fulfillOracleRequest&#34;,&#34;outputs&#34;:[{&#34;internalType&#34;:&#34;bool&#34;,&#34;name&#34;:&#34;&#34;,&#34;type&#34;:&#34;bool&#34;}],&#34;stateMutability&#34;:&#34;nonpayable&#34;,&#34;type&#34;:&#34;function&#34;},{&#34;inputs&#34;:[{&#34;internalType&#34;:&#34;address&#34;,&#34;name&#34;:&#34;_node&#34;,&#34;type&#34;:&#34;address&#34;}],&#34;name&#34;:&#34;getAuthorizationStatus&#34;,&#34;outputs&#34;:[{&#34;internalType&#34;:&#34;bool&#34;,&#34;name&#34;:&#34;&#34;,&#34;type&#34;:&#34;bool&#34;}],&#34;stateMutability&#34;:&#34;view&#34;,&#34;type&#34;:&#34;function&#34;},{&#34;inputs&#34;:[],&#34;name&#34;:&#34;getChainlinkToken&#34;,&#34;outputs&#34;:[{&#34;internalType&#34;:&#34;address&#34;,&#34;name&#34;:&#34;&#34;,&#34;type&#34;:&#34;address&#34;}],&#34;stateMutability&#34;:&#34;view&#34;,&#34;type&#34;:&#34;function&#34;},{&#34;inputs&#34;:[],&#34;name&#34;:&#34;isOwner&#34;,&#34;outputs&#34;:[{&#34;internalType&#34;:&#34;bool&#34;,&#34;name&#34;:&#34;&#34;,&#34;type&#34;:&#34;bool&#34;}],&#34;stateMutability&#34;:&#34;view&#34;,&#34;type&#34;:&#34;function&#34;},{&#34;inputs&#34;:[{&#34;internalType&#34;:&#34;address&#34;,&#34;name&#34;:&#34;_sender&#34;,&#34;type&#34;:&#34;address&#34;},{&#34;internalType&#34;:&#34;uint256&#34;,&#34;name&#34;:&#34;_amount&#34;,&#34;type&#34;:&#34;uint256&#34;},{&#34;internalType&#34;:&#34;bytes&#34;,&#34;name&#34;:&#34;_data&#34;,&#34;type&#34;:&#34;bytes&#34;}],&#34;name&#34;:&#34;onTokenTransfer&#34;,&#34;outputs&#34;:[],&#34;stateMutability&#34;:&#34;nonpayable&#34;,&#34;type&#34;:&#34;function&#34;},{&#34;inputs&#34;:[{&#34;internalType&#34;:&#34;address&#34;,&#34;name&#34;:&#34;_sender&#34;,&#34;type&#34;:&#34;address&#34;},{&#34;internalType&#34;:&#34;uint256&#34;,&#34;name&#34;:&#34;_payment&#34;,&#34;type&#34;:&#34;uint256&#34;},{&#34;internalType&#34;:&#34;bytes32&#34;,&#34;name&#34;:&#34;_specId&#34;,&#34;type&#34;:&#34;bytes32&#34;},{&#34;internalType&#34;:&#34;address&#34;,&#34;name&#34;:&#34;_callbackAddress&#34;,&#34;type&#34;:&#34;address&#34;},{&#34;internalType&#34;:&#34;bytes4&#34;,&#34;name&#34;:&#34;_callbackFunctionId&#34;,&#34;type&#34;:&#34;bytes4&#34;},{&#34;internalType&#34;:&#34;uint256&#34;,&#34;name&#34;:&#34;_nonce&#34;,&#34;type&#34;:&#34;uint256&#34;},{&#34;internalType&#34;:&#34;uint256&#34;,&#34;name&#34;:&#34;_dataVersion&#34;,&#34;type&#34;:&#34;uint256&#34;},{&#34;internalType&#34;:&#34;bytes&#34;,&#34;name&#34;:&#34;_data&#34;,&#34;type&#34;:&#34;bytes&#34;}],&#34;name&#34;:&#34;oracleRequest&#34;,&#34;outputs&#34;:[],&#34;stateMutability&#34;:&#34;nonpayable&#34;,&#34;type&#34;:&#34;function&#34;},{&#34;inputs&#34;:[],&#34;name&#34;:&#34;owner&#34;,&#34;outputs&#34;:[{&#34;internalType&#34;:&#34;address&#34;,&#34;name&#34;:&#34;&#34;,&#34;type&#34;:&#34;address&#34;}],&#34;stateMutability&#34;:&#34;view&#34;,&#34;type&#34;:&#34;function&#34;},{&#34;inputs&#34;:[{&#34;internalType&#34;:&#34;address&#34;,&#34;name&#34;:&#34;_node&#34;,&#34;type&#34;:&#34;address&#34;},{&#34;internalType&#34;:&#34;bool&#34;,&#34;name&#34;:&#34;_allowed&#34;,&#34;type&#34;:&#34;bool&#34;}],&#34;name&#34;:&#34;setFulfillmentPermission&#34;,&#34;outputs&#34;:[],&#34;stateMutability&#34;:&#34;nonpayable&#34;,&#34;type&#34;:&#34;function&#34;},{&#34;inputs&#34;:[{&#34;internalType&#34;:&#34;address&#34;,&#34;name&#34;:&#34;newOwner&#34;,&#34;type&#34;:&#34;address&#34;}],&#34;name&#34;:&#34;transferOwnership&#34;,&#34;outputs&#34;:[],&#34;stateMutability&#34;:&#34;nonpayable&#34;,&#34;type&#34;:&#34;function&#34;},{&#34;inputs&#34;:[{&#34;internalType&#34;:&#34;address&#34;,&#34;name&#34;:&#34;_recipient&#34;,&#34;type&#34;:&#34;address&#34;},{&#34;internalType&#34;:&#34;uint256&#34;,&#34;name&#34;:&#34;_amount&#34;,&#34;type&#34;:&#34;uint256&#34;}],&#34;name&#34;:&#34;withdraw&#34;,&#34;outputs&#34;:[],&#34;stateMutability&#34;:&#34;nonpayable&#34;,&#34;type&#34;:&#34;function&#34;},{&#34;inputs&#34;:[],&#34;name&#34;:&#34;withdrawable&#34;,&#34;outputs&#34;:[{&#34;internalType&#34;:&#34;uint256&#34;,&#34;name&#34;:&#34;&#34;,&#34;type&#34;:&#34;uint256&#34;}],&#34;stateMutability&#34;:&#34;view&#34;,&#34;type&#34;:&#34;function&#34;}]&#39;  # noqa: E501 (line-too-long)
+            &#39;[{&#34;inputs&#34;:[{&#34;internalType&#34;:&#34;address&#34;,&#34;name&#34;:&#34;_link&#34;,&#34;type&#34;:&#34;address&#34;}],&#34;stateMutability&#34;:&#34;nonpayable&#34;,&#34;type&#34;:&#34;constructor&#34;},{&#34;anonymous&#34;:false,&#34;inputs&#34;:[{&#34;indexed&#34;:true,&#34;internalType&#34;:&#34;bytes32&#34;,&#34;name&#34;:&#34;requestId&#34;,&#34;type&#34;:&#34;bytes32&#34;}],&#34;name&#34;:&#34;CancelOracleRequest&#34;,&#34;type&#34;:&#34;event&#34;},{&#34;anonymous&#34;:false,&#34;inputs&#34;:[{&#34;indexed&#34;:true,&#34;internalType&#34;:&#34;bytes32&#34;,&#34;name&#34;:&#34;specId&#34;,&#34;type&#34;:&#34;bytes32&#34;},{&#34;indexed&#34;:false,&#34;internalType&#34;:&#34;address&#34;,&#34;name&#34;:&#34;requester&#34;,&#34;type&#34;:&#34;address&#34;},{&#34;indexed&#34;:false,&#34;internalType&#34;:&#34;bytes32&#34;,&#34;name&#34;:&#34;requestId&#34;,&#34;type&#34;:&#34;bytes32&#34;},{&#34;indexed&#34;:false,&#34;internalType&#34;:&#34;uint256&#34;,&#34;name&#34;:&#34;payment&#34;,&#34;type&#34;:&#34;uint256&#34;},{&#34;indexed&#34;:false,&#34;internalType&#34;:&#34;address&#34;,&#34;name&#34;:&#34;callbackAddr&#34;,&#34;type&#34;:&#34;address&#34;},{&#34;indexed&#34;:false,&#34;internalType&#34;:&#34;bytes4&#34;,&#34;name&#34;:&#34;callbackFunctionId&#34;,&#34;type&#34;:&#34;bytes4&#34;},{&#34;indexed&#34;:false,&#34;internalType&#34;:&#34;uint256&#34;,&#34;name&#34;:&#34;cancelExpiration&#34;,&#34;type&#34;:&#34;uint256&#34;},{&#34;indexed&#34;:false,&#34;internalType&#34;:&#34;uint256&#34;,&#34;name&#34;:&#34;dataVersion&#34;,&#34;type&#34;:&#34;uint256&#34;},{&#34;indexed&#34;:false,&#34;internalType&#34;:&#34;bytes&#34;,&#34;name&#34;:&#34;data&#34;,&#34;type&#34;:&#34;bytes&#34;}],&#34;name&#34;:&#34;OracleRequest&#34;,&#34;type&#34;:&#34;event&#34;},{&#34;anonymous&#34;:false,&#34;inputs&#34;:[{&#34;indexed&#34;:true,&#34;internalType&#34;:&#34;address&#34;,&#34;name&#34;:&#34;previousOwner&#34;,&#34;type&#34;:&#34;address&#34;},{&#34;indexed&#34;:true,&#34;internalType&#34;:&#34;address&#34;,&#34;name&#34;:&#34;newOwner&#34;,&#34;type&#34;:&#34;address&#34;}],&#34;name&#34;:&#34;OwnershipTransferred&#34;,&#34;type&#34;:&#34;event&#34;},{&#34;inputs&#34;:[],&#34;name&#34;:&#34;EXPIRY_TIME&#34;,&#34;outputs&#34;:[{&#34;internalType&#34;:&#34;uint256&#34;,&#34;name&#34;:&#34;&#34;,&#34;type&#34;:&#34;uint256&#34;}],&#34;stateMutability&#34;:&#34;view&#34;,&#34;type&#34;:&#34;function&#34;},{&#34;inputs&#34;:[{&#34;internalType&#34;:&#34;bytes32&#34;,&#34;name&#34;:&#34;_requestId&#34;,&#34;type&#34;:&#34;bytes32&#34;},{&#34;internalType&#34;:&#34;uint256&#34;,&#34;name&#34;:&#34;_payment&#34;,&#34;type&#34;:&#34;uint256&#34;},{&#34;internalType&#34;:&#34;bytes4&#34;,&#34;name&#34;:&#34;_callbackFunc&#34;,&#34;type&#34;:&#34;bytes4&#34;},{&#34;internalType&#34;:&#34;uint256&#34;,&#34;name&#34;:&#34;_expiration&#34;,&#34;type&#34;:&#34;uint256&#34;}],&#34;name&#34;:&#34;cancelOracleRequest&#34;,&#34;outputs&#34;:[],&#34;stateMutability&#34;:&#34;nonpayable&#34;,&#34;type&#34;:&#34;function&#34;},{&#34;inputs&#34;:[{&#34;internalType&#34;:&#34;bytes32&#34;,&#34;name&#34;:&#34;_requestId&#34;,&#34;type&#34;:&#34;bytes32&#34;},{&#34;internalType&#34;:&#34;uint256&#34;,&#34;name&#34;:&#34;_payment&#34;,&#34;type&#34;:&#34;uint256&#34;},{&#34;internalType&#34;:&#34;address&#34;,&#34;name&#34;:&#34;_callbackAddress&#34;,&#34;type&#34;:&#34;address&#34;},{&#34;internalType&#34;:&#34;bytes4&#34;,&#34;name&#34;:&#34;_callbackFunctionId&#34;,&#34;type&#34;:&#34;bytes4&#34;},{&#34;internalType&#34;:&#34;uint256&#34;,&#34;name&#34;:&#34;_expiration&#34;,&#34;type&#34;:&#34;uint256&#34;},{&#34;internalType&#34;:&#34;bytes32&#34;,&#34;name&#34;:&#34;_data&#34;,&#34;type&#34;:&#34;bytes32&#34;}],&#34;name&#34;:&#34;fulfillOracleRequest&#34;,&#34;outputs&#34;:[{&#34;internalType&#34;:&#34;bool&#34;,&#34;name&#34;:&#34;&#34;,&#34;type&#34;:&#34;bool&#34;}],&#34;stateMutability&#34;:&#34;nonpayable&#34;,&#34;type&#34;:&#34;function&#34;},{&#34;inputs&#34;:[{&#34;internalType&#34;:&#34;address&#34;,&#34;name&#34;:&#34;_node&#34;,&#34;type&#34;:&#34;address&#34;}],&#34;name&#34;:&#34;getAuthorizationStatus&#34;,&#34;outputs&#34;:[{&#34;internalType&#34;:&#34;bool&#34;,&#34;name&#34;:&#34;&#34;,&#34;type&#34;:&#34;bool&#34;}],&#34;stateMutability&#34;:&#34;view&#34;,&#34;type&#34;:&#34;function&#34;},{&#34;inputs&#34;:[],&#34;name&#34;:&#34;getChainlinkToken&#34;,&#34;outputs&#34;:[{&#34;internalType&#34;:&#34;address&#34;,&#34;name&#34;:&#34;&#34;,&#34;type&#34;:&#34;address&#34;}],&#34;stateMutability&#34;:&#34;view&#34;,&#34;type&#34;:&#34;function&#34;},{&#34;inputs&#34;:[],&#34;name&#34;:&#34;isOwner&#34;,&#34;outputs&#34;:[{&#34;internalType&#34;:&#34;bool&#34;,&#34;name&#34;:&#34;&#34;,&#34;type&#34;:&#34;bool&#34;}],&#34;stateMutability&#34;:&#34;view&#34;,&#34;type&#34;:&#34;function&#34;},{&#34;inputs&#34;:[{&#34;internalType&#34;:&#34;address&#34;,&#34;name&#34;:&#34;_sender&#34;,&#34;type&#34;:&#34;address&#34;},{&#34;internalType&#34;:&#34;uint256&#34;,&#34;name&#34;:&#34;_amount&#34;,&#34;type&#34;:&#34;uint256&#34;},{&#34;internalType&#34;:&#34;bytes&#34;,&#34;name&#34;:&#34;_data&#34;,&#34;type&#34;:&#34;bytes&#34;}],&#34;name&#34;:&#34;onTokenTransfer&#34;,&#34;outputs&#34;:[],&#34;stateMutability&#34;:&#34;nonpayable&#34;,&#34;type&#34;:&#34;function&#34;},{&#34;inputs&#34;:[{&#34;internalType&#34;:&#34;address&#34;,&#34;name&#34;:&#34;_sender&#34;,&#34;type&#34;:&#34;address&#34;},{&#34;internalType&#34;:&#34;uint256&#34;,&#34;name&#34;:&#34;_payment&#34;,&#34;type&#34;:&#34;uint256&#34;},{&#34;internalType&#34;:&#34;bytes32&#34;,&#34;name&#34;:&#34;_specId&#34;,&#34;type&#34;:&#34;bytes32&#34;},{&#34;internalType&#34;:&#34;address&#34;,&#34;name&#34;:&#34;_callbackAddress&#34;,&#34;type&#34;:&#34;address&#34;},{&#34;internalType&#34;:&#34;bytes4&#34;,&#34;name&#34;:&#34;_callbackFunctionId&#34;,&#34;type&#34;:&#34;bytes4&#34;},{&#34;internalType&#34;:&#34;uint256&#34;,&#34;name&#34;:&#34;_nonce&#34;,&#34;type&#34;:&#34;uint256&#34;},{&#34;internalType&#34;:&#34;uint256&#34;,&#34;name&#34;:&#34;_dataVersion&#34;,&#34;type&#34;:&#34;uint256&#34;},{&#34;internalType&#34;:&#34;bytes&#34;,&#34;name&#34;:&#34;_data&#34;,&#34;type&#34;:&#34;bytes&#34;}],&#34;name&#34;:&#34;oracleRequest&#34;,&#34;outputs&#34;:[],&#34;stateMutability&#34;:&#34;nonpayable&#34;,&#34;type&#34;:&#34;function&#34;},{&#34;inputs&#34;:[],&#34;name&#34;:&#34;owner&#34;,&#34;outputs&#34;:[{&#34;internalType&#34;:&#34;address&#34;,&#34;name&#34;:&#34;&#34;,&#34;type&#34;:&#34;address&#34;}],&#34;stateMutability&#34;:&#34;view&#34;,&#34;type&#34;:&#34;function&#34;},{&#34;inputs&#34;:[{&#34;internalType&#34;:&#34;address&#34;,&#34;name&#34;:&#34;_node&#34;,&#34;type&#34;:&#34;address&#34;},{&#34;internalType&#34;:&#34;bool&#34;,&#34;name&#34;:&#34;_allowed&#34;,&#34;type&#34;:&#34;bool&#34;}],&#34;name&#34;:&#34;setFulfillmentPermission&#34;,&#34;outputs&#34;:[],&#34;stateMutability&#34;:&#34;nonpayable&#34;,&#34;type&#34;:&#34;function&#34;},{&#34;inputs&#34;:[{&#34;internalType&#34;:&#34;address&#34;,&#34;name&#34;:&#34;newOwner&#34;,&#34;type&#34;:&#34;address&#34;}],&#34;name&#34;:&#34;transferOwnership&#34;,&#34;outputs&#34;:[],&#34;stateMutability&#34;:&#34;nonpayable&#34;,&#34;type&#34;:&#34;function&#34;},{&#34;inputs&#34;:[{&#34;internalType&#34;:&#34;address&#34;,&#34;name&#34;:&#34;_recipient&#34;,&#34;type&#34;:&#34;address&#34;},{&#34;internalType&#34;:&#34;uint256&#34;,&#34;name&#34;:&#34;_amount&#34;,&#34;type&#34;:&#34;uint256&#34;}],&#34;name&#34;:&#34;withdraw&#34;,&#34;outputs&#34;:[],&#34;stateMutability&#34;:&#34;nonpayable&#34;,&#34;type&#34;:&#34;function&#34;},{&#34;inputs&#34;:[],&#34;name&#34;:&#34;withdrawable&#34;,&#34;outputs&#34;:[{&#34;internalType&#34;:&#34;uint256&#34;,&#34;name&#34;:&#34;&#34;,&#34;type&#34;:&#34;uint256&#34;}],&#34;stateMutability&#34;:&#34;view&#34;,&#34;type&#34;:&#34;function&#34;}]&#39;
+            # noqa: E501 (line-too-long)
         )</code></pre>
 </details>
 <h3>Ancestors</h3>
@@ -4324,7 +4126,8 @@ which can be accomplished via <code>str.encode("utf_8")</code>:code:.</p>
 def abi():
     &#34;&#34;&#34;Return the ABI to the underlying contract.&#34;&#34;&#34;
     return json.loads(
-        &#39;[{&#34;inputs&#34;:[{&#34;internalType&#34;:&#34;address&#34;,&#34;name&#34;:&#34;_link&#34;,&#34;type&#34;:&#34;address&#34;}],&#34;stateMutability&#34;:&#34;nonpayable&#34;,&#34;type&#34;:&#34;constructor&#34;},{&#34;anonymous&#34;:false,&#34;inputs&#34;:[{&#34;indexed&#34;:true,&#34;internalType&#34;:&#34;bytes32&#34;,&#34;name&#34;:&#34;requestId&#34;,&#34;type&#34;:&#34;bytes32&#34;}],&#34;name&#34;:&#34;CancelOracleRequest&#34;,&#34;type&#34;:&#34;event&#34;},{&#34;anonymous&#34;:false,&#34;inputs&#34;:[{&#34;indexed&#34;:true,&#34;internalType&#34;:&#34;bytes32&#34;,&#34;name&#34;:&#34;specId&#34;,&#34;type&#34;:&#34;bytes32&#34;},{&#34;indexed&#34;:false,&#34;internalType&#34;:&#34;address&#34;,&#34;name&#34;:&#34;requester&#34;,&#34;type&#34;:&#34;address&#34;},{&#34;indexed&#34;:false,&#34;internalType&#34;:&#34;bytes32&#34;,&#34;name&#34;:&#34;requestId&#34;,&#34;type&#34;:&#34;bytes32&#34;},{&#34;indexed&#34;:false,&#34;internalType&#34;:&#34;uint256&#34;,&#34;name&#34;:&#34;payment&#34;,&#34;type&#34;:&#34;uint256&#34;},{&#34;indexed&#34;:false,&#34;internalType&#34;:&#34;address&#34;,&#34;name&#34;:&#34;callbackAddr&#34;,&#34;type&#34;:&#34;address&#34;},{&#34;indexed&#34;:false,&#34;internalType&#34;:&#34;bytes4&#34;,&#34;name&#34;:&#34;callbackFunctionId&#34;,&#34;type&#34;:&#34;bytes4&#34;},{&#34;indexed&#34;:false,&#34;internalType&#34;:&#34;uint256&#34;,&#34;name&#34;:&#34;cancelExpiration&#34;,&#34;type&#34;:&#34;uint256&#34;},{&#34;indexed&#34;:false,&#34;internalType&#34;:&#34;uint256&#34;,&#34;name&#34;:&#34;dataVersion&#34;,&#34;type&#34;:&#34;uint256&#34;},{&#34;indexed&#34;:false,&#34;internalType&#34;:&#34;bytes&#34;,&#34;name&#34;:&#34;data&#34;,&#34;type&#34;:&#34;bytes&#34;}],&#34;name&#34;:&#34;OracleRequest&#34;,&#34;type&#34;:&#34;event&#34;},{&#34;anonymous&#34;:false,&#34;inputs&#34;:[{&#34;indexed&#34;:true,&#34;internalType&#34;:&#34;address&#34;,&#34;name&#34;:&#34;previousOwner&#34;,&#34;type&#34;:&#34;address&#34;},{&#34;indexed&#34;:true,&#34;internalType&#34;:&#34;address&#34;,&#34;name&#34;:&#34;newOwner&#34;,&#34;type&#34;:&#34;address&#34;}],&#34;name&#34;:&#34;OwnershipTransferred&#34;,&#34;type&#34;:&#34;event&#34;},{&#34;inputs&#34;:[],&#34;name&#34;:&#34;EXPIRY_TIME&#34;,&#34;outputs&#34;:[{&#34;internalType&#34;:&#34;uint256&#34;,&#34;name&#34;:&#34;&#34;,&#34;type&#34;:&#34;uint256&#34;}],&#34;stateMutability&#34;:&#34;view&#34;,&#34;type&#34;:&#34;function&#34;},{&#34;inputs&#34;:[{&#34;internalType&#34;:&#34;bytes32&#34;,&#34;name&#34;:&#34;_requestId&#34;,&#34;type&#34;:&#34;bytes32&#34;},{&#34;internalType&#34;:&#34;uint256&#34;,&#34;name&#34;:&#34;_payment&#34;,&#34;type&#34;:&#34;uint256&#34;},{&#34;internalType&#34;:&#34;bytes4&#34;,&#34;name&#34;:&#34;_callbackFunc&#34;,&#34;type&#34;:&#34;bytes4&#34;},{&#34;internalType&#34;:&#34;uint256&#34;,&#34;name&#34;:&#34;_expiration&#34;,&#34;type&#34;:&#34;uint256&#34;}],&#34;name&#34;:&#34;cancelOracleRequest&#34;,&#34;outputs&#34;:[],&#34;stateMutability&#34;:&#34;nonpayable&#34;,&#34;type&#34;:&#34;function&#34;},{&#34;inputs&#34;:[{&#34;internalType&#34;:&#34;bytes32&#34;,&#34;name&#34;:&#34;_requestId&#34;,&#34;type&#34;:&#34;bytes32&#34;},{&#34;internalType&#34;:&#34;uint256&#34;,&#34;name&#34;:&#34;_payment&#34;,&#34;type&#34;:&#34;uint256&#34;},{&#34;internalType&#34;:&#34;address&#34;,&#34;name&#34;:&#34;_callbackAddress&#34;,&#34;type&#34;:&#34;address&#34;},{&#34;internalType&#34;:&#34;bytes4&#34;,&#34;name&#34;:&#34;_callbackFunctionId&#34;,&#34;type&#34;:&#34;bytes4&#34;},{&#34;internalType&#34;:&#34;uint256&#34;,&#34;name&#34;:&#34;_expiration&#34;,&#34;type&#34;:&#34;uint256&#34;},{&#34;internalType&#34;:&#34;bytes32&#34;,&#34;name&#34;:&#34;_data&#34;,&#34;type&#34;:&#34;bytes32&#34;}],&#34;name&#34;:&#34;fulfillOracleRequest&#34;,&#34;outputs&#34;:[{&#34;internalType&#34;:&#34;bool&#34;,&#34;name&#34;:&#34;&#34;,&#34;type&#34;:&#34;bool&#34;}],&#34;stateMutability&#34;:&#34;nonpayable&#34;,&#34;type&#34;:&#34;function&#34;},{&#34;inputs&#34;:[{&#34;internalType&#34;:&#34;address&#34;,&#34;name&#34;:&#34;_node&#34;,&#34;type&#34;:&#34;address&#34;}],&#34;name&#34;:&#34;getAuthorizationStatus&#34;,&#34;outputs&#34;:[{&#34;internalType&#34;:&#34;bool&#34;,&#34;name&#34;:&#34;&#34;,&#34;type&#34;:&#34;bool&#34;}],&#34;stateMutability&#34;:&#34;view&#34;,&#34;type&#34;:&#34;function&#34;},{&#34;inputs&#34;:[],&#34;name&#34;:&#34;getChainlinkToken&#34;,&#34;outputs&#34;:[{&#34;internalType&#34;:&#34;address&#34;,&#34;name&#34;:&#34;&#34;,&#34;type&#34;:&#34;address&#34;}],&#34;stateMutability&#34;:&#34;view&#34;,&#34;type&#34;:&#34;function&#34;},{&#34;inputs&#34;:[],&#34;name&#34;:&#34;isOwner&#34;,&#34;outputs&#34;:[{&#34;internalType&#34;:&#34;bool&#34;,&#34;name&#34;:&#34;&#34;,&#34;type&#34;:&#34;bool&#34;}],&#34;stateMutability&#34;:&#34;view&#34;,&#34;type&#34;:&#34;function&#34;},{&#34;inputs&#34;:[{&#34;internalType&#34;:&#34;address&#34;,&#34;name&#34;:&#34;_sender&#34;,&#34;type&#34;:&#34;address&#34;},{&#34;internalType&#34;:&#34;uint256&#34;,&#34;name&#34;:&#34;_amount&#34;,&#34;type&#34;:&#34;uint256&#34;},{&#34;internalType&#34;:&#34;bytes&#34;,&#34;name&#34;:&#34;_data&#34;,&#34;type&#34;:&#34;bytes&#34;}],&#34;name&#34;:&#34;onTokenTransfer&#34;,&#34;outputs&#34;:[],&#34;stateMutability&#34;:&#34;nonpayable&#34;,&#34;type&#34;:&#34;function&#34;},{&#34;inputs&#34;:[{&#34;internalType&#34;:&#34;address&#34;,&#34;name&#34;:&#34;_sender&#34;,&#34;type&#34;:&#34;address&#34;},{&#34;internalType&#34;:&#34;uint256&#34;,&#34;name&#34;:&#34;_payment&#34;,&#34;type&#34;:&#34;uint256&#34;},{&#34;internalType&#34;:&#34;bytes32&#34;,&#34;name&#34;:&#34;_specId&#34;,&#34;type&#34;:&#34;bytes32&#34;},{&#34;internalType&#34;:&#34;address&#34;,&#34;name&#34;:&#34;_callbackAddress&#34;,&#34;type&#34;:&#34;address&#34;},{&#34;internalType&#34;:&#34;bytes4&#34;,&#34;name&#34;:&#34;_callbackFunctionId&#34;,&#34;type&#34;:&#34;bytes4&#34;},{&#34;internalType&#34;:&#34;uint256&#34;,&#34;name&#34;:&#34;_nonce&#34;,&#34;type&#34;:&#34;uint256&#34;},{&#34;internalType&#34;:&#34;uint256&#34;,&#34;name&#34;:&#34;_dataVersion&#34;,&#34;type&#34;:&#34;uint256&#34;},{&#34;internalType&#34;:&#34;bytes&#34;,&#34;name&#34;:&#34;_data&#34;,&#34;type&#34;:&#34;bytes&#34;}],&#34;name&#34;:&#34;oracleRequest&#34;,&#34;outputs&#34;:[],&#34;stateMutability&#34;:&#34;nonpayable&#34;,&#34;type&#34;:&#34;function&#34;},{&#34;inputs&#34;:[],&#34;name&#34;:&#34;owner&#34;,&#34;outputs&#34;:[{&#34;internalType&#34;:&#34;address&#34;,&#34;name&#34;:&#34;&#34;,&#34;type&#34;:&#34;address&#34;}],&#34;stateMutability&#34;:&#34;view&#34;,&#34;type&#34;:&#34;function&#34;},{&#34;inputs&#34;:[{&#34;internalType&#34;:&#34;address&#34;,&#34;name&#34;:&#34;_node&#34;,&#34;type&#34;:&#34;address&#34;},{&#34;internalType&#34;:&#34;bool&#34;,&#34;name&#34;:&#34;_allowed&#34;,&#34;type&#34;:&#34;bool&#34;}],&#34;name&#34;:&#34;setFulfillmentPermission&#34;,&#34;outputs&#34;:[],&#34;stateMutability&#34;:&#34;nonpayable&#34;,&#34;type&#34;:&#34;function&#34;},{&#34;inputs&#34;:[{&#34;internalType&#34;:&#34;address&#34;,&#34;name&#34;:&#34;newOwner&#34;,&#34;type&#34;:&#34;address&#34;}],&#34;name&#34;:&#34;transferOwnership&#34;,&#34;outputs&#34;:[],&#34;stateMutability&#34;:&#34;nonpayable&#34;,&#34;type&#34;:&#34;function&#34;},{&#34;inputs&#34;:[{&#34;internalType&#34;:&#34;address&#34;,&#34;name&#34;:&#34;_recipient&#34;,&#34;type&#34;:&#34;address&#34;},{&#34;internalType&#34;:&#34;uint256&#34;,&#34;name&#34;:&#34;_amount&#34;,&#34;type&#34;:&#34;uint256&#34;}],&#34;name&#34;:&#34;withdraw&#34;,&#34;outputs&#34;:[],&#34;stateMutability&#34;:&#34;nonpayable&#34;,&#34;type&#34;:&#34;function&#34;},{&#34;inputs&#34;:[],&#34;name&#34;:&#34;withdrawable&#34;,&#34;outputs&#34;:[{&#34;internalType&#34;:&#34;uint256&#34;,&#34;name&#34;:&#34;&#34;,&#34;type&#34;:&#34;uint256&#34;}],&#34;stateMutability&#34;:&#34;view&#34;,&#34;type&#34;:&#34;function&#34;}]&#39;  # noqa: E501 (line-too-long)
+        &#39;[{&#34;inputs&#34;:[{&#34;internalType&#34;:&#34;address&#34;,&#34;name&#34;:&#34;_link&#34;,&#34;type&#34;:&#34;address&#34;}],&#34;stateMutability&#34;:&#34;nonpayable&#34;,&#34;type&#34;:&#34;constructor&#34;},{&#34;anonymous&#34;:false,&#34;inputs&#34;:[{&#34;indexed&#34;:true,&#34;internalType&#34;:&#34;bytes32&#34;,&#34;name&#34;:&#34;requestId&#34;,&#34;type&#34;:&#34;bytes32&#34;}],&#34;name&#34;:&#34;CancelOracleRequest&#34;,&#34;type&#34;:&#34;event&#34;},{&#34;anonymous&#34;:false,&#34;inputs&#34;:[{&#34;indexed&#34;:true,&#34;internalType&#34;:&#34;bytes32&#34;,&#34;name&#34;:&#34;specId&#34;,&#34;type&#34;:&#34;bytes32&#34;},{&#34;indexed&#34;:false,&#34;internalType&#34;:&#34;address&#34;,&#34;name&#34;:&#34;requester&#34;,&#34;type&#34;:&#34;address&#34;},{&#34;indexed&#34;:false,&#34;internalType&#34;:&#34;bytes32&#34;,&#34;name&#34;:&#34;requestId&#34;,&#34;type&#34;:&#34;bytes32&#34;},{&#34;indexed&#34;:false,&#34;internalType&#34;:&#34;uint256&#34;,&#34;name&#34;:&#34;payment&#34;,&#34;type&#34;:&#34;uint256&#34;},{&#34;indexed&#34;:false,&#34;internalType&#34;:&#34;address&#34;,&#34;name&#34;:&#34;callbackAddr&#34;,&#34;type&#34;:&#34;address&#34;},{&#34;indexed&#34;:false,&#34;internalType&#34;:&#34;bytes4&#34;,&#34;name&#34;:&#34;callbackFunctionId&#34;,&#34;type&#34;:&#34;bytes4&#34;},{&#34;indexed&#34;:false,&#34;internalType&#34;:&#34;uint256&#34;,&#34;name&#34;:&#34;cancelExpiration&#34;,&#34;type&#34;:&#34;uint256&#34;},{&#34;indexed&#34;:false,&#34;internalType&#34;:&#34;uint256&#34;,&#34;name&#34;:&#34;dataVersion&#34;,&#34;type&#34;:&#34;uint256&#34;},{&#34;indexed&#34;:false,&#34;internalType&#34;:&#34;bytes&#34;,&#34;name&#34;:&#34;data&#34;,&#34;type&#34;:&#34;bytes&#34;}],&#34;name&#34;:&#34;OracleRequest&#34;,&#34;type&#34;:&#34;event&#34;},{&#34;anonymous&#34;:false,&#34;inputs&#34;:[{&#34;indexed&#34;:true,&#34;internalType&#34;:&#34;address&#34;,&#34;name&#34;:&#34;previousOwner&#34;,&#34;type&#34;:&#34;address&#34;},{&#34;indexed&#34;:true,&#34;internalType&#34;:&#34;address&#34;,&#34;name&#34;:&#34;newOwner&#34;,&#34;type&#34;:&#34;address&#34;}],&#34;name&#34;:&#34;OwnershipTransferred&#34;,&#34;type&#34;:&#34;event&#34;},{&#34;inputs&#34;:[],&#34;name&#34;:&#34;EXPIRY_TIME&#34;,&#34;outputs&#34;:[{&#34;internalType&#34;:&#34;uint256&#34;,&#34;name&#34;:&#34;&#34;,&#34;type&#34;:&#34;uint256&#34;}],&#34;stateMutability&#34;:&#34;view&#34;,&#34;type&#34;:&#34;function&#34;},{&#34;inputs&#34;:[{&#34;internalType&#34;:&#34;bytes32&#34;,&#34;name&#34;:&#34;_requestId&#34;,&#34;type&#34;:&#34;bytes32&#34;},{&#34;internalType&#34;:&#34;uint256&#34;,&#34;name&#34;:&#34;_payment&#34;,&#34;type&#34;:&#34;uint256&#34;},{&#34;internalType&#34;:&#34;bytes4&#34;,&#34;name&#34;:&#34;_callbackFunc&#34;,&#34;type&#34;:&#34;bytes4&#34;},{&#34;internalType&#34;:&#34;uint256&#34;,&#34;name&#34;:&#34;_expiration&#34;,&#34;type&#34;:&#34;uint256&#34;}],&#34;name&#34;:&#34;cancelOracleRequest&#34;,&#34;outputs&#34;:[],&#34;stateMutability&#34;:&#34;nonpayable&#34;,&#34;type&#34;:&#34;function&#34;},{&#34;inputs&#34;:[{&#34;internalType&#34;:&#34;bytes32&#34;,&#34;name&#34;:&#34;_requestId&#34;,&#34;type&#34;:&#34;bytes32&#34;},{&#34;internalType&#34;:&#34;uint256&#34;,&#34;name&#34;:&#34;_payment&#34;,&#34;type&#34;:&#34;uint256&#34;},{&#34;internalType&#34;:&#34;address&#34;,&#34;name&#34;:&#34;_callbackAddress&#34;,&#34;type&#34;:&#34;address&#34;},{&#34;internalType&#34;:&#34;bytes4&#34;,&#34;name&#34;:&#34;_callbackFunctionId&#34;,&#34;type&#34;:&#34;bytes4&#34;},{&#34;internalType&#34;:&#34;uint256&#34;,&#34;name&#34;:&#34;_expiration&#34;,&#34;type&#34;:&#34;uint256&#34;},{&#34;internalType&#34;:&#34;bytes32&#34;,&#34;name&#34;:&#34;_data&#34;,&#34;type&#34;:&#34;bytes32&#34;}],&#34;name&#34;:&#34;fulfillOracleRequest&#34;,&#34;outputs&#34;:[{&#34;internalType&#34;:&#34;bool&#34;,&#34;name&#34;:&#34;&#34;,&#34;type&#34;:&#34;bool&#34;}],&#34;stateMutability&#34;:&#34;nonpayable&#34;,&#34;type&#34;:&#34;function&#34;},{&#34;inputs&#34;:[{&#34;internalType&#34;:&#34;address&#34;,&#34;name&#34;:&#34;_node&#34;,&#34;type&#34;:&#34;address&#34;}],&#34;name&#34;:&#34;getAuthorizationStatus&#34;,&#34;outputs&#34;:[{&#34;internalType&#34;:&#34;bool&#34;,&#34;name&#34;:&#34;&#34;,&#34;type&#34;:&#34;bool&#34;}],&#34;stateMutability&#34;:&#34;view&#34;,&#34;type&#34;:&#34;function&#34;},{&#34;inputs&#34;:[],&#34;name&#34;:&#34;getChainlinkToken&#34;,&#34;outputs&#34;:[{&#34;internalType&#34;:&#34;address&#34;,&#34;name&#34;:&#34;&#34;,&#34;type&#34;:&#34;address&#34;}],&#34;stateMutability&#34;:&#34;view&#34;,&#34;type&#34;:&#34;function&#34;},{&#34;inputs&#34;:[],&#34;name&#34;:&#34;isOwner&#34;,&#34;outputs&#34;:[{&#34;internalType&#34;:&#34;bool&#34;,&#34;name&#34;:&#34;&#34;,&#34;type&#34;:&#34;bool&#34;}],&#34;stateMutability&#34;:&#34;view&#34;,&#34;type&#34;:&#34;function&#34;},{&#34;inputs&#34;:[{&#34;internalType&#34;:&#34;address&#34;,&#34;name&#34;:&#34;_sender&#34;,&#34;type&#34;:&#34;address&#34;},{&#34;internalType&#34;:&#34;uint256&#34;,&#34;name&#34;:&#34;_amount&#34;,&#34;type&#34;:&#34;uint256&#34;},{&#34;internalType&#34;:&#34;bytes&#34;,&#34;name&#34;:&#34;_data&#34;,&#34;type&#34;:&#34;bytes&#34;}],&#34;name&#34;:&#34;onTokenTransfer&#34;,&#34;outputs&#34;:[],&#34;stateMutability&#34;:&#34;nonpayable&#34;,&#34;type&#34;:&#34;function&#34;},{&#34;inputs&#34;:[{&#34;internalType&#34;:&#34;address&#34;,&#34;name&#34;:&#34;_sender&#34;,&#34;type&#34;:&#34;address&#34;},{&#34;internalType&#34;:&#34;uint256&#34;,&#34;name&#34;:&#34;_payment&#34;,&#34;type&#34;:&#34;uint256&#34;},{&#34;internalType&#34;:&#34;bytes32&#34;,&#34;name&#34;:&#34;_specId&#34;,&#34;type&#34;:&#34;bytes32&#34;},{&#34;internalType&#34;:&#34;address&#34;,&#34;name&#34;:&#34;_callbackAddress&#34;,&#34;type&#34;:&#34;address&#34;},{&#34;internalType&#34;:&#34;bytes4&#34;,&#34;name&#34;:&#34;_callbackFunctionId&#34;,&#34;type&#34;:&#34;bytes4&#34;},{&#34;internalType&#34;:&#34;uint256&#34;,&#34;name&#34;:&#34;_nonce&#34;,&#34;type&#34;:&#34;uint256&#34;},{&#34;internalType&#34;:&#34;uint256&#34;,&#34;name&#34;:&#34;_dataVersion&#34;,&#34;type&#34;:&#34;uint256&#34;},{&#34;internalType&#34;:&#34;bytes&#34;,&#34;name&#34;:&#34;_data&#34;,&#34;type&#34;:&#34;bytes&#34;}],&#34;name&#34;:&#34;oracleRequest&#34;,&#34;outputs&#34;:[],&#34;stateMutability&#34;:&#34;nonpayable&#34;,&#34;type&#34;:&#34;function&#34;},{&#34;inputs&#34;:[],&#34;name&#34;:&#34;owner&#34;,&#34;outputs&#34;:[{&#34;internalType&#34;:&#34;address&#34;,&#34;name&#34;:&#34;&#34;,&#34;type&#34;:&#34;address&#34;}],&#34;stateMutability&#34;:&#34;view&#34;,&#34;type&#34;:&#34;function&#34;},{&#34;inputs&#34;:[{&#34;internalType&#34;:&#34;address&#34;,&#34;name&#34;:&#34;_node&#34;,&#34;type&#34;:&#34;address&#34;},{&#34;internalType&#34;:&#34;bool&#34;,&#34;name&#34;:&#34;_allowed&#34;,&#34;type&#34;:&#34;bool&#34;}],&#34;name&#34;:&#34;setFulfillmentPermission&#34;,&#34;outputs&#34;:[],&#34;stateMutability&#34;:&#34;nonpayable&#34;,&#34;type&#34;:&#34;function&#34;},{&#34;inputs&#34;:[{&#34;internalType&#34;:&#34;address&#34;,&#34;name&#34;:&#34;newOwner&#34;,&#34;type&#34;:&#34;address&#34;}],&#34;name&#34;:&#34;transferOwnership&#34;,&#34;outputs&#34;:[],&#34;stateMutability&#34;:&#34;nonpayable&#34;,&#34;type&#34;:&#34;function&#34;},{&#34;inputs&#34;:[{&#34;internalType&#34;:&#34;address&#34;,&#34;name&#34;:&#34;_recipient&#34;,&#34;type&#34;:&#34;address&#34;},{&#34;internalType&#34;:&#34;uint256&#34;,&#34;name&#34;:&#34;_amount&#34;,&#34;type&#34;:&#34;uint256&#34;}],&#34;name&#34;:&#34;withdraw&#34;,&#34;outputs&#34;:[],&#34;stateMutability&#34;:&#34;nonpayable&#34;,&#34;type&#34;:&#34;function&#34;},{&#34;inputs&#34;:[],&#34;name&#34;:&#34;withdrawable&#34;,&#34;outputs&#34;:[{&#34;internalType&#34;:&#34;uint256&#34;,&#34;name&#34;:&#34;&#34;,&#34;type&#34;:&#34;uint256&#34;}],&#34;stateMutability&#34;:&#34;view&#34;,&#34;type&#34;:&#34;function&#34;}]&#39;
+        # noqa: E501 (line-too-long)
     )</code></pre>
 </details>
 </dd>
@@ -4340,7 +4143,7 @@ def abi():
 <summary>
 <span>Expand source code</span>
 </summary>
-<pre><code class="python">def CallContractWait(self, t_long:int)-&gt; &#34;Oracle&#34;:
+<pre><code class="python">def CallContractWait(self, t_long: int) -&gt; &#34;Oracle&#34;:
     self._fn_expiry_time.setWait(t_long)
     self._fn_cancel_oracle_request.setWait(t_long)
     self._fn_fulfill_oracle_request.setWait(t_long)
@@ -4376,7 +4179,7 @@ Method of the function</p></div>
 
     &#34;&#34;&#34;
 
-    return self._fn_cancel_oracle_request.block_send(request_id, payment, callback_func, expiration, self.call_contract_fee_amount,self.call_contract_fee_price,0,self.call_contract_debug_flag, self.call_contract_enforce_tx_receipt)</code></pre>
+    return self._fn_cancel_oracle_request.block_send(request_id, payment, callback_func, expiration, self.call_contract_fee_amount, self.call_contract_fee_price, 0, self.call_contract_debug_flag, self.call_contract_enforce_tx_receipt)</code></pre>
 </details>
 </dd>
 <dt id="moody.m.oracle.Oracle.event_cancel_oracle_request"><code class="name flex">
@@ -4467,10 +4270,6 @@ Method of the function</p></div>
 
     &#34;&#34;&#34;
 
-
-
-
-
     return self._fn_expiry_time.block_call()</code></pre>
 </details>
 </dd>
@@ -4493,7 +4292,7 @@ Method of the function</p></div>
 
     &#34;&#34;&#34;
 
-    return self._fn_fulfill_oracle_request.block_send(request_id, payment, callback_address, callback_function_id, expiration, data, self.call_contract_fee_amount,self.call_contract_fee_price,0,self.call_contract_debug_flag, self.call_contract_enforce_tx_receipt)</code></pre>
+    return self._fn_fulfill_oracle_request.block_send(request_id, payment, callback_address, callback_function_id, expiration, data, self.call_contract_fee_amount, self.call_contract_fee_price, 0, self.call_contract_debug_flag, self.call_contract_enforce_tx_receipt)</code></pre>
 </details>
 </dd>
 <dt id="moody.m.oracle.Oracle.get_authorization_status"><code class="name flex">
@@ -4514,10 +4313,6 @@ Method of the function</p></div>
 
 
     &#34;&#34;&#34;
-
-
-
-
 
     return self._fn_get_authorization_status.block_call(node)</code></pre>
 </details>
@@ -4541,10 +4336,6 @@ Method of the function</p></div>
 
     &#34;&#34;&#34;
 
-
-
-
-
     return self._fn_get_chainlink_token.block_call()</code></pre>
 </details>
 </dd>
@@ -4566,10 +4357,6 @@ Method of the function</p></div>
 
 
     &#34;&#34;&#34;
-
-
-
-
 
     return self._fn_is_owner.block_call()</code></pre>
 </details>
@@ -4593,7 +4380,7 @@ Method of the function</p></div>
 
     &#34;&#34;&#34;
 
-    return self._fn_on_token_transfer.block_send(sender, amount, data, self.call_contract_fee_amount,self.call_contract_fee_price,0,self.call_contract_debug_flag, self.call_contract_enforce_tx_receipt)</code></pre>
+    return self._fn_on_token_transfer.block_send(sender, amount, data, self.call_contract_fee_amount, self.call_contract_fee_price, 0, self.call_contract_debug_flag, self.call_contract_enforce_tx_receipt)</code></pre>
 </details>
 </dd>
 <dt id="moody.m.oracle.Oracle.oracle_request"><code class="name flex">
@@ -4615,7 +4402,7 @@ Method of the function</p></div>
 
     &#34;&#34;&#34;
 
-    return self._fn_oracle_request.block_send(sender, payment, spec_id, callback_address, callback_function_id, nonce, data_version, data, self.call_contract_fee_amount,self.call_contract_fee_price,0,self.call_contract_debug_flag, self.call_contract_enforce_tx_receipt)</code></pre>
+    return self._fn_oracle_request.block_send(sender, payment, spec_id, callback_address, callback_function_id, nonce, data_version, data, self.call_contract_fee_amount, self.call_contract_fee_price, 0, self.call_contract_debug_flag, self.call_contract_enforce_tx_receipt)</code></pre>
 </details>
 </dd>
 <dt id="moody.m.oracle.Oracle.owner"><code class="name flex">
@@ -4636,10 +4423,6 @@ Method of the function</p></div>
 
 
     &#34;&#34;&#34;
-
-
-
-
 
     return self._fn_owner.block_call()</code></pre>
 </details>
@@ -4663,7 +4446,7 @@ Method of the function</p></div>
 
     &#34;&#34;&#34;
 
-    return self._fn_set_fulfillment_permission.block_send(node, allowed, self.call_contract_fee_amount,self.call_contract_fee_price,0,self.call_contract_debug_flag, self.call_contract_enforce_tx_receipt)</code></pre>
+    return self._fn_set_fulfillment_permission.block_send(node, allowed, self.call_contract_fee_amount, self.call_contract_fee_price, 0, self.call_contract_debug_flag, self.call_contract_enforce_tx_receipt)</code></pre>
 </details>
 </dd>
 <dt id="moody.m.oracle.Oracle.transfer_ownership"><code class="name flex">
@@ -4685,7 +4468,7 @@ Method of the function</p></div>
 
     &#34;&#34;&#34;
 
-    return self._fn_transfer_ownership.block_send(new_owner, self.call_contract_fee_amount,self.call_contract_fee_price,0,self.call_contract_debug_flag, self.call_contract_enforce_tx_receipt)</code></pre>
+    return self._fn_transfer_ownership.block_send(new_owner, self.call_contract_fee_amount, self.call_contract_fee_price, 0, self.call_contract_debug_flag, self.call_contract_enforce_tx_receipt)</code></pre>
 </details>
 </dd>
 <dt id="moody.m.oracle.Oracle.withdraw"><code class="name flex">
@@ -4707,7 +4490,7 @@ Method of the function</p></div>
 
     &#34;&#34;&#34;
 
-    return self._fn_withdraw.block_send(recipient, amount, self.call_contract_fee_amount,self.call_contract_fee_price,0,self.call_contract_debug_flag, self.call_contract_enforce_tx_receipt)</code></pre>
+    return self._fn_withdraw.block_send(recipient, amount, self.call_contract_fee_amount, self.call_contract_fee_price, 0, self.call_contract_debug_flag, self.call_contract_enforce_tx_receipt)</code></pre>
 </details>
 </dd>
 <dt id="moody.m.oracle.Oracle.withdrawable"><code class="name flex">
@@ -4729,10 +4512,6 @@ Method of the function</p></div>
 
     &#34;&#34;&#34;
 
-
-
-
-
     return self._fn_withdrawable.block_call()</code></pre>
 </details>
 </dd>
@@ -4749,16 +4528,16 @@ Method of the function</p></div>
 <summary>
 <span>Expand source code</span>
 </summary>
-<pre><code class="python">class OracleRequestMethod(ContractMethod): # pylint: disable=invalid-name
+<pre><code class="python">class OracleRequestMethod(ContractMethod):  # pylint: disable=invalid-name
     &#34;&#34;&#34;Various interfaces to the oracleRequest method.&#34;&#34;&#34;
 
-    def __init__(self, elib: MiliDoS, contract_address: str, contract_function: ContractFunction, validator: Validator=None):
+    def __init__(self, elib: MiliDoS, contract_address: str, contract_function: ContractFunction, validator: Validator = None):
         &#34;&#34;&#34;Persist instance data.&#34;&#34;&#34;
         super().__init__(elib, contract_address, validator)
         self._underlying_method = contract_function
         self.sign = validator.getSignature(&#34;oracleRequest&#34;)
 
-    def validate_and_normalize_inputs(self, sender: str, payment: int, spec_id: Union[bytes, str], callback_address: str, callback_function_id: Union[bytes, str], nonce: int, data_version: int, data: Union[bytes, str])-&gt;any:
+    def validate_and_normalize_inputs(self, sender: str, payment: int, spec_id: Union[bytes, str], callback_address: str, callback_function_id: Union[bytes, str], nonce: int, data_version: int, data: Union[bytes, str]) -&gt; any:
         &#34;&#34;&#34;Validate the inputs to the oracleRequest method.&#34;&#34;&#34;
         self.validator.assert_valid(
             method_name=&#39;oracleRequest&#39;,
@@ -4810,9 +4589,7 @@ Method of the function</p></div>
         )
         return (sender, payment, spec_id, callback_address, callback_function_id, nonce, data_version, data)
 
-
-
-    def block_send(self, sender: str, payment: int, spec_id: Union[bytes, str], callback_address: str, callback_function_id: Union[bytes, str], nonce: int, data_version: int, data: Union[bytes, str],_gaswei:int,_pricewei:int,_valeth:int=0,_debugtx: bool = False,_receipList: bool = False) -&gt; None:
+    def block_send(self, sender: str, payment: int, spec_id: Union[bytes, str], callback_address: str, callback_function_id: Union[bytes, str], nonce: int, data_version: int, data: Union[bytes, str], _gaswei: int, _pricewei: int, _valeth: int = 0, _debugtx: bool = False, _receipList: bool = False) -&gt; None:
         &#34;&#34;&#34;Execute underlying contract method via eth_call.
 
         :param tx_params: transaction parameters
@@ -4868,7 +4645,6 @@ Method of the function</p></div>
             else:
                 print(f&#34;{Bolors.FAIL}Error Revert {Bolors.RESET}, oracle_request. Reason: Unknown&#34;)
 
-
     def send_transaction(self, sender: str, payment: int, spec_id: Union[bytes, str], callback_address: str, callback_function_id: Union[bytes, str], nonce: int, data_version: int, data: Union[bytes, str], tx_params: Optional[TxParams] = None) -&gt; Union[HexBytes, bytes]:
         &#34;&#34;&#34;Execute underlying contract method via eth_sendTransaction.
 
@@ -4907,7 +4683,7 @@ Method of the function</p></div>
 <summary>
 <span>Expand source code</span>
 </summary>
-<pre><code class="python">def block_send(self, sender: str, payment: int, spec_id: Union[bytes, str], callback_address: str, callback_function_id: Union[bytes, str], nonce: int, data_version: int, data: Union[bytes, str],_gaswei:int,_pricewei:int,_valeth:int=0,_debugtx: bool = False,_receipList: bool = False) -&gt; None:
+<pre><code class="python">def block_send(self, sender: str, payment: int, spec_id: Union[bytes, str], callback_address: str, callback_function_id: Union[bytes, str], nonce: int, data_version: int, data: Union[bytes, str], _gaswei: int, _pricewei: int, _valeth: int = 0, _debugtx: bool = False, _receipList: bool = False) -&gt; None:
     &#34;&#34;&#34;Execute underlying contract method via eth_call.
 
     :param tx_params: transaction parameters
@@ -5025,7 +4801,7 @@ Method of the function</p></div>
 <summary>
 <span>Expand source code</span>
 </summary>
-<pre><code class="python">def validate_and_normalize_inputs(self, sender: str, payment: int, spec_id: Union[bytes, str], callback_address: str, callback_function_id: Union[bytes, str], nonce: int, data_version: int, data: Union[bytes, str])-&gt;any:
+<pre><code class="python">def validate_and_normalize_inputs(self, sender: str, payment: int, spec_id: Union[bytes, str], callback_address: str, callback_function_id: Union[bytes, str], nonce: int, data_version: int, data: Union[bytes, str]) -&gt; any:
     &#34;&#34;&#34;Validate the inputs to the oracleRequest method.&#34;&#34;&#34;
     self.validator.assert_valid(
         method_name=&#39;oracleRequest&#39;,
@@ -5129,24 +4905,23 @@ Method of the function</p></div>
 <summary>
 <span>Expand source code</span>
 </summary>
-<pre><code class="python">class OwnerMethod(ContractMethod): # pylint: disable=invalid-name
+<pre><code class="python">class OwnerMethod(ContractMethod):  # pylint: disable=invalid-name
     &#34;&#34;&#34;Various interfaces to the owner method.&#34;&#34;&#34;
 
-    def __init__(self, elib: MiliDoS, contract_address: str, contract_function: ContractFunction, validator: Validator=None):
+    def __init__(self, elib: MiliDoS, contract_address: str, contract_function: ContractFunction, validator: Validator = None):
         &#34;&#34;&#34;Persist instance data.&#34;&#34;&#34;
         super().__init__(elib, contract_address)
         self._underlying_method = contract_function
         self.sign = validator.getSignature(&#34;owner&#34;)
 
-
-
-    def block_call(self, debug:bool=False) -&gt; str:
+    def block_call(self, debug: bool = False) -&gt; str:
         _fn = self._underlying_method()
         returned = _fn.call({
-                &#39;from&#39;: self._operate
-            })
+            &#39;from&#39;: self._operate
+        })
         return str(returned)
-    def block_send(self, _gaswei:int,_pricewei:int,_valeth:int=0,_debugtx: bool = False,_receipList: bool = False) -&gt; str:
+
+    def block_send(self, _gaswei: int, _pricewei: int, _valeth: int = 0, _debugtx: bool = False, _receipList: bool = False) -&gt; str:
         &#34;&#34;&#34;Execute underlying contract method via eth_call.
 
         :param tx_params: transaction parameters
@@ -5202,7 +4977,6 @@ Method of the function</p></div>
             else:
                 print(f&#34;{Bolors.FAIL}Error Revert {Bolors.RESET}, owner. Reason: Unknown&#34;)
 
-
     def send_transaction(self, tx_params: Optional[TxParams] = None) -&gt; Union[HexBytes, bytes]:
         &#34;&#34;&#34;Execute underlying contract method via eth_sendTransaction.
 
@@ -5236,11 +5010,11 @@ Method of the function</p></div>
 <summary>
 <span>Expand source code</span>
 </summary>
-<pre><code class="python">def block_call(self, debug:bool=False) -&gt; str:
+<pre><code class="python">def block_call(self, debug: bool = False) -&gt; str:
     _fn = self._underlying_method()
     returned = _fn.call({
-            &#39;from&#39;: self._operate
-        })
+        &#39;from&#39;: self._operate
+    })
     return str(returned)</code></pre>
 </details>
 </dd>
@@ -5255,7 +5029,7 @@ Method of the function</p></div>
 <summary>
 <span>Expand source code</span>
 </summary>
-<pre><code class="python">def block_send(self, _gaswei:int,_pricewei:int,_valeth:int=0,_debugtx: bool = False,_receipList: bool = False) -&gt; str:
+<pre><code class="python">def block_send(self, _gaswei: int, _pricewei: int, _valeth: int = 0, _debugtx: bool = False, _receipList: bool = False) -&gt; str:
     &#34;&#34;&#34;Execute underlying contract method via eth_call.
 
     :param tx_params: transaction parameters
@@ -5383,16 +5157,16 @@ Method of the function</p></div>
 <summary>
 <span>Expand source code</span>
 </summary>
-<pre><code class="python">class SetFulfillmentPermissionMethod(ContractMethod): # pylint: disable=invalid-name
+<pre><code class="python">class SetFulfillmentPermissionMethod(ContractMethod):  # pylint: disable=invalid-name
     &#34;&#34;&#34;Various interfaces to the setFulfillmentPermission method.&#34;&#34;&#34;
 
-    def __init__(self, elib: MiliDoS, contract_address: str, contract_function: ContractFunction, validator: Validator=None):
+    def __init__(self, elib: MiliDoS, contract_address: str, contract_function: ContractFunction, validator: Validator = None):
         &#34;&#34;&#34;Persist instance data.&#34;&#34;&#34;
         super().__init__(elib, contract_address, validator)
         self._underlying_method = contract_function
         self.sign = validator.getSignature(&#34;setFulfillmentPermission&#34;)
 
-    def validate_and_normalize_inputs(self, node: str, allowed: bool)-&gt;any:
+    def validate_and_normalize_inputs(self, node: str, allowed: bool) -&gt; any:
         &#34;&#34;&#34;Validate the inputs to the setFulfillmentPermission method.&#34;&#34;&#34;
         self.validator.assert_valid(
             method_name=&#39;setFulfillmentPermission&#39;,
@@ -5407,9 +5181,7 @@ Method of the function</p></div>
         )
         return (node, allowed)
 
-
-
-    def block_send(self, node: str, allowed: bool,_gaswei:int,_pricewei:int,_valeth:int=0,_debugtx: bool = False,_receipList: bool = False) -&gt; None:
+    def block_send(self, node: str, allowed: bool, _gaswei: int, _pricewei: int, _valeth: int = 0, _debugtx: bool = False, _receipList: bool = False) -&gt; None:
         &#34;&#34;&#34;Execute underlying contract method via eth_call.
 
         :param tx_params: transaction parameters
@@ -5465,7 +5237,6 @@ Method of the function</p></div>
             else:
                 print(f&#34;{Bolors.FAIL}Error Revert {Bolors.RESET}, set_fulfillment_permission. Reason: Unknown&#34;)
 
-
     def send_transaction(self, node: str, allowed: bool, tx_params: Optional[TxParams] = None) -&gt; Union[HexBytes, bytes]:
         &#34;&#34;&#34;Execute underlying contract method via eth_sendTransaction.
 
@@ -5504,7 +5275,7 @@ Method of the function</p></div>
 <summary>
 <span>Expand source code</span>
 </summary>
-<pre><code class="python">def block_send(self, node: str, allowed: bool,_gaswei:int,_pricewei:int,_valeth:int=0,_debugtx: bool = False,_receipList: bool = False) -&gt; None:
+<pre><code class="python">def block_send(self, node: str, allowed: bool, _gaswei: int, _pricewei: int, _valeth: int = 0, _debugtx: bool = False, _receipList: bool = False) -&gt; None:
     &#34;&#34;&#34;Execute underlying contract method via eth_call.
 
     :param tx_params: transaction parameters
@@ -5622,7 +5393,7 @@ Method of the function</p></div>
 <summary>
 <span>Expand source code</span>
 </summary>
-<pre><code class="python">def validate_and_normalize_inputs(self, node: str, allowed: bool)-&gt;any:
+<pre><code class="python">def validate_and_normalize_inputs(self, node: str, allowed: bool) -&gt; any:
     &#34;&#34;&#34;Validate the inputs to the setFulfillmentPermission method.&#34;&#34;&#34;
     self.validator.assert_valid(
         method_name=&#39;setFulfillmentPermission&#39;,
@@ -5663,33 +5434,46 @@ Method of the function</p></div>
     &#34;&#34;&#34;
         The signature is generated for this and it is installed.
     &#34;&#34;&#34;
+
     def __init__(self, abi: any):
         super().__init__(abi)
 
     def expiry_time(self) -&gt; str:
         return self._function_signatures[&#34;EXPIRY_TIME&#34;]
+
     def cancel_oracle_request(self) -&gt; str:
         return self._function_signatures[&#34;cancelOracleRequest&#34;]
+
     def fulfill_oracle_request(self) -&gt; str:
         return self._function_signatures[&#34;fulfillOracleRequest&#34;]
+
     def get_authorization_status(self) -&gt; str:
         return self._function_signatures[&#34;getAuthorizationStatus&#34;]
+
     def get_chainlink_token(self) -&gt; str:
         return self._function_signatures[&#34;getChainlinkToken&#34;]
+
     def is_owner(self) -&gt; str:
         return self._function_signatures[&#34;isOwner&#34;]
+
     def on_token_transfer(self) -&gt; str:
         return self._function_signatures[&#34;onTokenTransfer&#34;]
+
     def oracle_request(self) -&gt; str:
         return self._function_signatures[&#34;oracleRequest&#34;]
+
     def owner(self) -&gt; str:
         return self._function_signatures[&#34;owner&#34;]
+
     def set_fulfillment_permission(self) -&gt; str:
         return self._function_signatures[&#34;setFulfillmentPermission&#34;]
+
     def transfer_ownership(self) -&gt; str:
         return self._function_signatures[&#34;transferOwnership&#34;]
+
     def withdraw(self) -&gt; str:
         return self._function_signatures[&#34;withdraw&#34;]
+
     def withdrawable(self) -&gt; str:
         return self._function_signatures[&#34;withdrawable&#34;]</code></pre>
 </details>
@@ -5881,16 +5665,16 @@ Method of the function</p></div>
 <summary>
 <span>Expand source code</span>
 </summary>
-<pre><code class="python">class TransferOwnershipMethod(ContractMethod): # pylint: disable=invalid-name
+<pre><code class="python">class TransferOwnershipMethod(ContractMethod):  # pylint: disable=invalid-name
     &#34;&#34;&#34;Various interfaces to the transferOwnership method.&#34;&#34;&#34;
 
-    def __init__(self, elib: MiliDoS, contract_address: str, contract_function: ContractFunction, validator: Validator=None):
+    def __init__(self, elib: MiliDoS, contract_address: str, contract_function: ContractFunction, validator: Validator = None):
         &#34;&#34;&#34;Persist instance data.&#34;&#34;&#34;
         super().__init__(elib, contract_address, validator)
         self._underlying_method = contract_function
         self.sign = validator.getSignature(&#34;transferOwnership&#34;)
 
-    def validate_and_normalize_inputs(self, new_owner: str)-&gt;any:
+    def validate_and_normalize_inputs(self, new_owner: str) -&gt; any:
         &#34;&#34;&#34;Validate the inputs to the transferOwnership method.&#34;&#34;&#34;
         self.validator.assert_valid(
             method_name=&#39;transferOwnership&#39;,
@@ -5900,9 +5684,7 @@ Method of the function</p></div>
         new_owner = self.validate_and_checksum_address(new_owner)
         return (new_owner)
 
-
-
-    def block_send(self, new_owner: str,_gaswei:int,_pricewei:int,_valeth:int=0,_debugtx: bool = False,_receipList: bool = False) -&gt; None:
+    def block_send(self, new_owner: str, _gaswei: int, _pricewei: int, _valeth: int = 0, _debugtx: bool = False, _receipList: bool = False) -&gt; None:
         &#34;&#34;&#34;Execute underlying contract method via eth_call.
 
         :param tx_params: transaction parameters
@@ -5958,7 +5740,6 @@ Method of the function</p></div>
             else:
                 print(f&#34;{Bolors.FAIL}Error Revert {Bolors.RESET}, transfer_ownership. Reason: Unknown&#34;)
 
-
     def send_transaction(self, new_owner: str, tx_params: Optional[TxParams] = None) -&gt; Union[HexBytes, bytes]:
         &#34;&#34;&#34;Execute underlying contract method via eth_sendTransaction.
 
@@ -5997,7 +5778,7 @@ Method of the function</p></div>
 <summary>
 <span>Expand source code</span>
 </summary>
-<pre><code class="python">def block_send(self, new_owner: str,_gaswei:int,_pricewei:int,_valeth:int=0,_debugtx: bool = False,_receipList: bool = False) -&gt; None:
+<pre><code class="python">def block_send(self, new_owner: str, _gaswei: int, _pricewei: int, _valeth: int = 0, _debugtx: bool = False, _receipList: bool = False) -&gt; None:
     &#34;&#34;&#34;Execute underlying contract method via eth_call.
 
     :param tx_params: transaction parameters
@@ -6115,7 +5896,7 @@ Method of the function</p></div>
 <summary>
 <span>Expand source code</span>
 </summary>
-<pre><code class="python">def validate_and_normalize_inputs(self, new_owner: str)-&gt;any:
+<pre><code class="python">def validate_and_normalize_inputs(self, new_owner: str) -&gt; any:
     &#34;&#34;&#34;Validate the inputs to the transferOwnership method.&#34;&#34;&#34;
     self.validator.assert_valid(
         method_name=&#39;transferOwnership&#39;,
@@ -6148,16 +5929,16 @@ Method of the function</p></div>
 <summary>
 <span>Expand source code</span>
 </summary>
-<pre><code class="python">class WithdrawMethod(ContractMethod): # pylint: disable=invalid-name
+<pre><code class="python">class WithdrawMethod(ContractMethod):  # pylint: disable=invalid-name
     &#34;&#34;&#34;Various interfaces to the withdraw method.&#34;&#34;&#34;
 
-    def __init__(self, elib: MiliDoS, contract_address: str, contract_function: ContractFunction, validator: Validator=None):
+    def __init__(self, elib: MiliDoS, contract_address: str, contract_function: ContractFunction, validator: Validator = None):
         &#34;&#34;&#34;Persist instance data.&#34;&#34;&#34;
         super().__init__(elib, contract_address, validator)
         self._underlying_method = contract_function
         self.sign = validator.getSignature(&#34;withdraw&#34;)
 
-    def validate_and_normalize_inputs(self, recipient: str, amount: int)-&gt;any:
+    def validate_and_normalize_inputs(self, recipient: str, amount: int) -&gt; any:
         &#34;&#34;&#34;Validate the inputs to the withdraw method.&#34;&#34;&#34;
         self.validator.assert_valid(
             method_name=&#39;withdraw&#39;,
@@ -6174,9 +5955,7 @@ Method of the function</p></div>
         amount = int(amount)
         return (recipient, amount)
 
-
-
-    def block_send(self, recipient: str, amount: int,_gaswei:int,_pricewei:int,_valeth:int=0,_debugtx: bool = False,_receipList: bool = False) -&gt; None:
+    def block_send(self, recipient: str, amount: int, _gaswei: int, _pricewei: int, _valeth: int = 0, _debugtx: bool = False, _receipList: bool = False) -&gt; None:
         &#34;&#34;&#34;Execute underlying contract method via eth_call.
 
         :param tx_params: transaction parameters
@@ -6232,7 +6011,6 @@ Method of the function</p></div>
             else:
                 print(f&#34;{Bolors.FAIL}Error Revert {Bolors.RESET}, withdraw. Reason: Unknown&#34;)
 
-
     def send_transaction(self, recipient: str, amount: int, tx_params: Optional[TxParams] = None) -&gt; Union[HexBytes, bytes]:
         &#34;&#34;&#34;Execute underlying contract method via eth_sendTransaction.
 
@@ -6271,7 +6049,7 @@ Method of the function</p></div>
 <summary>
 <span>Expand source code</span>
 </summary>
-<pre><code class="python">def block_send(self, recipient: str, amount: int,_gaswei:int,_pricewei:int,_valeth:int=0,_debugtx: bool = False,_receipList: bool = False) -&gt; None:
+<pre><code class="python">def block_send(self, recipient: str, amount: int, _gaswei: int, _pricewei: int, _valeth: int = 0, _debugtx: bool = False, _receipList: bool = False) -&gt; None:
     &#34;&#34;&#34;Execute underlying contract method via eth_call.
 
     :param tx_params: transaction parameters
@@ -6389,7 +6167,7 @@ Method of the function</p></div>
 <summary>
 <span>Expand source code</span>
 </summary>
-<pre><code class="python">def validate_and_normalize_inputs(self, recipient: str, amount: int)-&gt;any:
+<pre><code class="python">def validate_and_normalize_inputs(self, recipient: str, amount: int) -&gt; any:
     &#34;&#34;&#34;Validate the inputs to the withdraw method.&#34;&#34;&#34;
     self.validator.assert_valid(
         method_name=&#39;withdraw&#39;,
@@ -6429,24 +6207,23 @@ Method of the function</p></div>
 <summary>
 <span>Expand source code</span>
 </summary>
-<pre><code class="python">class WithdrawableMethod(ContractMethod): # pylint: disable=invalid-name
+<pre><code class="python">class WithdrawableMethod(ContractMethod):  # pylint: disable=invalid-name
     &#34;&#34;&#34;Various interfaces to the withdrawable method.&#34;&#34;&#34;
 
-    def __init__(self, elib: MiliDoS, contract_address: str, contract_function: ContractFunction, validator: Validator=None):
+    def __init__(self, elib: MiliDoS, contract_address: str, contract_function: ContractFunction, validator: Validator = None):
         &#34;&#34;&#34;Persist instance data.&#34;&#34;&#34;
         super().__init__(elib, contract_address)
         self._underlying_method = contract_function
         self.sign = validator.getSignature(&#34;withdrawable&#34;)
 
-
-
-    def block_call(self, debug:bool=False) -&gt; int:
+    def block_call(self, debug: bool = False) -&gt; int:
         _fn = self._underlying_method()
         returned = _fn.call({
-                &#39;from&#39;: self._operate
-            })
+            &#39;from&#39;: self._operate
+        })
         return int(returned)
-    def block_send(self, _gaswei:int,_pricewei:int,_valeth:int=0,_debugtx: bool = False,_receipList: bool = False) -&gt; int:
+
+    def block_send(self, _gaswei: int, _pricewei: int, _valeth: int = 0, _debugtx: bool = False, _receipList: bool = False) -&gt; int:
         &#34;&#34;&#34;Execute underlying contract method via eth_call.
 
         :param tx_params: transaction parameters
@@ -6502,7 +6279,6 @@ Method of the function</p></div>
             else:
                 print(f&#34;{Bolors.FAIL}Error Revert {Bolors.RESET}, withdrawable. Reason: Unknown&#34;)
 
-
     def send_transaction(self, tx_params: Optional[TxParams] = None) -&gt; Union[HexBytes, bytes]:
         &#34;&#34;&#34;Execute underlying contract method via eth_sendTransaction.
 
@@ -6536,11 +6312,11 @@ Method of the function</p></div>
 <summary>
 <span>Expand source code</span>
 </summary>
-<pre><code class="python">def block_call(self, debug:bool=False) -&gt; int:
+<pre><code class="python">def block_call(self, debug: bool = False) -&gt; int:
     _fn = self._underlying_method()
     returned = _fn.call({
-            &#39;from&#39;: self._operate
-        })
+        &#39;from&#39;: self._operate
+    })
     return int(returned)</code></pre>
 </details>
 </dd>
@@ -6555,7 +6331,7 @@ Method of the function</p></div>
 <summary>
 <span>Expand source code</span>
 </summary>
-<pre><code class="python">def block_send(self, _gaswei:int,_pricewei:int,_valeth:int=0,_debugtx: bool = False,_receipList: bool = False) -&gt; int:
+<pre><code class="python">def block_send(self, _gaswei: int, _pricewei: int, _valeth: int = 0, _debugtx: bool = False, _receipList: bool = False) -&gt; int:
     &#34;&#34;&#34;Execute underlying contract method via eth_call.
 
     :param tx_params: transaction parameters

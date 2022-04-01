@@ -7,14 +7,22 @@
 [![moodyeth](https://img.shields.io/github/issues/tokenchain/moodyeth.svg)](https://pypi.org/project/moodyeth/)
 
 
-Ethereum based all Moody tool chain for smart contract development kit
+Ethereum based all Moody tool chain for smart contract development kit.
 
-### Install
+### Why do we use python
+Using it because it is fast and easy. More importantly it runs directly by its own and no more dependencies.
+Its much faster to building modules and calling functions on python.
+Also it can be wrapped into an executable binary on wasm or cpython thats runs on natively any platforms.
 
-`pip install moodyeth`
+If you are using PyCharm or similar IDE, all type are ready to show at your finger tips.
 
-`python3 install moodyeth`
+### Get Started
 
+`pip3 install moodyeth`
+
+or upgrade using
+
+`sudo pip3 install moodyeth --upgrade`
 
 The development of Moody contract deployment tools:
 
@@ -27,17 +35,19 @@ Setup the folders:
  /deploy_results
  /factoryabi
 
-### Why use moody tool
+### Why use moody eth
 
-It is a all-in-one package with zero setup and configurations that works for multiple architectures. Build-in ERC20 support and bulk token sending support.
+It is a all-in-one package with zero setup and configurations that works for multiple architectures. It is lightweight and simple. Build-in ERC20 support and bulk token sending support. Also it has a sister library for Tron that runs similarly. Out of the box that comes with solc-compile automation and web3 executions.
 
 ### Features
-
+- support most of the evm compatible chains
 - golang module compile support
 - python module compile support
 - typescript module compile support
 
-### Deployment:
+### Examples:
+
+##### Deployment of the new contract:
 
 ```
 # !/usr/bin/env python
@@ -46,14 +56,81 @@ import os
 
 from moody.libeb import MiliDoS
 from moody import conf
-from key import pri
+
+privatekey = "xxxxxxxx"
+# now using xDAI
+network = conf.XDaiMainnet()
 
 ROOT = os.path.join(os.path.dirname(__file__))
-meta = MiliDoS(conf.XDaiMainnet()).withPOA()
-meta.setWorkspace(ROOT).Auth(pri)
+meta = MiliDoS(network).withPOA()
+meta.setWorkspace(ROOT).Auth(privatekey)
 meta.deploy("Ori20")
 
 ```
+
+#### BSend add signer
+Adding signer using bsend
+```
+# !/usr/bin/env python
+# coding: utf-8
+import os
+
+from moody.libeb import MiliDoS
+from moody import conf
+
+privatekey = "xxxxxxxx"
+# now using xDAI
+network = conf.XDaiMainnet()
+
+#gas and gas price configurations
+meta.OverrideGasConfig(6000000, 2000000000)
+
+ROOT = os.path.join(os.path.dirname(__file__))
+meta = MiliDoS(network).withPOA().setWorkspace(ROOT).Auth(privatekey)
+
+contract_address = "0x_________________"
+
+signing_address =  "0x________my_wallet"
+
+expressContract = BSend(meta, contract_address).CallAutoConf(meta).CallDebug(True)
+
+expressContract.add_signer(signing_address)
+
+```
+
+#### Mint Coins
+The example for minting coins with 18 decimal
+
+```
+# !/usr/bin/env python
+# coding: utf-8
+import os
+
+from moody.libeb import MiliDoS
+from moody import conf
+from moody.m.tc20 import Tc20
+
+privatekey = "xxxxxxxx"
+contract_address = "0x_________________"
+my_wallet =  "0x________my_wallet"
+
+# now using xDAI
+network = conf.XDaiMainnet()
+
+#gas and gas price configurations
+meta.OverrideGasConfig(6000000, 2000000000)
+
+ROOT = os.path.join(os.path.dirname(__file__))
+meta = MiliDoS(network).withPOA().setWorkspace(ROOT).Auth(privatekey)
+
+
+tokenContract = Tc20(meta, contract_address).CallAutoConf(meta)
+
+# assume this coin comes with 18 decimal
+tokenContract.EnforceTxReceipt(True).mint(my_wallet, 300*10**18)
+
+```
+
 
 # 🏗👷🏾 Scaffold-evm Challenges
 

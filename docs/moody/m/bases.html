@@ -41,15 +41,21 @@ from ..libeb import MiliDoS
 
 class Signatures:
     _function_signatures = {}
+    _abi_store = {}
 
     def __init__(self, abi: any):
         for func in [obj for obj in abi if obj[&#39;type&#39;] == &#39;function&#39;]:
             name = func[&#39;name&#39;]
             types = [input[&#39;type&#39;] for input in func[&#39;inputs&#39;]]
             self._function_signatures[name] = &#39;{}({})&#39;.format(name, &#39;,&#39;.join(types))
+        self._abi_store = abi
 
     def fromSignatures(self) -&gt; dict:
         return self._function_signatures
+
+    @property
+    def fromAbi(self) -&gt; any:
+        return self._abi_store
 
 
 class Validator:
@@ -133,7 +139,8 @@ class ContractMethod:
 
 
 class ContractBase:
-    SIGNATURES = None
+    SIGNATURES: Signatures = None
+    contract_address: str = None
 
     def __init__(self):
         self.call_contract_fee_amount: int = 2000000000
@@ -157,7 +164,10 @@ class ContractBase:
 
     def EnforceTxReceipt(self, yesno: bool) -&gt; &#34;ContractBase&#34;:
         self.call_contract_enforce_tx_receipt = yesno
-        return self</code></pre>
+        return self
+
+    def CallSignatureModel(self) -&gt; Signatures:
+        return self.SIGNATURES</code></pre>
 </details>
 </section>
 <section>
@@ -179,7 +189,8 @@ class ContractBase:
 <span>Expand source code</span>
 </summary>
 <pre><code class="python">class ContractBase:
-    SIGNATURES = None
+    SIGNATURES: Signatures = None
+    contract_address: str = None
 
     def __init__(self):
         self.call_contract_fee_amount: int = 2000000000
@@ -203,7 +214,10 @@ class ContractBase:
 
     def EnforceTxReceipt(self, yesno: bool) -&gt; &#34;ContractBase&#34;:
         self.call_contract_enforce_tx_receipt = yesno
-        return self</code></pre>
+        return self
+
+    def CallSignatureModel(self) -&gt; Signatures:
+        return self.SIGNATURES</code></pre>
 </details>
 <h3>Subclasses</h3>
 <ul class="hlist">
@@ -224,11 +238,15 @@ class ContractBase:
 <li><a title="moody.m.uniswap_v2_router02.UniswapV2Router02" href="uniswap_v2_router02/index.html#moody.m.uniswap_v2_router02.UniswapV2Router02">UniswapV2Router02</a></li>
 <li><a title="moody.m.v_r_f_consumer.VRFConsumer" href="v_r_f_consumer/index.html#moody.m.v_r_f_consumer.VRFConsumer">VRFConsumer</a></li>
 <li><a title="moody.m.v_r_f_coordinator.VRFCoordinator" href="v_r_f_coordinator/index.html#moody.m.v_r_f_coordinator.VRFCoordinator">VRFCoordinator</a></li>
-<li><a title="moody.openzeppelin.Timelock6h" href="../openzeppelin/index.html#moody.openzeppelin.Timelock6h">Timelock6h</a></li>
+<li><a title="moody.upgrades.Timelock6h" href="../upgrades/index.html#moody.upgrades.Timelock6h">Timelock6h</a></li>
 </ul>
 <h3>Class variables</h3>
 <dl>
-<dt id="moody.m.bases.ContractBase.SIGNATURES"><code class="name">var <span class="ident">SIGNATURES</span></code></dt>
+<dt id="moody.m.bases.ContractBase.SIGNATURES"><code class="name">var <span class="ident">SIGNATURES</span> : <a title="moody.m.bases.Signatures" href="#moody.m.bases.Signatures">Signatures</a></code></dt>
+<dd>
+<div class="desc"></div>
+</dd>
+<dt id="moody.m.bases.ContractBase.contract_address"><code class="name">var <span class="ident">contract_address</span> : str</code></dt>
 <dd>
 <div class="desc"></div>
 </dd>
@@ -277,6 +295,19 @@ class ContractBase:
 <pre><code class="python">def CallDebug(self, yesno: bool) -&gt; &#34;ContractBase&#34;:
     self.call_contract_debug_flag = yesno
     return self</code></pre>
+</details>
+</dd>
+<dt id="moody.m.bases.ContractBase.CallSignatureModel"><code class="name flex">
+<span>def <span class="ident">CallSignatureModel</span></span>(<span>self) ‑> <a title="moody.m.bases.Signatures" href="#moody.m.bases.Signatures">Signatures</a></span>
+</code></dt>
+<dd>
+<div class="desc"></div>
+<details class="source">
+<summary>
+<span>Expand source code</span>
+</summary>
+<pre><code class="python">def CallSignatureModel(self) -&gt; Signatures:
+    return self.SIGNATURES</code></pre>
 </details>
 </dd>
 <dt id="moody.m.bases.ContractBase.EnforceTxReceipt"><code class="name flex">
@@ -644,19 +675,19 @@ class ContractBase:
 <li><a title="moody.m.v_r_f_coordinator.TransferOwnershipMethod" href="v_r_f_coordinator/index.html#moody.m.v_r_f_coordinator.TransferOwnershipMethod">TransferOwnershipMethod</a></li>
 <li><a title="moody.m.v_r_f_coordinator.WithdrawMethod" href="v_r_f_coordinator/index.html#moody.m.v_r_f_coordinator.WithdrawMethod">WithdrawMethod</a></li>
 <li><a title="moody.m.v_r_f_coordinator.WithdrawableTokensMethod" href="v_r_f_coordinator/index.html#moody.m.v_r_f_coordinator.WithdrawableTokensMethod">WithdrawableTokensMethod</a></li>
-<li><a title="moody.openzeppelin.AcceptAdminMethod" href="../openzeppelin/index.html#moody.openzeppelin.AcceptAdminMethod">AcceptAdminMethod</a></li>
-<li><a title="moody.openzeppelin.AdminMethod" href="../openzeppelin/index.html#moody.openzeppelin.AdminMethod">AdminMethod</a></li>
-<li><a title="moody.openzeppelin.CancelTransactionMethod" href="../openzeppelin/index.html#moody.openzeppelin.CancelTransactionMethod">CancelTransactionMethod</a></li>
-<li><a title="moody.openzeppelin.DelayMethod" href="../openzeppelin/index.html#moody.openzeppelin.DelayMethod">DelayMethod</a></li>
-<li><a title="moody.openzeppelin.ExecuteTransactionMethod" href="../openzeppelin/index.html#moody.openzeppelin.ExecuteTransactionMethod">ExecuteTransactionMethod</a></li>
-<li><a title="moody.openzeppelin.GracePeriodMethod" href="../openzeppelin/index.html#moody.openzeppelin.GracePeriodMethod">GracePeriodMethod</a></li>
-<li><a title="moody.openzeppelin.MaximumDelayMethod" href="../openzeppelin/index.html#moody.openzeppelin.MaximumDelayMethod">MaximumDelayMethod</a></li>
-<li><a title="moody.openzeppelin.MinimumDelayMethod" href="../openzeppelin/index.html#moody.openzeppelin.MinimumDelayMethod">MinimumDelayMethod</a></li>
-<li><a title="moody.openzeppelin.PendingAdminMethod" href="../openzeppelin/index.html#moody.openzeppelin.PendingAdminMethod">PendingAdminMethod</a></li>
-<li><a title="moody.openzeppelin.QueueTransactionMethod" href="../openzeppelin/index.html#moody.openzeppelin.QueueTransactionMethod">QueueTransactionMethod</a></li>
-<li><a title="moody.openzeppelin.QueuedTransactionsMethod" href="../openzeppelin/index.html#moody.openzeppelin.QueuedTransactionsMethod">QueuedTransactionsMethod</a></li>
-<li><a title="moody.openzeppelin.SetDelayMethod" href="../openzeppelin/index.html#moody.openzeppelin.SetDelayMethod">SetDelayMethod</a></li>
-<li><a title="moody.openzeppelin.SetPendingAdminMethod" href="../openzeppelin/index.html#moody.openzeppelin.SetPendingAdminMethod">SetPendingAdminMethod</a></li>
+<li><a title="moody.upgrades.AcceptAdminMethod" href="../upgrades/index.html#moody.upgrades.AcceptAdminMethod">AcceptAdminMethod</a></li>
+<li><a title="moody.upgrades.AdminMethod" href="../upgrades/index.html#moody.upgrades.AdminMethod">AdminMethod</a></li>
+<li><a title="moody.upgrades.CancelTransactionMethod" href="../upgrades/index.html#moody.upgrades.CancelTransactionMethod">CancelTransactionMethod</a></li>
+<li><a title="moody.upgrades.DelayMethod" href="../upgrades/index.html#moody.upgrades.DelayMethod">DelayMethod</a></li>
+<li><a title="moody.upgrades.ExecuteTransactionMethod" href="../upgrades/index.html#moody.upgrades.ExecuteTransactionMethod">ExecuteTransactionMethod</a></li>
+<li><a title="moody.upgrades.GracePeriodMethod" href="../upgrades/index.html#moody.upgrades.GracePeriodMethod">GracePeriodMethod</a></li>
+<li><a title="moody.upgrades.MaximumDelayMethod" href="../upgrades/index.html#moody.upgrades.MaximumDelayMethod">MaximumDelayMethod</a></li>
+<li><a title="moody.upgrades.MinimumDelayMethod" href="../upgrades/index.html#moody.upgrades.MinimumDelayMethod">MinimumDelayMethod</a></li>
+<li><a title="moody.upgrades.PendingAdminMethod" href="../upgrades/index.html#moody.upgrades.PendingAdminMethod">PendingAdminMethod</a></li>
+<li><a title="moody.upgrades.QueueTransactionMethod" href="../upgrades/index.html#moody.upgrades.QueueTransactionMethod">QueueTransactionMethod</a></li>
+<li><a title="moody.upgrades.QueuedTransactionsMethod" href="../upgrades/index.html#moody.upgrades.QueuedTransactionsMethod">QueuedTransactionsMethod</a></li>
+<li><a title="moody.upgrades.SetDelayMethod" href="../upgrades/index.html#moody.upgrades.SetDelayMethod">SetDelayMethod</a></li>
+<li><a title="moody.upgrades.SetPendingAdminMethod" href="../upgrades/index.html#moody.upgrades.SetPendingAdminMethod">SetPendingAdminMethod</a></li>
 </ul>
 <h3>Static methods</h3>
 <dl>
@@ -734,15 +765,21 @@ def validate_and_checksum_address(address: str):
 </summary>
 <pre><code class="python">class Signatures:
     _function_signatures = {}
+    _abi_store = {}
 
     def __init__(self, abi: any):
         for func in [obj for obj in abi if obj[&#39;type&#39;] == &#39;function&#39;]:
             name = func[&#39;name&#39;]
             types = [input[&#39;type&#39;] for input in func[&#39;inputs&#39;]]
             self._function_signatures[name] = &#39;{}({})&#39;.format(name, &#39;,&#39;.join(types))
+        self._abi_store = abi
 
     def fromSignatures(self) -&gt; dict:
-        return self._function_signatures</code></pre>
+        return self._function_signatures
+
+    @property
+    def fromAbi(self) -&gt; any:
+        return self._abi_store</code></pre>
 </details>
 <h3>Subclasses</h3>
 <ul class="hlist">
@@ -764,6 +801,21 @@ def validate_and_checksum_address(address: str):
 <li><a title="moody.m.v_r_f_consumer.SignatureGenerator" href="v_r_f_consumer/index.html#moody.m.v_r_f_consumer.SignatureGenerator">SignatureGenerator</a></li>
 <li><a title="moody.m.v_r_f_coordinator.SignatureGenerator" href="v_r_f_coordinator/index.html#moody.m.v_r_f_coordinator.SignatureGenerator">SignatureGenerator</a></li>
 </ul>
+<h3>Instance variables</h3>
+<dl>
+<dt id="moody.m.bases.Signatures.fromAbi"><code class="name">var <span class="ident">fromAbi</span> : <built-in function any></code></dt>
+<dd>
+<div class="desc"></div>
+<details class="source">
+<summary>
+<span>Expand source code</span>
+</summary>
+<pre><code class="python">@property
+def fromAbi(self) -&gt; any:
+    return self._abi_store</code></pre>
+</details>
+</dd>
+</dl>
 <h3>Methods</h3>
 <dl>
 <dt id="moody.m.bases.Signatures.fromSignatures"><code class="name flex">
@@ -839,7 +891,7 @@ def validate_and_checksum_address(address: str):
 <li><a title="moody.m.uniswap_v2_router02.UniswapV2Router02Validator" href="uniswap_v2_router02/index.html#moody.m.uniswap_v2_router02.UniswapV2Router02Validator">UniswapV2Router02Validator</a></li>
 <li><a title="moody.m.v_r_f_consumer.VRFConsumerValidator" href="v_r_f_consumer/index.html#moody.m.v_r_f_consumer.VRFConsumerValidator">VRFConsumerValidator</a></li>
 <li><a title="moody.m.v_r_f_coordinator.VRFCoordinatorValidator" href="v_r_f_coordinator/index.html#moody.m.v_r_f_coordinator.VRFCoordinatorValidator">VRFCoordinatorValidator</a></li>
-<li><a title="moody.openzeppelin.Timelock6hValidator" href="../openzeppelin/index.html#moody.openzeppelin.Timelock6hValidator">Timelock6hValidator</a></li>
+<li><a title="moody.upgrades.Timelock6hValidator" href="../upgrades/index.html#moody.upgrades.Timelock6hValidator">Timelock6hValidator</a></li>
 </ul>
 <h3>Methods</h3>
 <dl>
@@ -914,12 +966,14 @@ validated.
 <ul>
 <li>
 <h4><code><a title="moody.m.bases.ContractBase" href="#moody.m.bases.ContractBase">ContractBase</a></code></h4>
-<ul class="">
+<ul class="two-column">
 <li><code><a title="moody.m.bases.ContractBase.CallAutoConf" href="#moody.m.bases.ContractBase.CallAutoConf">CallAutoConf</a></code></li>
 <li><code><a title="moody.m.bases.ContractBase.CallContractFee" href="#moody.m.bases.ContractBase.CallContractFee">CallContractFee</a></code></li>
 <li><code><a title="moody.m.bases.ContractBase.CallDebug" href="#moody.m.bases.ContractBase.CallDebug">CallDebug</a></code></li>
+<li><code><a title="moody.m.bases.ContractBase.CallSignatureModel" href="#moody.m.bases.ContractBase.CallSignatureModel">CallSignatureModel</a></code></li>
 <li><code><a title="moody.m.bases.ContractBase.EnforceTxReceipt" href="#moody.m.bases.ContractBase.EnforceTxReceipt">EnforceTxReceipt</a></code></li>
 <li><code><a title="moody.m.bases.ContractBase.SIGNATURES" href="#moody.m.bases.ContractBase.SIGNATURES">SIGNATURES</a></code></li>
+<li><code><a title="moody.m.bases.ContractBase.contract_address" href="#moody.m.bases.ContractBase.contract_address">contract_address</a></code></li>
 </ul>
 </li>
 <li>
@@ -933,6 +987,7 @@ validated.
 <li>
 <h4><code><a title="moody.m.bases.Signatures" href="#moody.m.bases.Signatures">Signatures</a></code></h4>
 <ul class="">
+<li><code><a title="moody.m.bases.Signatures.fromAbi" href="#moody.m.bases.Signatures.fromAbi">fromAbi</a></code></li>
 <li><code><a title="moody.m.bases.Signatures.fromSignatures" href="#moody.m.bases.Signatures.fromSignatures">fromSignatures</a></code></li>
 </ul>
 </li>

@@ -4,7 +4,7 @@
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1, minimum-scale=1" />
 <meta name="generator" content="pdoc 0.9.1" />
-<title>moody.openzeppelin API documentation</title>
+<title>moody.upgrades API documentation</title>
 <meta name="description" content="Generated wrapper for Timelock6h Solidity contract." />
 <link rel="preload stylesheet" as="style" href="https://cdnjs.cloudflare.com/ajax/libs/10up-sanitize.css/11.0.1/sanitize.min.css" integrity="sha256-PK9q560IAAa6WVRRh76LtCaI8pjTJ2z11v0miyNNjrs=" crossorigin>
 <link rel="preload stylesheet" as="style" href="https://cdnjs.cloudflare.com/ajax/libs/10up-sanitize.css/11.0.1/typography.min.css" integrity="sha256-7l/o7C8jubJiy74VsKTidCy1yBkRtiUGbVkYBylBqUg=" crossorigin>
@@ -19,7 +19,7 @@
 <main>
 <article id="content">
 <header>
-<h1 class="title">Module <code>moody.openzeppelin</code></h1>
+<h1 class="title">Module <code>moody.upgrades</code></h1>
 </header>
 <section id="section-intro">
 <p>Generated wrapper for Timelock6h Solidity contract.</p>
@@ -1286,15 +1286,15 @@ class Timelock6h(ContractBase):
 <section>
 <h2 class="section-title" id="header-submodules">Sub-modules</h2>
 <dl>
-<dt><code class="name"><a title="moody.openzeppelin.Token" href="Token.html">moody.openzeppelin.Token</a></code></dt>
+<dt><code class="name"><a title="moody.upgrades.Token" href="Token.html">moody.upgrades.Token</a></code></dt>
 <dd>
 <div class="desc"></div>
 </dd>
-<dt><code class="name"><a title="moody.openzeppelin.proxy" href="proxy.html">moody.openzeppelin.proxy</a></code></dt>
+<dt><code class="name"><a title="moody.upgrades.proxy" href="proxy.html">moody.upgrades.proxy</a></code></dt>
 <dd>
 <div class="desc"></div>
 </dd>
-<dt><code class="name"><a title="moody.openzeppelin.timelocker" href="timelocker.html">moody.openzeppelin.timelocker</a></code></dt>
+<dt><code class="name"><a title="moody.upgrades.timelocker" href="timelocker.html">moody.upgrades.timelocker</a></code></dt>
 <dd>
 <div class="desc"></div>
 </dd>
@@ -1307,7 +1307,7 @@ class Timelock6h(ContractBase):
 <section>
 <h2 class="section-title" id="header-classes">Classes</h2>
 <dl>
-<dt id="moody.openzeppelin.AcceptAdminMethod"><code class="flex name class">
+<dt id="moody.upgrades.AcceptAdminMethod"><code class="flex name class">
 <span>class <span class="ident">AcceptAdminMethod</span></span>
 <span>(</span><span>elib: <a title="moody.libeb.MiliDoS" href="../libeb.html#moody.libeb.MiliDoS">MiliDoS</a>, contract_address: str, contract_function: web3.contract.ContractFunction)</span>
 </code></dt>
@@ -1406,7 +1406,7 @@ class Timelock6h(ContractBase):
 </ul>
 <h3>Methods</h3>
 <dl>
-<dt id="moody.openzeppelin.AcceptAdminMethod.block_send"><code class="name flex">
+<dt id="moody.upgrades.AcceptAdminMethod.block_send"><code class="name flex">
 <span>def <span class="ident">block_send</span></span>(<span>self, gas: int, price: int, val: int = 0, debug: bool = False, receiptListen: bool = False) ‑> NoneType</span>
 </code></dt>
 <dd>
@@ -1474,7 +1474,7 @@ class Timelock6h(ContractBase):
             print(f&#34;{Bolors.FAIL}Error Revert {Bolors.RESET}: set_asset_token&#34;)</code></pre>
 </details>
 </dd>
-<dt id="moody.openzeppelin.AcceptAdminMethod.build_transaction"><code class="name flex">
+<dt id="moody.upgrades.AcceptAdminMethod.build_transaction"><code class="name flex">
 <span>def <span class="ident">build_transaction</span></span>(<span>self, tx_params: Union[<a title="moody.m.tx_params.TxParams" href="../m/tx_params.html#moody.m.tx_params.TxParams">TxParams</a>, NoneType] = None) ‑> dict</span>
 </code></dt>
 <dd>
@@ -1489,7 +1489,7 @@ class Timelock6h(ContractBase):
     return self._underlying_method().buildTransaction(tx_params.as_dict())</code></pre>
 </details>
 </dd>
-<dt id="moody.openzeppelin.AcceptAdminMethod.estimate_gas"><code class="name flex">
+<dt id="moody.upgrades.AcceptAdminMethod.estimate_gas"><code class="name flex">
 <span>def <span class="ident">estimate_gas</span></span>(<span>self, tx_params: Union[<a title="moody.m.tx_params.TxParams" href="../m/tx_params.html#moody.m.tx_params.TxParams">TxParams</a>, NoneType] = None) ‑> int</span>
 </code></dt>
 <dd>
@@ -1504,7 +1504,7 @@ class Timelock6h(ContractBase):
     return self._underlying_method().estimateGas(tx_params.as_dict())</code></pre>
 </details>
 </dd>
-<dt id="moody.openzeppelin.AcceptAdminMethod.send_transaction"><code class="name flex">
+<dt id="moody.upgrades.AcceptAdminMethod.send_transaction"><code class="name flex">
 <span>def <span class="ident">send_transaction</span></span>(<span>self, tx_params: Union[<a title="moody.m.tx_params.TxParams" href="../m/tx_params.html#moody.m.tx_params.TxParams">TxParams</a>, NoneType] = None) ‑> Union[hexbytes.main.HexBytes, bytes]</span>
 </code></dt>
 <dd>
@@ -1534,7 +1534,7 @@ class Timelock6h(ContractBase):
 </li>
 </ul>
 </dd>
-<dt id="moody.openzeppelin.AdminMethod"><code class="flex name class">
+<dt id="moody.upgrades.AdminMethod"><code class="flex name class">
 <span>class <span class="ident">AdminMethod</span></span>
 <span>(</span><span>elib: <a title="moody.libeb.MiliDoS" href="../libeb.html#moody.libeb.MiliDoS">MiliDoS</a>, contract_address: str, contract_function: web3.contract.ContractFunction)</span>
 </code></dt>
@@ -1571,7 +1571,7 @@ class Timelock6h(ContractBase):
 </ul>
 <h3>Methods</h3>
 <dl>
-<dt id="moody.openzeppelin.AdminMethod.block_call"><code class="name flex">
+<dt id="moody.upgrades.AdminMethod.block_call"><code class="name flex">
 <span>def <span class="ident">block_call</span></span>(<span>self, debug: bool = False) ‑> str</span>
 </code></dt>
 <dd>
@@ -1588,7 +1588,7 @@ class Timelock6h(ContractBase):
     return str(returned)</code></pre>
 </details>
 </dd>
-<dt id="moody.openzeppelin.AdminMethod.estimate_gas"><code class="name flex">
+<dt id="moody.upgrades.AdminMethod.estimate_gas"><code class="name flex">
 <span>def <span class="ident">estimate_gas</span></span>(<span>self, tx_params: Union[<a title="moody.m.tx_params.TxParams" href="../m/tx_params.html#moody.m.tx_params.TxParams">TxParams</a>, NoneType] = None) ‑> int</span>
 </code></dt>
 <dd>
@@ -1614,7 +1614,7 @@ class Timelock6h(ContractBase):
 </li>
 </ul>
 </dd>
-<dt id="moody.openzeppelin.CancelTransactionMethod"><code class="flex name class">
+<dt id="moody.upgrades.CancelTransactionMethod"><code class="flex name class">
 <span>class <span class="ident">CancelTransactionMethod</span></span>
 <span>(</span><span>elib: <a title="moody.libeb.MiliDoS" href="../libeb.html#moody.libeb.MiliDoS">MiliDoS</a>, contract_address: str, contract_function: web3.contract.ContractFunction, validator: <a title="moody.m.bases.Validator" href="../m/bases.html#moody.m.bases.Validator">Validator</a> = None)</span>
 </code></dt>
@@ -1750,7 +1750,7 @@ class Timelock6h(ContractBase):
 </ul>
 <h3>Methods</h3>
 <dl>
-<dt id="moody.openzeppelin.CancelTransactionMethod.block_send"><code class="name flex">
+<dt id="moody.upgrades.CancelTransactionMethod.block_send"><code class="name flex">
 <span>def <span class="ident">block_send</span></span>(<span>self, target: str, value: int, signature: str, data: Union[bytes, str], eta: int, gas: int, price: int, val: int = 0, debug: bool = False, receiptListen: bool = False) ‑> NoneType</span>
 </code></dt>
 <dd>
@@ -1818,7 +1818,7 @@ class Timelock6h(ContractBase):
             print(f&#34;{Bolors.FAIL}Error Revert {Bolors.RESET}: set_asset_token&#34;)</code></pre>
 </details>
 </dd>
-<dt id="moody.openzeppelin.CancelTransactionMethod.build_transaction"><code class="name flex">
+<dt id="moody.upgrades.CancelTransactionMethod.build_transaction"><code class="name flex">
 <span>def <span class="ident">build_transaction</span></span>(<span>self, target: str, value: int, signature: str, data: Union[bytes, str], eta: int, tx_params: Union[<a title="moody.m.tx_params.TxParams" href="../m/tx_params.html#moody.m.tx_params.TxParams">TxParams</a>, NoneType] = None) ‑> dict</span>
 </code></dt>
 <dd>
@@ -1834,7 +1834,7 @@ class Timelock6h(ContractBase):
     return self._underlying_method(target, value, signature, data, eta).buildTransaction(tx_params.as_dict())</code></pre>
 </details>
 </dd>
-<dt id="moody.openzeppelin.CancelTransactionMethod.estimate_gas"><code class="name flex">
+<dt id="moody.upgrades.CancelTransactionMethod.estimate_gas"><code class="name flex">
 <span>def <span class="ident">estimate_gas</span></span>(<span>self, target: str, value: int, signature: str, data: Union[bytes, str], eta: int, tx_params: Union[<a title="moody.m.tx_params.TxParams" href="../m/tx_params.html#moody.m.tx_params.TxParams">TxParams</a>, NoneType] = None) ‑> int</span>
 </code></dt>
 <dd>
@@ -1850,7 +1850,7 @@ class Timelock6h(ContractBase):
     return self._underlying_method(target, value, signature, data, eta).estimateGas(tx_params.as_dict())</code></pre>
 </details>
 </dd>
-<dt id="moody.openzeppelin.CancelTransactionMethod.send_transaction"><code class="name flex">
+<dt id="moody.upgrades.CancelTransactionMethod.send_transaction"><code class="name flex">
 <span>def <span class="ident">send_transaction</span></span>(<span>self, target: str, value: int, signature: str, data: Union[bytes, str], eta: int, tx_params: Union[<a title="moody.m.tx_params.TxParams" href="../m/tx_params.html#moody.m.tx_params.TxParams">TxParams</a>, NoneType] = None) ‑> Union[hexbytes.main.HexBytes, bytes]</span>
 </code></dt>
 <dd>
@@ -1870,7 +1870,7 @@ class Timelock6h(ContractBase):
     return self._underlying_method(target, value, signature, data, eta).transact(tx_params.as_dict())</code></pre>
 </details>
 </dd>
-<dt id="moody.openzeppelin.CancelTransactionMethod.validate_and_normalize_inputs"><code class="name flex">
+<dt id="moody.upgrades.CancelTransactionMethod.validate_and_normalize_inputs"><code class="name flex">
 <span>def <span class="ident">validate_and_normalize_inputs</span></span>(<span>self, target: str, value: int, signature: str, data: Union[bytes, str], eta: int) ‑> <built-in function any></span>
 </code></dt>
 <dd>
@@ -1925,7 +1925,7 @@ class Timelock6h(ContractBase):
 </li>
 </ul>
 </dd>
-<dt id="moody.openzeppelin.DelayMethod"><code class="flex name class">
+<dt id="moody.upgrades.DelayMethod"><code class="flex name class">
 <span>class <span class="ident">DelayMethod</span></span>
 <span>(</span><span>elib: <a title="moody.libeb.MiliDoS" href="../libeb.html#moody.libeb.MiliDoS">MiliDoS</a>, contract_address: str, contract_function: web3.contract.ContractFunction)</span>
 </code></dt>
@@ -1962,7 +1962,7 @@ class Timelock6h(ContractBase):
 </ul>
 <h3>Methods</h3>
 <dl>
-<dt id="moody.openzeppelin.DelayMethod.block_call"><code class="name flex">
+<dt id="moody.upgrades.DelayMethod.block_call"><code class="name flex">
 <span>def <span class="ident">block_call</span></span>(<span>self, debug: bool = False) ‑> int</span>
 </code></dt>
 <dd>
@@ -1979,7 +1979,7 @@ class Timelock6h(ContractBase):
     return int(returned)</code></pre>
 </details>
 </dd>
-<dt id="moody.openzeppelin.DelayMethod.estimate_gas"><code class="name flex">
+<dt id="moody.upgrades.DelayMethod.estimate_gas"><code class="name flex">
 <span>def <span class="ident">estimate_gas</span></span>(<span>self, tx_params: Union[<a title="moody.m.tx_params.TxParams" href="../m/tx_params.html#moody.m.tx_params.TxParams">TxParams</a>, NoneType] = None) ‑> int</span>
 </code></dt>
 <dd>
@@ -2005,7 +2005,7 @@ class Timelock6h(ContractBase):
 </li>
 </ul>
 </dd>
-<dt id="moody.openzeppelin.ExecuteTransactionMethod"><code class="flex name class">
+<dt id="moody.upgrades.ExecuteTransactionMethod"><code class="flex name class">
 <span>class <span class="ident">ExecuteTransactionMethod</span></span>
 <span>(</span><span>elib: <a title="moody.libeb.MiliDoS" href="../libeb.html#moody.libeb.MiliDoS">MiliDoS</a>, contract_address: str, contract_function: web3.contract.ContractFunction, validator: <a title="moody.m.bases.Validator" href="../m/bases.html#moody.m.bases.Validator">Validator</a> = None)</span>
 </code></dt>
@@ -2141,7 +2141,7 @@ class Timelock6h(ContractBase):
 </ul>
 <h3>Methods</h3>
 <dl>
-<dt id="moody.openzeppelin.ExecuteTransactionMethod.block_send"><code class="name flex">
+<dt id="moody.upgrades.ExecuteTransactionMethod.block_send"><code class="name flex">
 <span>def <span class="ident">block_send</span></span>(<span>self, target: str, value: int, signature: str, data: Union[bytes, str], eta: int, gas: int, price: int, val: int = 0, debug: bool = False, receiptListen: bool = False) ‑> Union[bytes, str]</span>
 </code></dt>
 <dd>
@@ -2209,7 +2209,7 @@ class Timelock6h(ContractBase):
             print(f&#34;{Bolors.FAIL}Error Revert {Bolors.RESET}: set_asset_token&#34;)</code></pre>
 </details>
 </dd>
-<dt id="moody.openzeppelin.ExecuteTransactionMethod.build_transaction"><code class="name flex">
+<dt id="moody.upgrades.ExecuteTransactionMethod.build_transaction"><code class="name flex">
 <span>def <span class="ident">build_transaction</span></span>(<span>self, target: str, value: int, signature: str, data: Union[bytes, str], eta: int, tx_params: Union[<a title="moody.m.tx_params.TxParams" href="../m/tx_params.html#moody.m.tx_params.TxParams">TxParams</a>, NoneType] = None) ‑> dict</span>
 </code></dt>
 <dd>
@@ -2225,7 +2225,7 @@ class Timelock6h(ContractBase):
     return self._underlying_method(target, value, signature, data, eta).buildTransaction(tx_params.as_dict())</code></pre>
 </details>
 </dd>
-<dt id="moody.openzeppelin.ExecuteTransactionMethod.estimate_gas"><code class="name flex">
+<dt id="moody.upgrades.ExecuteTransactionMethod.estimate_gas"><code class="name flex">
 <span>def <span class="ident">estimate_gas</span></span>(<span>self, target: str, value: int, signature: str, data: Union[bytes, str], eta: int, tx_params: Union[<a title="moody.m.tx_params.TxParams" href="../m/tx_params.html#moody.m.tx_params.TxParams">TxParams</a>, NoneType] = None) ‑> int</span>
 </code></dt>
 <dd>
@@ -2241,7 +2241,7 @@ class Timelock6h(ContractBase):
     return self._underlying_method(target, value, signature, data, eta).estimateGas(tx_params.as_dict())</code></pre>
 </details>
 </dd>
-<dt id="moody.openzeppelin.ExecuteTransactionMethod.send_transaction"><code class="name flex">
+<dt id="moody.upgrades.ExecuteTransactionMethod.send_transaction"><code class="name flex">
 <span>def <span class="ident">send_transaction</span></span>(<span>self, target: str, value: int, signature: str, data: Union[bytes, str], eta: int, tx_params: Union[<a title="moody.m.tx_params.TxParams" href="../m/tx_params.html#moody.m.tx_params.TxParams">TxParams</a>, NoneType] = None) ‑> Union[hexbytes.main.HexBytes, bytes]</span>
 </code></dt>
 <dd>
@@ -2261,7 +2261,7 @@ class Timelock6h(ContractBase):
     return self._underlying_method(target, value, signature, data, eta).transact(tx_params.as_dict())</code></pre>
 </details>
 </dd>
-<dt id="moody.openzeppelin.ExecuteTransactionMethod.validate_and_normalize_inputs"><code class="name flex">
+<dt id="moody.upgrades.ExecuteTransactionMethod.validate_and_normalize_inputs"><code class="name flex">
 <span>def <span class="ident">validate_and_normalize_inputs</span></span>(<span>self, target: str, value: int, signature: str, data: Union[bytes, str], eta: int) ‑> <built-in function any></span>
 </code></dt>
 <dd>
@@ -2316,7 +2316,7 @@ class Timelock6h(ContractBase):
 </li>
 </ul>
 </dd>
-<dt id="moody.openzeppelin.GracePeriodMethod"><code class="flex name class">
+<dt id="moody.upgrades.GracePeriodMethod"><code class="flex name class">
 <span>class <span class="ident">GracePeriodMethod</span></span>
 <span>(</span><span>elib: <a title="moody.libeb.MiliDoS" href="../libeb.html#moody.libeb.MiliDoS">MiliDoS</a>, contract_address: str, contract_function: web3.contract.ContractFunction)</span>
 </code></dt>
@@ -2353,7 +2353,7 @@ class Timelock6h(ContractBase):
 </ul>
 <h3>Methods</h3>
 <dl>
-<dt id="moody.openzeppelin.GracePeriodMethod.block_call"><code class="name flex">
+<dt id="moody.upgrades.GracePeriodMethod.block_call"><code class="name flex">
 <span>def <span class="ident">block_call</span></span>(<span>self, debug: bool = False) ‑> int</span>
 </code></dt>
 <dd>
@@ -2370,7 +2370,7 @@ class Timelock6h(ContractBase):
     return int(returned)</code></pre>
 </details>
 </dd>
-<dt id="moody.openzeppelin.GracePeriodMethod.estimate_gas"><code class="name flex">
+<dt id="moody.upgrades.GracePeriodMethod.estimate_gas"><code class="name flex">
 <span>def <span class="ident">estimate_gas</span></span>(<span>self, tx_params: Union[<a title="moody.m.tx_params.TxParams" href="../m/tx_params.html#moody.m.tx_params.TxParams">TxParams</a>, NoneType] = None) ‑> int</span>
 </code></dt>
 <dd>
@@ -2396,7 +2396,7 @@ class Timelock6h(ContractBase):
 </li>
 </ul>
 </dd>
-<dt id="moody.openzeppelin.MaximumDelayMethod"><code class="flex name class">
+<dt id="moody.upgrades.MaximumDelayMethod"><code class="flex name class">
 <span>class <span class="ident">MaximumDelayMethod</span></span>
 <span>(</span><span>elib: <a title="moody.libeb.MiliDoS" href="../libeb.html#moody.libeb.MiliDoS">MiliDoS</a>, contract_address: str, contract_function: web3.contract.ContractFunction)</span>
 </code></dt>
@@ -2433,7 +2433,7 @@ class Timelock6h(ContractBase):
 </ul>
 <h3>Methods</h3>
 <dl>
-<dt id="moody.openzeppelin.MaximumDelayMethod.block_call"><code class="name flex">
+<dt id="moody.upgrades.MaximumDelayMethod.block_call"><code class="name flex">
 <span>def <span class="ident">block_call</span></span>(<span>self, debug: bool = False) ‑> int</span>
 </code></dt>
 <dd>
@@ -2450,7 +2450,7 @@ class Timelock6h(ContractBase):
     return int(returned)</code></pre>
 </details>
 </dd>
-<dt id="moody.openzeppelin.MaximumDelayMethod.estimate_gas"><code class="name flex">
+<dt id="moody.upgrades.MaximumDelayMethod.estimate_gas"><code class="name flex">
 <span>def <span class="ident">estimate_gas</span></span>(<span>self, tx_params: Union[<a title="moody.m.tx_params.TxParams" href="../m/tx_params.html#moody.m.tx_params.TxParams">TxParams</a>, NoneType] = None) ‑> int</span>
 </code></dt>
 <dd>
@@ -2476,7 +2476,7 @@ class Timelock6h(ContractBase):
 </li>
 </ul>
 </dd>
-<dt id="moody.openzeppelin.MinimumDelayMethod"><code class="flex name class">
+<dt id="moody.upgrades.MinimumDelayMethod"><code class="flex name class">
 <span>class <span class="ident">MinimumDelayMethod</span></span>
 <span>(</span><span>elib: <a title="moody.libeb.MiliDoS" href="../libeb.html#moody.libeb.MiliDoS">MiliDoS</a>, contract_address: str, contract_function: web3.contract.ContractFunction)</span>
 </code></dt>
@@ -2513,7 +2513,7 @@ class Timelock6h(ContractBase):
 </ul>
 <h3>Methods</h3>
 <dl>
-<dt id="moody.openzeppelin.MinimumDelayMethod.block_call"><code class="name flex">
+<dt id="moody.upgrades.MinimumDelayMethod.block_call"><code class="name flex">
 <span>def <span class="ident">block_call</span></span>(<span>self, debug: bool = False) ‑> int</span>
 </code></dt>
 <dd>
@@ -2530,7 +2530,7 @@ class Timelock6h(ContractBase):
     return int(returned)</code></pre>
 </details>
 </dd>
-<dt id="moody.openzeppelin.MinimumDelayMethod.estimate_gas"><code class="name flex">
+<dt id="moody.upgrades.MinimumDelayMethod.estimate_gas"><code class="name flex">
 <span>def <span class="ident">estimate_gas</span></span>(<span>self, tx_params: Union[<a title="moody.m.tx_params.TxParams" href="../m/tx_params.html#moody.m.tx_params.TxParams">TxParams</a>, NoneType] = None) ‑> int</span>
 </code></dt>
 <dd>
@@ -2556,7 +2556,7 @@ class Timelock6h(ContractBase):
 </li>
 </ul>
 </dd>
-<dt id="moody.openzeppelin.PendingAdminMethod"><code class="flex name class">
+<dt id="moody.upgrades.PendingAdminMethod"><code class="flex name class">
 <span>class <span class="ident">PendingAdminMethod</span></span>
 <span>(</span><span>elib: <a title="moody.libeb.MiliDoS" href="../libeb.html#moody.libeb.MiliDoS">MiliDoS</a>, contract_address: str, contract_function: web3.contract.ContractFunction)</span>
 </code></dt>
@@ -2593,7 +2593,7 @@ class Timelock6h(ContractBase):
 </ul>
 <h3>Methods</h3>
 <dl>
-<dt id="moody.openzeppelin.PendingAdminMethod.block_call"><code class="name flex">
+<dt id="moody.upgrades.PendingAdminMethod.block_call"><code class="name flex">
 <span>def <span class="ident">block_call</span></span>(<span>self, debug: bool = False) ‑> str</span>
 </code></dt>
 <dd>
@@ -2610,7 +2610,7 @@ class Timelock6h(ContractBase):
     return str(returned)</code></pre>
 </details>
 </dd>
-<dt id="moody.openzeppelin.PendingAdminMethod.estimate_gas"><code class="name flex">
+<dt id="moody.upgrades.PendingAdminMethod.estimate_gas"><code class="name flex">
 <span>def <span class="ident">estimate_gas</span></span>(<span>self, tx_params: Union[<a title="moody.m.tx_params.TxParams" href="../m/tx_params.html#moody.m.tx_params.TxParams">TxParams</a>, NoneType] = None) ‑> int</span>
 </code></dt>
 <dd>
@@ -2636,7 +2636,7 @@ class Timelock6h(ContractBase):
 </li>
 </ul>
 </dd>
-<dt id="moody.openzeppelin.QueueTransactionMethod"><code class="flex name class">
+<dt id="moody.upgrades.QueueTransactionMethod"><code class="flex name class">
 <span>class <span class="ident">QueueTransactionMethod</span></span>
 <span>(</span><span>elib: <a title="moody.libeb.MiliDoS" href="../libeb.html#moody.libeb.MiliDoS">MiliDoS</a>, contract_address: str, contract_function: web3.contract.ContractFunction, validator: <a title="moody.m.bases.Validator" href="../m/bases.html#moody.m.bases.Validator">Validator</a> = None)</span>
 </code></dt>
@@ -2772,7 +2772,7 @@ class Timelock6h(ContractBase):
 </ul>
 <h3>Methods</h3>
 <dl>
-<dt id="moody.openzeppelin.QueueTransactionMethod.block_send"><code class="name flex">
+<dt id="moody.upgrades.QueueTransactionMethod.block_send"><code class="name flex">
 <span>def <span class="ident">block_send</span></span>(<span>self, target: str, value: int, signature: str, data: Union[bytes, str], eta: int, gas: int, price: int, val: int = 0, debug: bool = False, receiptListen: bool = False) ‑> Union[bytes, str]</span>
 </code></dt>
 <dd>
@@ -2840,7 +2840,7 @@ class Timelock6h(ContractBase):
             print(f&#34;{Bolors.FAIL}Error Revert {Bolors.RESET}: set_asset_token&#34;)</code></pre>
 </details>
 </dd>
-<dt id="moody.openzeppelin.QueueTransactionMethod.build_transaction"><code class="name flex">
+<dt id="moody.upgrades.QueueTransactionMethod.build_transaction"><code class="name flex">
 <span>def <span class="ident">build_transaction</span></span>(<span>self, target: str, value: int, signature: str, data: Union[bytes, str], eta: int, tx_params: Union[<a title="moody.m.tx_params.TxParams" href="../m/tx_params.html#moody.m.tx_params.TxParams">TxParams</a>, NoneType] = None) ‑> dict</span>
 </code></dt>
 <dd>
@@ -2856,7 +2856,7 @@ class Timelock6h(ContractBase):
     return self._underlying_method(target, value, signature, data, eta).buildTransaction(tx_params.as_dict())</code></pre>
 </details>
 </dd>
-<dt id="moody.openzeppelin.QueueTransactionMethod.estimate_gas"><code class="name flex">
+<dt id="moody.upgrades.QueueTransactionMethod.estimate_gas"><code class="name flex">
 <span>def <span class="ident">estimate_gas</span></span>(<span>self, target: str, value: int, signature: str, data: Union[bytes, str], eta: int, tx_params: Union[<a title="moody.m.tx_params.TxParams" href="../m/tx_params.html#moody.m.tx_params.TxParams">TxParams</a>, NoneType] = None) ‑> int</span>
 </code></dt>
 <dd>
@@ -2872,7 +2872,7 @@ class Timelock6h(ContractBase):
     return self._underlying_method(target, value, signature, data, eta).estimateGas(tx_params.as_dict())</code></pre>
 </details>
 </dd>
-<dt id="moody.openzeppelin.QueueTransactionMethod.send_transaction"><code class="name flex">
+<dt id="moody.upgrades.QueueTransactionMethod.send_transaction"><code class="name flex">
 <span>def <span class="ident">send_transaction</span></span>(<span>self, target: str, value: int, signature: str, data: Union[bytes, str], eta: int, tx_params: Union[<a title="moody.m.tx_params.TxParams" href="../m/tx_params.html#moody.m.tx_params.TxParams">TxParams</a>, NoneType] = None) ‑> Union[hexbytes.main.HexBytes, bytes]</span>
 </code></dt>
 <dd>
@@ -2892,7 +2892,7 @@ class Timelock6h(ContractBase):
     return self._underlying_method(target, value, signature, data, eta).transact(tx_params.as_dict())</code></pre>
 </details>
 </dd>
-<dt id="moody.openzeppelin.QueueTransactionMethod.validate_and_normalize_inputs"><code class="name flex">
+<dt id="moody.upgrades.QueueTransactionMethod.validate_and_normalize_inputs"><code class="name flex">
 <span>def <span class="ident">validate_and_normalize_inputs</span></span>(<span>self, target: str, value: int, signature: str, data: Union[bytes, str], eta: int) ‑> <built-in function any></span>
 </code></dt>
 <dd>
@@ -2947,7 +2947,7 @@ class Timelock6h(ContractBase):
 </li>
 </ul>
 </dd>
-<dt id="moody.openzeppelin.QueuedTransactionsMethod"><code class="flex name class">
+<dt id="moody.upgrades.QueuedTransactionsMethod"><code class="flex name class">
 <span>class <span class="ident">QueuedTransactionsMethod</span></span>
 <span>(</span><span>elib: <a title="moody.libeb.MiliDoS" href="../libeb.html#moody.libeb.MiliDoS">MiliDoS</a>, contract_address: str, contract_function: web3.contract.ContractFunction, validator: <a title="moody.m.bases.Validator" href="../m/bases.html#moody.m.bases.Validator">Validator</a> = None)</span>
 </code></dt>
@@ -2994,7 +2994,7 @@ class Timelock6h(ContractBase):
 </ul>
 <h3>Methods</h3>
 <dl>
-<dt id="moody.openzeppelin.QueuedTransactionsMethod.block_call"><code class="name flex">
+<dt id="moody.upgrades.QueuedTransactionsMethod.block_call"><code class="name flex">
 <span>def <span class="ident">block_call</span></span>(<span>self, index_0: Union[bytes, str], debug: bool = False) ‑> bool</span>
 </code></dt>
 <dd>
@@ -3011,7 +3011,7 @@ class Timelock6h(ContractBase):
     return bool(returned)</code></pre>
 </details>
 </dd>
-<dt id="moody.openzeppelin.QueuedTransactionsMethod.estimate_gas"><code class="name flex">
+<dt id="moody.upgrades.QueuedTransactionsMethod.estimate_gas"><code class="name flex">
 <span>def <span class="ident">estimate_gas</span></span>(<span>self, index_0: Union[bytes, str], tx_params: Union[<a title="moody.m.tx_params.TxParams" href="../m/tx_params.html#moody.m.tx_params.TxParams">TxParams</a>, NoneType] = None) ‑> int</span>
 </code></dt>
 <dd>
@@ -3027,7 +3027,7 @@ class Timelock6h(ContractBase):
     return self._underlying_method(index_0).estimateGas(tx_params.as_dict())</code></pre>
 </details>
 </dd>
-<dt id="moody.openzeppelin.QueuedTransactionsMethod.validate_and_normalize_inputs"><code class="name flex">
+<dt id="moody.upgrades.QueuedTransactionsMethod.validate_and_normalize_inputs"><code class="name flex">
 <span>def <span class="ident">validate_and_normalize_inputs</span></span>(<span>self, index_0: Union[bytes, str]) ‑> <built-in function any></span>
 </code></dt>
 <dd>
@@ -3057,7 +3057,7 @@ class Timelock6h(ContractBase):
 </li>
 </ul>
 </dd>
-<dt id="moody.openzeppelin.SetDelayMethod"><code class="flex name class">
+<dt id="moody.upgrades.SetDelayMethod"><code class="flex name class">
 <span>class <span class="ident">SetDelayMethod</span></span>
 <span>(</span><span>elib: <a title="moody.libeb.MiliDoS" href="../libeb.html#moody.libeb.MiliDoS">MiliDoS</a>, contract_address: str, contract_function: web3.contract.ContractFunction, validator: <a title="moody.m.bases.Validator" href="../m/bases.html#moody.m.bases.Validator">Validator</a> = None)</span>
 </code></dt>
@@ -3170,7 +3170,7 @@ class Timelock6h(ContractBase):
 </ul>
 <h3>Methods</h3>
 <dl>
-<dt id="moody.openzeppelin.SetDelayMethod.block_send"><code class="name flex">
+<dt id="moody.upgrades.SetDelayMethod.block_send"><code class="name flex">
 <span>def <span class="ident">block_send</span></span>(<span>self, delay_: int, gas: int, price: int, val: int = 0, debug: bool = False, receiptListen: bool = False) ‑> NoneType</span>
 </code></dt>
 <dd>
@@ -3238,7 +3238,7 @@ class Timelock6h(ContractBase):
             print(f&#34;{Bolors.FAIL}Error Revert {Bolors.RESET}: set_asset_token&#34;)</code></pre>
 </details>
 </dd>
-<dt id="moody.openzeppelin.SetDelayMethod.build_transaction"><code class="name flex">
+<dt id="moody.upgrades.SetDelayMethod.build_transaction"><code class="name flex">
 <span>def <span class="ident">build_transaction</span></span>(<span>self, delay_: int, tx_params: Union[<a title="moody.m.tx_params.TxParams" href="../m/tx_params.html#moody.m.tx_params.TxParams">TxParams</a>, NoneType] = None) ‑> dict</span>
 </code></dt>
 <dd>
@@ -3254,7 +3254,7 @@ class Timelock6h(ContractBase):
     return self._underlying_method(delay_).buildTransaction(tx_params.as_dict())</code></pre>
 </details>
 </dd>
-<dt id="moody.openzeppelin.SetDelayMethod.estimate_gas"><code class="name flex">
+<dt id="moody.upgrades.SetDelayMethod.estimate_gas"><code class="name flex">
 <span>def <span class="ident">estimate_gas</span></span>(<span>self, delay_: int, tx_params: Union[<a title="moody.m.tx_params.TxParams" href="../m/tx_params.html#moody.m.tx_params.TxParams">TxParams</a>, NoneType] = None) ‑> int</span>
 </code></dt>
 <dd>
@@ -3270,7 +3270,7 @@ class Timelock6h(ContractBase):
     return self._underlying_method(delay_).estimateGas(tx_params.as_dict())</code></pre>
 </details>
 </dd>
-<dt id="moody.openzeppelin.SetDelayMethod.send_transaction"><code class="name flex">
+<dt id="moody.upgrades.SetDelayMethod.send_transaction"><code class="name flex">
 <span>def <span class="ident">send_transaction</span></span>(<span>self, delay_: int, tx_params: Union[<a title="moody.m.tx_params.TxParams" href="../m/tx_params.html#moody.m.tx_params.TxParams">TxParams</a>, NoneType] = None) ‑> Union[hexbytes.main.HexBytes, bytes]</span>
 </code></dt>
 <dd>
@@ -3290,7 +3290,7 @@ class Timelock6h(ContractBase):
     return self._underlying_method(delay_).transact(tx_params.as_dict())</code></pre>
 </details>
 </dd>
-<dt id="moody.openzeppelin.SetDelayMethod.validate_and_normalize_inputs"><code class="name flex">
+<dt id="moody.upgrades.SetDelayMethod.validate_and_normalize_inputs"><code class="name flex">
 <span>def <span class="ident">validate_and_normalize_inputs</span></span>(<span>self, delay_: int) ‑> <built-in function any></span>
 </code></dt>
 <dd>
@@ -3322,7 +3322,7 @@ class Timelock6h(ContractBase):
 </li>
 </ul>
 </dd>
-<dt id="moody.openzeppelin.SetPendingAdminMethod"><code class="flex name class">
+<dt id="moody.upgrades.SetPendingAdminMethod"><code class="flex name class">
 <span>class <span class="ident">SetPendingAdminMethod</span></span>
 <span>(</span><span>elib: <a title="moody.libeb.MiliDoS" href="../libeb.html#moody.libeb.MiliDoS">MiliDoS</a>, contract_address: str, contract_function: web3.contract.ContractFunction, validator: <a title="moody.m.bases.Validator" href="../m/bases.html#moody.m.bases.Validator">Validator</a> = None)</span>
 </code></dt>
@@ -3434,7 +3434,7 @@ class Timelock6h(ContractBase):
 </ul>
 <h3>Methods</h3>
 <dl>
-<dt id="moody.openzeppelin.SetPendingAdminMethod.block_send"><code class="name flex">
+<dt id="moody.upgrades.SetPendingAdminMethod.block_send"><code class="name flex">
 <span>def <span class="ident">block_send</span></span>(<span>self, pending_admin_: str, gas: int, price: int, val: int = 0, debug: bool = False, receiptListen: bool = False) ‑> NoneType</span>
 </code></dt>
 <dd>
@@ -3502,7 +3502,7 @@ class Timelock6h(ContractBase):
             print(f&#34;{Bolors.FAIL}Error Revert {Bolors.RESET}: set_asset_token&#34;)</code></pre>
 </details>
 </dd>
-<dt id="moody.openzeppelin.SetPendingAdminMethod.build_transaction"><code class="name flex">
+<dt id="moody.upgrades.SetPendingAdminMethod.build_transaction"><code class="name flex">
 <span>def <span class="ident">build_transaction</span></span>(<span>self, pending_admin_: str, tx_params: Union[<a title="moody.m.tx_params.TxParams" href="../m/tx_params.html#moody.m.tx_params.TxParams">TxParams</a>, NoneType] = None) ‑> dict</span>
 </code></dt>
 <dd>
@@ -3518,7 +3518,7 @@ class Timelock6h(ContractBase):
     return self._underlying_method(pending_admin_).buildTransaction(tx_params.as_dict())</code></pre>
 </details>
 </dd>
-<dt id="moody.openzeppelin.SetPendingAdminMethod.estimate_gas"><code class="name flex">
+<dt id="moody.upgrades.SetPendingAdminMethod.estimate_gas"><code class="name flex">
 <span>def <span class="ident">estimate_gas</span></span>(<span>self, pending_admin_: str, tx_params: Union[<a title="moody.m.tx_params.TxParams" href="../m/tx_params.html#moody.m.tx_params.TxParams">TxParams</a>, NoneType] = None) ‑> int</span>
 </code></dt>
 <dd>
@@ -3534,7 +3534,7 @@ class Timelock6h(ContractBase):
     return self._underlying_method(pending_admin_).estimateGas(tx_params.as_dict())</code></pre>
 </details>
 </dd>
-<dt id="moody.openzeppelin.SetPendingAdminMethod.send_transaction"><code class="name flex">
+<dt id="moody.upgrades.SetPendingAdminMethod.send_transaction"><code class="name flex">
 <span>def <span class="ident">send_transaction</span></span>(<span>self, pending_admin_: str, tx_params: Union[<a title="moody.m.tx_params.TxParams" href="../m/tx_params.html#moody.m.tx_params.TxParams">TxParams</a>, NoneType] = None) ‑> Union[hexbytes.main.HexBytes, bytes]</span>
 </code></dt>
 <dd>
@@ -3554,7 +3554,7 @@ class Timelock6h(ContractBase):
     return self._underlying_method(pending_admin_).transact(tx_params.as_dict())</code></pre>
 </details>
 </dd>
-<dt id="moody.openzeppelin.SetPendingAdminMethod.validate_and_normalize_inputs"><code class="name flex">
+<dt id="moody.upgrades.SetPendingAdminMethod.validate_and_normalize_inputs"><code class="name flex">
 <span>def <span class="ident">validate_and_normalize_inputs</span></span>(<span>self, pending_admin_: str) ‑> <built-in function any></span>
 </code></dt>
 <dd>
@@ -3585,7 +3585,7 @@ class Timelock6h(ContractBase):
 </li>
 </ul>
 </dd>
-<dt id="moody.openzeppelin.SignatureGenerator"><code class="flex name class">
+<dt id="moody.upgrades.SignatureGenerator"><code class="flex name class">
 <span>class <span class="ident">SignatureGenerator</span></span>
 <span>(</span><span>abi: <built-in function any>)</span>
 </code></dt>
@@ -3645,7 +3645,7 @@ class Timelock6h(ContractBase):
 </details>
 <h3>Methods</h3>
 <dl>
-<dt id="moody.openzeppelin.SignatureGenerator.accept_admin"><code class="name flex">
+<dt id="moody.upgrades.SignatureGenerator.accept_admin"><code class="name flex">
 <span>def <span class="ident">accept_admin</span></span>(<span>self) ‑> str</span>
 </code></dt>
 <dd>
@@ -3658,7 +3658,7 @@ class Timelock6h(ContractBase):
     return self._function_signatures[&#34;acceptAdmin&#34;]</code></pre>
 </details>
 </dd>
-<dt id="moody.openzeppelin.SignatureGenerator.admin"><code class="name flex">
+<dt id="moody.upgrades.SignatureGenerator.admin"><code class="name flex">
 <span>def <span class="ident">admin</span></span>(<span>self) ‑> str</span>
 </code></dt>
 <dd>
@@ -3671,7 +3671,7 @@ class Timelock6h(ContractBase):
     return self._function_signatures[&#34;admin&#34;]</code></pre>
 </details>
 </dd>
-<dt id="moody.openzeppelin.SignatureGenerator.cancel_transaction"><code class="name flex">
+<dt id="moody.upgrades.SignatureGenerator.cancel_transaction"><code class="name flex">
 <span>def <span class="ident">cancel_transaction</span></span>(<span>self) ‑> str</span>
 </code></dt>
 <dd>
@@ -3684,7 +3684,7 @@ class Timelock6h(ContractBase):
     return self._function_signatures[&#34;cancelTransaction&#34;]</code></pre>
 </details>
 </dd>
-<dt id="moody.openzeppelin.SignatureGenerator.delay"><code class="name flex">
+<dt id="moody.upgrades.SignatureGenerator.delay"><code class="name flex">
 <span>def <span class="ident">delay</span></span>(<span>self) ‑> str</span>
 </code></dt>
 <dd>
@@ -3697,7 +3697,7 @@ class Timelock6h(ContractBase):
     return self._function_signatures[&#34;delay&#34;]</code></pre>
 </details>
 </dd>
-<dt id="moody.openzeppelin.SignatureGenerator.execute_transaction"><code class="name flex">
+<dt id="moody.upgrades.SignatureGenerator.execute_transaction"><code class="name flex">
 <span>def <span class="ident">execute_transaction</span></span>(<span>self) ‑> str</span>
 </code></dt>
 <dd>
@@ -3710,7 +3710,7 @@ class Timelock6h(ContractBase):
     return self._function_signatures[&#34;executeTransaction&#34;]</code></pre>
 </details>
 </dd>
-<dt id="moody.openzeppelin.SignatureGenerator.grace_period"><code class="name flex">
+<dt id="moody.upgrades.SignatureGenerator.grace_period"><code class="name flex">
 <span>def <span class="ident">grace_period</span></span>(<span>self) ‑> str</span>
 </code></dt>
 <dd>
@@ -3723,7 +3723,7 @@ class Timelock6h(ContractBase):
     return self._function_signatures[&#34;GRACE_PERIOD&#34;]</code></pre>
 </details>
 </dd>
-<dt id="moody.openzeppelin.SignatureGenerator.maximum_delay"><code class="name flex">
+<dt id="moody.upgrades.SignatureGenerator.maximum_delay"><code class="name flex">
 <span>def <span class="ident">maximum_delay</span></span>(<span>self) ‑> str</span>
 </code></dt>
 <dd>
@@ -3736,7 +3736,7 @@ class Timelock6h(ContractBase):
     return self._function_signatures[&#34;MAXIMUM_DELAY&#34;]</code></pre>
 </details>
 </dd>
-<dt id="moody.openzeppelin.SignatureGenerator.minimum_delay"><code class="name flex">
+<dt id="moody.upgrades.SignatureGenerator.minimum_delay"><code class="name flex">
 <span>def <span class="ident">minimum_delay</span></span>(<span>self) ‑> str</span>
 </code></dt>
 <dd>
@@ -3749,7 +3749,7 @@ class Timelock6h(ContractBase):
     return self._function_signatures[&#34;MINIMUM_DELAY&#34;]</code></pre>
 </details>
 </dd>
-<dt id="moody.openzeppelin.SignatureGenerator.pending_admin"><code class="name flex">
+<dt id="moody.upgrades.SignatureGenerator.pending_admin"><code class="name flex">
 <span>def <span class="ident">pending_admin</span></span>(<span>self) ‑> str</span>
 </code></dt>
 <dd>
@@ -3762,7 +3762,7 @@ class Timelock6h(ContractBase):
     return self._function_signatures[&#34;pendingAdmin&#34;]</code></pre>
 </details>
 </dd>
-<dt id="moody.openzeppelin.SignatureGenerator.queue_transaction"><code class="name flex">
+<dt id="moody.upgrades.SignatureGenerator.queue_transaction"><code class="name flex">
 <span>def <span class="ident">queue_transaction</span></span>(<span>self) ‑> str</span>
 </code></dt>
 <dd>
@@ -3775,7 +3775,7 @@ class Timelock6h(ContractBase):
     return self._function_signatures[&#34;queueTransaction&#34;]</code></pre>
 </details>
 </dd>
-<dt id="moody.openzeppelin.SignatureGenerator.queued_transactions"><code class="name flex">
+<dt id="moody.upgrades.SignatureGenerator.queued_transactions"><code class="name flex">
 <span>def <span class="ident">queued_transactions</span></span>(<span>self) ‑> str</span>
 </code></dt>
 <dd>
@@ -3788,7 +3788,7 @@ class Timelock6h(ContractBase):
     return self._function_signatures[&#34;queuedTransactions&#34;]</code></pre>
 </details>
 </dd>
-<dt id="moody.openzeppelin.SignatureGenerator.set_delay"><code class="name flex">
+<dt id="moody.upgrades.SignatureGenerator.set_delay"><code class="name flex">
 <span>def <span class="ident">set_delay</span></span>(<span>self) ‑> str</span>
 </code></dt>
 <dd>
@@ -3801,7 +3801,7 @@ class Timelock6h(ContractBase):
     return self._function_signatures[&#34;setDelay&#34;]</code></pre>
 </details>
 </dd>
-<dt id="moody.openzeppelin.SignatureGenerator.set_pending_admin"><code class="name flex">
+<dt id="moody.upgrades.SignatureGenerator.set_pending_admin"><code class="name flex">
 <span>def <span class="ident">set_pending_admin</span></span>(<span>self) ‑> str</span>
 </code></dt>
 <dd>
@@ -3816,9 +3816,9 @@ class Timelock6h(ContractBase):
 </dd>
 </dl>
 </dd>
-<dt id="moody.openzeppelin.Timelock6h"><code class="flex name class">
+<dt id="moody.upgrades.Timelock6h"><code class="flex name class">
 <span>class <span class="ident">Timelock6h</span></span>
-<span>(</span><span>core_lib: <a title="moody.libeb.MiliDoS" href="../libeb.html#moody.libeb.MiliDoS">MiliDoS</a>, contract_address: str, validator: <a title="moody.openzeppelin.Timelock6hValidator" href="#moody.openzeppelin.Timelock6hValidator">Timelock6hValidator</a> = None)</span>
+<span>(</span><span>core_lib: <a title="moody.libeb.MiliDoS" href="../libeb.html#moody.libeb.MiliDoS">MiliDoS</a>, contract_address: str, validator: <a title="moody.upgrades.Timelock6hValidator" href="#moody.upgrades.Timelock6hValidator">Timelock6hValidator</a> = None)</span>
 </code></dt>
 <dd>
 <div class="desc"><p>Wrapper class for Timelock6h Solidity contract.</p>
@@ -4200,7 +4200,7 @@ which can be accomplished via <code>str.encode("utf_8")</code>:code:.</p>
 </ul>
 <h3>Static methods</h3>
 <dl>
-<dt id="moody.openzeppelin.Timelock6h.abi"><code class="name flex">
+<dt id="moody.upgrades.Timelock6h.abi"><code class="name flex">
 <span>def <span class="ident">abi</span></span>(<span>)</span>
 </code></dt>
 <dd>
@@ -4221,8 +4221,8 @@ def abi():
 </dl>
 <h3>Methods</h3>
 <dl>
-<dt id="moody.openzeppelin.Timelock6h.CallContractWait"><code class="name flex">
-<span>def <span class="ident">CallContractWait</span></span>(<span>self, t_long: int) ‑> <a title="moody.openzeppelin.Timelock6h" href="#moody.openzeppelin.Timelock6h">Timelock6h</a></span>
+<dt id="moody.upgrades.Timelock6h.CallContractWait"><code class="name flex">
+<span>def <span class="ident">CallContractWait</span></span>(<span>self, t_long: int) ‑> <a title="moody.upgrades.Timelock6h" href="#moody.upgrades.Timelock6h">Timelock6h</a></span>
 </code></dt>
 <dd>
 <div class="desc"></div>
@@ -4247,7 +4247,7 @@ def abi():
     return self</code></pre>
 </details>
 </dd>
-<dt id="moody.openzeppelin.Timelock6h.accept_admin"><code class="name flex">
+<dt id="moody.upgrades.Timelock6h.accept_admin"><code class="name flex">
 <span>def <span class="ident">accept_admin</span></span>(<span>self) ‑> NoneType</span>
 </code></dt>
 <dd>
@@ -4269,7 +4269,7 @@ Method of the function</p></div>
     return self._fn_accept_admin.block_send(self.call_contract_fee_amount, self.call_contract_fee_price, 0, self.call_contract_debug_flag, self.call_contract_enforce_tx_receipt)</code></pre>
 </details>
 </dd>
-<dt id="moody.openzeppelin.Timelock6h.admin"><code class="name flex">
+<dt id="moody.upgrades.Timelock6h.admin"><code class="name flex">
 <span>def <span class="ident">admin</span></span>(<span>self) ‑> str</span>
 </code></dt>
 <dd>
@@ -4291,7 +4291,7 @@ Method of the function</p></div>
     return self._fn_admin.block_call()</code></pre>
 </details>
 </dd>
-<dt id="moody.openzeppelin.Timelock6h.cancel_transaction"><code class="name flex">
+<dt id="moody.upgrades.Timelock6h.cancel_transaction"><code class="name flex">
 <span>def <span class="ident">cancel_transaction</span></span>(<span>self, target: str, value: int, signature: str, data: Union[bytes, str], eta: int) ‑> NoneType</span>
 </code></dt>
 <dd>
@@ -4313,7 +4313,7 @@ Method of the function</p></div>
     return self._fn_cancel_transaction.block_send(target, value, signature, data, eta, self.call_contract_fee_amount, self.call_contract_fee_price, 0, self.call_contract_debug_flag, self.call_contract_enforce_tx_receipt)</code></pre>
 </details>
 </dd>
-<dt id="moody.openzeppelin.Timelock6h.delay"><code class="name flex">
+<dt id="moody.upgrades.Timelock6h.delay"><code class="name flex">
 <span>def <span class="ident">delay</span></span>(<span>self) ‑> int</span>
 </code></dt>
 <dd>
@@ -4335,7 +4335,7 @@ Method of the function</p></div>
     return self._fn_delay.block_call()</code></pre>
 </details>
 </dd>
-<dt id="moody.openzeppelin.Timelock6h.event_cancel_transaction"><code class="name flex">
+<dt id="moody.upgrades.Timelock6h.event_cancel_transaction"><code class="name flex">
 <span>def <span class="ident">event_cancel_transaction</span></span>(<span>self, tx_hash: Union[hexbytes.main.HexBytes, bytes]) ‑> Tuple[web3.datastructures.AttributeDict]</span>
 </code></dt>
 <dd>
@@ -4358,7 +4358,7 @@ Get log entry for CancelTransaction event.
     return self._web3_eth.contract(address=to_checksum_address(self.contract_address), abi=Timelock6h.abi()).events.CancelTransaction().processReceipt(tx_receipt)</code></pre>
 </details>
 </dd>
-<dt id="moody.openzeppelin.Timelock6h.event_execute_transaction"><code class="name flex">
+<dt id="moody.upgrades.Timelock6h.event_execute_transaction"><code class="name flex">
 <span>def <span class="ident">event_execute_transaction</span></span>(<span>self, tx_hash: Union[hexbytes.main.HexBytes, bytes]) ‑> Tuple[web3.datastructures.AttributeDict]</span>
 </code></dt>
 <dd>
@@ -4381,7 +4381,7 @@ Get log entry for ExecuteTransaction event.
     return self._web3_eth.contract(address=to_checksum_address(self.contract_address), abi=Timelock6h.abi()).events.ExecuteTransaction().processReceipt(tx_receipt)</code></pre>
 </details>
 </dd>
-<dt id="moody.openzeppelin.Timelock6h.event_new_admin"><code class="name flex">
+<dt id="moody.upgrades.Timelock6h.event_new_admin"><code class="name flex">
 <span>def <span class="ident">event_new_admin</span></span>(<span>self, tx_hash: Union[hexbytes.main.HexBytes, bytes]) ‑> Tuple[web3.datastructures.AttributeDict]</span>
 </code></dt>
 <dd>
@@ -4404,7 +4404,7 @@ Get log entry for NewAdmin event.
     return self._web3_eth.contract(address=to_checksum_address(self.contract_address), abi=Timelock6h.abi()).events.NewAdmin().processReceipt(tx_receipt)</code></pre>
 </details>
 </dd>
-<dt id="moody.openzeppelin.Timelock6h.event_new_delay"><code class="name flex">
+<dt id="moody.upgrades.Timelock6h.event_new_delay"><code class="name flex">
 <span>def <span class="ident">event_new_delay</span></span>(<span>self, tx_hash: Union[hexbytes.main.HexBytes, bytes]) ‑> Tuple[web3.datastructures.AttributeDict]</span>
 </code></dt>
 <dd>
@@ -4427,7 +4427,7 @@ Get log entry for NewDelay event.
     return self._web3_eth.contract(address=to_checksum_address(self.contract_address), abi=Timelock6h.abi()).events.NewDelay().processReceipt(tx_receipt)</code></pre>
 </details>
 </dd>
-<dt id="moody.openzeppelin.Timelock6h.event_new_pending_admin"><code class="name flex">
+<dt id="moody.upgrades.Timelock6h.event_new_pending_admin"><code class="name flex">
 <span>def <span class="ident">event_new_pending_admin</span></span>(<span>self, tx_hash: Union[hexbytes.main.HexBytes, bytes]) ‑> Tuple[web3.datastructures.AttributeDict]</span>
 </code></dt>
 <dd>
@@ -4450,7 +4450,7 @@ Get log entry for NewPendingAdmin event.
     return self._web3_eth.contract(address=to_checksum_address(self.contract_address), abi=Timelock6h.abi()).events.NewPendingAdmin().processReceipt(tx_receipt)</code></pre>
 </details>
 </dd>
-<dt id="moody.openzeppelin.Timelock6h.event_queue_transaction"><code class="name flex">
+<dt id="moody.upgrades.Timelock6h.event_queue_transaction"><code class="name flex">
 <span>def <span class="ident">event_queue_transaction</span></span>(<span>self, tx_hash: Union[hexbytes.main.HexBytes, bytes]) ‑> Tuple[web3.datastructures.AttributeDict]</span>
 </code></dt>
 <dd>
@@ -4473,7 +4473,7 @@ Get log entry for QueueTransaction event.
     return self._web3_eth.contract(address=to_checksum_address(self.contract_address), abi=Timelock6h.abi()).events.QueueTransaction().processReceipt(tx_receipt)</code></pre>
 </details>
 </dd>
-<dt id="moody.openzeppelin.Timelock6h.execute_transaction"><code class="name flex">
+<dt id="moody.upgrades.Timelock6h.execute_transaction"><code class="name flex">
 <span>def <span class="ident">execute_transaction</span></span>(<span>self, target: str, value: int, signature: str, data: Union[bytes, str], eta: int, wei: int = 0) ‑> Union[bytes, str]</span>
 </code></dt>
 <dd>
@@ -4495,7 +4495,7 @@ Method of the function</p></div>
     return self._fn_execute_transaction.block_send(target, value, signature, data, eta, self.call_contract_fee_amount, self.call_contract_fee_price, wei, self.call_contract_debug_flag, self.call_contract_enforce_tx_receipt)</code></pre>
 </details>
 </dd>
-<dt id="moody.openzeppelin.Timelock6h.grace_period"><code class="name flex">
+<dt id="moody.upgrades.Timelock6h.grace_period"><code class="name flex">
 <span>def <span class="ident">grace_period</span></span>(<span>self) ‑> int</span>
 </code></dt>
 <dd>
@@ -4517,7 +4517,7 @@ Method of the function</p></div>
     return self._fn_grace_period.block_call()</code></pre>
 </details>
 </dd>
-<dt id="moody.openzeppelin.Timelock6h.maximum_delay"><code class="name flex">
+<dt id="moody.upgrades.Timelock6h.maximum_delay"><code class="name flex">
 <span>def <span class="ident">maximum_delay</span></span>(<span>self) ‑> int</span>
 </code></dt>
 <dd>
@@ -4539,7 +4539,7 @@ Method of the function</p></div>
     return self._fn_maximum_delay.block_call()</code></pre>
 </details>
 </dd>
-<dt id="moody.openzeppelin.Timelock6h.minimum_delay"><code class="name flex">
+<dt id="moody.upgrades.Timelock6h.minimum_delay"><code class="name flex">
 <span>def <span class="ident">minimum_delay</span></span>(<span>self) ‑> int</span>
 </code></dt>
 <dd>
@@ -4561,7 +4561,7 @@ Method of the function</p></div>
     return self._fn_minimum_delay.block_call()</code></pre>
 </details>
 </dd>
-<dt id="moody.openzeppelin.Timelock6h.pending_admin"><code class="name flex">
+<dt id="moody.upgrades.Timelock6h.pending_admin"><code class="name flex">
 <span>def <span class="ident">pending_admin</span></span>(<span>self) ‑> str</span>
 </code></dt>
 <dd>
@@ -4583,7 +4583,7 @@ Method of the function</p></div>
     return self._fn_pending_admin.block_call()</code></pre>
 </details>
 </dd>
-<dt id="moody.openzeppelin.Timelock6h.queue_transaction"><code class="name flex">
+<dt id="moody.upgrades.Timelock6h.queue_transaction"><code class="name flex">
 <span>def <span class="ident">queue_transaction</span></span>(<span>self, target: str, value: int, signature: str, data: Union[bytes, str], eta: int) ‑> Union[bytes, str]</span>
 </code></dt>
 <dd>
@@ -4605,7 +4605,7 @@ Method of the function</p></div>
     return self._fn_queue_transaction.block_send(target, value, signature, data, eta, self.call_contract_fee_amount, self.call_contract_fee_price, 0, self.call_contract_debug_flag, self.call_contract_enforce_tx_receipt)</code></pre>
 </details>
 </dd>
-<dt id="moody.openzeppelin.Timelock6h.queued_transactions"><code class="name flex">
+<dt id="moody.upgrades.Timelock6h.queued_transactions"><code class="name flex">
 <span>def <span class="ident">queued_transactions</span></span>(<span>self, index_0: Union[bytes, str]) ‑> bool</span>
 </code></dt>
 <dd>
@@ -4627,7 +4627,7 @@ Method of the function</p></div>
     return self._fn_queued_transactions.block_call(index_0)</code></pre>
 </details>
 </dd>
-<dt id="moody.openzeppelin.Timelock6h.set_delay"><code class="name flex">
+<dt id="moody.upgrades.Timelock6h.set_delay"><code class="name flex">
 <span>def <span class="ident">set_delay</span></span>(<span>self, delay_: int) ‑> NoneType</span>
 </code></dt>
 <dd>
@@ -4649,7 +4649,7 @@ Method of the function</p></div>
     return self._fn_set_delay.block_send(delay_, self.call_contract_fee_amount, self.call_contract_fee_price, 0, self.call_contract_debug_flag, self.call_contract_enforce_tx_receipt)</code></pre>
 </details>
 </dd>
-<dt id="moody.openzeppelin.Timelock6h.set_pending_admin"><code class="name flex">
+<dt id="moody.upgrades.Timelock6h.set_pending_admin"><code class="name flex">
 <span>def <span class="ident">set_pending_admin</span></span>(<span>self, pending_admin_: str) ‑> NoneType</span>
 </code></dt>
 <dd>
@@ -4673,7 +4673,7 @@ Method of the function</p></div>
 </dd>
 </dl>
 </dd>
-<dt id="moody.openzeppelin.Timelock6hValidator"><code class="flex name class">
+<dt id="moody.upgrades.Timelock6hValidator"><code class="flex name class">
 <span>class <span class="ident">Timelock6hValidator</span></span>
 <span>(</span><span>web3_or_provider: web3.main.Web3, contract_address: str)</span>
 </code></dt>
@@ -4718,168 +4718,168 @@ Method of the function</p></div>
 </li>
 <li><h3><a href="#header-submodules">Sub-modules</a></h3>
 <ul>
-<li><code><a title="moody.openzeppelin.Token" href="Token.html">moody.openzeppelin.Token</a></code></li>
-<li><code><a title="moody.openzeppelin.proxy" href="proxy.html">moody.openzeppelin.proxy</a></code></li>
-<li><code><a title="moody.openzeppelin.timelocker" href="timelocker.html">moody.openzeppelin.timelocker</a></code></li>
+<li><code><a title="moody.upgrades.Token" href="Token.html">moody.upgrades.Token</a></code></li>
+<li><code><a title="moody.upgrades.proxy" href="proxy.html">moody.upgrades.proxy</a></code></li>
+<li><code><a title="moody.upgrades.timelocker" href="timelocker.html">moody.upgrades.timelocker</a></code></li>
 </ul>
 </li>
 <li><h3><a href="#header-classes">Classes</a></h3>
 <ul>
 <li>
-<h4><code><a title="moody.openzeppelin.AcceptAdminMethod" href="#moody.openzeppelin.AcceptAdminMethod">AcceptAdminMethod</a></code></h4>
+<h4><code><a title="moody.upgrades.AcceptAdminMethod" href="#moody.upgrades.AcceptAdminMethod">AcceptAdminMethod</a></code></h4>
 <ul class="">
-<li><code><a title="moody.openzeppelin.AcceptAdminMethod.block_send" href="#moody.openzeppelin.AcceptAdminMethod.block_send">block_send</a></code></li>
-<li><code><a title="moody.openzeppelin.AcceptAdminMethod.build_transaction" href="#moody.openzeppelin.AcceptAdminMethod.build_transaction">build_transaction</a></code></li>
-<li><code><a title="moody.openzeppelin.AcceptAdminMethod.estimate_gas" href="#moody.openzeppelin.AcceptAdminMethod.estimate_gas">estimate_gas</a></code></li>
-<li><code><a title="moody.openzeppelin.AcceptAdminMethod.send_transaction" href="#moody.openzeppelin.AcceptAdminMethod.send_transaction">send_transaction</a></code></li>
+<li><code><a title="moody.upgrades.AcceptAdminMethod.block_send" href="#moody.upgrades.AcceptAdminMethod.block_send">block_send</a></code></li>
+<li><code><a title="moody.upgrades.AcceptAdminMethod.build_transaction" href="#moody.upgrades.AcceptAdminMethod.build_transaction">build_transaction</a></code></li>
+<li><code><a title="moody.upgrades.AcceptAdminMethod.estimate_gas" href="#moody.upgrades.AcceptAdminMethod.estimate_gas">estimate_gas</a></code></li>
+<li><code><a title="moody.upgrades.AcceptAdminMethod.send_transaction" href="#moody.upgrades.AcceptAdminMethod.send_transaction">send_transaction</a></code></li>
 </ul>
 </li>
 <li>
-<h4><code><a title="moody.openzeppelin.AdminMethod" href="#moody.openzeppelin.AdminMethod">AdminMethod</a></code></h4>
+<h4><code><a title="moody.upgrades.AdminMethod" href="#moody.upgrades.AdminMethod">AdminMethod</a></code></h4>
 <ul class="">
-<li><code><a title="moody.openzeppelin.AdminMethod.block_call" href="#moody.openzeppelin.AdminMethod.block_call">block_call</a></code></li>
-<li><code><a title="moody.openzeppelin.AdminMethod.estimate_gas" href="#moody.openzeppelin.AdminMethod.estimate_gas">estimate_gas</a></code></li>
+<li><code><a title="moody.upgrades.AdminMethod.block_call" href="#moody.upgrades.AdminMethod.block_call">block_call</a></code></li>
+<li><code><a title="moody.upgrades.AdminMethod.estimate_gas" href="#moody.upgrades.AdminMethod.estimate_gas">estimate_gas</a></code></li>
 </ul>
 </li>
 <li>
-<h4><code><a title="moody.openzeppelin.CancelTransactionMethod" href="#moody.openzeppelin.CancelTransactionMethod">CancelTransactionMethod</a></code></h4>
+<h4><code><a title="moody.upgrades.CancelTransactionMethod" href="#moody.upgrades.CancelTransactionMethod">CancelTransactionMethod</a></code></h4>
 <ul class="">
-<li><code><a title="moody.openzeppelin.CancelTransactionMethod.block_send" href="#moody.openzeppelin.CancelTransactionMethod.block_send">block_send</a></code></li>
-<li><code><a title="moody.openzeppelin.CancelTransactionMethod.build_transaction" href="#moody.openzeppelin.CancelTransactionMethod.build_transaction">build_transaction</a></code></li>
-<li><code><a title="moody.openzeppelin.CancelTransactionMethod.estimate_gas" href="#moody.openzeppelin.CancelTransactionMethod.estimate_gas">estimate_gas</a></code></li>
-<li><code><a title="moody.openzeppelin.CancelTransactionMethod.send_transaction" href="#moody.openzeppelin.CancelTransactionMethod.send_transaction">send_transaction</a></code></li>
-<li><code><a title="moody.openzeppelin.CancelTransactionMethod.validate_and_normalize_inputs" href="#moody.openzeppelin.CancelTransactionMethod.validate_and_normalize_inputs">validate_and_normalize_inputs</a></code></li>
+<li><code><a title="moody.upgrades.CancelTransactionMethod.block_send" href="#moody.upgrades.CancelTransactionMethod.block_send">block_send</a></code></li>
+<li><code><a title="moody.upgrades.CancelTransactionMethod.build_transaction" href="#moody.upgrades.CancelTransactionMethod.build_transaction">build_transaction</a></code></li>
+<li><code><a title="moody.upgrades.CancelTransactionMethod.estimate_gas" href="#moody.upgrades.CancelTransactionMethod.estimate_gas">estimate_gas</a></code></li>
+<li><code><a title="moody.upgrades.CancelTransactionMethod.send_transaction" href="#moody.upgrades.CancelTransactionMethod.send_transaction">send_transaction</a></code></li>
+<li><code><a title="moody.upgrades.CancelTransactionMethod.validate_and_normalize_inputs" href="#moody.upgrades.CancelTransactionMethod.validate_and_normalize_inputs">validate_and_normalize_inputs</a></code></li>
 </ul>
 </li>
 <li>
-<h4><code><a title="moody.openzeppelin.DelayMethod" href="#moody.openzeppelin.DelayMethod">DelayMethod</a></code></h4>
+<h4><code><a title="moody.upgrades.DelayMethod" href="#moody.upgrades.DelayMethod">DelayMethod</a></code></h4>
 <ul class="">
-<li><code><a title="moody.openzeppelin.DelayMethod.block_call" href="#moody.openzeppelin.DelayMethod.block_call">block_call</a></code></li>
-<li><code><a title="moody.openzeppelin.DelayMethod.estimate_gas" href="#moody.openzeppelin.DelayMethod.estimate_gas">estimate_gas</a></code></li>
+<li><code><a title="moody.upgrades.DelayMethod.block_call" href="#moody.upgrades.DelayMethod.block_call">block_call</a></code></li>
+<li><code><a title="moody.upgrades.DelayMethod.estimate_gas" href="#moody.upgrades.DelayMethod.estimate_gas">estimate_gas</a></code></li>
 </ul>
 </li>
 <li>
-<h4><code><a title="moody.openzeppelin.ExecuteTransactionMethod" href="#moody.openzeppelin.ExecuteTransactionMethod">ExecuteTransactionMethod</a></code></h4>
+<h4><code><a title="moody.upgrades.ExecuteTransactionMethod" href="#moody.upgrades.ExecuteTransactionMethod">ExecuteTransactionMethod</a></code></h4>
 <ul class="">
-<li><code><a title="moody.openzeppelin.ExecuteTransactionMethod.block_send" href="#moody.openzeppelin.ExecuteTransactionMethod.block_send">block_send</a></code></li>
-<li><code><a title="moody.openzeppelin.ExecuteTransactionMethod.build_transaction" href="#moody.openzeppelin.ExecuteTransactionMethod.build_transaction">build_transaction</a></code></li>
-<li><code><a title="moody.openzeppelin.ExecuteTransactionMethod.estimate_gas" href="#moody.openzeppelin.ExecuteTransactionMethod.estimate_gas">estimate_gas</a></code></li>
-<li><code><a title="moody.openzeppelin.ExecuteTransactionMethod.send_transaction" href="#moody.openzeppelin.ExecuteTransactionMethod.send_transaction">send_transaction</a></code></li>
-<li><code><a title="moody.openzeppelin.ExecuteTransactionMethod.validate_and_normalize_inputs" href="#moody.openzeppelin.ExecuteTransactionMethod.validate_and_normalize_inputs">validate_and_normalize_inputs</a></code></li>
+<li><code><a title="moody.upgrades.ExecuteTransactionMethod.block_send" href="#moody.upgrades.ExecuteTransactionMethod.block_send">block_send</a></code></li>
+<li><code><a title="moody.upgrades.ExecuteTransactionMethod.build_transaction" href="#moody.upgrades.ExecuteTransactionMethod.build_transaction">build_transaction</a></code></li>
+<li><code><a title="moody.upgrades.ExecuteTransactionMethod.estimate_gas" href="#moody.upgrades.ExecuteTransactionMethod.estimate_gas">estimate_gas</a></code></li>
+<li><code><a title="moody.upgrades.ExecuteTransactionMethod.send_transaction" href="#moody.upgrades.ExecuteTransactionMethod.send_transaction">send_transaction</a></code></li>
+<li><code><a title="moody.upgrades.ExecuteTransactionMethod.validate_and_normalize_inputs" href="#moody.upgrades.ExecuteTransactionMethod.validate_and_normalize_inputs">validate_and_normalize_inputs</a></code></li>
 </ul>
 </li>
 <li>
-<h4><code><a title="moody.openzeppelin.GracePeriodMethod" href="#moody.openzeppelin.GracePeriodMethod">GracePeriodMethod</a></code></h4>
+<h4><code><a title="moody.upgrades.GracePeriodMethod" href="#moody.upgrades.GracePeriodMethod">GracePeriodMethod</a></code></h4>
 <ul class="">
-<li><code><a title="moody.openzeppelin.GracePeriodMethod.block_call" href="#moody.openzeppelin.GracePeriodMethod.block_call">block_call</a></code></li>
-<li><code><a title="moody.openzeppelin.GracePeriodMethod.estimate_gas" href="#moody.openzeppelin.GracePeriodMethod.estimate_gas">estimate_gas</a></code></li>
+<li><code><a title="moody.upgrades.GracePeriodMethod.block_call" href="#moody.upgrades.GracePeriodMethod.block_call">block_call</a></code></li>
+<li><code><a title="moody.upgrades.GracePeriodMethod.estimate_gas" href="#moody.upgrades.GracePeriodMethod.estimate_gas">estimate_gas</a></code></li>
 </ul>
 </li>
 <li>
-<h4><code><a title="moody.openzeppelin.MaximumDelayMethod" href="#moody.openzeppelin.MaximumDelayMethod">MaximumDelayMethod</a></code></h4>
+<h4><code><a title="moody.upgrades.MaximumDelayMethod" href="#moody.upgrades.MaximumDelayMethod">MaximumDelayMethod</a></code></h4>
 <ul class="">
-<li><code><a title="moody.openzeppelin.MaximumDelayMethod.block_call" href="#moody.openzeppelin.MaximumDelayMethod.block_call">block_call</a></code></li>
-<li><code><a title="moody.openzeppelin.MaximumDelayMethod.estimate_gas" href="#moody.openzeppelin.MaximumDelayMethod.estimate_gas">estimate_gas</a></code></li>
+<li><code><a title="moody.upgrades.MaximumDelayMethod.block_call" href="#moody.upgrades.MaximumDelayMethod.block_call">block_call</a></code></li>
+<li><code><a title="moody.upgrades.MaximumDelayMethod.estimate_gas" href="#moody.upgrades.MaximumDelayMethod.estimate_gas">estimate_gas</a></code></li>
 </ul>
 </li>
 <li>
-<h4><code><a title="moody.openzeppelin.MinimumDelayMethod" href="#moody.openzeppelin.MinimumDelayMethod">MinimumDelayMethod</a></code></h4>
+<h4><code><a title="moody.upgrades.MinimumDelayMethod" href="#moody.upgrades.MinimumDelayMethod">MinimumDelayMethod</a></code></h4>
 <ul class="">
-<li><code><a title="moody.openzeppelin.MinimumDelayMethod.block_call" href="#moody.openzeppelin.MinimumDelayMethod.block_call">block_call</a></code></li>
-<li><code><a title="moody.openzeppelin.MinimumDelayMethod.estimate_gas" href="#moody.openzeppelin.MinimumDelayMethod.estimate_gas">estimate_gas</a></code></li>
+<li><code><a title="moody.upgrades.MinimumDelayMethod.block_call" href="#moody.upgrades.MinimumDelayMethod.block_call">block_call</a></code></li>
+<li><code><a title="moody.upgrades.MinimumDelayMethod.estimate_gas" href="#moody.upgrades.MinimumDelayMethod.estimate_gas">estimate_gas</a></code></li>
 </ul>
 </li>
 <li>
-<h4><code><a title="moody.openzeppelin.PendingAdminMethod" href="#moody.openzeppelin.PendingAdminMethod">PendingAdminMethod</a></code></h4>
+<h4><code><a title="moody.upgrades.PendingAdminMethod" href="#moody.upgrades.PendingAdminMethod">PendingAdminMethod</a></code></h4>
 <ul class="">
-<li><code><a title="moody.openzeppelin.PendingAdminMethod.block_call" href="#moody.openzeppelin.PendingAdminMethod.block_call">block_call</a></code></li>
-<li><code><a title="moody.openzeppelin.PendingAdminMethod.estimate_gas" href="#moody.openzeppelin.PendingAdminMethod.estimate_gas">estimate_gas</a></code></li>
+<li><code><a title="moody.upgrades.PendingAdminMethod.block_call" href="#moody.upgrades.PendingAdminMethod.block_call">block_call</a></code></li>
+<li><code><a title="moody.upgrades.PendingAdminMethod.estimate_gas" href="#moody.upgrades.PendingAdminMethod.estimate_gas">estimate_gas</a></code></li>
 </ul>
 </li>
 <li>
-<h4><code><a title="moody.openzeppelin.QueueTransactionMethod" href="#moody.openzeppelin.QueueTransactionMethod">QueueTransactionMethod</a></code></h4>
+<h4><code><a title="moody.upgrades.QueueTransactionMethod" href="#moody.upgrades.QueueTransactionMethod">QueueTransactionMethod</a></code></h4>
 <ul class="">
-<li><code><a title="moody.openzeppelin.QueueTransactionMethod.block_send" href="#moody.openzeppelin.QueueTransactionMethod.block_send">block_send</a></code></li>
-<li><code><a title="moody.openzeppelin.QueueTransactionMethod.build_transaction" href="#moody.openzeppelin.QueueTransactionMethod.build_transaction">build_transaction</a></code></li>
-<li><code><a title="moody.openzeppelin.QueueTransactionMethod.estimate_gas" href="#moody.openzeppelin.QueueTransactionMethod.estimate_gas">estimate_gas</a></code></li>
-<li><code><a title="moody.openzeppelin.QueueTransactionMethod.send_transaction" href="#moody.openzeppelin.QueueTransactionMethod.send_transaction">send_transaction</a></code></li>
-<li><code><a title="moody.openzeppelin.QueueTransactionMethod.validate_and_normalize_inputs" href="#moody.openzeppelin.QueueTransactionMethod.validate_and_normalize_inputs">validate_and_normalize_inputs</a></code></li>
+<li><code><a title="moody.upgrades.QueueTransactionMethod.block_send" href="#moody.upgrades.QueueTransactionMethod.block_send">block_send</a></code></li>
+<li><code><a title="moody.upgrades.QueueTransactionMethod.build_transaction" href="#moody.upgrades.QueueTransactionMethod.build_transaction">build_transaction</a></code></li>
+<li><code><a title="moody.upgrades.QueueTransactionMethod.estimate_gas" href="#moody.upgrades.QueueTransactionMethod.estimate_gas">estimate_gas</a></code></li>
+<li><code><a title="moody.upgrades.QueueTransactionMethod.send_transaction" href="#moody.upgrades.QueueTransactionMethod.send_transaction">send_transaction</a></code></li>
+<li><code><a title="moody.upgrades.QueueTransactionMethod.validate_and_normalize_inputs" href="#moody.upgrades.QueueTransactionMethod.validate_and_normalize_inputs">validate_and_normalize_inputs</a></code></li>
 </ul>
 </li>
 <li>
-<h4><code><a title="moody.openzeppelin.QueuedTransactionsMethod" href="#moody.openzeppelin.QueuedTransactionsMethod">QueuedTransactionsMethod</a></code></h4>
+<h4><code><a title="moody.upgrades.QueuedTransactionsMethod" href="#moody.upgrades.QueuedTransactionsMethod">QueuedTransactionsMethod</a></code></h4>
 <ul class="">
-<li><code><a title="moody.openzeppelin.QueuedTransactionsMethod.block_call" href="#moody.openzeppelin.QueuedTransactionsMethod.block_call">block_call</a></code></li>
-<li><code><a title="moody.openzeppelin.QueuedTransactionsMethod.estimate_gas" href="#moody.openzeppelin.QueuedTransactionsMethod.estimate_gas">estimate_gas</a></code></li>
-<li><code><a title="moody.openzeppelin.QueuedTransactionsMethod.validate_and_normalize_inputs" href="#moody.openzeppelin.QueuedTransactionsMethod.validate_and_normalize_inputs">validate_and_normalize_inputs</a></code></li>
+<li><code><a title="moody.upgrades.QueuedTransactionsMethod.block_call" href="#moody.upgrades.QueuedTransactionsMethod.block_call">block_call</a></code></li>
+<li><code><a title="moody.upgrades.QueuedTransactionsMethod.estimate_gas" href="#moody.upgrades.QueuedTransactionsMethod.estimate_gas">estimate_gas</a></code></li>
+<li><code><a title="moody.upgrades.QueuedTransactionsMethod.validate_and_normalize_inputs" href="#moody.upgrades.QueuedTransactionsMethod.validate_and_normalize_inputs">validate_and_normalize_inputs</a></code></li>
 </ul>
 </li>
 <li>
-<h4><code><a title="moody.openzeppelin.SetDelayMethod" href="#moody.openzeppelin.SetDelayMethod">SetDelayMethod</a></code></h4>
+<h4><code><a title="moody.upgrades.SetDelayMethod" href="#moody.upgrades.SetDelayMethod">SetDelayMethod</a></code></h4>
 <ul class="">
-<li><code><a title="moody.openzeppelin.SetDelayMethod.block_send" href="#moody.openzeppelin.SetDelayMethod.block_send">block_send</a></code></li>
-<li><code><a title="moody.openzeppelin.SetDelayMethod.build_transaction" href="#moody.openzeppelin.SetDelayMethod.build_transaction">build_transaction</a></code></li>
-<li><code><a title="moody.openzeppelin.SetDelayMethod.estimate_gas" href="#moody.openzeppelin.SetDelayMethod.estimate_gas">estimate_gas</a></code></li>
-<li><code><a title="moody.openzeppelin.SetDelayMethod.send_transaction" href="#moody.openzeppelin.SetDelayMethod.send_transaction">send_transaction</a></code></li>
-<li><code><a title="moody.openzeppelin.SetDelayMethod.validate_and_normalize_inputs" href="#moody.openzeppelin.SetDelayMethod.validate_and_normalize_inputs">validate_and_normalize_inputs</a></code></li>
+<li><code><a title="moody.upgrades.SetDelayMethod.block_send" href="#moody.upgrades.SetDelayMethod.block_send">block_send</a></code></li>
+<li><code><a title="moody.upgrades.SetDelayMethod.build_transaction" href="#moody.upgrades.SetDelayMethod.build_transaction">build_transaction</a></code></li>
+<li><code><a title="moody.upgrades.SetDelayMethod.estimate_gas" href="#moody.upgrades.SetDelayMethod.estimate_gas">estimate_gas</a></code></li>
+<li><code><a title="moody.upgrades.SetDelayMethod.send_transaction" href="#moody.upgrades.SetDelayMethod.send_transaction">send_transaction</a></code></li>
+<li><code><a title="moody.upgrades.SetDelayMethod.validate_and_normalize_inputs" href="#moody.upgrades.SetDelayMethod.validate_and_normalize_inputs">validate_and_normalize_inputs</a></code></li>
 </ul>
 </li>
 <li>
-<h4><code><a title="moody.openzeppelin.SetPendingAdminMethod" href="#moody.openzeppelin.SetPendingAdminMethod">SetPendingAdminMethod</a></code></h4>
+<h4><code><a title="moody.upgrades.SetPendingAdminMethod" href="#moody.upgrades.SetPendingAdminMethod">SetPendingAdminMethod</a></code></h4>
 <ul class="">
-<li><code><a title="moody.openzeppelin.SetPendingAdminMethod.block_send" href="#moody.openzeppelin.SetPendingAdminMethod.block_send">block_send</a></code></li>
-<li><code><a title="moody.openzeppelin.SetPendingAdminMethod.build_transaction" href="#moody.openzeppelin.SetPendingAdminMethod.build_transaction">build_transaction</a></code></li>
-<li><code><a title="moody.openzeppelin.SetPendingAdminMethod.estimate_gas" href="#moody.openzeppelin.SetPendingAdminMethod.estimate_gas">estimate_gas</a></code></li>
-<li><code><a title="moody.openzeppelin.SetPendingAdminMethod.send_transaction" href="#moody.openzeppelin.SetPendingAdminMethod.send_transaction">send_transaction</a></code></li>
-<li><code><a title="moody.openzeppelin.SetPendingAdminMethod.validate_and_normalize_inputs" href="#moody.openzeppelin.SetPendingAdminMethod.validate_and_normalize_inputs">validate_and_normalize_inputs</a></code></li>
+<li><code><a title="moody.upgrades.SetPendingAdminMethod.block_send" href="#moody.upgrades.SetPendingAdminMethod.block_send">block_send</a></code></li>
+<li><code><a title="moody.upgrades.SetPendingAdminMethod.build_transaction" href="#moody.upgrades.SetPendingAdminMethod.build_transaction">build_transaction</a></code></li>
+<li><code><a title="moody.upgrades.SetPendingAdminMethod.estimate_gas" href="#moody.upgrades.SetPendingAdminMethod.estimate_gas">estimate_gas</a></code></li>
+<li><code><a title="moody.upgrades.SetPendingAdminMethod.send_transaction" href="#moody.upgrades.SetPendingAdminMethod.send_transaction">send_transaction</a></code></li>
+<li><code><a title="moody.upgrades.SetPendingAdminMethod.validate_and_normalize_inputs" href="#moody.upgrades.SetPendingAdminMethod.validate_and_normalize_inputs">validate_and_normalize_inputs</a></code></li>
 </ul>
 </li>
 <li>
-<h4><code><a title="moody.openzeppelin.SignatureGenerator" href="#moody.openzeppelin.SignatureGenerator">SignatureGenerator</a></code></h4>
+<h4><code><a title="moody.upgrades.SignatureGenerator" href="#moody.upgrades.SignatureGenerator">SignatureGenerator</a></code></h4>
 <ul class="two-column">
-<li><code><a title="moody.openzeppelin.SignatureGenerator.accept_admin" href="#moody.openzeppelin.SignatureGenerator.accept_admin">accept_admin</a></code></li>
-<li><code><a title="moody.openzeppelin.SignatureGenerator.admin" href="#moody.openzeppelin.SignatureGenerator.admin">admin</a></code></li>
-<li><code><a title="moody.openzeppelin.SignatureGenerator.cancel_transaction" href="#moody.openzeppelin.SignatureGenerator.cancel_transaction">cancel_transaction</a></code></li>
-<li><code><a title="moody.openzeppelin.SignatureGenerator.delay" href="#moody.openzeppelin.SignatureGenerator.delay">delay</a></code></li>
-<li><code><a title="moody.openzeppelin.SignatureGenerator.execute_transaction" href="#moody.openzeppelin.SignatureGenerator.execute_transaction">execute_transaction</a></code></li>
-<li><code><a title="moody.openzeppelin.SignatureGenerator.grace_period" href="#moody.openzeppelin.SignatureGenerator.grace_period">grace_period</a></code></li>
-<li><code><a title="moody.openzeppelin.SignatureGenerator.maximum_delay" href="#moody.openzeppelin.SignatureGenerator.maximum_delay">maximum_delay</a></code></li>
-<li><code><a title="moody.openzeppelin.SignatureGenerator.minimum_delay" href="#moody.openzeppelin.SignatureGenerator.minimum_delay">minimum_delay</a></code></li>
-<li><code><a title="moody.openzeppelin.SignatureGenerator.pending_admin" href="#moody.openzeppelin.SignatureGenerator.pending_admin">pending_admin</a></code></li>
-<li><code><a title="moody.openzeppelin.SignatureGenerator.queue_transaction" href="#moody.openzeppelin.SignatureGenerator.queue_transaction">queue_transaction</a></code></li>
-<li><code><a title="moody.openzeppelin.SignatureGenerator.queued_transactions" href="#moody.openzeppelin.SignatureGenerator.queued_transactions">queued_transactions</a></code></li>
-<li><code><a title="moody.openzeppelin.SignatureGenerator.set_delay" href="#moody.openzeppelin.SignatureGenerator.set_delay">set_delay</a></code></li>
-<li><code><a title="moody.openzeppelin.SignatureGenerator.set_pending_admin" href="#moody.openzeppelin.SignatureGenerator.set_pending_admin">set_pending_admin</a></code></li>
+<li><code><a title="moody.upgrades.SignatureGenerator.accept_admin" href="#moody.upgrades.SignatureGenerator.accept_admin">accept_admin</a></code></li>
+<li><code><a title="moody.upgrades.SignatureGenerator.admin" href="#moody.upgrades.SignatureGenerator.admin">admin</a></code></li>
+<li><code><a title="moody.upgrades.SignatureGenerator.cancel_transaction" href="#moody.upgrades.SignatureGenerator.cancel_transaction">cancel_transaction</a></code></li>
+<li><code><a title="moody.upgrades.SignatureGenerator.delay" href="#moody.upgrades.SignatureGenerator.delay">delay</a></code></li>
+<li><code><a title="moody.upgrades.SignatureGenerator.execute_transaction" href="#moody.upgrades.SignatureGenerator.execute_transaction">execute_transaction</a></code></li>
+<li><code><a title="moody.upgrades.SignatureGenerator.grace_period" href="#moody.upgrades.SignatureGenerator.grace_period">grace_period</a></code></li>
+<li><code><a title="moody.upgrades.SignatureGenerator.maximum_delay" href="#moody.upgrades.SignatureGenerator.maximum_delay">maximum_delay</a></code></li>
+<li><code><a title="moody.upgrades.SignatureGenerator.minimum_delay" href="#moody.upgrades.SignatureGenerator.minimum_delay">minimum_delay</a></code></li>
+<li><code><a title="moody.upgrades.SignatureGenerator.pending_admin" href="#moody.upgrades.SignatureGenerator.pending_admin">pending_admin</a></code></li>
+<li><code><a title="moody.upgrades.SignatureGenerator.queue_transaction" href="#moody.upgrades.SignatureGenerator.queue_transaction">queue_transaction</a></code></li>
+<li><code><a title="moody.upgrades.SignatureGenerator.queued_transactions" href="#moody.upgrades.SignatureGenerator.queued_transactions">queued_transactions</a></code></li>
+<li><code><a title="moody.upgrades.SignatureGenerator.set_delay" href="#moody.upgrades.SignatureGenerator.set_delay">set_delay</a></code></li>
+<li><code><a title="moody.upgrades.SignatureGenerator.set_pending_admin" href="#moody.upgrades.SignatureGenerator.set_pending_admin">set_pending_admin</a></code></li>
 </ul>
 </li>
 <li>
-<h4><code><a title="moody.openzeppelin.Timelock6h" href="#moody.openzeppelin.Timelock6h">Timelock6h</a></code></h4>
+<h4><code><a title="moody.upgrades.Timelock6h" href="#moody.upgrades.Timelock6h">Timelock6h</a></code></h4>
 <ul class="">
-<li><code><a title="moody.openzeppelin.Timelock6h.CallContractWait" href="#moody.openzeppelin.Timelock6h.CallContractWait">CallContractWait</a></code></li>
-<li><code><a title="moody.openzeppelin.Timelock6h.abi" href="#moody.openzeppelin.Timelock6h.abi">abi</a></code></li>
-<li><code><a title="moody.openzeppelin.Timelock6h.accept_admin" href="#moody.openzeppelin.Timelock6h.accept_admin">accept_admin</a></code></li>
-<li><code><a title="moody.openzeppelin.Timelock6h.admin" href="#moody.openzeppelin.Timelock6h.admin">admin</a></code></li>
-<li><code><a title="moody.openzeppelin.Timelock6h.cancel_transaction" href="#moody.openzeppelin.Timelock6h.cancel_transaction">cancel_transaction</a></code></li>
-<li><code><a title="moody.openzeppelin.Timelock6h.delay" href="#moody.openzeppelin.Timelock6h.delay">delay</a></code></li>
-<li><code><a title="moody.openzeppelin.Timelock6h.event_cancel_transaction" href="#moody.openzeppelin.Timelock6h.event_cancel_transaction">event_cancel_transaction</a></code></li>
-<li><code><a title="moody.openzeppelin.Timelock6h.event_execute_transaction" href="#moody.openzeppelin.Timelock6h.event_execute_transaction">event_execute_transaction</a></code></li>
-<li><code><a title="moody.openzeppelin.Timelock6h.event_new_admin" href="#moody.openzeppelin.Timelock6h.event_new_admin">event_new_admin</a></code></li>
-<li><code><a title="moody.openzeppelin.Timelock6h.event_new_delay" href="#moody.openzeppelin.Timelock6h.event_new_delay">event_new_delay</a></code></li>
-<li><code><a title="moody.openzeppelin.Timelock6h.event_new_pending_admin" href="#moody.openzeppelin.Timelock6h.event_new_pending_admin">event_new_pending_admin</a></code></li>
-<li><code><a title="moody.openzeppelin.Timelock6h.event_queue_transaction" href="#moody.openzeppelin.Timelock6h.event_queue_transaction">event_queue_transaction</a></code></li>
-<li><code><a title="moody.openzeppelin.Timelock6h.execute_transaction" href="#moody.openzeppelin.Timelock6h.execute_transaction">execute_transaction</a></code></li>
-<li><code><a title="moody.openzeppelin.Timelock6h.grace_period" href="#moody.openzeppelin.Timelock6h.grace_period">grace_period</a></code></li>
-<li><code><a title="moody.openzeppelin.Timelock6h.maximum_delay" href="#moody.openzeppelin.Timelock6h.maximum_delay">maximum_delay</a></code></li>
-<li><code><a title="moody.openzeppelin.Timelock6h.minimum_delay" href="#moody.openzeppelin.Timelock6h.minimum_delay">minimum_delay</a></code></li>
-<li><code><a title="moody.openzeppelin.Timelock6h.pending_admin" href="#moody.openzeppelin.Timelock6h.pending_admin">pending_admin</a></code></li>
-<li><code><a title="moody.openzeppelin.Timelock6h.queue_transaction" href="#moody.openzeppelin.Timelock6h.queue_transaction">queue_transaction</a></code></li>
-<li><code><a title="moody.openzeppelin.Timelock6h.queued_transactions" href="#moody.openzeppelin.Timelock6h.queued_transactions">queued_transactions</a></code></li>
-<li><code><a title="moody.openzeppelin.Timelock6h.set_delay" href="#moody.openzeppelin.Timelock6h.set_delay">set_delay</a></code></li>
-<li><code><a title="moody.openzeppelin.Timelock6h.set_pending_admin" href="#moody.openzeppelin.Timelock6h.set_pending_admin">set_pending_admin</a></code></li>
+<li><code><a title="moody.upgrades.Timelock6h.CallContractWait" href="#moody.upgrades.Timelock6h.CallContractWait">CallContractWait</a></code></li>
+<li><code><a title="moody.upgrades.Timelock6h.abi" href="#moody.upgrades.Timelock6h.abi">abi</a></code></li>
+<li><code><a title="moody.upgrades.Timelock6h.accept_admin" href="#moody.upgrades.Timelock6h.accept_admin">accept_admin</a></code></li>
+<li><code><a title="moody.upgrades.Timelock6h.admin" href="#moody.upgrades.Timelock6h.admin">admin</a></code></li>
+<li><code><a title="moody.upgrades.Timelock6h.cancel_transaction" href="#moody.upgrades.Timelock6h.cancel_transaction">cancel_transaction</a></code></li>
+<li><code><a title="moody.upgrades.Timelock6h.delay" href="#moody.upgrades.Timelock6h.delay">delay</a></code></li>
+<li><code><a title="moody.upgrades.Timelock6h.event_cancel_transaction" href="#moody.upgrades.Timelock6h.event_cancel_transaction">event_cancel_transaction</a></code></li>
+<li><code><a title="moody.upgrades.Timelock6h.event_execute_transaction" href="#moody.upgrades.Timelock6h.event_execute_transaction">event_execute_transaction</a></code></li>
+<li><code><a title="moody.upgrades.Timelock6h.event_new_admin" href="#moody.upgrades.Timelock6h.event_new_admin">event_new_admin</a></code></li>
+<li><code><a title="moody.upgrades.Timelock6h.event_new_delay" href="#moody.upgrades.Timelock6h.event_new_delay">event_new_delay</a></code></li>
+<li><code><a title="moody.upgrades.Timelock6h.event_new_pending_admin" href="#moody.upgrades.Timelock6h.event_new_pending_admin">event_new_pending_admin</a></code></li>
+<li><code><a title="moody.upgrades.Timelock6h.event_queue_transaction" href="#moody.upgrades.Timelock6h.event_queue_transaction">event_queue_transaction</a></code></li>
+<li><code><a title="moody.upgrades.Timelock6h.execute_transaction" href="#moody.upgrades.Timelock6h.execute_transaction">execute_transaction</a></code></li>
+<li><code><a title="moody.upgrades.Timelock6h.grace_period" href="#moody.upgrades.Timelock6h.grace_period">grace_period</a></code></li>
+<li><code><a title="moody.upgrades.Timelock6h.maximum_delay" href="#moody.upgrades.Timelock6h.maximum_delay">maximum_delay</a></code></li>
+<li><code><a title="moody.upgrades.Timelock6h.minimum_delay" href="#moody.upgrades.Timelock6h.minimum_delay">minimum_delay</a></code></li>
+<li><code><a title="moody.upgrades.Timelock6h.pending_admin" href="#moody.upgrades.Timelock6h.pending_admin">pending_admin</a></code></li>
+<li><code><a title="moody.upgrades.Timelock6h.queue_transaction" href="#moody.upgrades.Timelock6h.queue_transaction">queue_transaction</a></code></li>
+<li><code><a title="moody.upgrades.Timelock6h.queued_transactions" href="#moody.upgrades.Timelock6h.queued_transactions">queued_transactions</a></code></li>
+<li><code><a title="moody.upgrades.Timelock6h.set_delay" href="#moody.upgrades.Timelock6h.set_delay">set_delay</a></code></li>
+<li><code><a title="moody.upgrades.Timelock6h.set_pending_admin" href="#moody.upgrades.Timelock6h.set_pending_admin">set_pending_admin</a></code></li>
 </ul>
 </li>
 <li>
-<h4><code><a title="moody.openzeppelin.Timelock6hValidator" href="#moody.openzeppelin.Timelock6hValidator">Timelock6hValidator</a></code></h4>
+<h4><code><a title="moody.upgrades.Timelock6hValidator" href="#moody.upgrades.Timelock6hValidator">Timelock6hValidator</a></code></h4>
 </li>
 </ul>
 </li>
