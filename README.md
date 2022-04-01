@@ -11,8 +11,9 @@ Ethereum based all Moody tool chain for smart contract development kit [document
 
 ### Why do we use python
 Using it because it is fast and easy. More importantly it runs directly by its own and no more dependencies.
+
 Its much faster to building modules and calling functions on python.
-Also it can be wrapped into an executable binary on wasm or cpython thats runs on natively any platforms.
+Also it can be wrapped into an executable binary on wasm or cpython that runs on natively any platforms.
 
 If you are using PyCharm or similar IDE, all type are ready to show at your finger tips.
 
@@ -37,7 +38,7 @@ Setup the folders:
 
 ### Why use moody eth
 
-It is a all-in-one package with zero setup and configurations that works for multiple architectures. It is lightweight and simple. Build-in ERC20 support and bulk token sending support. Also it has a sister library for Tron that runs similarly. Out of the box that comes with solc-compile automation and web3 executions.
+It is a all-in-one package with zero setup and configurations that works for multiple architectures. It is lightweight and simple. Build-in ERC20 support and bulk token sending support. Out of the box that comes with solc-compile automation and web3 executions.
 
 ### Features
 - support most of the evm compatible chains
@@ -132,6 +133,8 @@ tokenContract.EnforceTxReceipt(True).mint(my_wallet, 300*10**18)
 ```
 
 Documentation is ready [here](https://htmlpreview.github.io/?https://github.com/tokenchain/moodyeth/blob/main/docs/moody/index.html)
+
+Also there is a brother library for those who works with [Tron](https://github.com/tokenchain/tronpytool) network.
 
 # 📦 Showcase your project with this SDK
 PR your link or your github repo here.
