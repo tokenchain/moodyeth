@@ -131,6 +131,7 @@ tokenContract.EnforceTxReceipt(True).mint(my_wallet, 300*10**18)
 
 ```
 
+Documentation is ready [here](https://htmlpreview.github.io/?https://github.com/tokenchain/moodyeth/blob/main/docs/moody/index.html)
 
 # 🏗👷🏾 Scaffold-evm Challenges
 
