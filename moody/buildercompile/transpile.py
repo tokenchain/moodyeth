@@ -2,7 +2,7 @@ import os
 import re
 
 from moody.paths import Paths
-from . import ITEM_CP_LOCAL, ITEM_TRANSPILE_GO, TRANS_LOCAL, ITEM_TRANSPILE_PYTHON, ITEM_TRANSPILE_TS, PRE_HEAD
+from . import ITEM_CP_LOCAL, ITEM_TRANSPILE_GO, TRANS_LOCAL, ITEM_TRANSPILE_PYTHON, ITEM_TRANSPILE_TS, PRE_HEAD, SUB_FOOTER
 
 REG = r"(.+?)([A-Z])"
 
@@ -68,12 +68,14 @@ def wrapContentTranspile(tar: Paths, compile_list: list) -> str:
     :return:
     """
     head_section = PRE_HEAD.format(path_definitions=tar.LOCAL_BASH_INCLUDE)
+    contract_list_content = "\n".join(compile_list)
     return TRANS_LOCAL.format(
-        LISTP="\n".join(compile_list),
         TARGET_LOC=tar.TARGET_LOC,
         COMPRESSED_NAME=tar.COMPRESSED_NAME,
         SOLVER=tar.SOLC_VER,
-        PRE_HEAD=head_section
+        LISTP=contract_list_content,
+        PRE_HEAD=head_section,
+        FOOTER=SUB_FOOTER
     )
 
 

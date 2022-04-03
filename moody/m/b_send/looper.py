@@ -14,7 +14,7 @@ from ..pharaohs import pharaohs
 from ...libeb import MiliDoS
 
 
-class LooperBulk(BaseBulk):
+class SkeletonLooper(BaseBulk):
     """
     Bulk manager execution now
     @
@@ -55,7 +55,7 @@ class LooperBulk(BaseBulk):
         pass
 
 
-class TestBulkManager(LooperBulk):
+class TestBulkManager(SkeletonLooper):
     """
     Bulk manager execution now
     @
@@ -97,7 +97,7 @@ class TestBulkManager(LooperBulk):
         return math.ceil(self.total / self.wei)
 
 
-class ExcelBasic(LooperBulk):
+class ExcelFeature(SkeletonLooper):
 
     def __init__(self, filepath, mHold: MiliDoS):
         super().__init__(mHold)
@@ -106,18 +106,18 @@ class ExcelBasic(LooperBulk):
         self.kAmount = "amount"
         PrintNetworkName(mHold.network_cfg)
 
-    def useKeyChinese(self) -> "ExcelBasic":
+    def useKeyChinese(self) -> "ExcelFeature":
         self.kAddress = "提现地址"
         self.kAmount = "提现金额"
         return self
 
-    def useKeyEng(self) -> "ExcelBasic":
+    def useKeyEng(self) -> "ExcelFeature":
         self.kAddress = "address"
         self.kAmount = "amount"
         return self
 
 
-class ExcelBulkManagerContractTunnel(ExcelBasic):
+class ExcelBulkManagerContractTunnel(ExcelFeature):
     """
     using contract on making at least 250 transactions in a batch.
     """
@@ -189,11 +189,11 @@ class ExcelBulkManagerContractTunnel(ExcelBasic):
             except exceptions.CannotHandleRequest:
                 self._line_error(errorNotify, "⚠️ request is not handled")
                 return
-            except _utils.threads.Timeout:
-                self._line_error(errorNotify, "⚠️ threads timeout")
-                return
             except exceptions.TimeExhausted:
                 self._line_error(errorNotify, "⚠️ the transaction is not on chain after timeout")
+                return
+            except _utils.threads.Timeout:
+                self._line_error(errorNotify, "⚠️ threads timeout")
                 return
 
     def prep(self) -> "ExcelBulkManagerContractTunnel":
@@ -234,7 +234,7 @@ class ExcelBulkManagerContractTunnel(ExcelBasic):
         return int(self.total / self.wei)
 
 
-class ExcelBulkManagerClassic(ExcelBasic):
+class ExcelBulkManagerClassic(ExcelFeature):
     """
     This is the traditional wallet to wallet transaction transfer using the native method
     """
