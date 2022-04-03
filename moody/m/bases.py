@@ -3,11 +3,13 @@
 from typing import Any
 
 from eth_utils import is_address, to_checksum_address
+
 from web3 import Web3
 
 from .tx_params import TxParams
 # from web3.providers.base import BaseProvider
 from ..libeb import MiliDoS
+from .. import Bolors
 
 
 class Signatures:
@@ -80,6 +82,13 @@ class ContractMethod:
         self.validator = validator
         self._operate = elib.accountAddr
         self._wait = 5
+        self.wei_value = 0
+        self.gas_limit = 0
+        self.gas_price_wei = 0
+        self.auto_reciept = False
+        self.debug_method = False
+        self.callback_onsuccess = None
+        self.callback_onfail = None
 
     @staticmethod
     def validate_and_checksum_address(address: str):
@@ -108,16 +117,32 @@ class ContractMethod:
         self._wait = t
         return self
 
+    def _on_receipt_handle(self, method_name: str, receipt=None, boardcast_hash=None) -> None:
+        print(f"======== TX blockHash ✅")
+        if receipt is not None:
+            print(f"{Bolors.OK}{receipt.blockHash.hex()}{Bolors.RESET}")
+            if self.callback_onsuccess is not None:
+                self.callback_onsuccess(receipt.blockHash.hex(), method_name)
+        else:
+            if boardcast_hash is not None:
+                print(f"{Bolors.WARNING}{boardcast_hash.hex()}{Bolors.RESET} - broadcast hash")
+
+    def _on_fail(self, name: str, message: str) -> None:
+        if self.callback_onfail is not None:
+            self.callback_onfail(name, message)
+
 
 class ContractBase:
-    SIGNATURES: Signatures = None
-    contract_address: str = None
+    SIGNATURES: Signatures
 
     def __init__(self):
         self.call_contract_fee_amount: int = 2000000000
         self.call_contract_fee_price: int = 105910000000
         self.call_contract_debug_flag: bool = False
         self.call_contract_enforce_tx_receipt: bool = True
+        self.contract_address = None
+        self.callback_onsuccess = None
+        self.callback_onfail = None
 
     def CallAutoConf(self, f: MiliDoS) -> "ContractBase":
         self.call_contract_fee_amount = f.gas
@@ -140,3 +165,10 @@ class ContractBase:
     def CallSignatureModel(self) -> Signatures:
         return self.SIGNATURES
 
+    def onSuccssCallback(self, cb: any) -> "ContractBase":
+        self.callback_onsuccess = cb
+        return self
+
+    def onFailCallback(self, cb: any) -> "ContractBase":
+        self.callback_onfail = cb
+        return self

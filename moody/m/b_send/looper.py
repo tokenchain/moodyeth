@@ -26,6 +26,7 @@ class LooperBulk(BaseBulk):
         super().__init__()
         self.__n = 0
         self.__t = 0
+        self.__failures = 0
         self.wait_pause = False
 
     def ActivateWaitPause(self):
@@ -44,6 +45,15 @@ class LooperBulk(BaseBulk):
         else:
             errorNotify(info)
 
+    def failure(self, a: str, b: str) -> None:
+        if self._file_logger is not None:
+            self._file_logger(f"Batch#{self.__n} {a} {b} Failed. ❌ ")
+        self.__failures += 1
+
+    def successTransaction(self, hash: str, name: str) -> None:
+        if self._file_logger is not None:
+            self._file_logger(f"Batch#{self.__n} {name}-hash: {hash} 📤 ")
+
     def executeTokenTransferOnContractBusTg(
             self,
             express_contract: BSend,
@@ -55,7 +65,7 @@ class LooperBulk(BaseBulk):
         self.__t = len(self._batch)
 
         if not self._batch_contract:
-            self._line_error(errorNotify, f"⚠️ Batch contract is not activated")
+            self._line_error(errorNotify, "⚠️ Batch contract is not activated")
             return
 
         if not self._is_valid_address(coin_address):
@@ -76,11 +86,13 @@ class LooperBulk(BaseBulk):
                     coin_contract.EnforceTxReceipt(True)
                     coin_contract.approve(express_address, total_approval)
                 else:
-                    self._line_error(errorNotify, f"⚠️ not enough in the balance")
+                    self._line_error(errorNotify, "⚠️ not enough in the balance")
                     return
 
                 print(f"====== start batch transactions")
-                express_contract.EnforceTxReceipt(False).bulk_send_token(
+                express_contract.onSuccssCallback(self.successTransaction)
+                express_contract.onFailCallback(self.failure)
+                express_contract.EnforceTxReceipt(True).bulk_send_token(
                     coin_address, _address, _amount, 0
                 )
 
@@ -94,13 +106,13 @@ class LooperBulk(BaseBulk):
                     print("====== Now the next wave of token send will start immediately")
 
             except exceptions.CannotHandleRequest:
-                self._line_error(errorNotify, f"⚠️ request is not handled")
+                self._line_error(errorNotify, "⚠️ request is not handled")
                 return
             except _utils.threads.Timeout:
-                self._line_error(errorNotify, f"⚠️ threads timeout")
+                self._line_error(errorNotify, "⚠️ threads timeout")
                 return
             except exceptions.TimeExhausted:
-                self._line_error(errorNotify, f"⚠️ the transaction is not on chain after timeout")
+                self._line_error(errorNotify, "⚠️ the transaction is not on chain after timeout")
                 return
 
 

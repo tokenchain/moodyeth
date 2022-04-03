@@ -301,3 +301,11 @@ class BaseBulk:
 
     def setProgramUseOnly(self):
         self._program_override = True
+
+    @property
+    def get_batches(self) -> int:
+        return self._batches_count
+
+    @property
+    def get_transaction_count(self) -> int:
+        return self.transaction_count
