@@ -30,6 +30,7 @@ TRANS_LOCAL = """#!/bin/bash
 
 {LISTP}
 
+{FOOTER}
 """
 ITEM = """
 echo "🍯 Compiling from {COMPILE_COIN} 🧀"
@@ -91,6 +92,13 @@ echo "==> generate abi to golang --> 🧊"
 
 PRE_HEAD = """
 
+# . ./{path_definitions}
+
+if [[ ! -f /factoryabi ]]; then
+  echo "The factory abi module is not found"
+  exit
+fi
+
 if ! command -v abi-gen-uni &>/dev/null; then
     echo "abi-gen-uni could not be found"
     cnpm i -g easy-abi-gen
@@ -100,4 +108,10 @@ if ! command -v abigen &>/dev/null; then
     echo "abigen could not be found, please go check out: https://geth.ethereum.org/downloads/"
     exit;
 fi
+"""
+SUB_FOOTER= """
+
+#rm localpile
+#rm -rf factoryabi
+
 """

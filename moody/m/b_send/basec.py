@@ -302,10 +302,43 @@ class BaseBulk:
     def setProgramUseOnly(self):
         self._program_override = True
 
-    @property
-    def get_batches(self) -> int:
-        return self._batches_count
 
-    @property
-    def get_transaction_count(self) -> int:
-        return self.transaction_count
+class LooperBulk(BaseBulk):
+    """
+    Bulk manager execution now
+    @
+    """
+
+    def __init__(self, mHold: MiliDoS):
+        self.dos = mHold
+        PrintNetworkName(mHold.network_cfg)
+        super().__init__()
+        self.__n = 0
+        self.__t = 0
+        self.__failures = 0
+        self.wait_pause = False
+
+    def failureCounts(self) -> int:
+        return self.__failures
+
+    def ActivateWaitPause(self):
+        self.wait_pause = True
+
+    def _line_progress(self, notify=None) -> None:
+        if notify is None:
+            return
+        else:
+            perc = "{0:.0f}%".format(self.__n / self.__t * 100)
+            notify(self.__n, self.__t, perc)
+
+    def _line_error(self, errorNotify=None, info: str = "") -> None:
+        if errorNotify is None:
+            print(f"======{info}")
+        else:
+            errorNotify(info)
+
+    def failure(self, a: str, b: str) -> None:
+        pass
+
+    def successTransaction(self, hash: str, name: str) -> None:
+        pass

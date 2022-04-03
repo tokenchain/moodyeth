@@ -1,4 +1,4 @@
-"""Generated wrapper for BSend Solidity contract. and finally edited by auth"""
+"""Generated wrapper for BSend Solidity contract."""
 
 # pylint: disable=too-many-arguments
 
@@ -172,19 +172,7 @@ class BulkSendTokenMethod(ContractMethod):  # pylint: disable=invalid-name
         )
         return (token_addr, addresses, amounts)
 
-    def block_send(self,
-                   token_addr: str,
-                   addresses: List[str],
-                   amounts: List[int],
-
-
-
-                   _gaswei: int,
-                   _pricewei: int,
-                   _valeth: int = 0,
-                   _debugtx: bool = False,
-                   _receipList: bool = False
-                   ) -> bool:
+    def block_send(self, token_addr: str, addresses: List[str], amounts: List[int], _gaswei: int, _pricewei: int, _valeth: int = 0, _debugtx: bool = False, _receipList: bool = False) -> bool:
         """Execute underlying contract method via eth_call.
 
         :param tx_params: transaction parameters
@@ -215,32 +203,30 @@ class BulkSendTokenMethod(ContractMethod):  # pylint: disable=invalid-name
                 tx_receipt = None
                 if _receipList is True:
                     print(f"======== awaiting Confirmation 🚸️ {self.sign}")
-                    tx_receipt = self._web3_eth.wait_for_transaction_receipt(txHash)
+                    tx_receipt = self._web3_eth.waitForTransactionReceipt(txHash)
                     if _debugtx:
                         print("======== TX Result ✅")
                         print(tx_receipt)
 
-                self._on_receipt_handle(tx_receipt, txHash)
+                print(f"======== TX blockHash ✅")
+                if tx_receipt is not None:
+                    print(f"{Bolors.OK}{tx_receipt.blockHash.hex()}{Bolors.RESET}")
+                else:
+                    print(f"{Bolors.WARNING}{txHash.hex()}{Bolors.RESET} - broadcast hash")
 
             if _receipList is False:
                 time.sleep(self._wait)
 
 
         except ContractLogicError as er:
-            message = f"Error {er}: bulk_send_token"
             print(f"{Bolors.FAIL}Error {er} {Bolors.RESET}: bulk_send_token")
-            self._on_fail("bulk_send_token", message)
-
 
         except ValueError as err:
             if "message" in err.args[0]:
                 message = err.args[0]["message"]
                 print(f"{Bolors.FAIL}Error Revert {Bolors.RESET}, bulk_send_token: {message}")
             else:
-                message = "Error Revert , bulk_send_token. Reason: Unknown"
                 print(f"{Bolors.FAIL}Error Revert {Bolors.RESET}, bulk_send_token. Reason: Unknown")
-
-            self._on_fail("bulk_send_token", message)
 
     def send_transaction(self, token_addr: str, addresses: List[str], amounts: List[int], tx_params: Optional[TxParams] = None) -> Union[HexBytes, bytes]:
         """Execute underlying contract method via eth_sendTransaction.
@@ -630,13 +616,7 @@ class RenounceSignerMethod(ContractMethod):  # pylint: disable=invalid-name
         self._underlying_method = contract_function
         self.sign = validator.getSignature("renounceSigner")
 
-    def block_send(self,
-                   _gaswei: int,
-                   _pricewei: int,
-                   _valeth: int = 0,
-                   _debugtx: bool = False,
-                   _receipList: bool = False
-                   ) -> None:
+    def block_send(self, _gaswei: int, _pricewei: int, _valeth: int = 0, _debugtx: bool = False, _receipList: bool = False) -> None:
         """Execute underlying contract method via eth_call.
 
         :param tx_params: transaction parameters
@@ -1357,20 +1337,12 @@ class BSend(ContractBase):
         """
         Implementation of bulk_send_token in contract BSend
         Method of the function
-        """
-        self._fn_bulk_send_token.callback_onfail = self.callback_onfail
-        self._fn_bulk_send_token.callback_onsuccess = self.callback_onsuccess
-        self._fn_bulk_send_token.auto_reciept = self.call_contract_enforce_tx_receipt
-        self._fn_bulk_send_token.gas_limit = self.call_contract_fee_amount
-        self._fn_bulk_send_token.gas_price_wei = self.call_contract_fee_price
-        self._fn_bulk_send_token.debug_method = self.call_contract_debug_flag
 
-        return self._fn_bulk_send_token.block_send(
-            token_addr, addresses, amounts,
-            self.call_contract_fee_amount,
-            self.call_contract_fee_price,
-            wei
-        )
+
+
+        """
+
+        return self._fn_bulk_send_token.block_send(token_addr, addresses, amounts, self.call_contract_fee_amount, self.call_contract_fee_price, wei, self.call_contract_debug_flag, self.call_contract_enforce_tx_receipt)
 
     def bulk_send_trx(self, addresses: List[str], amounts: List[int], wei: int = 0) -> bool:
         """

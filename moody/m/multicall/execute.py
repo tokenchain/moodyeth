@@ -34,7 +34,7 @@ class MultiCallerV1Contract:
     def addCallEasy(self, contract: ContractBase, method: str, params: list) -> "MultiCallerV1Contract":
         hex = self.getInfo(
             to_checksum_address(contract.contract_address),
-            contract.CallSignatureModel().fromAbi
+            contract.fromAbi
         ).encodeABI(fn_name=method, args=params)
         self._data.append(hex)
         return self

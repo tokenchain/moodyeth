@@ -27,17 +27,19 @@ class Paths:
     NAME_FILE_EXX = "{}/{}.json"
     # ---- sovernior
     TARGET_LOC = "/root/contracts"
+    # ---- including the local bash file
+    LOCAL_BASH_INCLUDE = "inc"
     COMPRESSED_NAME = "solc-build.tar.gz"
     SOLC_VER = "0.5.15"
     SOLCPATH = "/root/contracts/vault"
     EVM_VERSION = Evm.ISTANBUL
     BUILDPATH = ""
-    WEB_DAPP_SRC = "app"
+    WEB_DAPP_SRC = None
+    SUB_FIX = ""
 
     def __init__(self, root_path_as_workspace):
         self.___workspace = root_path_as_workspace
         self.___current_deployment_path = os.path.join(self.___workspace, self.ACTION_FOLDER)
-        self.SUB_FIX = ""
         self.___network_name = "mainnet"
         self.BUILDPATH = root_path_as_workspace
 
@@ -66,6 +68,10 @@ class Paths:
 
     def setEvm(self, ver: str) -> "Paths":
         self.EVM_VERSION = ver
+        return self
+
+    def setBashInclude(self, p: str) -> "Paths":
+        self.LOCAL_BASH_INCLUDE = p
         return self
 
     def setDefaultPath(self) -> "Paths":

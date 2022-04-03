@@ -29,6 +29,9 @@ class LooperBulk(BaseBulk):
         self.__failures = 0
         self.wait_pause = False
 
+    def failureCounts(self) -> int:
+        return self.__failures
+
     def ActivateWaitPause(self):
         self.wait_pause = True
 
@@ -44,6 +47,84 @@ class LooperBulk(BaseBulk):
             print(f"======{info}")
         else:
             errorNotify(info)
+
+    def failure(self, a: str, b: str) -> None:
+        pass
+
+    def successTransaction(self, hash: str, name: str) -> None:
+        pass
+
+
+class TestBulkManager(LooperBulk):
+    """
+    Bulk manager execution now
+    @
+    """
+
+    def __init__(self, dat: list, mHold: MiliDoS):
+        self.datlist = dat
+        super().__init__(mHold)
+        self._enableContractBatch()
+
+    def prep(self) -> "TestBulkManager":
+        self._status_busy = True
+        for row in self.datlist:
+            address = str(row[0])
+            amount = float(row[1])
+            enter_digit = int(amount * 10 ** self.decimal)
+            if self._is_valid_address(address):
+                self._line_read_code(address, amount, enter_digit)
+                self.entryAdd(address, enter_digit)
+            else:
+                self._line_invalid_address(address)
+                self.entryErrAdd(address, enter_digit)
+
+        self._batch_preprocess()
+        self.PreStatement()
+
+        return self
+
+    def getSENDAddresses(self) -> list:
+        return self.list_address
+
+    def getSENDAmountBalances(self) -> list:
+        return self.list_amount
+
+    def getPlatformVal(self) -> int:
+        """
+        since the entry for python function on SAP is required to be int
+        """
+        return math.ceil(self.total / self.wei)
+
+
+class ExcelBasic(LooperBulk):
+
+    def __init__(self, filepath, mHold: MiliDoS):
+        super().__init__(mHold)
+        self.exeFilepath = filepath
+        self.kAddress = "address"
+        self.kAmount = "amount"
+        PrintNetworkName(mHold.network_cfg)
+
+    def useKeyChinese(self) -> "ExcelBasic":
+        self.kAddress = "提现地址"
+        self.kAmount = "提现金额"
+        return self
+
+    def useKeyEng(self) -> "ExcelBasic":
+        self.kAddress = "address"
+        self.kAmount = "amount"
+        return self
+
+
+class ExcelBulkManagerContractTunnel(ExcelBasic):
+    """
+    using contract on making at least 250 transactions in a batch.
+    """
+
+    def __init__(self, filepath, m: MiliDoS):
+        super().__init__(filepath, m)
+        self._enableContractBatch()
 
     def failure(self, a: str, b: str) -> None:
         if self._file_logger is not None:
@@ -115,79 +196,7 @@ class LooperBulk(BaseBulk):
                 self._line_error(errorNotify, "⚠️ the transaction is not on chain after timeout")
                 return
 
-
-class TestBulkManager(LooperBulk):
-    """
-    Bulk manager execution now
-    @
-    """
-
-    def __init__(self, dat: list, mHold: MiliDoS):
-        self.datlist = dat
-        super().__init__(mHold)
-        self._enableContractBatch()
-
-    def prep(self) -> "TestBulkManager":
-        self._status_busy = True
-        for row in self.datlist:
-            address = str(row[0])
-            amount = float(row[1])
-            enter_digit = int(amount * 10 ** self.decimal)
-            if self._is_valid_address(address):
-                self._line_read_code(address, amount, enter_digit)
-                self.entryAdd(address, enter_digit)
-            else:
-                self._line_invalid_address(address)
-                self.entryErrAdd(address, enter_digit)
-
-        self._batch_preprocess()
-        self.PreStatement()
-
-        return self
-
-    def getSENDAddresses(self) -> list:
-        return self.list_address
-
-    def getSENDAmountBalances(self) -> list:
-        return self.list_amount
-
-    def getPlatformVal(self) -> int:
-        """
-        since the entry for python function on SAP is required to be int
-        """
-        return math.ceil(self.total / TestBulkManager.wei)
-
-
-class ExcelBasic(LooperBulk):
-
-    def __init__(self, filepath, mHold: MiliDoS):
-        super().__init__(mHold)
-        self.exeFilepath = filepath
-        self.kAddress = "address"
-        self.kAmount = "amount"
-        PrintNetworkName(mHold.network_cfg)
-
-    def useKeyChinese(self) -> "ExcelBasic":
-        self.kAddress = "提现地址"
-        self.kAmount = "提现金额"
-        return self
-
-    def useKeyEng(self) -> "ExcelBasic":
-        self.kAddress = "address"
-        self.kAmount = "amount"
-        return self
-
-
-class ExcelBulkManager(ExcelBasic):
-    """
-    using contract on making at least 250 transactions in a batch.
-    """
-
-    def __init__(self, filepath, m: MiliDoS):
-        super().__init__(filepath, m)
-        self._enableContractBatch()
-
-    def prep(self) -> "ExcelBulkManager":
+    def prep(self) -> "ExcelBulkManagerContractTunnel":
         self._status_busy = True
         # df = pd.read_excel(r'C:\Users\Ron\Desktop\Product List.xlsx')
         data = pd.read_excel(self.exeFilepath)
@@ -222,7 +231,7 @@ class ExcelBulkManager(ExcelBasic):
         return self.total
 
     def getPlatformVal(self) -> int:
-        return int(self.total / TestBulkManager.wei)
+        return int(self.total / self.wei)
 
 
 class ExcelBulkManagerClassic(ExcelBasic):
@@ -232,6 +241,8 @@ class ExcelBulkManagerClassic(ExcelBasic):
 
     def __init__(self, filepath, tron):
         super().__init__(filepath, tron)
+        self._in_process_address = None
+        self._in_process_amount = 0
 
     def prep(self) -> "ExcelBulkManagerClassic":
         self._status_busy = True
@@ -280,12 +291,23 @@ class ExcelBulkManagerClassic(ExcelBasic):
         for address in self.list_address:
             token.transfer(address, self.list_amount[v])
             v += 1
+
+            self._line_progress(notify)
             if notify is not None:
                 self.processed_count = v
                 perc = "{0:.0f}%".format(v / self.transaction_count * 100)
                 notify(v, self.transaction_count, perc)
 
         self._status_busy = False
+
+    def failure(self, a: str, b: str) -> None:
+        if self._file_logger is not None:
+            self._file_logger(f"#{self.__n} {a} {b} Failed. ❌ ")
+        self.__failures += 1
+
+    def successTransaction(self, hash: str, name: str) -> None:
+        if self._file_logger is not None:
+            self._file_logger(f"#{self.__n} {hash} OK, {self._in_process_address} {self._in_process_amount} 📤 ")
 
     def executeTokenTransferDistributionTg(self, token: pharaohs, notify=None, errorNotify=None):
         """
@@ -297,32 +319,31 @@ class ExcelBulkManagerClassic(ExcelBasic):
          errors from the operation
 
         """
-        v = 0
-        vt = len(self.list_address)
+        self.__n = 0
+        self.__t = len(self.list_address)
         self._status_busy = True
 
         _timestamp = self.nowSec
-        if len(self.list_amount) != vt:
+        if len(self.list_amount) != self.__t:
             errorNotify("error in checking the length of transaction list")
             return
+
+        token.onSuccssCallback(self.successTransaction)
+        token.onFailCallback(self.failure)
+
         try:
 
             for address in self.list_address:
-                recipient = address
-                report_amount = self.list_amount[v]
-                token.transfer(recipient, report_amount)
-                v += 1
+                self._in_process_address = address
+                report_amount = self.list_amount[self.__n]
+                self._in_process_amount = report_amount
+                token.transfer(address, report_amount)
+                self.__n += 1
                 _dela = self.nowSec
-
                 if notify is not None:
-                    if _dela > _timestamp + 5 or v >= vt:
+                    if _dela > _timestamp + 5 or self.__n >= self.__t:
                         _timestamp = self.nowSec
-                        self.processed_count = v
-                        _perc = "{0:.0f}%".format(v / self.transaction_count * 100)
-                        notify(v, self.transaction_count, _perc)
-
-                if self._file_logger is not None:
-                    self._file_logger(f"#{v} {recipient} {report_amount} 📤 ")
+                        self._line_progress(notify)
 
                 time.sleep(0.5)
 

@@ -67,12 +67,13 @@ def wrapContentTranspile(tar: Paths, compile_list: list) -> str:
     :param compile_list:
     :return:
     """
+    head_section = PRE_HEAD.format(path_definitions=tar.LOCAL_BASH_INCLUDE)
     return TRANS_LOCAL.format(
         LISTP="\n".join(compile_list),
         TARGET_LOC=tar.TARGET_LOC,
         COMPRESSED_NAME=tar.COMPRESSED_NAME,
         SOLVER=tar.SOLC_VER,
-        PRE_HEAD=PRE_HEAD
+        PRE_HEAD=head_section
     )
 
 
@@ -89,7 +90,8 @@ def BuildLang(p: Paths, list_class_names: list) -> None:
         k.append(buildCmdPy(p, v))
         k.append(buildCmdTs(p, v))
         k.append(buildCmdGo(p, v))
-        k.append(moveTsFiles(p, v))
+        if p.WEB_DAPP_SRC is not None:
+            k.append(moveTsFiles(p, v))
     # ==================================================
     with open(p.workspaceFilename("localpile"), 'w') as f:
         f.write(wrapContentTranspile(p, k))

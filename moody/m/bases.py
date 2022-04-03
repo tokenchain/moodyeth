@@ -14,7 +14,6 @@ from .. import Bolors
 
 class Signatures:
     _function_signatures = {}
-    _abi_store = {}
 
     def __init__(self, abi: any):
         for func in [obj for obj in abi if obj['type'] == 'function']:
@@ -25,10 +24,6 @@ class Signatures:
 
     def fromSignatures(self) -> dict:
         return self._function_signatures
-
-    @property
-    def fromAbi(self) -> any:
-        return self._abi_store
 
 
 class Validator:
@@ -54,10 +49,10 @@ class Validator:
         """
 
     def bindSignatures(self, so: Signatures) -> None:
-        self.binding: Signatures = so
+        self._bind_singatures = so
 
     def getSignature(self, sign_name: str) -> str:
-        return self.binding.fromSignatures()[sign_name]
+        return self._bind_singatures.fromSignatures()[sign_name]
 
 
 class ContractMethod:
@@ -133,16 +128,21 @@ class ContractMethod:
 
 
 class ContractBase:
-    SIGNATURES: Signatures
 
-    def __init__(self):
+    def __init__(self, address: str, abi: any):
         self.call_contract_fee_amount: int = 2000000000
         self.call_contract_fee_price: int = 105910000000
         self.call_contract_debug_flag: bool = False
         self.call_contract_enforce_tx_receipt: bool = True
-        self.contract_address = None
-        self.callback_onsuccess = None
-        self.callback_onfail = None
+        self.contract_address = address
+        self._callback_onsuccess = None
+        self._callback_onfail = None
+        self._abi_store = abi
+        self._signatures = None
+
+    @property
+    def fromAbi(self) -> any:
+        return self._abi_store
 
     def CallAutoConf(self, f: MiliDoS) -> "ContractBase":
         self.call_contract_fee_amount = f.gas
@@ -162,13 +162,13 @@ class ContractBase:
         self.call_contract_enforce_tx_receipt = yesno
         return self
 
-    def CallSignatureModel(self) -> Signatures:
-        return self.SIGNATURES
-
     def onSuccssCallback(self, cb: any) -> "ContractBase":
-        self.callback_onsuccess = cb
+        self._callback_onsuccess = cb
         return self
 
     def onFailCallback(self, cb: any) -> "ContractBase":
-        self.callback_onfail = cb
+        self._callback_onfail = cb
         return self
+
+    def CallSignature(self) -> Signatures:
+        return self._signatures

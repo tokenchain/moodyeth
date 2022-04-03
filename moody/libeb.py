@@ -377,15 +377,25 @@ class MiliDoS(IDos):
         self._sol_link = compile_links
         return self
 
-    def setEvm(self, verc: str) -> "MiliDoS":
-        self.EVM_VERSION = verc
+    def setEvm(self, version_evm: str) -> "MiliDoS":
+        """
+        the specify the version of the ethereum virtual machine
+        :param version_evm: the version of the EVM
+        :return:
+        """
+        self.EVM_VERSION = version_evm
         return self
 
-    def setOptimizationRuns(self, b: int) -> "MiliDoS":
-        self._optimizations = b
+    def setOptimizationRuns(self, runs: int) -> "MiliDoS":
+        self._optimizations = runs
         return self
 
     def remoteCompile(self, ver: str) -> "MiliDoS":
+        """
+        all parameters will be inserted automatically according to the previous setup
+        :param ver:
+        :return:
+        """
         if ver == "":
             print("there is no solidity version specified")
             exit(0)
@@ -394,8 +404,13 @@ class MiliDoS(IDos):
         BuildRemoteLinuxCommand(self.pathfinder, self._optimizations, self._sol_list, self._sol_link)
         return self
 
-    def localTranspile(self, dapp_folder: str = "app") -> "MiliDoS":
-        self.pathfinder.updateTargetDappFolder(dapp_folder)
+    def localTranspile(self, dapp_ts_folder: str = None) -> "MiliDoS":
+        """
+        :param dapp_ts_folder: the destination is follow by this path {dapp_ts_folder}/src/api/abi/xxx.ts
+        if this valuable is None then there will not be any copy files to the destination
+        :return: instance of moody
+        """
+        self.pathfinder.updateTargetDappFolder(dapp_ts_folder)
         BuildLang(self.pathfinder, self._sol_list)
         return self
 
@@ -404,7 +419,7 @@ class MiliDoS(IDos):
         to see the block information
         :param block_identifier:
         :param full_transactions:
-        :return:
+        :return: instance of moody
         """
         with w3_lock:
             res = self.w3.eth.getBlock(block_identifier, full_transactions)
