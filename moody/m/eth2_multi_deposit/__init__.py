@@ -46,19 +46,16 @@ except ImportError:
     pass
 
 
-
-
-
-class DepositMethod(ContractMethod): # pylint: disable=invalid-name
+class DepositMethod(ContractMethod):  # pylint: disable=invalid-name
     """Various interfaces to the deposit method."""
 
-    def __init__(self, elib: MiliDoS, contract_address: str, contract_function: ContractFunction, validator: Validator=None):
+    def __init__(self, elib: MiliDoS, contract_address: str, contract_function: ContractFunction, validator: Validator = None):
         """Persist instance data."""
         super().__init__(elib, contract_address, validator)
         self._underlying_method = contract_function
         self.sign = validator.getSignature("deposit")
 
-    def validate_and_normalize_inputs(self, pubkey: List[Union[bytes, str]], withdrawal_credentials: List[Union[bytes, str]], signature: List[Union[bytes, str]], deposit_data_root: List[Union[bytes, str]])->any:
+    def validate_and_normalize_inputs(self, pubkey: List[Union[bytes, str]], withdrawal_credentials: List[Union[bytes, str]], signature: List[Union[bytes, str]], deposit_data_root: List[Union[bytes, str]]) -> any:
         """Validate the inputs to the deposit method."""
         self.validator.assert_valid(
             method_name='deposit',
@@ -82,9 +79,7 @@ class DepositMethod(ContractMethod): # pylint: disable=invalid-name
         )
         return (pubkey, withdrawal_credentials, signature, deposit_data_root)
 
-
-
-    def block_send(self, pubkey: List[Union[bytes, str]], withdrawal_credentials: List[Union[bytes, str]], signature: List[Union[bytes, str]], deposit_data_root: List[Union[bytes, str]],_gaswei:int,_pricewei:int,_valeth:int=0,_debugtx: bool = False,_receipList: bool = False) -> None:
+    def block_send(self, pubkey: List[Union[bytes, str]], withdrawal_credentials: List[Union[bytes, str]], signature: List[Union[bytes, str]], deposit_data_root: List[Union[bytes, str]], _gaswei: int, _pricewei: int, _valeth: int = 0, _debugtx: bool = False, _receipList: bool = False) -> None:
         """Execute underlying contract method via eth_call.
 
         :param tx_params: transaction parameters
@@ -140,7 +135,6 @@ class DepositMethod(ContractMethod): # pylint: disable=invalid-name
             else:
                 print(f"{Bolors.FAIL}Error Revert {Bolors.RESET}, deposit. Reason: Unknown")
 
-
     def send_transaction(self, pubkey: List[Union[bytes, str]], withdrawal_credentials: List[Union[bytes, str]], signature: List[Union[bytes, str]], deposit_data_root: List[Union[bytes, str]], tx_params: Optional[TxParams] = None) -> Union[HexBytes, bytes]:
         """Execute underlying contract method via eth_sendTransaction.
 
@@ -162,15 +156,18 @@ class DepositMethod(ContractMethod): # pylint: disable=invalid-name
         tx_params = super().normalize_tx_params(tx_params)
         return self._underlying_method(pubkey, withdrawal_credentials, signature, deposit_data_root).estimateGas(tx_params.as_dict())
 
+
 class SignatureGenerator(Signatures):
     """
         The signature is generated for this and it is installed.
     """
+
     def __init__(self, abi: any):
         super().__init__(abi)
 
     def deposit(self) -> str:
         return self._function_signatures["deposit"]
+
 
 # pylint: disable=too-many-public-methods,too-many-instance-attributes
 class Eth2MultiDeposit(ContractBase):
@@ -180,13 +177,13 @@ class Eth2MultiDeposit(ContractBase):
     :class:`DepositMethod`.
     """
 
-    SIGNATURES:SignatureGenerator = None
+    SIGNATURES: SignatureGenerator = None
 
     def __init__(
-        self,
-        core_lib: MiliDoS,
-        contract_address: str,
-        validator: Eth2MultiDepositValidator = None,
+            self,
+            core_lib: MiliDoS,
+            contract_address: str,
+            validator: Eth2MultiDepositValidator = None,
     ):
         """Get an instance of wrapper for smart contract.
         """
@@ -198,9 +195,6 @@ class Eth2MultiDeposit(ContractBase):
         if not validator:
             validator = Eth2MultiDepositValidator(web3, contract_address)
 
-
-
-
         # if any middleware was imported, inject it
         try:
             MIDDLEWARE
@@ -210,7 +204,7 @@ class Eth2MultiDeposit(ContractBase):
             try:
                 for middleware in MIDDLEWARE:
                     web3.middleware_onion.inject(
-                         middleware['function'], layer=middleware['layer'],
+                        middleware['function'], layer=middleware['layer'],
                     )
             except ValueError as value_error:
                 if value_error.args == ("You can't add the same un-named instance twice",):
@@ -223,11 +217,7 @@ class Eth2MultiDeposit(ContractBase):
         self.SIGNATURES = signed
         self._fn_deposit = DepositMethod(core_lib, contract_address, functions.deposit, validator)
 
-
-    
-    
-    
-    def deposit(self, pubkey: List[Union[bytes, str]], withdrawal_credentials: List[Union[bytes, str]], signature: List[Union[bytes, str]], deposit_data_root: List[Union[bytes, str]], wei:int=0) -> None:
+    def deposit(self, pubkey: List[Union[bytes, str]], withdrawal_credentials: List[Union[bytes, str]], signature: List[Union[bytes, str]], deposit_data_root: List[Union[bytes, str]], wei: int = 0) -> None:
         """
         Implementation of deposit in contract Eth2MultiDeposit
         Method of the function
@@ -235,17 +225,12 @@ class Eth2MultiDeposit(ContractBase):
     
     
         """
-    
-    
-        return self._fn_deposit.block_send(pubkey, withdrawal_credentials, signature, deposit_data_root, self.call_contract_fee_amount,self.call_contract_fee_price,wei,self.call_contract_debug_flag,self.call_contract_enforce_tx_receipt)
-    
-    
-    
 
-    def CallContractWait(self, t_long:int)-> "Eth2MultiDeposit":
+        return self._fn_deposit.block_send(pubkey, withdrawal_credentials, signature, deposit_data_root, self.call_contract_fee_amount, self.call_contract_fee_price, wei, self.call_contract_debug_flag, self.call_contract_enforce_tx_receipt)
+
+    def CallContractWait(self, t_long: int) -> "Eth2MultiDeposit":
         self._fn_deposit.setWait(t_long)
         return self
-
 
     @staticmethod
     def abi():

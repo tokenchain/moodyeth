@@ -20,14 +20,14 @@ class SkeletonLooper(BaseBulk):
     @
     """
 
-    def __init__(self, mHold: MiliDoS):
-        self.dos = mHold
-        PrintNetworkName(mHold.network_cfg)
+    def __init__(self, _core: MiliDoS):
+        self._c = _core
         super().__init__()
         self.__n = 0
         self.__t = 0
         self.__failures = 0
         self.wait_pause = False
+        PrintNetworkName(_core.network_cfg)
 
     def failureCounts(self) -> int:
         return self.__failures
@@ -61,9 +61,9 @@ class TestBulkManager(SkeletonLooper):
     @
     """
 
-    def __init__(self, dat: list, mHold: MiliDoS):
+    def __init__(self, dat: list, _core: MiliDoS):
         self.datlist = dat
-        super().__init__(mHold)
+        super().__init__(_core)
         self._enableContractBatch()
 
     def prep(self) -> "TestBulkManager":
@@ -99,12 +99,10 @@ class TestBulkManager(SkeletonLooper):
 
 class ExcelFeature(SkeletonLooper):
 
-    def __init__(self, filepath, mHold: MiliDoS):
-        super().__init__(mHold)
+    def __init__(self, filepath, _core: MiliDoS):
+        super().__init__(_core)
         self.exeFilepath = filepath
-        self.kAddress = "address"
-        self.kAmount = "amount"
-        PrintNetworkName(mHold.network_cfg)
+        self.useKeyEng()
 
     def useKeyChinese(self) -> "ExcelFeature":
         self.kAddress = "提现地址"
@@ -119,7 +117,7 @@ class ExcelFeature(SkeletonLooper):
 
 class ExcelBulkManagerContractTunnel(ExcelFeature):
     """
-    using contract on making at least 250 transactions in a batch.
+    using contract on making at least XXX transactions in a batch.
     """
 
     def __init__(self, filepath, m: MiliDoS):
@@ -127,11 +125,23 @@ class ExcelBulkManagerContractTunnel(ExcelFeature):
         self._enableContractBatch()
 
     def failure(self, a: str, b: str) -> None:
+        """
+        custom failure function and recording
+        :param a:
+        :param b:
+        :return:
+        """
         if self._file_logger is not None:
             self._file_logger(f"Batch#{self.__n} {a} {b} Failed. ❌ ")
         self.__failures += 1
 
     def successTransaction(self, hash: str, name: str) -> None:
+        """
+        custom success function and the recording
+        :param hash:
+        :param name:
+        :return:
+        """
         if self._file_logger is not None:
             self._file_logger(f"Batch#{self.__n} {name}-hash: {hash} 📤 ")
 
@@ -140,7 +150,16 @@ class ExcelBulkManagerContractTunnel(ExcelFeature):
             express_contract: BSend,
             coin_contract: pharaohs,
             notify=None, errorNotify=None) -> None:
+        """
 
+
+        :param express_contract:contract instance
+        :param coin_contract: token contract instance
+        :param notify: callback function
+        :param errorNotify: callback function
+
+        """
+        self._status_busy = True
         coin_address = coin_contract.contract_address
         express_address = express_contract.contract_address
         self.__t = len(self._batch)
@@ -161,7 +180,7 @@ class ExcelBulkManagerContractTunnel(ExcelFeature):
                 _amount = batch[1]
 
                 print(f"====== result batch len: {len(batch[0])}, approving: {total_approval}")
-                balance = coin_contract.balance_of(self.dos.accountAddr)
+                balance = coin_contract.balance_of(self._c.accountAddr)
 
                 if balance >= total_approval:
                     coin_contract.EnforceTxReceipt(True)
@@ -196,7 +215,13 @@ class ExcelBulkManagerContractTunnel(ExcelFeature):
                 self._line_error(errorNotify, "⚠️ threads timeout")
                 return
 
+        self._status_busy = False
+
     def prep(self) -> "ExcelBulkManagerContractTunnel":
+        """
+        counting the excel sheet and filter the data
+        :return: This is a chained method
+        """
         self._status_busy = True
         # df = pd.read_excel(r'C:\Users\Ron\Desktop\Product List.xlsx')
         data = pd.read_excel(self.exeFilepath)
@@ -245,6 +270,10 @@ class ExcelBulkManagerClassic(ExcelFeature):
         self._in_process_amount = 0
 
     def prep(self) -> "ExcelBulkManagerClassic":
+        """
+        counting the excel sheet and filter the data
+        :return: This is a chained method
+        """
         self._status_busy = True
         # df = pd.read_excel(r'C:\Users\Ron\Desktop\Product List.xlsx')
         data = pd.read_excel(self.exeFilepath)
@@ -309,15 +338,18 @@ class ExcelBulkManagerClassic(ExcelFeature):
         if self._file_logger is not None:
             self._file_logger(f"#{self.__n} {hash} OK, {self._in_process_address} {self._in_process_amount} 📤 ")
 
-    def executeTokenTransferDistributionTg(self, token: pharaohs, notify=None, errorNotify=None):
+    def executeTokenTransferDistributionTg(self, token: pharaohs, notify=None, errorNotify=None) -> None:
         """
-         limitation: https://core.telegram.org/bots/faq#my-bot-is-hitting-limits-how-do-i-avoid-this
+         Limitation: https://core.telegram.org/bots/faq#my-bot-is-hitting-limits-how-do-i-avoid-this
          When sending messages inside a particular chat, avoid sending more than one message per second. We may allow short bursts that go over this limit, but eventually you'll begin receiving 429 errors.
          If you're sending bulk notifications to multiple users, the API will not allow more than 30 messages per second or so. Consider spreading out notifications over large intervals of 8—12 hours for best results.
          Also note that your bot will not be able to send more than 20 messages per minute to the same group.
 
-         errors from the operation
+         This is a block function and it will take some time to complete
 
+        :param token: token instance
+        :param notify: callback function
+        :param errorNotify: callback function
         """
         self.__n = 0
         self.__t = len(self.list_address)

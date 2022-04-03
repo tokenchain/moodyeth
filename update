@@ -35,20 +35,25 @@ swap_src(){
     cp -R $DEV_SRC $DEPLOY_SRC
   fi
 }
+gen_doc(){
+  sudo rm -rf dist
+  rm -rf docs
+  python3 -m pdoc --html moody
+  mkdir -p docs
 
+  if [[ -d html/moody ]]; then
+    mv html/moody docs/moody
+  fi
+  
+  if [[ -d html ]]; then
+    rm -rf html
+  fi
+}
 pub_ver() {
   VERSION=$(cat version)
   increment_version $VERSION >version
   VERSION=$(cat version)
   
-  swap_src
-
-  sudo rm -rf dist
-  rm -rf docs
-  python3 -m pdoc --html moody
-  mkdir -p docs
-  mv html/moody docs/moody
-  rm html
 
   python3 -m pip install --user --upgrade setuptools wheel
   # python3 -m pip install --upgrade setuptools wheel
@@ -77,5 +82,11 @@ git_update() {
   git push
 }
 
+serv_doc(){
+  ran -r docs/moody -p 8080
+}
+swap_src
+gen_doc
 pub_ver
 git_update
+#serv_doc

@@ -59,22 +59,34 @@ class BaseBulk:
         self._batch = []
         self._batches_count = 0
 
-    def _enableContractBatch(self):
+    def _enableContractBatch(self) -> None:
+        """
+        internal use only
+        """
         self._batch_contract = True
 
-    def _newBatchSlots(self):
+    def _newBatchSlots(self) -> None:
+        """
+        internal use only
+        """
         self._batch = []
 
     def weiUpdate(self, decimal: int) -> "BaseBulk":
         """
+        This is a chain method
         only update this for the change wei size of the native token.
         :param decimal: the size of wei decimal in native token
-        :return:
+        :return: This is a chain method
         """
         self.wei = 10 ** decimal
         return self
 
     def batchLimitUpdate(self, total_count: int) -> "BaseBulk":
+        """
+        This is a chain method
+        :param total_count: total count of the batch limit for contract transfer only
+        :return: This is a chain method
+        """
         self.batch_limit = total_count
 
         if total_count > 255:
@@ -87,25 +99,37 @@ class BaseBulk:
         return self
 
     def symbolUpdate(self, coin_symbol: str) -> "BaseBulk":
+        """
+        This is a chain method
+        :param coin_symbol: the symbol of the token
+        :return: This is a chain method
+        """
         self.token_symbol = coin_symbol
         return self
 
     def withDecimal(self, dec: int) -> "BaseBulk":
         """
+        This is a chain method
         the size of the token decimal
         :param dec: number of decimal
-        :return:
+        :return: This is a chain method
         """
         self.decimal = dec
         return self
 
     def setPerTransactionFee(self, fee: float) -> "BaseBulk":
+        """
+        This is a chain method
+        projection of the estimation fee
+        :param fee: cost for each transfer
+        :return: This is a chain method
+        """
         self.fee_set = fee
         return self
 
     @property
     def getGasFeeCode(self) -> int:
-        return int(self._gas_fee * BaseBulk.wei)
+        return int(self._gas_fee * self.wei)
 
     @property
     def CountAllValidTrans(self) -> int:
@@ -131,18 +155,30 @@ class BaseBulk:
         pass
 
     def getPlatformVal(self) -> int:
-        return int(self.total / BaseBulk.wei)
+        """
+        the cover the number into the digit
+        :return:
+        """
+        return int(self.total / self.wei)
 
     def getSENDTotal(self) -> int:
+        """
+        the estimated validated grant sum for transfer
+        :return: the amount of token
+        """
         return self.total
 
     def getPlatformErrVal(self) -> int:
-        return int(self.err_total / BaseBulk.wei)
-
-    def entryAdd(self, address: str, amount: int):
         """
-        adding the validate transaction count and
-        the balance of total transaction
+        Get the total error amount
+        :return: in sum
+        """
+        return int(self.err_total / self.wei)
+
+    def entryAdd(self, address: str, amount: int) -> None:
+        """
+        Only adding the validated transaction receiver address and
+        the amount of token in code
         """
 
         self.list_address.append(address)
@@ -150,13 +186,13 @@ class BaseBulk:
         self.total += int(amount)
         self.transaction_count = self.transaction_count + 1
 
-    def entryErrAdd(self, address: str, amount: int):
+    def entryErrAdd(self, address: str, amount: int) -> None:
         self.err_address.append(address)
         self.err_amount.append(amount)
         self.err_total += int(amount)
 
     def calculation(self) -> float:
-        return int(self.total / BaseBulk.wei)
+        return int(self.total / self.wei)
 
     def _error_too_many(self) -> bool:
         return len(self.err_address) > 50
@@ -301,44 +337,3 @@ class BaseBulk:
 
     def setProgramUseOnly(self):
         self._program_override = True
-
-
-class LooperBulk(BaseBulk):
-    """
-    Bulk manager execution now
-    @
-    """
-
-    def __init__(self, mHold: MiliDoS):
-        self.dos = mHold
-        PrintNetworkName(mHold.network_cfg)
-        super().__init__()
-        self.__n = 0
-        self.__t = 0
-        self.__failures = 0
-        self.wait_pause = False
-
-    def failureCounts(self) -> int:
-        return self.__failures
-
-    def ActivateWaitPause(self):
-        self.wait_pause = True
-
-    def _line_progress(self, notify=None) -> None:
-        if notify is None:
-            return
-        else:
-            perc = "{0:.0f}%".format(self.__n / self.__t * 100)
-            notify(self.__n, self.__t, perc)
-
-    def _line_error(self, errorNotify=None, info: str = "") -> None:
-        if errorNotify is None:
-            print(f"======{info}")
-        else:
-            errorNotify(info)
-
-    def failure(self, a: str, b: str) -> None:
-        pass
-
-    def successTransaction(self, hash: str, name: str) -> None:
-        pass

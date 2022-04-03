@@ -46,19 +46,16 @@ except ImportError:
     pass
 
 
-
-
-
-class GetBlockhashMethod(ContractMethod): # pylint: disable=invalid-name
+class GetBlockhashMethod(ContractMethod):  # pylint: disable=invalid-name
     """Various interfaces to the getBlockhash method."""
 
-    def __init__(self, elib: MiliDoS, contract_address: str, contract_function: ContractFunction, validator: Validator=None):
+    def __init__(self, elib: MiliDoS, contract_address: str, contract_function: ContractFunction, validator: Validator = None):
         """Persist instance data."""
         super().__init__(elib, contract_address, validator)
         self._underlying_method = contract_function
         self.sign = validator.getSignature("getBlockhash")
 
-    def validate_and_normalize_inputs(self, n: int)->any:
+    def validate_and_normalize_inputs(self, n: int) -> any:
         """Validate the inputs to the getBlockhash method."""
         self.validator.assert_valid(
             method_name='getBlockhash',
@@ -69,15 +66,14 @@ class GetBlockhashMethod(ContractMethod): # pylint: disable=invalid-name
         n = int(n)
         return (n)
 
-
-
-    def block_call(self,n: int, debug:bool=False) -> Union[bytes, str]:
+    def block_call(self, n: int, debug: bool = False) -> Union[bytes, str]:
         _fn = self._underlying_method(n)
         returned = _fn.call({
-                'from': self._operate
-            })
+            'from': self._operate
+        })
         return Union[bytes, str](returned)
-    def block_send(self, n: int,_gaswei:int,_pricewei:int,_valeth:int=0,_debugtx: bool = False,_receipList: bool = False) -> Union[bytes, str]:
+
+    def block_send(self, n: int, _gaswei: int, _pricewei: int, _valeth: int = 0, _debugtx: bool = False, _receipList: bool = False) -> Union[bytes, str]:
         """Execute underlying contract method via eth_call.
 
         :param tx_params: transaction parameters
@@ -133,7 +129,6 @@ class GetBlockhashMethod(ContractMethod): # pylint: disable=invalid-name
             else:
                 print(f"{Bolors.FAIL}Error Revert {Bolors.RESET}: set_asset_token")
 
-
     def send_transaction(self, n: int, tx_params: Optional[TxParams] = None) -> Union[HexBytes, bytes]:
         """Execute underlying contract method via eth_sendTransaction.
 
@@ -155,16 +150,17 @@ class GetBlockhashMethod(ContractMethod): # pylint: disable=invalid-name
         tx_params = super().normalize_tx_params(tx_params)
         return self._underlying_method(n).estimateGas(tx_params.as_dict())
 
-class StoreMethod(ContractMethod): # pylint: disable=invalid-name
+
+class StoreMethod(ContractMethod):  # pylint: disable=invalid-name
     """Various interfaces to the store method."""
 
-    def __init__(self, elib: MiliDoS, contract_address: str, contract_function: ContractFunction, validator: Validator=None):
+    def __init__(self, elib: MiliDoS, contract_address: str, contract_function: ContractFunction, validator: Validator = None):
         """Persist instance data."""
         super().__init__(elib, contract_address, validator)
         self._underlying_method = contract_function
         self.sign = validator.getSignature("store")
 
-    def validate_and_normalize_inputs(self, n: int)->any:
+    def validate_and_normalize_inputs(self, n: int) -> any:
         """Validate the inputs to the store method."""
         self.validator.assert_valid(
             method_name='store',
@@ -175,9 +171,7 @@ class StoreMethod(ContractMethod): # pylint: disable=invalid-name
         n = int(n)
         return (n)
 
-
-
-    def block_send(self, n: int,_gaswei:int,_pricewei:int,_valeth:int=0,_debugtx: bool = False,_receipList: bool = False) -> None:
+    def block_send(self, n: int, _gaswei: int, _pricewei: int, _valeth: int = 0, _debugtx: bool = False, _receipList: bool = False) -> None:
         """Execute underlying contract method via eth_call.
 
         :param tx_params: transaction parameters
@@ -233,7 +227,6 @@ class StoreMethod(ContractMethod): # pylint: disable=invalid-name
             else:
                 print(f"{Bolors.FAIL}Error Revert {Bolors.RESET}: set_asset_token")
 
-
     def send_transaction(self, n: int, tx_params: Optional[TxParams] = None) -> Union[HexBytes, bytes]:
         """Execute underlying contract method via eth_sendTransaction.
 
@@ -255,18 +248,17 @@ class StoreMethod(ContractMethod): # pylint: disable=invalid-name
         tx_params = super().normalize_tx_params(tx_params)
         return self._underlying_method(n).estimateGas(tx_params.as_dict())
 
-class StoreEarliestMethod(ContractMethod): # pylint: disable=invalid-name
+
+class StoreEarliestMethod(ContractMethod):  # pylint: disable=invalid-name
     """Various interfaces to the storeEarliest method."""
 
-    def __init__(self, elib: MiliDoS, contract_address: str, contract_function: ContractFunction, validator: Validator=None):
+    def __init__(self, elib: MiliDoS, contract_address: str, contract_function: ContractFunction, validator: Validator = None):
         """Persist instance data."""
         super().__init__(elib, contract_address)
         self._underlying_method = contract_function
         self.sign = validator.getSignature("storeEarliest")
 
-
-
-    def block_send(self, _gaswei:int,_pricewei:int,_valeth:int=0,_debugtx: bool = False,_receipList: bool = False) -> None:
+    def block_send(self, _gaswei: int, _pricewei: int, _valeth: int = 0, _debugtx: bool = False, _receipList: bool = False) -> None:
         """Execute underlying contract method via eth_call.
 
         :param tx_params: transaction parameters
@@ -322,7 +314,6 @@ class StoreEarliestMethod(ContractMethod): # pylint: disable=invalid-name
             else:
                 print(f"{Bolors.FAIL}Error Revert {Bolors.RESET}: set_asset_token")
 
-
     def send_transaction(self, tx_params: Optional[TxParams] = None) -> Union[HexBytes, bytes]:
         """Execute underlying contract method via eth_sendTransaction.
 
@@ -341,16 +332,17 @@ class StoreEarliestMethod(ContractMethod): # pylint: disable=invalid-name
         tx_params = super().normalize_tx_params(tx_params)
         return self._underlying_method().estimateGas(tx_params.as_dict())
 
-class StoreVerifyHeaderMethod(ContractMethod): # pylint: disable=invalid-name
+
+class StoreVerifyHeaderMethod(ContractMethod):  # pylint: disable=invalid-name
     """Various interfaces to the storeVerifyHeader method."""
 
-    def __init__(self, elib: MiliDoS, contract_address: str, contract_function: ContractFunction, validator: Validator=None):
+    def __init__(self, elib: MiliDoS, contract_address: str, contract_function: ContractFunction, validator: Validator = None):
         """Persist instance data."""
         super().__init__(elib, contract_address, validator)
         self._underlying_method = contract_function
         self.sign = validator.getSignature("storeVerifyHeader")
 
-    def validate_and_normalize_inputs(self, n: int, header: Union[bytes, str])->any:
+    def validate_and_normalize_inputs(self, n: int, header: Union[bytes, str]) -> any:
         """Validate the inputs to the storeVerifyHeader method."""
         self.validator.assert_valid(
             method_name='storeVerifyHeader',
@@ -366,9 +358,7 @@ class StoreVerifyHeaderMethod(ContractMethod): # pylint: disable=invalid-name
         )
         return (n, header)
 
-
-
-    def block_send(self, n: int, header: Union[bytes, str],_gaswei:int,_pricewei:int,_valeth:int=0,_debugtx: bool = False,_receipList: bool = False) -> None:
+    def block_send(self, n: int, header: Union[bytes, str], _gaswei: int, _pricewei: int, _valeth: int = 0, _debugtx: bool = False, _receipList: bool = False) -> None:
         """Execute underlying contract method via eth_call.
 
         :param tx_params: transaction parameters
@@ -424,7 +414,6 @@ class StoreVerifyHeaderMethod(ContractMethod): # pylint: disable=invalid-name
             else:
                 print(f"{Bolors.FAIL}Error Revert {Bolors.RESET}: set_asset_token")
 
-
     def send_transaction(self, n: int, header: Union[bytes, str], tx_params: Optional[TxParams] = None) -> Union[HexBytes, bytes]:
         """Execute underlying contract method via eth_sendTransaction.
 
@@ -446,21 +435,27 @@ class StoreVerifyHeaderMethod(ContractMethod): # pylint: disable=invalid-name
         tx_params = super().normalize_tx_params(tx_params)
         return self._underlying_method(n, header).estimateGas(tx_params.as_dict())
 
+
 class SignatureGenerator(Signatures):
     """
         The signature is generated for this and it is installed.
     """
+
     def __init__(self, abi: any):
         super().__init__(abi)
 
     def get_blockhash(self) -> str:
         return self._function_signatures["getBlockhash"]
+
     def store(self) -> str:
         return self._function_signatures["store"]
+
     def store_earliest(self) -> str:
         return self._function_signatures["storeEarliest"]
+
     def store_verify_header(self) -> str:
         return self._function_signatures["storeVerifyHeader"]
+
 
 # pylint: disable=too-many-public-methods,too-many-instance-attributes
 class BlockhashStore(ContractBase):
@@ -489,13 +484,13 @@ class BlockhashStore(ContractBase):
     :class:`StoreVerifyHeaderMethod`.
     """
 
-    SIGNATURES:SignatureGenerator = None
+    SIGNATURES: SignatureGenerator = None
 
     def __init__(
-        self,
-        core_lib: MiliDoS,
-        contract_address: str,
-        validator: BlockhashStoreValidator = None,
+            self,
+            core_lib: MiliDoS,
+            contract_address: str,
+            validator: BlockhashStoreValidator = None,
     ):
         """Get an instance of wrapper for smart contract.
         """
@@ -507,9 +502,6 @@ class BlockhashStore(ContractBase):
         if not validator:
             validator = BlockhashStoreValidator(web3, contract_address)
 
-
-
-
         # if any middleware was imported, inject it
         try:
             MIDDLEWARE
@@ -519,7 +511,7 @@ class BlockhashStore(ContractBase):
             try:
                 for middleware in MIDDLEWARE:
                     web3.middleware_onion.inject(
-                         middleware['function'], layer=middleware['layer'],
+                        middleware['function'], layer=middleware['layer'],
                     )
             except ValueError as value_error:
                 if value_error.args == ("You can't add the same un-named instance twice",):
@@ -535,10 +527,6 @@ class BlockhashStore(ContractBase):
         self._fn_store_earliest = StoreEarliestMethod(core_lib, contract_address, functions.storeEarliest, validator)
         self._fn_store_verify_header = StoreVerifyHeaderMethod(core_lib, contract_address, functions.storeVerifyHeader, validator)
 
-
-    
-    
-    
     def get_blockhash(self, n: int) -> Union[bytes, str]:
         """
         Implementation of get_blockhash in contract BlockhashStore
@@ -547,15 +535,9 @@ class BlockhashStore(ContractBase):
     
     
         """
-    
-    
-    
-    
-    
+
         return self._fn_get_blockhash.block_call(n)
-    
-    
-    
+
     def store(self, n: int) -> None:
         """
         Implementation of store in contract BlockhashStore
@@ -564,15 +546,9 @@ class BlockhashStore(ContractBase):
     
     
         """
-    
-        return self._fn_store.block_send(n, self.call_contract_fee_amount,self.call_contract_fee_price,0,self.call_contract_debug_flag, self.call_contract_enforce_tx_receipt)
-    
-    
-    
-    
-    
-    
-    
+
+        return self._fn_store.block_send(n, self.call_contract_fee_amount, self.call_contract_fee_price, 0, self.call_contract_debug_flag, self.call_contract_enforce_tx_receipt)
+
     def store_earliest(self) -> None:
         """
         Implementation of store_earliest in contract BlockhashStore
@@ -581,15 +557,9 @@ class BlockhashStore(ContractBase):
     
     
         """
-    
-        return self._fn_store_earliest.block_send(self.call_contract_fee_amount,self.call_contract_fee_price,0,self.call_contract_debug_flag, self.call_contract_enforce_tx_receipt)
-    
-    
-    
-    
-    
-    
-    
+
+        return self._fn_store_earliest.block_send(self.call_contract_fee_amount, self.call_contract_fee_price, 0, self.call_contract_debug_flag, self.call_contract_enforce_tx_receipt)
+
     def store_verify_header(self, n: int, header: Union[bytes, str]) -> None:
         """
         Implementation of store_verify_header in contract BlockhashStore
@@ -598,20 +568,15 @@ class BlockhashStore(ContractBase):
     
     
         """
-    
-        return self._fn_store_verify_header.block_send(n, header, self.call_contract_fee_amount,self.call_contract_fee_price,0,self.call_contract_debug_flag, self.call_contract_enforce_tx_receipt)
-    
-    
-    
-    
 
-    def CallContractWait(self, t_long:int)-> "BlockhashStore":
+        return self._fn_store_verify_header.block_send(n, header, self.call_contract_fee_amount, self.call_contract_fee_price, 0, self.call_contract_debug_flag, self.call_contract_enforce_tx_receipt)
+
+    def CallContractWait(self, t_long: int) -> "BlockhashStore":
         self._fn_get_blockhash.setWait(t_long)
         self._fn_store.setWait(t_long)
         self._fn_store_earliest.setWait(t_long)
         self._fn_store_verify_header.setWait(t_long)
         return self
-
 
     @staticmethod
     def abi():
