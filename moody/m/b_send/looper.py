@@ -48,6 +48,10 @@ class SkeletonLooper(BaseBulk):
         else:
             errorNotify(info)
 
+    def addN(self) -> int:
+        self.__n += 1
+        return self.__n
+
     def failure(self, a: str, b: str) -> None:
         pass
 
@@ -196,7 +200,7 @@ class ExcelBulkManagerContractTunnel(ExcelFeature):
                     coin_address, _address, _amount, 0
                 )
 
-                self.__n += 1
+                self.addN()
                 self._line_progress(notify)
 
                 if batch_size == self.batch_limit and self.wait_pause:
@@ -370,7 +374,7 @@ class ExcelBulkManagerClassic(ExcelFeature):
                 report_amount = self.list_amount[self.__n]
                 self._in_process_amount = report_amount
                 token.transfer(address, report_amount)
-                self.__n += 1
+                self.addN()
                 _dela = self.nowSec
                 if notify is not None:
                     if _dela > _timestamp + 5 or self.__n >= self.__t:

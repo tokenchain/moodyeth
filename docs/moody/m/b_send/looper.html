@@ -76,6 +76,10 @@ class SkeletonLooper(BaseBulk):
         else:
             errorNotify(info)
 
+    def addN(self) -&gt; int:
+        self.__n += 1
+        return self.__n
+
     def failure(self, a: str, b: str) -&gt; None:
         pass
 
@@ -224,7 +228,7 @@ class ExcelBulkManagerContractTunnel(ExcelFeature):
                     coin_address, _address, _amount, 0
                 )
 
-                self.__n += 1
+                self.addN()
                 self._line_progress(notify)
 
                 if batch_size == self.batch_limit and self.wait_pause:
@@ -398,7 +402,7 @@ class ExcelBulkManagerClassic(ExcelFeature):
                 report_amount = self.list_amount[self.__n]
                 self._in_process_amount = report_amount
                 token.transfer(address, report_amount)
-                self.__n += 1
+                self.addN()
                 _dela = self.nowSec
                 if notify is not None:
                     if _dela &gt; _timestamp + 5 or self.__n &gt;= self.__t:
@@ -544,7 +548,7 @@ class ExcelBulkManagerClassic(ExcelFeature):
                 report_amount = self.list_amount[self.__n]
                 self._in_process_amount = report_amount
                 token.transfer(address, report_amount)
-                self.__n += 1
+                self.addN()
                 _dela = self.nowSec
                 if notify is not None:
                     if _dela &gt; _timestamp + 5 or self.__n &gt;= self.__t:
@@ -645,7 +649,7 @@ Also note that your bot will not be able to send more than 20 messages per minut
             report_amount = self.list_amount[self.__n]
             self._in_process_amount = report_amount
             token.transfer(address, report_amount)
-            self.__n += 1
+            self.addN()
             _dela = self.nowSec
             if notify is not None:
                 if _dela &gt; _timestamp + 5 or self.__n &gt;= self.__t:
@@ -867,7 +871,7 @@ Also note that your bot will not be able to send more than 20 messages per minut
                     coin_address, _address, _amount, 0
                 )
 
-                self.__n += 1
+                self.addN()
                 self._line_progress(notify)
 
                 if batch_size == self.batch_limit and self.wait_pause:
@@ -1000,7 +1004,7 @@ Also note that your bot will not be able to send more than 20 messages per minut
                 coin_address, _address, _amount, 0
             )
 
-            self.__n += 1
+            self.addN()
             self._line_progress(notify)
 
             if batch_size == self.batch_limit and self.wait_pause:
@@ -1286,6 +1290,10 @@ Also note that your bot will not be able to send more than 20 messages per minut
         else:
             errorNotify(info)
 
+    def addN(self) -&gt; int:
+        self.__n += 1
+        return self.__n
+
     def failure(self, a: str, b: str) -&gt; None:
         pass
 
@@ -1314,6 +1322,20 @@ Also note that your bot will not be able to send more than 20 messages per minut
 </summary>
 <pre><code class="python">def ActivateWaitPause(self):
     self.wait_pause = True</code></pre>
+</details>
+</dd>
+<dt id="moody.m.b_send.looper.SkeletonLooper.addN"><code class="name flex">
+<span>def <span class="ident">addN</span></span>(<span>self) ‑> int</span>
+</code></dt>
+<dd>
+<div class="desc"></div>
+<details class="source">
+<summary>
+<span>Expand source code</span>
+</summary>
+<pre><code class="python">def addN(self) -&gt; int:
+    self.__n += 1
+    return self.__n</code></pre>
 </details>
 </dd>
 <dt id="moody.m.b_send.looper.SkeletonLooper.failure"><code class="name flex">
@@ -1569,6 +1591,7 @@ Also note that your bot will not be able to send more than 20 messages per minut
 <h4><code><a title="moody.m.b_send.looper.SkeletonLooper" href="#moody.m.b_send.looper.SkeletonLooper">SkeletonLooper</a></code></h4>
 <ul class="">
 <li><code><a title="moody.m.b_send.looper.SkeletonLooper.ActivateWaitPause" href="#moody.m.b_send.looper.SkeletonLooper.ActivateWaitPause">ActivateWaitPause</a></code></li>
+<li><code><a title="moody.m.b_send.looper.SkeletonLooper.addN" href="#moody.m.b_send.looper.SkeletonLooper.addN">addN</a></code></li>
 <li><code><a title="moody.m.b_send.looper.SkeletonLooper.failure" href="#moody.m.b_send.looper.SkeletonLooper.failure">failure</a></code></li>
 <li><code><a title="moody.m.b_send.looper.SkeletonLooper.failureCounts" href="#moody.m.b_send.looper.SkeletonLooper.failureCounts">failureCounts</a></code></li>
 <li><code><a title="moody.m.b_send.looper.SkeletonLooper.successTransaction" href="#moody.m.b_send.looper.SkeletonLooper.successTransaction">successTransaction</a></code></li>
