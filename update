@@ -85,8 +85,8 @@ git_update() {
 serv_doc(){
   ran -r docs/moody -p 8080
 }
-swap_src
-gen_doc
+#swap_src
+#gen_doc
 #pub_ver
 git_update
 #serv_doc
