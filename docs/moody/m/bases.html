@@ -271,9 +271,11 @@ class ContractBase:
 <h3>Subclasses</h3>
 <ul class="hlist">
 <li><a title="moody.m.b_send.BSend" href="b_send/index.html#moody.m.b_send.BSend">BSend</a></li>
+<li><a title="moody.m.b_send2.BSend2" href="b_send2/index.html#moody.m.b_send2.BSend2">BSend2</a></li>
 <li><a title="moody.m.beri_coin.BeriCoin" href="beri_coin/index.html#moody.m.beri_coin.BeriCoin">BeriCoin</a></li>
 <li><a title="moody.m.blockhash_store.BlockhashStore" href="blockhash_store/index.html#moody.m.blockhash_store.BlockhashStore">BlockhashStore</a></li>
 <li><a title="moody.m.c_token.CToken" href="c_token/index.html#moody.m.c_token.CToken">CToken</a></li>
+<li><a title="moody.m.deposit_contract.DepositContract" href="deposit_contract/index.html#moody.m.deposit_contract.DepositContract">DepositContract</a></li>
 <li><a title="moody.m.eth2_multi_deposit.Eth2MultiDeposit" href="eth2_multi_deposit/index.html#moody.m.eth2_multi_deposit.Eth2MultiDeposit">Eth2MultiDeposit</a></li>
 <li><a title="moody.m.layer_zero_u_s_d_t.LayerZeroUSDT" href="layer_zero_u_s_d_t/index.html#moody.m.layer_zero_u_s_d_t.LayerZeroUSDT">LayerZeroUSDT</a></li>
 <li><a title="moody.m.multicall.Multicall" href="multicall/index.html#moody.m.multicall.Multicall">Multicall</a></li>
@@ -282,11 +284,6 @@ class ContractBase:
 <li><a title="moody.m.pharaohs.pharaohs" href="pharaohs/index.html#moody.m.pharaohs.pharaohs">pharaohs</a></li>
 <li><a title="moody.m.tc20.Tc20" href="tc20/index.html#moody.m.tc20.Tc20">Tc20</a></li>
 <li><a title="moody.m.tether_token2.TetherToken2" href="tether_token2/index.html#moody.m.tether_token2.TetherToken2">TetherToken2</a></li>
-<li><a title="moody.m.uniswap_v2_erc20.UniswapV2ERC20" href="uniswap_v2_erc20/index.html#moody.m.uniswap_v2_erc20.UniswapV2ERC20">UniswapV2ERC20</a></li>
-<li><a title="moody.m.uniswap_v2_factory.UniswapV2Factory" href="uniswap_v2_factory/index.html#moody.m.uniswap_v2_factory.UniswapV2Factory">UniswapV2Factory</a></li>
-<li><a title="moody.m.uniswap_v2_router02.UniswapV2Router02" href="uniswap_v2_router02/index.html#moody.m.uniswap_v2_router02.UniswapV2Router02">UniswapV2Router02</a></li>
-<li><a title="moody.m.v_r_f_consumer.VRFConsumer" href="v_r_f_consumer/index.html#moody.m.v_r_f_consumer.VRFConsumer">VRFConsumer</a></li>
-<li><a title="moody.m.v_r_f_coordinator.VRFCoordinator" href="v_r_f_coordinator/index.html#moody.m.v_r_f_coordinator.VRFCoordinator">VRFCoordinator</a></li>
 <li><a title="moody.upgrades.Timelock6h" href="../upgrades/index.html#moody.upgrades.Timelock6h">Timelock6h</a></li>
 </ul>
 <h3>Instance variables</h3>
@@ -508,6 +505,43 @@ def fromAbi(self) -&gt; any:
 <li><a title="moody.m.b_send.TokenSendFeeMethod" href="b_send/index.html#moody.m.b_send.TokenSendFeeMethod">TokenSendFeeMethod</a></li>
 <li><a title="moody.m.b_send.WithdrawEtherMethod" href="b_send/index.html#moody.m.b_send.WithdrawEtherMethod">WithdrawEtherMethod</a></li>
 <li><a title="moody.m.b_send.WithdrawTokenMethod" href="b_send/index.html#moody.m.b_send.WithdrawTokenMethod">WithdrawTokenMethod</a></li>
+<li><a title="moody.m.b_send2.AddGovernorMethod" href="b_send2/index.html#moody.m.b_send2.AddGovernorMethod">AddGovernorMethod</a></li>
+<li><a title="moody.m.b_send2.AddWhitelistAdminMethod" href="b_send2/index.html#moody.m.b_send2.AddWhitelistAdminMethod">AddWhitelistAdminMethod</a></li>
+<li><a title="moody.m.b_send2.BulkSendNativeMethod" href="b_send2/index.html#moody.m.b_send2.BulkSendNativeMethod">BulkSendNativeMethod</a></li>
+<li><a title="moody.m.b_send2.BulkSendTokenMethod" href="b_send2/index.html#moody.m.b_send2.BulkSendTokenMethod">BulkSendTokenMethod</a></li>
+<li><a title="moody.m.b_send2.DefaultAdminRoleMethod" href="b_send2/index.html#moody.m.b_send2.DefaultAdminRoleMethod">DefaultAdminRoleMethod</a></li>
+<li><a title="moody.m.b_send2.DepositMethod" href="b_send2/index.html#moody.m.b_send2.DepositMethod">DepositMethod</a></li>
+<li><a title="moody.m.b_send2.EthSendFeeMethod" href="b_send2/index.html#moody.m.b_send2.EthSendFeeMethod">EthSendFeeMethod</a></li>
+<li><a title="moody.m.b_send2.ExpressTransferMethod" href="b_send2/index.html#moody.m.b_send2.ExpressTransferMethod">ExpressTransferMethod</a></li>
+<li><a title="moody.m.b_send2.GetBalanceMethod" href="b_send2/index.html#moody.m.b_send2.GetBalanceMethod">GetBalanceMethod</a></li>
+<li><a title="moody.m.b_send2.GetRoleAdminMethod" href="b_send2/index.html#moody.m.b_send2.GetRoleAdminMethod">GetRoleAdminMethod</a></li>
+<li><a title="moody.m.b_send2.GetRoleMemberCountMethod" href="b_send2/index.html#moody.m.b_send2.GetRoleMemberCountMethod">GetRoleMemberCountMethod</a></li>
+<li><a title="moody.m.b_send2.GetRoleMemberMethod" href="b_send2/index.html#moody.m.b_send2.GetRoleMemberMethod">GetRoleMemberMethod</a></li>
+<li><a title="moody.m.b_send2.GovernorMethod" href="b_send2/index.html#moody.m.b_send2.GovernorMethod">GovernorMethod</a></li>
+<li><a title="moody.m.b_send2.GrantRoleMethod" href="b_send2/index.html#moody.m.b_send2.GrantRoleMethod">GrantRoleMethod</a></li>
+<li><a title="moody.m.b_send2.HasRoleMethod" href="b_send2/index.html#moody.m.b_send2.HasRoleMethod">HasRoleMethod</a></li>
+<li><a title="moody.m.b_send2.IsGovernorMethod" href="b_send2/index.html#moody.m.b_send2.IsGovernorMethod">IsGovernorMethod</a></li>
+<li><a title="moody.m.b_send2.IsLockedMethod" href="b_send2/index.html#moody.m.b_send2.IsLockedMethod">IsLockedMethod</a></li>
+<li><a title="moody.m.b_send2.IsOwnerMethod" href="b_send2/index.html#moody.m.b_send2.IsOwnerMethod">IsOwnerMethod</a></li>
+<li><a title="moody.m.b_send2.IsPausedMethod" href="b_send2/index.html#moody.m.b_send2.IsPausedMethod">IsPausedMethod</a></li>
+<li><a title="moody.m.b_send2.IsWhitelistAdminMethod" href="b_send2/index.html#moody.m.b_send2.IsWhitelistAdminMethod">IsWhitelistAdminMethod</a></li>
+<li><a title="moody.m.b_send2.LockMethod" href="b_send2/index.html#moody.m.b_send2.LockMethod">LockMethod</a></li>
+<li><a title="moody.m.b_send2.OwnerMethod" href="b_send2/index.html#moody.m.b_send2.OwnerMethod">OwnerMethod</a></li>
+<li><a title="moody.m.b_send2.PauseScMethod" href="b_send2/index.html#moody.m.b_send2.PauseScMethod">PauseScMethod</a></li>
+<li><a title="moody.m.b_send2.RemoveGovernorMethod" href="b_send2/index.html#moody.m.b_send2.RemoveGovernorMethod">RemoveGovernorMethod</a></li>
+<li><a title="moody.m.b_send2.RemoveWhitelistAdminMethod" href="b_send2/index.html#moody.m.b_send2.RemoveWhitelistAdminMethod">RemoveWhitelistAdminMethod</a></li>
+<li><a title="moody.m.b_send2.RenounceOwnershipMethod" href="b_send2/index.html#moody.m.b_send2.RenounceOwnershipMethod">RenounceOwnershipMethod</a></li>
+<li><a title="moody.m.b_send2.RenounceRoleMethod" href="b_send2/index.html#moody.m.b_send2.RenounceRoleMethod">RenounceRoleMethod</a></li>
+<li><a title="moody.m.b_send2.RevokeRoleMethod" href="b_send2/index.html#moody.m.b_send2.RevokeRoleMethod">RevokeRoleMethod</a></li>
+<li><a title="moody.m.b_send2.SetEthFeeMethod" href="b_send2/index.html#moody.m.b_send2.SetEthFeeMethod">SetEthFeeMethod</a></li>
+<li><a title="moody.m.b_send2.SetTokenFeeMethod" href="b_send2/index.html#moody.m.b_send2.SetTokenFeeMethod">SetTokenFeeMethod</a></li>
+<li><a title="moody.m.b_send2.TokenSendFeeMethod" href="b_send2/index.html#moody.m.b_send2.TokenSendFeeMethod">TokenSendFeeMethod</a></li>
+<li><a title="moody.m.b_send2.TransferOwnershipMethod" href="b_send2/index.html#moody.m.b_send2.TransferOwnershipMethod">TransferOwnershipMethod</a></li>
+<li><a title="moody.m.b_send2.UnlockMethod" href="b_send2/index.html#moody.m.b_send2.UnlockMethod">UnlockMethod</a></li>
+<li><a title="moody.m.b_send2.UnpauseScMethod" href="b_send2/index.html#moody.m.b_send2.UnpauseScMethod">UnpauseScMethod</a></li>
+<li><a title="moody.m.b_send2.WhitelistAdminsMethod" href="b_send2/index.html#moody.m.b_send2.WhitelistAdminsMethod">WhitelistAdminsMethod</a></li>
+<li><a title="moody.m.b_send2.WithdrawEtherMethod" href="b_send2/index.html#moody.m.b_send2.WithdrawEtherMethod">WithdrawEtherMethod</a></li>
+<li><a title="moody.m.b_send2.WithdrawTokenMethod" href="b_send2/index.html#moody.m.b_send2.WithdrawTokenMethod">WithdrawTokenMethod</a></li>
 <li><a title="moody.m.beri_coin.AddAdminMethod" href="beri_coin/index.html#moody.m.beri_coin.AddAdminMethod">AddAdminMethod</a></li>
 <li><a title="moody.m.beri_coin.AdminRoleMethod" href="beri_coin/index.html#moody.m.beri_coin.AdminRoleMethod">AdminRoleMethod</a></li>
 <li><a title="moody.m.beri_coin.AllowanceMethod" href="beri_coin/index.html#moody.m.beri_coin.AllowanceMethod">AllowanceMethod</a></li>
@@ -589,6 +623,10 @@ def fromAbi(self) -&gt; any:
 <li><a title="moody.m.c_token.TotalSupplyMethod" href="c_token/index.html#moody.m.c_token.TotalSupplyMethod">TotalSupplyMethod</a></li>
 <li><a title="moody.m.c_token.TransferFromMethod" href="c_token/index.html#moody.m.c_token.TransferFromMethod">TransferFromMethod</a></li>
 <li><a title="moody.m.c_token.TransferMethod" href="c_token/index.html#moody.m.c_token.TransferMethod">TransferMethod</a></li>
+<li><a title="moody.m.deposit_contract.DepositMethod" href="deposit_contract/index.html#moody.m.deposit_contract.DepositMethod">DepositMethod</a></li>
+<li><a title="moody.m.deposit_contract.GetDepositCountMethod" href="deposit_contract/index.html#moody.m.deposit_contract.GetDepositCountMethod">GetDepositCountMethod</a></li>
+<li><a title="moody.m.deposit_contract.GetDepositRootMethod" href="deposit_contract/index.html#moody.m.deposit_contract.GetDepositRootMethod">GetDepositRootMethod</a></li>
+<li><a title="moody.m.deposit_contract.SupportsInterfaceMethod" href="deposit_contract/index.html#moody.m.deposit_contract.SupportsInterfaceMethod">SupportsInterfaceMethod</a></li>
 <li><a title="moody.m.eth2_multi_deposit.DepositMethod" href="eth2_multi_deposit/index.html#moody.m.eth2_multi_deposit.DepositMethod">DepositMethod</a></li>
 <li><a title="moody.m.layer_zero_u_s_d_t.AddBlackListMethod" href="layer_zero_u_s_d_t/index.html#moody.m.layer_zero_u_s_d_t.AddBlackListMethod">AddBlackListMethod</a></li>
 <li><a title="moody.m.layer_zero_u_s_d_t.AllowanceMethod" href="layer_zero_u_s_d_t/index.html#moody.m.layer_zero_u_s_d_t.AllowanceMethod">AllowanceMethod</a></li>
@@ -712,71 +750,6 @@ def fromAbi(self) -&gt; any:
 <li><a title="moody.m.tether_token2.TotalSupplyMethod" href="tether_token2/index.html#moody.m.tether_token2.TotalSupplyMethod">TotalSupplyMethod</a></li>
 <li><a title="moody.m.tether_token2.TransferFromMethod" href="tether_token2/index.html#moody.m.tether_token2.TransferFromMethod">TransferFromMethod</a></li>
 <li><a title="moody.m.tether_token2.TransferMethod" href="tether_token2/index.html#moody.m.tether_token2.TransferMethod">TransferMethod</a></li>
-<li><a title="moody.m.uniswap_v2_erc20.AllowanceMethod" href="uniswap_v2_erc20/index.html#moody.m.uniswap_v2_erc20.AllowanceMethod">AllowanceMethod</a></li>
-<li><a title="moody.m.uniswap_v2_erc20.ApproveMethod" href="uniswap_v2_erc20/index.html#moody.m.uniswap_v2_erc20.ApproveMethod">ApproveMethod</a></li>
-<li><a title="moody.m.uniswap_v2_erc20.BalanceOfMethod" href="uniswap_v2_erc20/index.html#moody.m.uniswap_v2_erc20.BalanceOfMethod">BalanceOfMethod</a></li>
-<li><a title="moody.m.uniswap_v2_erc20.DecimalsMethod" href="uniswap_v2_erc20/index.html#moody.m.uniswap_v2_erc20.DecimalsMethod">DecimalsMethod</a></li>
-<li><a title="moody.m.uniswap_v2_erc20.DomainSeparatorMethod" href="uniswap_v2_erc20/index.html#moody.m.uniswap_v2_erc20.DomainSeparatorMethod">DomainSeparatorMethod</a></li>
-<li><a title="moody.m.uniswap_v2_erc20.NameMethod" href="uniswap_v2_erc20/index.html#moody.m.uniswap_v2_erc20.NameMethod">NameMethod</a></li>
-<li><a title="moody.m.uniswap_v2_erc20.NoncesMethod" href="uniswap_v2_erc20/index.html#moody.m.uniswap_v2_erc20.NoncesMethod">NoncesMethod</a></li>
-<li><a title="moody.m.uniswap_v2_erc20.PermitMethod" href="uniswap_v2_erc20/index.html#moody.m.uniswap_v2_erc20.PermitMethod">PermitMethod</a></li>
-<li><a title="moody.m.uniswap_v2_erc20.PermitTypehashMethod" href="uniswap_v2_erc20/index.html#moody.m.uniswap_v2_erc20.PermitTypehashMethod">PermitTypehashMethod</a></li>
-<li><a title="moody.m.uniswap_v2_erc20.SymbolMethod" href="uniswap_v2_erc20/index.html#moody.m.uniswap_v2_erc20.SymbolMethod">SymbolMethod</a></li>
-<li><a title="moody.m.uniswap_v2_erc20.TotalSupplyMethod" href="uniswap_v2_erc20/index.html#moody.m.uniswap_v2_erc20.TotalSupplyMethod">TotalSupplyMethod</a></li>
-<li><a title="moody.m.uniswap_v2_erc20.TransferFromMethod" href="uniswap_v2_erc20/index.html#moody.m.uniswap_v2_erc20.TransferFromMethod">TransferFromMethod</a></li>
-<li><a title="moody.m.uniswap_v2_erc20.TransferMethod" href="uniswap_v2_erc20/index.html#moody.m.uniswap_v2_erc20.TransferMethod">TransferMethod</a></li>
-<li><a title="moody.m.uniswap_v2_factory.AllPairsLengthMethod" href="uniswap_v2_factory/index.html#moody.m.uniswap_v2_factory.AllPairsLengthMethod">AllPairsLengthMethod</a></li>
-<li><a title="moody.m.uniswap_v2_factory.AllPairsMethod" href="uniswap_v2_factory/index.html#moody.m.uniswap_v2_factory.AllPairsMethod">AllPairsMethod</a></li>
-<li><a title="moody.m.uniswap_v2_factory.CreatePairMethod" href="uniswap_v2_factory/index.html#moody.m.uniswap_v2_factory.CreatePairMethod">CreatePairMethod</a></li>
-<li><a title="moody.m.uniswap_v2_factory.FeeToMethod" href="uniswap_v2_factory/index.html#moody.m.uniswap_v2_factory.FeeToMethod">FeeToMethod</a></li>
-<li><a title="moody.m.uniswap_v2_factory.FeeToSetterMethod" href="uniswap_v2_factory/index.html#moody.m.uniswap_v2_factory.FeeToSetterMethod">FeeToSetterMethod</a></li>
-<li><a title="moody.m.uniswap_v2_factory.GetPairMethod" href="uniswap_v2_factory/index.html#moody.m.uniswap_v2_factory.GetPairMethod">GetPairMethod</a></li>
-<li><a title="moody.m.uniswap_v2_factory.MigratorMethod" href="uniswap_v2_factory/index.html#moody.m.uniswap_v2_factory.MigratorMethod">MigratorMethod</a></li>
-<li><a title="moody.m.uniswap_v2_factory.PairCodeHashMethod" href="uniswap_v2_factory/index.html#moody.m.uniswap_v2_factory.PairCodeHashMethod">PairCodeHashMethod</a></li>
-<li><a title="moody.m.uniswap_v2_factory.SetFeeToMethod" href="uniswap_v2_factory/index.html#moody.m.uniswap_v2_factory.SetFeeToMethod">SetFeeToMethod</a></li>
-<li><a title="moody.m.uniswap_v2_factory.SetFeeToSetterMethod" href="uniswap_v2_factory/index.html#moody.m.uniswap_v2_factory.SetFeeToSetterMethod">SetFeeToSetterMethod</a></li>
-<li><a title="moody.m.uniswap_v2_factory.SetMigratorMethod" href="uniswap_v2_factory/index.html#moody.m.uniswap_v2_factory.SetMigratorMethod">SetMigratorMethod</a></li>
-<li><a title="moody.m.uniswap_v2_router02.AddLiquidityEthMethod" href="uniswap_v2_router02/index.html#moody.m.uniswap_v2_router02.AddLiquidityEthMethod">AddLiquidityEthMethod</a></li>
-<li><a title="moody.m.uniswap_v2_router02.AddLiquidityMethod" href="uniswap_v2_router02/index.html#moody.m.uniswap_v2_router02.AddLiquidityMethod">AddLiquidityMethod</a></li>
-<li><a title="moody.m.uniswap_v2_router02.FactoryMethod" href="uniswap_v2_router02/index.html#moody.m.uniswap_v2_router02.FactoryMethod">FactoryMethod</a></li>
-<li><a title="moody.m.uniswap_v2_router02.GetAmountInMethod" href="uniswap_v2_router02/index.html#moody.m.uniswap_v2_router02.GetAmountInMethod">GetAmountInMethod</a></li>
-<li><a title="moody.m.uniswap_v2_router02.GetAmountOutMethod" href="uniswap_v2_router02/index.html#moody.m.uniswap_v2_router02.GetAmountOutMethod">GetAmountOutMethod</a></li>
-<li><a title="moody.m.uniswap_v2_router02.GetAmountsInMethod" href="uniswap_v2_router02/index.html#moody.m.uniswap_v2_router02.GetAmountsInMethod">GetAmountsInMethod</a></li>
-<li><a title="moody.m.uniswap_v2_router02.GetAmountsOutMethod" href="uniswap_v2_router02/index.html#moody.m.uniswap_v2_router02.GetAmountsOutMethod">GetAmountsOutMethod</a></li>
-<li><a title="moody.m.uniswap_v2_router02.QuoteMethod" href="uniswap_v2_router02/index.html#moody.m.uniswap_v2_router02.QuoteMethod">QuoteMethod</a></li>
-<li><a title="moody.m.uniswap_v2_router02.RemoveLiquidityEthMethod" href="uniswap_v2_router02/index.html#moody.m.uniswap_v2_router02.RemoveLiquidityEthMethod">RemoveLiquidityEthMethod</a></li>
-<li><a title="moody.m.uniswap_v2_router02.RemoveLiquidityEthSupportingFeeOnTransferTokensMethod" href="uniswap_v2_router02/index.html#moody.m.uniswap_v2_router02.RemoveLiquidityEthSupportingFeeOnTransferTokensMethod">RemoveLiquidityEthSupportingFeeOnTransferTokensMethod</a></li>
-<li><a title="moody.m.uniswap_v2_router02.RemoveLiquidityEthWithPermitMethod" href="uniswap_v2_router02/index.html#moody.m.uniswap_v2_router02.RemoveLiquidityEthWithPermitMethod">RemoveLiquidityEthWithPermitMethod</a></li>
-<li><a title="moody.m.uniswap_v2_router02.RemoveLiquidityEthWithPermitSupportingFeeOnTransferTokensMethod" href="uniswap_v2_router02/index.html#moody.m.uniswap_v2_router02.RemoveLiquidityEthWithPermitSupportingFeeOnTransferTokensMethod">RemoveLiquidityEthWithPermitSupportingFeeOnTransferTokensMethod</a></li>
-<li><a title="moody.m.uniswap_v2_router02.RemoveLiquidityMethod" href="uniswap_v2_router02/index.html#moody.m.uniswap_v2_router02.RemoveLiquidityMethod">RemoveLiquidityMethod</a></li>
-<li><a title="moody.m.uniswap_v2_router02.RemoveLiquidityWithPermitMethod" href="uniswap_v2_router02/index.html#moody.m.uniswap_v2_router02.RemoveLiquidityWithPermitMethod">RemoveLiquidityWithPermitMethod</a></li>
-<li><a title="moody.m.uniswap_v2_router02.SwapEthForExactTokensMethod" href="uniswap_v2_router02/index.html#moody.m.uniswap_v2_router02.SwapEthForExactTokensMethod">SwapEthForExactTokensMethod</a></li>
-<li><a title="moody.m.uniswap_v2_router02.SwapExactEthForTokensMethod" href="uniswap_v2_router02/index.html#moody.m.uniswap_v2_router02.SwapExactEthForTokensMethod">SwapExactEthForTokensMethod</a></li>
-<li><a title="moody.m.uniswap_v2_router02.SwapExactEthForTokensSupportingFeeOnTransferTokensMethod" href="uniswap_v2_router02/index.html#moody.m.uniswap_v2_router02.SwapExactEthForTokensSupportingFeeOnTransferTokensMethod">SwapExactEthForTokensSupportingFeeOnTransferTokensMethod</a></li>
-<li><a title="moody.m.uniswap_v2_router02.SwapExactTokensForEthMethod" href="uniswap_v2_router02/index.html#moody.m.uniswap_v2_router02.SwapExactTokensForEthMethod">SwapExactTokensForEthMethod</a></li>
-<li><a title="moody.m.uniswap_v2_router02.SwapExactTokensForEthSupportingFeeOnTransferTokensMethod" href="uniswap_v2_router02/index.html#moody.m.uniswap_v2_router02.SwapExactTokensForEthSupportingFeeOnTransferTokensMethod">SwapExactTokensForEthSupportingFeeOnTransferTokensMethod</a></li>
-<li><a title="moody.m.uniswap_v2_router02.SwapExactTokensForTokensMethod" href="uniswap_v2_router02/index.html#moody.m.uniswap_v2_router02.SwapExactTokensForTokensMethod">SwapExactTokensForTokensMethod</a></li>
-<li><a title="moody.m.uniswap_v2_router02.SwapExactTokensForTokensSupportingFeeOnTransferTokensMethod" href="uniswap_v2_router02/index.html#moody.m.uniswap_v2_router02.SwapExactTokensForTokensSupportingFeeOnTransferTokensMethod">SwapExactTokensForTokensSupportingFeeOnTransferTokensMethod</a></li>
-<li><a title="moody.m.uniswap_v2_router02.SwapTokensForExactEthMethod" href="uniswap_v2_router02/index.html#moody.m.uniswap_v2_router02.SwapTokensForExactEthMethod">SwapTokensForExactEthMethod</a></li>
-<li><a title="moody.m.uniswap_v2_router02.SwapTokensForExactTokensMethod" href="uniswap_v2_router02/index.html#moody.m.uniswap_v2_router02.SwapTokensForExactTokensMethod">SwapTokensForExactTokensMethod</a></li>
-<li><a title="moody.m.uniswap_v2_router02.WethMethod" href="uniswap_v2_router02/index.html#moody.m.uniswap_v2_router02.WethMethod">WethMethod</a></li>
-<li><a title="moody.m.v_r_f_consumer.GetRandomNumberMethod" href="v_r_f_consumer/index.html#moody.m.v_r_f_consumer.GetRandomNumberMethod">GetRandomNumberMethod</a></li>
-<li><a title="moody.m.v_r_f_consumer.RandomResultMethod" href="v_r_f_consumer/index.html#moody.m.v_r_f_consumer.RandomResultMethod">RandomResultMethod</a></li>
-<li><a title="moody.m.v_r_f_consumer.RawFulfillRandomnessMethod" href="v_r_f_consumer/index.html#moody.m.v_r_f_consumer.RawFulfillRandomnessMethod">RawFulfillRandomnessMethod</a></li>
-<li><a title="moody.m.v_r_f_coordinator.CallbacksMethod" href="v_r_f_coordinator/index.html#moody.m.v_r_f_coordinator.CallbacksMethod">CallbacksMethod</a></li>
-<li><a title="moody.m.v_r_f_coordinator.FulfillRandomnessRequestMethod" href="v_r_f_coordinator/index.html#moody.m.v_r_f_coordinator.FulfillRandomnessRequestMethod">FulfillRandomnessRequestMethod</a></li>
-<li><a title="moody.m.v_r_f_coordinator.HashOfKeyMethod" href="v_r_f_coordinator/index.html#moody.m.v_r_f_coordinator.HashOfKeyMethod">HashOfKeyMethod</a></li>
-<li><a title="moody.m.v_r_f_coordinator.IsOwnerMethod" href="v_r_f_coordinator/index.html#moody.m.v_r_f_coordinator.IsOwnerMethod">IsOwnerMethod</a></li>
-<li><a title="moody.m.v_r_f_coordinator.OnTokenTransferMethod" href="v_r_f_coordinator/index.html#moody.m.v_r_f_coordinator.OnTokenTransferMethod">OnTokenTransferMethod</a></li>
-<li><a title="moody.m.v_r_f_coordinator.OwnerMethod" href="v_r_f_coordinator/index.html#moody.m.v_r_f_coordinator.OwnerMethod">OwnerMethod</a></li>
-<li><a title="moody.m.v_r_f_coordinator.PreseedOffsetMethod" href="v_r_f_coordinator/index.html#moody.m.v_r_f_coordinator.PreseedOffsetMethod">PreseedOffsetMethod</a></li>
-<li><a title="moody.m.v_r_f_coordinator.ProofLengthMethod" href="v_r_f_coordinator/index.html#moody.m.v_r_f_coordinator.ProofLengthMethod">ProofLengthMethod</a></li>
-<li><a title="moody.m.v_r_f_coordinator.PublicKeyOffsetMethod" href="v_r_f_coordinator/index.html#moody.m.v_r_f_coordinator.PublicKeyOffsetMethod">PublicKeyOffsetMethod</a></li>
-<li><a title="moody.m.v_r_f_coordinator.RegisterProvingKeyMethod" href="v_r_f_coordinator/index.html#moody.m.v_r_f_coordinator.RegisterProvingKeyMethod">RegisterProvingKeyMethod</a></li>
-<li><a title="moody.m.v_r_f_coordinator.ServiceAgreementsMethod" href="v_r_f_coordinator/index.html#moody.m.v_r_f_coordinator.ServiceAgreementsMethod">ServiceAgreementsMethod</a></li>
-<li><a title="moody.m.v_r_f_coordinator.TransferOwnershipMethod" href="v_r_f_coordinator/index.html#moody.m.v_r_f_coordinator.TransferOwnershipMethod">TransferOwnershipMethod</a></li>
-<li><a title="moody.m.v_r_f_coordinator.WithdrawMethod" href="v_r_f_coordinator/index.html#moody.m.v_r_f_coordinator.WithdrawMethod">WithdrawMethod</a></li>
-<li><a title="moody.m.v_r_f_coordinator.WithdrawableTokensMethod" href="v_r_f_coordinator/index.html#moody.m.v_r_f_coordinator.WithdrawableTokensMethod">WithdrawableTokensMethod</a></li>
 <li><a title="moody.upgrades.AcceptAdminMethod" href="../upgrades/index.html#moody.upgrades.AcceptAdminMethod">AcceptAdminMethod</a></li>
 <li><a title="moody.upgrades.AdminMethod" href="../upgrades/index.html#moody.upgrades.AdminMethod">AdminMethod</a></li>
 <li><a title="moody.upgrades.CancelTransactionMethod" href="../upgrades/index.html#moody.upgrades.CancelTransactionMethod">CancelTransactionMethod</a></li>
@@ -881,9 +854,11 @@ def validate_and_checksum_address(address: str):
 <h3>Subclasses</h3>
 <ul class="hlist">
 <li><a title="moody.m.b_send.SignatureGenerator" href="b_send/index.html#moody.m.b_send.SignatureGenerator">SignatureGenerator</a></li>
+<li><a title="moody.m.b_send2.SignatureGenerator" href="b_send2/index.html#moody.m.b_send2.SignatureGenerator">SignatureGenerator</a></li>
 <li><a title="moody.m.beri_coin.SignatureGenerator" href="beri_coin/index.html#moody.m.beri_coin.SignatureGenerator">SignatureGenerator</a></li>
 <li><a title="moody.m.blockhash_store.SignatureGenerator" href="blockhash_store/index.html#moody.m.blockhash_store.SignatureGenerator">SignatureGenerator</a></li>
 <li><a title="moody.m.c_token.SignatureGenerator" href="c_token/index.html#moody.m.c_token.SignatureGenerator">SignatureGenerator</a></li>
+<li><a title="moody.m.deposit_contract.SignatureGenerator" href="deposit_contract/index.html#moody.m.deposit_contract.SignatureGenerator">SignatureGenerator</a></li>
 <li><a title="moody.m.eth2_multi_deposit.SignatureGenerator" href="eth2_multi_deposit/index.html#moody.m.eth2_multi_deposit.SignatureGenerator">SignatureGenerator</a></li>
 <li><a title="moody.m.layer_zero_u_s_d_t.SignatureGenerator" href="layer_zero_u_s_d_t/index.html#moody.m.layer_zero_u_s_d_t.SignatureGenerator">SignatureGenerator</a></li>
 <li><a title="moody.m.multicall.SignatureGenerator" href="multicall/index.html#moody.m.multicall.SignatureGenerator">SignatureGenerator</a></li>
@@ -892,11 +867,6 @@ def validate_and_checksum_address(address: str):
 <li><a title="moody.m.pharaohs.SignatureGenerator" href="pharaohs/index.html#moody.m.pharaohs.SignatureGenerator">SignatureGenerator</a></li>
 <li><a title="moody.m.tc20.SignatureGenerator" href="tc20/index.html#moody.m.tc20.SignatureGenerator">SignatureGenerator</a></li>
 <li><a title="moody.m.tether_token2.SignatureGenerator" href="tether_token2/index.html#moody.m.tether_token2.SignatureGenerator">SignatureGenerator</a></li>
-<li><a title="moody.m.uniswap_v2_erc20.SignatureGenerator" href="uniswap_v2_erc20/index.html#moody.m.uniswap_v2_erc20.SignatureGenerator">SignatureGenerator</a></li>
-<li><a title="moody.m.uniswap_v2_factory.SignatureGenerator" href="uniswap_v2_factory/index.html#moody.m.uniswap_v2_factory.SignatureGenerator">SignatureGenerator</a></li>
-<li><a title="moody.m.uniswap_v2_router02.SignatureGenerator" href="uniswap_v2_router02/index.html#moody.m.uniswap_v2_router02.SignatureGenerator">SignatureGenerator</a></li>
-<li><a title="moody.m.v_r_f_consumer.SignatureGenerator" href="v_r_f_consumer/index.html#moody.m.v_r_f_consumer.SignatureGenerator">SignatureGenerator</a></li>
-<li><a title="moody.m.v_r_f_coordinator.SignatureGenerator" href="v_r_f_coordinator/index.html#moody.m.v_r_f_coordinator.SignatureGenerator">SignatureGenerator</a></li>
 </ul>
 <h3>Methods</h3>
 <dl>
@@ -957,9 +927,11 @@ def validate_and_checksum_address(address: str):
 <h3>Subclasses</h3>
 <ul class="hlist">
 <li><a title="moody.m.b_send.BSendValidator" href="b_send/index.html#moody.m.b_send.BSendValidator">BSendValidator</a></li>
+<li><a title="moody.m.b_send2.BSend2Validator" href="b_send2/index.html#moody.m.b_send2.BSend2Validator">BSend2Validator</a></li>
 <li><a title="moody.m.beri_coin.BeriCoinValidator" href="beri_coin/index.html#moody.m.beri_coin.BeriCoinValidator">BeriCoinValidator</a></li>
 <li><a title="moody.m.blockhash_store.BlockhashStoreValidator" href="blockhash_store/index.html#moody.m.blockhash_store.BlockhashStoreValidator">BlockhashStoreValidator</a></li>
 <li><a title="moody.m.c_token.CTokenValidator" href="c_token/index.html#moody.m.c_token.CTokenValidator">CTokenValidator</a></li>
+<li><a title="moody.m.deposit_contract.DepositContractValidator" href="deposit_contract/index.html#moody.m.deposit_contract.DepositContractValidator">DepositContractValidator</a></li>
 <li><a title="moody.m.eth2_multi_deposit.Eth2MultiDepositValidator" href="eth2_multi_deposit/index.html#moody.m.eth2_multi_deposit.Eth2MultiDepositValidator">Eth2MultiDepositValidator</a></li>
 <li><a title="moody.m.layer_zero_u_s_d_t.LayerZeroUSDTValidator" href="layer_zero_u_s_d_t/index.html#moody.m.layer_zero_u_s_d_t.LayerZeroUSDTValidator">LayerZeroUSDTValidator</a></li>
 <li><a title="moody.m.multicall.MulticallValidator" href="multicall/index.html#moody.m.multicall.MulticallValidator">MulticallValidator</a></li>
@@ -968,11 +940,6 @@ def validate_and_checksum_address(address: str):
 <li><a title="moody.m.pharaohs.pharaohsValidator" href="pharaohs/index.html#moody.m.pharaohs.pharaohsValidator">pharaohsValidator</a></li>
 <li><a title="moody.m.tc20.Tc20Validator" href="tc20/index.html#moody.m.tc20.Tc20Validator">Tc20Validator</a></li>
 <li><a title="moody.m.tether_token2.TetherToken2Validator" href="tether_token2/index.html#moody.m.tether_token2.TetherToken2Validator">TetherToken2Validator</a></li>
-<li><a title="moody.m.uniswap_v2_erc20.UniswapV2ERC20Validator" href="uniswap_v2_erc20/index.html#moody.m.uniswap_v2_erc20.UniswapV2ERC20Validator">UniswapV2ERC20Validator</a></li>
-<li><a title="moody.m.uniswap_v2_factory.UniswapV2FactoryValidator" href="uniswap_v2_factory/index.html#moody.m.uniswap_v2_factory.UniswapV2FactoryValidator">UniswapV2FactoryValidator</a></li>
-<li><a title="moody.m.uniswap_v2_router02.UniswapV2Router02Validator" href="uniswap_v2_router02/index.html#moody.m.uniswap_v2_router02.UniswapV2Router02Validator">UniswapV2Router02Validator</a></li>
-<li><a title="moody.m.v_r_f_consumer.VRFConsumerValidator" href="v_r_f_consumer/index.html#moody.m.v_r_f_consumer.VRFConsumerValidator">VRFConsumerValidator</a></li>
-<li><a title="moody.m.v_r_f_coordinator.VRFCoordinatorValidator" href="v_r_f_coordinator/index.html#moody.m.v_r_f_coordinator.VRFCoordinatorValidator">VRFCoordinatorValidator</a></li>
 <li><a title="moody.upgrades.Timelock6hValidator" href="../upgrades/index.html#moody.upgrades.Timelock6hValidator">Timelock6hValidator</a></li>
 </ul>
 <h3>Methods</h3>

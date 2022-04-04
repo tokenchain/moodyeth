@@ -46,19 +46,16 @@ except ImportError:
     pass
 
 
-
-
-
-class AddMinterMethod(ContractMethod): # pylint: disable=invalid-name
+class AddMinterMethod(ContractMethod):  # pylint: disable=invalid-name
     """Various interfaces to the addMinter method."""
 
-    def __init__(self, elib: MiliDoS, contract_address: str, contract_function: ContractFunction, validator: Validator=None):
+    def __init__(self, elib: MiliDoS, contract_address: str, contract_function: ContractFunction, validator: Validator = None):
         """Persist instance data."""
         super().__init__(elib, contract_address, validator)
         self._underlying_method = contract_function
         self.sign = validator.getSignature("addMinter")
 
-    def validate_and_normalize_inputs(self, minter: str)->any:
+    def validate_and_normalize_inputs(self, minter: str) -> any:
         """Validate the inputs to the addMinter method."""
         self.validator.assert_valid(
             method_name='addMinter',
@@ -68,9 +65,7 @@ class AddMinterMethod(ContractMethod): # pylint: disable=invalid-name
         minter = self.validate_and_checksum_address(minter)
         return (minter)
 
-
-
-    def block_send(self, minter: str,_gaswei:int,_pricewei:int,_valeth:int=0,_debugtx: bool = False,_receipList: bool = False) -> None:
+    def block_send(self, minter: str, _valeth: int = 0) -> None:
         """Execute underlying contract method via eth_call.
 
         :param tx_params: transaction parameters
@@ -81,15 +76,15 @@ class AddMinterMethod(ContractMethod): # pylint: disable=invalid-name
 
             _t = _fn.buildTransaction({
                 'from': self._operate,
-                'gas': _gaswei,
-                'gasPrice': _pricewei
+                'gas': self.gas_limit,
+                'gasPrice': self.gas_price_wei
             })
             _t['nonce'] = self._web3_eth.getTransactionCount(self._operate)
 
             if _valeth > 0:
                 _t['value'] = _valeth
 
-            if _debugtx:
+            if self.debug_method:
                 print(f"======== Signing ✅ by {self._operate}")
                 print(f"======== Transaction ✅ check")
                 print(_t)
@@ -99,33 +94,32 @@ class AddMinterMethod(ContractMethod): # pylint: disable=invalid-name
                 signed = self._web3_eth.account.sign_transaction(_t)
                 txHash = self._web3_eth.sendRawTransaction(signed.rawTransaction)
                 tx_receipt = None
-                if _receipList is True:
+                if self.auto_reciept is True:
                     print(f"======== awaiting Confirmation 🚸️ {self.sign}")
-                    tx_receipt = self._web3_eth.waitForTransactionReceipt(txHash)
-                    if _debugtx:
+                    tx_receipt = self._web3_eth.wait_for_transaction_receipt(txHash)
+                    if self.debug_method:
                         print("======== TX Result ✅")
                         print(tx_receipt)
 
-                print(f"======== TX blockHash ✅")
-                if tx_receipt is not None:
-                    print(f"{Bolors.OK}{tx_receipt.blockHash.hex()}{Bolors.RESET}")
-                else:
-                    print(f"{Bolors.WARNING}{txHash.hex()}{Bolors.RESET} - broadcast hash")
+                self._on_receipt_handle("add_minter", tx_receipt, txHash)
 
-            if _receipList is False:
+            if self.auto_reciept is False:
                 time.sleep(self._wait)
 
 
         except ContractLogicError as er:
             print(f"{Bolors.FAIL}Error {er} {Bolors.RESET}: add_minter")
-
+            message = f"Error {er}: add_minter"
+            self._on_fail("add_minter", message)
         except ValueError as err:
             if "message" in err.args[0]:
                 message = err.args[0]["message"]
                 print(f"{Bolors.FAIL}Error Revert {Bolors.RESET}, add_minter: {message}")
             else:
+                message = "Error Revert , Reason: Unknown"
                 print(f"{Bolors.FAIL}Error Revert {Bolors.RESET}, add_minter. Reason: Unknown")
 
+            self._on_fail("add_minter", message)
 
     def send_transaction(self, minter: str, tx_params: Optional[TxParams] = None) -> Union[HexBytes, bytes]:
         """Execute underlying contract method via eth_sendTransaction.
@@ -148,16 +142,17 @@ class AddMinterMethod(ContractMethod): # pylint: disable=invalid-name
         tx_params = super().normalize_tx_params(tx_params)
         return self._underlying_method(minter).estimateGas(tx_params.as_dict())
 
-class AllowanceMethod(ContractMethod): # pylint: disable=invalid-name
+
+class AllowanceMethod(ContractMethod):  # pylint: disable=invalid-name
     """Various interfaces to the allowance method."""
 
-    def __init__(self, elib: MiliDoS, contract_address: str, contract_function: ContractFunction, validator: Validator=None):
+    def __init__(self, elib: MiliDoS, contract_address: str, contract_function: ContractFunction, validator: Validator = None):
         """Persist instance data."""
         super().__init__(elib, contract_address, validator)
         self._underlying_method = contract_function
         self.sign = validator.getSignature("allowance")
 
-    def validate_and_normalize_inputs(self, owner: str, spender: str)->any:
+    def validate_and_normalize_inputs(self, owner: str, spender: str) -> any:
         """Validate the inputs to the allowance method."""
         self.validator.assert_valid(
             method_name='allowance',
@@ -173,13 +168,11 @@ class AllowanceMethod(ContractMethod): # pylint: disable=invalid-name
         spender = self.validate_and_checksum_address(spender)
         return (owner, spender)
 
-
-
-    def block_call(self,owner: str, spender: str, debug:bool=False) -> int:
+    def block_call(self, owner: str, spender: str, debug: bool = False) -> int:
         _fn = self._underlying_method(owner, spender)
         returned = _fn.call({
-                'from': self._operate
-            })
+            'from': self._operate
+        })
         return int(returned)
 
     def estimate_gas(self, owner: str, spender: str, tx_params: Optional[TxParams] = None) -> int:
@@ -188,16 +181,17 @@ class AllowanceMethod(ContractMethod): # pylint: disable=invalid-name
         tx_params = super().normalize_tx_params(tx_params)
         return self._underlying_method(owner, spender).estimateGas(tx_params.as_dict())
 
-class ApproveMethod(ContractMethod): # pylint: disable=invalid-name
+
+class ApproveMethod(ContractMethod):  # pylint: disable=invalid-name
     """Various interfaces to the approve method."""
 
-    def __init__(self, elib: MiliDoS, contract_address: str, contract_function: ContractFunction, validator: Validator=None):
+    def __init__(self, elib: MiliDoS, contract_address: str, contract_function: ContractFunction, validator: Validator = None):
         """Persist instance data."""
         super().__init__(elib, contract_address, validator)
         self._underlying_method = contract_function
         self.sign = validator.getSignature("approve")
 
-    def validate_and_normalize_inputs(self, spender: str, amount: int)->any:
+    def validate_and_normalize_inputs(self, spender: str, amount: int) -> any:
         """Validate the inputs to the approve method."""
         self.validator.assert_valid(
             method_name='approve',
@@ -214,9 +208,7 @@ class ApproveMethod(ContractMethod): # pylint: disable=invalid-name
         amount = int(amount)
         return (spender, amount)
 
-
-
-    def block_send(self, spender: str, amount: int,_gaswei:int,_pricewei:int,_valeth:int=0,_debugtx: bool = False,_receipList: bool = False) -> bool:
+    def block_send(self, spender: str, amount: int, _valeth: int = 0) -> bool:
         """Execute underlying contract method via eth_call.
 
         :param tx_params: transaction parameters
@@ -227,15 +219,15 @@ class ApproveMethod(ContractMethod): # pylint: disable=invalid-name
 
             _t = _fn.buildTransaction({
                 'from': self._operate,
-                'gas': _gaswei,
-                'gasPrice': _pricewei
+                'gas': self.gas_limit,
+                'gasPrice': self.gas_price_wei
             })
             _t['nonce'] = self._web3_eth.getTransactionCount(self._operate)
 
             if _valeth > 0:
                 _t['value'] = _valeth
 
-            if _debugtx:
+            if self.debug_method:
                 print(f"======== Signing ✅ by {self._operate}")
                 print(f"======== Transaction ✅ check")
                 print(_t)
@@ -245,33 +237,32 @@ class ApproveMethod(ContractMethod): # pylint: disable=invalid-name
                 signed = self._web3_eth.account.sign_transaction(_t)
                 txHash = self._web3_eth.sendRawTransaction(signed.rawTransaction)
                 tx_receipt = None
-                if _receipList is True:
+                if self.auto_reciept is True:
                     print(f"======== awaiting Confirmation 🚸️ {self.sign}")
-                    tx_receipt = self._web3_eth.waitForTransactionReceipt(txHash)
-                    if _debugtx:
+                    tx_receipt = self._web3_eth.wait_for_transaction_receipt(txHash)
+                    if self.debug_method:
                         print("======== TX Result ✅")
                         print(tx_receipt)
 
-                print(f"======== TX blockHash ✅")
-                if tx_receipt is not None:
-                    print(f"{Bolors.OK}{tx_receipt.blockHash.hex()}{Bolors.RESET}")
-                else:
-                    print(f"{Bolors.WARNING}{txHash.hex()}{Bolors.RESET} - broadcast hash")
+                self._on_receipt_handle("approve", tx_receipt, txHash)
 
-            if _receipList is False:
+            if self.auto_reciept is False:
                 time.sleep(self._wait)
 
 
         except ContractLogicError as er:
             print(f"{Bolors.FAIL}Error {er} {Bolors.RESET}: approve")
-
+            message = f"Error {er}: approve"
+            self._on_fail("approve", message)
         except ValueError as err:
             if "message" in err.args[0]:
                 message = err.args[0]["message"]
                 print(f"{Bolors.FAIL}Error Revert {Bolors.RESET}, approve: {message}")
             else:
+                message = "Error Revert , Reason: Unknown"
                 print(f"{Bolors.FAIL}Error Revert {Bolors.RESET}, approve. Reason: Unknown")
 
+            self._on_fail("approve", message)
 
     def send_transaction(self, spender: str, amount: int, tx_params: Optional[TxParams] = None) -> Union[HexBytes, bytes]:
         """Execute underlying contract method via eth_sendTransaction.
@@ -294,16 +285,17 @@ class ApproveMethod(ContractMethod): # pylint: disable=invalid-name
         tx_params = super().normalize_tx_params(tx_params)
         return self._underlying_method(spender, amount).estimateGas(tx_params.as_dict())
 
-class BalanceOfMethod(ContractMethod): # pylint: disable=invalid-name
+
+class BalanceOfMethod(ContractMethod):  # pylint: disable=invalid-name
     """Various interfaces to the balanceOf method."""
 
-    def __init__(self, elib: MiliDoS, contract_address: str, contract_function: ContractFunction, validator: Validator=None):
+    def __init__(self, elib: MiliDoS, contract_address: str, contract_function: ContractFunction, validator: Validator = None):
         """Persist instance data."""
         super().__init__(elib, contract_address, validator)
         self._underlying_method = contract_function
         self.sign = validator.getSignature("balanceOf")
 
-    def validate_and_normalize_inputs(self, account: str)->any:
+    def validate_and_normalize_inputs(self, account: str) -> any:
         """Validate the inputs to the balanceOf method."""
         self.validator.assert_valid(
             method_name='balanceOf',
@@ -313,13 +305,11 @@ class BalanceOfMethod(ContractMethod): # pylint: disable=invalid-name
         account = self.validate_and_checksum_address(account)
         return (account)
 
-
-
-    def block_call(self,account: str, debug:bool=False) -> int:
+    def block_call(self, account: str, debug: bool = False) -> int:
         _fn = self._underlying_method(account)
         returned = _fn.call({
-                'from': self._operate
-            })
+            'from': self._operate
+        })
         return int(returned)
 
     def estimate_gas(self, account: str, tx_params: Optional[TxParams] = None) -> int:
@@ -328,22 +318,21 @@ class BalanceOfMethod(ContractMethod): # pylint: disable=invalid-name
         tx_params = super().normalize_tx_params(tx_params)
         return self._underlying_method(account).estimateGas(tx_params.as_dict())
 
-class DecimalsMethod(ContractMethod): # pylint: disable=invalid-name
+
+class DecimalsMethod(ContractMethod):  # pylint: disable=invalid-name
     """Various interfaces to the decimals method."""
 
-    def __init__(self, elib: MiliDoS, contract_address: str, contract_function: ContractFunction, validator: Validator=None):
+    def __init__(self, elib: MiliDoS, contract_address: str, contract_function: ContractFunction, validator: Validator = None):
         """Persist instance data."""
         super().__init__(elib, contract_address)
         self._underlying_method = contract_function
         self.sign = validator.getSignature("decimals")
 
-
-
-    def block_call(self, debug:bool=False) -> int:
+    def block_call(self, debug: bool = False) -> int:
         _fn = self._underlying_method()
         returned = _fn.call({
-                'from': self._operate
-            })
+            'from': self._operate
+        })
         return int(returned)
 
     def estimate_gas(self, tx_params: Optional[TxParams] = None) -> int:
@@ -351,16 +340,17 @@ class DecimalsMethod(ContractMethod): # pylint: disable=invalid-name
         tx_params = super().normalize_tx_params(tx_params)
         return self._underlying_method().estimateGas(tx_params.as_dict())
 
-class DecreaseAllowanceMethod(ContractMethod): # pylint: disable=invalid-name
+
+class DecreaseAllowanceMethod(ContractMethod):  # pylint: disable=invalid-name
     """Various interfaces to the decreaseAllowance method."""
 
-    def __init__(self, elib: MiliDoS, contract_address: str, contract_function: ContractFunction, validator: Validator=None):
+    def __init__(self, elib: MiliDoS, contract_address: str, contract_function: ContractFunction, validator: Validator = None):
         """Persist instance data."""
         super().__init__(elib, contract_address, validator)
         self._underlying_method = contract_function
         self.sign = validator.getSignature("decreaseAllowance")
 
-    def validate_and_normalize_inputs(self, spender: str, subtracted_value: int)->any:
+    def validate_and_normalize_inputs(self, spender: str, subtracted_value: int) -> any:
         """Validate the inputs to the decreaseAllowance method."""
         self.validator.assert_valid(
             method_name='decreaseAllowance',
@@ -377,9 +367,7 @@ class DecreaseAllowanceMethod(ContractMethod): # pylint: disable=invalid-name
         subtracted_value = int(subtracted_value)
         return (spender, subtracted_value)
 
-
-
-    def block_send(self, spender: str, subtracted_value: int,_gaswei:int,_pricewei:int,_valeth:int=0,_debugtx: bool = False,_receipList: bool = False) -> bool:
+    def block_send(self, spender: str, subtracted_value: int, _valeth: int = 0) -> bool:
         """Execute underlying contract method via eth_call.
 
         :param tx_params: transaction parameters
@@ -390,15 +378,15 @@ class DecreaseAllowanceMethod(ContractMethod): # pylint: disable=invalid-name
 
             _t = _fn.buildTransaction({
                 'from': self._operate,
-                'gas': _gaswei,
-                'gasPrice': _pricewei
+                'gas': self.gas_limit,
+                'gasPrice': self.gas_price_wei
             })
             _t['nonce'] = self._web3_eth.getTransactionCount(self._operate)
 
             if _valeth > 0:
                 _t['value'] = _valeth
 
-            if _debugtx:
+            if self.debug_method:
                 print(f"======== Signing ✅ by {self._operate}")
                 print(f"======== Transaction ✅ check")
                 print(_t)
@@ -408,33 +396,32 @@ class DecreaseAllowanceMethod(ContractMethod): # pylint: disable=invalid-name
                 signed = self._web3_eth.account.sign_transaction(_t)
                 txHash = self._web3_eth.sendRawTransaction(signed.rawTransaction)
                 tx_receipt = None
-                if _receipList is True:
+                if self.auto_reciept is True:
                     print(f"======== awaiting Confirmation 🚸️ {self.sign}")
-                    tx_receipt = self._web3_eth.waitForTransactionReceipt(txHash)
-                    if _debugtx:
+                    tx_receipt = self._web3_eth.wait_for_transaction_receipt(txHash)
+                    if self.debug_method:
                         print("======== TX Result ✅")
                         print(tx_receipt)
 
-                print(f"======== TX blockHash ✅")
-                if tx_receipt is not None:
-                    print(f"{Bolors.OK}{tx_receipt.blockHash.hex()}{Bolors.RESET}")
-                else:
-                    print(f"{Bolors.WARNING}{txHash.hex()}{Bolors.RESET} - broadcast hash")
+                self._on_receipt_handle("decrease_allowance", tx_receipt, txHash)
 
-            if _receipList is False:
+            if self.auto_reciept is False:
                 time.sleep(self._wait)
 
 
         except ContractLogicError as er:
             print(f"{Bolors.FAIL}Error {er} {Bolors.RESET}: decrease_allowance")
-
+            message = f"Error {er}: decrease_allowance"
+            self._on_fail("decrease_allowance", message)
         except ValueError as err:
             if "message" in err.args[0]:
                 message = err.args[0]["message"]
                 print(f"{Bolors.FAIL}Error Revert {Bolors.RESET}, decrease_allowance: {message}")
             else:
+                message = "Error Revert , Reason: Unknown"
                 print(f"{Bolors.FAIL}Error Revert {Bolors.RESET}, decrease_allowance. Reason: Unknown")
 
+            self._on_fail("decrease_allowance", message)
 
     def send_transaction(self, spender: str, subtracted_value: int, tx_params: Optional[TxParams] = None) -> Union[HexBytes, bytes]:
         """Execute underlying contract method via eth_sendTransaction.
@@ -457,22 +444,21 @@ class DecreaseAllowanceMethod(ContractMethod): # pylint: disable=invalid-name
         tx_params = super().normalize_tx_params(tx_params)
         return self._underlying_method(spender, subtracted_value).estimateGas(tx_params.as_dict())
 
-class GovernanceMethod(ContractMethod): # pylint: disable=invalid-name
+
+class GovernanceMethod(ContractMethod):  # pylint: disable=invalid-name
     """Various interfaces to the governance method."""
 
-    def __init__(self, elib: MiliDoS, contract_address: str, contract_function: ContractFunction, validator: Validator=None):
+    def __init__(self, elib: MiliDoS, contract_address: str, contract_function: ContractFunction, validator: Validator = None):
         """Persist instance data."""
         super().__init__(elib, contract_address)
         self._underlying_method = contract_function
         self.sign = validator.getSignature("governance")
 
-
-
-    def block_call(self, debug:bool=False) -> str:
+    def block_call(self, debug: bool = False) -> str:
         _fn = self._underlying_method()
         returned = _fn.call({
-                'from': self._operate
-            })
+            'from': self._operate
+        })
         return str(returned)
 
     def estimate_gas(self, tx_params: Optional[TxParams] = None) -> int:
@@ -480,16 +466,17 @@ class GovernanceMethod(ContractMethod): # pylint: disable=invalid-name
         tx_params = super().normalize_tx_params(tx_params)
         return self._underlying_method().estimateGas(tx_params.as_dict())
 
-class IncreaseAllowanceMethod(ContractMethod): # pylint: disable=invalid-name
+
+class IncreaseAllowanceMethod(ContractMethod):  # pylint: disable=invalid-name
     """Various interfaces to the increaseAllowance method."""
 
-    def __init__(self, elib: MiliDoS, contract_address: str, contract_function: ContractFunction, validator: Validator=None):
+    def __init__(self, elib: MiliDoS, contract_address: str, contract_function: ContractFunction, validator: Validator = None):
         """Persist instance data."""
         super().__init__(elib, contract_address, validator)
         self._underlying_method = contract_function
         self.sign = validator.getSignature("increaseAllowance")
 
-    def validate_and_normalize_inputs(self, spender: str, added_value: int)->any:
+    def validate_and_normalize_inputs(self, spender: str, added_value: int) -> any:
         """Validate the inputs to the increaseAllowance method."""
         self.validator.assert_valid(
             method_name='increaseAllowance',
@@ -506,9 +493,7 @@ class IncreaseAllowanceMethod(ContractMethod): # pylint: disable=invalid-name
         added_value = int(added_value)
         return (spender, added_value)
 
-
-
-    def block_send(self, spender: str, added_value: int,_gaswei:int,_pricewei:int,_valeth:int=0,_debugtx: bool = False,_receipList: bool = False) -> bool:
+    def block_send(self, spender: str, added_value: int, _valeth: int = 0) -> bool:
         """Execute underlying contract method via eth_call.
 
         :param tx_params: transaction parameters
@@ -519,15 +504,15 @@ class IncreaseAllowanceMethod(ContractMethod): # pylint: disable=invalid-name
 
             _t = _fn.buildTransaction({
                 'from': self._operate,
-                'gas': _gaswei,
-                'gasPrice': _pricewei
+                'gas': self.gas_limit,
+                'gasPrice': self.gas_price_wei
             })
             _t['nonce'] = self._web3_eth.getTransactionCount(self._operate)
 
             if _valeth > 0:
                 _t['value'] = _valeth
 
-            if _debugtx:
+            if self.debug_method:
                 print(f"======== Signing ✅ by {self._operate}")
                 print(f"======== Transaction ✅ check")
                 print(_t)
@@ -537,33 +522,32 @@ class IncreaseAllowanceMethod(ContractMethod): # pylint: disable=invalid-name
                 signed = self._web3_eth.account.sign_transaction(_t)
                 txHash = self._web3_eth.sendRawTransaction(signed.rawTransaction)
                 tx_receipt = None
-                if _receipList is True:
+                if self.auto_reciept is True:
                     print(f"======== awaiting Confirmation 🚸️ {self.sign}")
-                    tx_receipt = self._web3_eth.waitForTransactionReceipt(txHash)
-                    if _debugtx:
+                    tx_receipt = self._web3_eth.wait_for_transaction_receipt(txHash)
+                    if self.debug_method:
                         print("======== TX Result ✅")
                         print(tx_receipt)
 
-                print(f"======== TX blockHash ✅")
-                if tx_receipt is not None:
-                    print(f"{Bolors.OK}{tx_receipt.blockHash.hex()}{Bolors.RESET}")
-                else:
-                    print(f"{Bolors.WARNING}{txHash.hex()}{Bolors.RESET} - broadcast hash")
+                self._on_receipt_handle("increase_allowance", tx_receipt, txHash)
 
-            if _receipList is False:
+            if self.auto_reciept is False:
                 time.sleep(self._wait)
 
 
         except ContractLogicError as er:
             print(f"{Bolors.FAIL}Error {er} {Bolors.RESET}: increase_allowance")
-
+            message = f"Error {er}: increase_allowance"
+            self._on_fail("increase_allowance", message)
         except ValueError as err:
             if "message" in err.args[0]:
                 message = err.args[0]["message"]
                 print(f"{Bolors.FAIL}Error Revert {Bolors.RESET}, increase_allowance: {message}")
             else:
+                message = "Error Revert , Reason: Unknown"
                 print(f"{Bolors.FAIL}Error Revert {Bolors.RESET}, increase_allowance. Reason: Unknown")
 
+            self._on_fail("increase_allowance", message)
 
     def send_transaction(self, spender: str, added_value: int, tx_params: Optional[TxParams] = None) -> Union[HexBytes, bytes]:
         """Execute underlying contract method via eth_sendTransaction.
@@ -586,16 +570,17 @@ class IncreaseAllowanceMethod(ContractMethod): # pylint: disable=invalid-name
         tx_params = super().normalize_tx_params(tx_params)
         return self._underlying_method(spender, added_value).estimateGas(tx_params.as_dict())
 
-class MintMethod(ContractMethod): # pylint: disable=invalid-name
+
+class MintMethod(ContractMethod):  # pylint: disable=invalid-name
     """Various interfaces to the mint method."""
 
-    def __init__(self, elib: MiliDoS, contract_address: str, contract_function: ContractFunction, validator: Validator=None):
+    def __init__(self, elib: MiliDoS, contract_address: str, contract_function: ContractFunction, validator: Validator = None):
         """Persist instance data."""
         super().__init__(elib, contract_address, validator)
         self._underlying_method = contract_function
         self.sign = validator.getSignature("mint")
 
-    def validate_and_normalize_inputs(self, account: str, amount: int)->any:
+    def validate_and_normalize_inputs(self, account: str, amount: int) -> any:
         """Validate the inputs to the mint method."""
         self.validator.assert_valid(
             method_name='mint',
@@ -612,9 +597,7 @@ class MintMethod(ContractMethod): # pylint: disable=invalid-name
         amount = int(amount)
         return (account, amount)
 
-
-
-    def block_send(self, account: str, amount: int,_gaswei:int,_pricewei:int,_valeth:int=0,_debugtx: bool = False,_receipList: bool = False) -> None:
+    def block_send(self, account: str, amount: int, _valeth: int = 0) -> None:
         """Execute underlying contract method via eth_call.
 
         :param tx_params: transaction parameters
@@ -625,15 +608,15 @@ class MintMethod(ContractMethod): # pylint: disable=invalid-name
 
             _t = _fn.buildTransaction({
                 'from': self._operate,
-                'gas': _gaswei,
-                'gasPrice': _pricewei
+                'gas': self.gas_limit,
+                'gasPrice': self.gas_price_wei
             })
             _t['nonce'] = self._web3_eth.getTransactionCount(self._operate)
 
             if _valeth > 0:
                 _t['value'] = _valeth
 
-            if _debugtx:
+            if self.debug_method:
                 print(f"======== Signing ✅ by {self._operate}")
                 print(f"======== Transaction ✅ check")
                 print(_t)
@@ -643,33 +626,32 @@ class MintMethod(ContractMethod): # pylint: disable=invalid-name
                 signed = self._web3_eth.account.sign_transaction(_t)
                 txHash = self._web3_eth.sendRawTransaction(signed.rawTransaction)
                 tx_receipt = None
-                if _receipList is True:
+                if self.auto_reciept is True:
                     print(f"======== awaiting Confirmation 🚸️ {self.sign}")
-                    tx_receipt = self._web3_eth.waitForTransactionReceipt(txHash)
-                    if _debugtx:
+                    tx_receipt = self._web3_eth.wait_for_transaction_receipt(txHash)
+                    if self.debug_method:
                         print("======== TX Result ✅")
                         print(tx_receipt)
 
-                print(f"======== TX blockHash ✅")
-                if tx_receipt is not None:
-                    print(f"{Bolors.OK}{tx_receipt.blockHash.hex()}{Bolors.RESET}")
-                else:
-                    print(f"{Bolors.WARNING}{txHash.hex()}{Bolors.RESET} - broadcast hash")
+                self._on_receipt_handle("mint", tx_receipt, txHash)
 
-            if _receipList is False:
+            if self.auto_reciept is False:
                 time.sleep(self._wait)
 
 
         except ContractLogicError as er:
             print(f"{Bolors.FAIL}Error {er} {Bolors.RESET}: mint")
-
+            message = f"Error {er}: mint"
+            self._on_fail("mint", message)
         except ValueError as err:
             if "message" in err.args[0]:
                 message = err.args[0]["message"]
                 print(f"{Bolors.FAIL}Error Revert {Bolors.RESET}, mint: {message}")
             else:
+                message = "Error Revert , Reason: Unknown"
                 print(f"{Bolors.FAIL}Error Revert {Bolors.RESET}, mint. Reason: Unknown")
 
+            self._on_fail("mint", message)
 
     def send_transaction(self, account: str, amount: int, tx_params: Optional[TxParams] = None) -> Union[HexBytes, bytes]:
         """Execute underlying contract method via eth_sendTransaction.
@@ -692,16 +674,17 @@ class MintMethod(ContractMethod): # pylint: disable=invalid-name
         tx_params = super().normalize_tx_params(tx_params)
         return self._underlying_method(account, amount).estimateGas(tx_params.as_dict())
 
-class MintersMethod(ContractMethod): # pylint: disable=invalid-name
+
+class MintersMethod(ContractMethod):  # pylint: disable=invalid-name
     """Various interfaces to the minters method."""
 
-    def __init__(self, elib: MiliDoS, contract_address: str, contract_function: ContractFunction, validator: Validator=None):
+    def __init__(self, elib: MiliDoS, contract_address: str, contract_function: ContractFunction, validator: Validator = None):
         """Persist instance data."""
         super().__init__(elib, contract_address, validator)
         self._underlying_method = contract_function
         self.sign = validator.getSignature("minters")
 
-    def validate_and_normalize_inputs(self, index_0: str)->any:
+    def validate_and_normalize_inputs(self, index_0: str) -> any:
         """Validate the inputs to the minters method."""
         self.validator.assert_valid(
             method_name='minters',
@@ -711,13 +694,11 @@ class MintersMethod(ContractMethod): # pylint: disable=invalid-name
         index_0 = self.validate_and_checksum_address(index_0)
         return (index_0)
 
-
-
-    def block_call(self,index_0: str, debug:bool=False) -> bool:
+    def block_call(self, index_0: str, debug: bool = False) -> bool:
         _fn = self._underlying_method(index_0)
         returned = _fn.call({
-                'from': self._operate
-            })
+            'from': self._operate
+        })
         return bool(returned)
 
     def estimate_gas(self, index_0: str, tx_params: Optional[TxParams] = None) -> int:
@@ -726,22 +707,21 @@ class MintersMethod(ContractMethod): # pylint: disable=invalid-name
         tx_params = super().normalize_tx_params(tx_params)
         return self._underlying_method(index_0).estimateGas(tx_params.as_dict())
 
-class NameMethod(ContractMethod): # pylint: disable=invalid-name
+
+class NameMethod(ContractMethod):  # pylint: disable=invalid-name
     """Various interfaces to the name method."""
 
-    def __init__(self, elib: MiliDoS, contract_address: str, contract_function: ContractFunction, validator: Validator=None):
+    def __init__(self, elib: MiliDoS, contract_address: str, contract_function: ContractFunction, validator: Validator = None):
         """Persist instance data."""
         super().__init__(elib, contract_address)
         self._underlying_method = contract_function
         self.sign = validator.getSignature("name")
 
-
-
-    def block_call(self, debug:bool=False) -> str:
+    def block_call(self, debug: bool = False) -> str:
         _fn = self._underlying_method()
         returned = _fn.call({
-                'from': self._operate
-            })
+            'from': self._operate
+        })
         return str(returned)
 
     def estimate_gas(self, tx_params: Optional[TxParams] = None) -> int:
@@ -749,16 +729,17 @@ class NameMethod(ContractMethod): # pylint: disable=invalid-name
         tx_params = super().normalize_tx_params(tx_params)
         return self._underlying_method().estimateGas(tx_params.as_dict())
 
-class RemoveMinterMethod(ContractMethod): # pylint: disable=invalid-name
+
+class RemoveMinterMethod(ContractMethod):  # pylint: disable=invalid-name
     """Various interfaces to the removeMinter method."""
 
-    def __init__(self, elib: MiliDoS, contract_address: str, contract_function: ContractFunction, validator: Validator=None):
+    def __init__(self, elib: MiliDoS, contract_address: str, contract_function: ContractFunction, validator: Validator = None):
         """Persist instance data."""
         super().__init__(elib, contract_address, validator)
         self._underlying_method = contract_function
         self.sign = validator.getSignature("removeMinter")
 
-    def validate_and_normalize_inputs(self, minter: str)->any:
+    def validate_and_normalize_inputs(self, minter: str) -> any:
         """Validate the inputs to the removeMinter method."""
         self.validator.assert_valid(
             method_name='removeMinter',
@@ -768,9 +749,7 @@ class RemoveMinterMethod(ContractMethod): # pylint: disable=invalid-name
         minter = self.validate_and_checksum_address(minter)
         return (minter)
 
-
-
-    def block_send(self, minter: str,_gaswei:int,_pricewei:int,_valeth:int=0,_debugtx: bool = False,_receipList: bool = False) -> None:
+    def block_send(self, minter: str, _valeth: int = 0) -> None:
         """Execute underlying contract method via eth_call.
 
         :param tx_params: transaction parameters
@@ -781,15 +760,15 @@ class RemoveMinterMethod(ContractMethod): # pylint: disable=invalid-name
 
             _t = _fn.buildTransaction({
                 'from': self._operate,
-                'gas': _gaswei,
-                'gasPrice': _pricewei
+                'gas': self.gas_limit,
+                'gasPrice': self.gas_price_wei
             })
             _t['nonce'] = self._web3_eth.getTransactionCount(self._operate)
 
             if _valeth > 0:
                 _t['value'] = _valeth
 
-            if _debugtx:
+            if self.debug_method:
                 print(f"======== Signing ✅ by {self._operate}")
                 print(f"======== Transaction ✅ check")
                 print(_t)
@@ -799,33 +778,32 @@ class RemoveMinterMethod(ContractMethod): # pylint: disable=invalid-name
                 signed = self._web3_eth.account.sign_transaction(_t)
                 txHash = self._web3_eth.sendRawTransaction(signed.rawTransaction)
                 tx_receipt = None
-                if _receipList is True:
+                if self.auto_reciept is True:
                     print(f"======== awaiting Confirmation 🚸️ {self.sign}")
-                    tx_receipt = self._web3_eth.waitForTransactionReceipt(txHash)
-                    if _debugtx:
+                    tx_receipt = self._web3_eth.wait_for_transaction_receipt(txHash)
+                    if self.debug_method:
                         print("======== TX Result ✅")
                         print(tx_receipt)
 
-                print(f"======== TX blockHash ✅")
-                if tx_receipt is not None:
-                    print(f"{Bolors.OK}{tx_receipt.blockHash.hex()}{Bolors.RESET}")
-                else:
-                    print(f"{Bolors.WARNING}{txHash.hex()}{Bolors.RESET} - broadcast hash")
+                self._on_receipt_handle("remove_minter", tx_receipt, txHash)
 
-            if _receipList is False:
+            if self.auto_reciept is False:
                 time.sleep(self._wait)
 
 
         except ContractLogicError as er:
             print(f"{Bolors.FAIL}Error {er} {Bolors.RESET}: remove_minter")
-
+            message = f"Error {er}: remove_minter"
+            self._on_fail("remove_minter", message)
         except ValueError as err:
             if "message" in err.args[0]:
                 message = err.args[0]["message"]
                 print(f"{Bolors.FAIL}Error Revert {Bolors.RESET}, remove_minter: {message}")
             else:
+                message = "Error Revert , Reason: Unknown"
                 print(f"{Bolors.FAIL}Error Revert {Bolors.RESET}, remove_minter. Reason: Unknown")
 
+            self._on_fail("remove_minter", message)
 
     def send_transaction(self, minter: str, tx_params: Optional[TxParams] = None) -> Union[HexBytes, bytes]:
         """Execute underlying contract method via eth_sendTransaction.
@@ -848,16 +826,17 @@ class RemoveMinterMethod(ContractMethod): # pylint: disable=invalid-name
         tx_params = super().normalize_tx_params(tx_params)
         return self._underlying_method(minter).estimateGas(tx_params.as_dict())
 
-class SetGovernanceMethod(ContractMethod): # pylint: disable=invalid-name
+
+class SetGovernanceMethod(ContractMethod):  # pylint: disable=invalid-name
     """Various interfaces to the setGovernance method."""
 
-    def __init__(self, elib: MiliDoS, contract_address: str, contract_function: ContractFunction, validator: Validator=None):
+    def __init__(self, elib: MiliDoS, contract_address: str, contract_function: ContractFunction, validator: Validator = None):
         """Persist instance data."""
         super().__init__(elib, contract_address, validator)
         self._underlying_method = contract_function
         self.sign = validator.getSignature("setGovernance")
 
-    def validate_and_normalize_inputs(self, governance: str)->any:
+    def validate_and_normalize_inputs(self, governance: str) -> any:
         """Validate the inputs to the setGovernance method."""
         self.validator.assert_valid(
             method_name='setGovernance',
@@ -867,9 +846,7 @@ class SetGovernanceMethod(ContractMethod): # pylint: disable=invalid-name
         governance = self.validate_and_checksum_address(governance)
         return (governance)
 
-
-
-    def block_send(self, governance: str,_gaswei:int,_pricewei:int,_valeth:int=0,_debugtx: bool = False,_receipList: bool = False) -> None:
+    def block_send(self, governance: str, _valeth: int = 0) -> None:
         """Execute underlying contract method via eth_call.
 
         :param tx_params: transaction parameters
@@ -880,15 +857,15 @@ class SetGovernanceMethod(ContractMethod): # pylint: disable=invalid-name
 
             _t = _fn.buildTransaction({
                 'from': self._operate,
-                'gas': _gaswei,
-                'gasPrice': _pricewei
+                'gas': self.gas_limit,
+                'gasPrice': self.gas_price_wei
             })
             _t['nonce'] = self._web3_eth.getTransactionCount(self._operate)
 
             if _valeth > 0:
                 _t['value'] = _valeth
 
-            if _debugtx:
+            if self.debug_method:
                 print(f"======== Signing ✅ by {self._operate}")
                 print(f"======== Transaction ✅ check")
                 print(_t)
@@ -898,33 +875,32 @@ class SetGovernanceMethod(ContractMethod): # pylint: disable=invalid-name
                 signed = self._web3_eth.account.sign_transaction(_t)
                 txHash = self._web3_eth.sendRawTransaction(signed.rawTransaction)
                 tx_receipt = None
-                if _receipList is True:
+                if self.auto_reciept is True:
                     print(f"======== awaiting Confirmation 🚸️ {self.sign}")
-                    tx_receipt = self._web3_eth.waitForTransactionReceipt(txHash)
-                    if _debugtx:
+                    tx_receipt = self._web3_eth.wait_for_transaction_receipt(txHash)
+                    if self.debug_method:
                         print("======== TX Result ✅")
                         print(tx_receipt)
 
-                print(f"======== TX blockHash ✅")
-                if tx_receipt is not None:
-                    print(f"{Bolors.OK}{tx_receipt.blockHash.hex()}{Bolors.RESET}")
-                else:
-                    print(f"{Bolors.WARNING}{txHash.hex()}{Bolors.RESET} - broadcast hash")
+                self._on_receipt_handle("set_governance", tx_receipt, txHash)
 
-            if _receipList is False:
+            if self.auto_reciept is False:
                 time.sleep(self._wait)
 
 
         except ContractLogicError as er:
             print(f"{Bolors.FAIL}Error {er} {Bolors.RESET}: set_governance")
-
+            message = f"Error {er}: set_governance"
+            self._on_fail("set_governance", message)
         except ValueError as err:
             if "message" in err.args[0]:
                 message = err.args[0]["message"]
                 print(f"{Bolors.FAIL}Error Revert {Bolors.RESET}, set_governance: {message}")
             else:
+                message = "Error Revert , Reason: Unknown"
                 print(f"{Bolors.FAIL}Error Revert {Bolors.RESET}, set_governance. Reason: Unknown")
 
+            self._on_fail("set_governance", message)
 
     def send_transaction(self, governance: str, tx_params: Optional[TxParams] = None) -> Union[HexBytes, bytes]:
         """Execute underlying contract method via eth_sendTransaction.
@@ -947,22 +923,21 @@ class SetGovernanceMethod(ContractMethod): # pylint: disable=invalid-name
         tx_params = super().normalize_tx_params(tx_params)
         return self._underlying_method(governance).estimateGas(tx_params.as_dict())
 
-class SymbolMethod(ContractMethod): # pylint: disable=invalid-name
+
+class SymbolMethod(ContractMethod):  # pylint: disable=invalid-name
     """Various interfaces to the symbol method."""
 
-    def __init__(self, elib: MiliDoS, contract_address: str, contract_function: ContractFunction, validator: Validator=None):
+    def __init__(self, elib: MiliDoS, contract_address: str, contract_function: ContractFunction, validator: Validator = None):
         """Persist instance data."""
         super().__init__(elib, contract_address)
         self._underlying_method = contract_function
         self.sign = validator.getSignature("symbol")
 
-
-
-    def block_call(self, debug:bool=False) -> str:
+    def block_call(self, debug: bool = False) -> str:
         _fn = self._underlying_method()
         returned = _fn.call({
-                'from': self._operate
-            })
+            'from': self._operate
+        })
         return str(returned)
 
     def estimate_gas(self, tx_params: Optional[TxParams] = None) -> int:
@@ -970,22 +945,21 @@ class SymbolMethod(ContractMethod): # pylint: disable=invalid-name
         tx_params = super().normalize_tx_params(tx_params)
         return self._underlying_method().estimateGas(tx_params.as_dict())
 
-class TotalSupplyMethod(ContractMethod): # pylint: disable=invalid-name
+
+class TotalSupplyMethod(ContractMethod):  # pylint: disable=invalid-name
     """Various interfaces to the totalSupply method."""
 
-    def __init__(self, elib: MiliDoS, contract_address: str, contract_function: ContractFunction, validator: Validator=None):
+    def __init__(self, elib: MiliDoS, contract_address: str, contract_function: ContractFunction, validator: Validator = None):
         """Persist instance data."""
         super().__init__(elib, contract_address)
         self._underlying_method = contract_function
         self.sign = validator.getSignature("totalSupply")
 
-
-
-    def block_call(self, debug:bool=False) -> int:
+    def block_call(self, debug: bool = False) -> int:
         _fn = self._underlying_method()
         returned = _fn.call({
-                'from': self._operate
-            })
+            'from': self._operate
+        })
         return int(returned)
 
     def estimate_gas(self, tx_params: Optional[TxParams] = None) -> int:
@@ -993,16 +967,17 @@ class TotalSupplyMethod(ContractMethod): # pylint: disable=invalid-name
         tx_params = super().normalize_tx_params(tx_params)
         return self._underlying_method().estimateGas(tx_params.as_dict())
 
-class TransferMethod(ContractMethod): # pylint: disable=invalid-name
+
+class TransferMethod(ContractMethod):  # pylint: disable=invalid-name
     """Various interfaces to the transfer method."""
 
-    def __init__(self, elib: MiliDoS, contract_address: str, contract_function: ContractFunction, validator: Validator=None):
+    def __init__(self, elib: MiliDoS, contract_address: str, contract_function: ContractFunction, validator: Validator = None):
         """Persist instance data."""
         super().__init__(elib, contract_address, validator)
         self._underlying_method = contract_function
         self.sign = validator.getSignature("transfer")
 
-    def validate_and_normalize_inputs(self, recipient: str, amount: int)->any:
+    def validate_and_normalize_inputs(self, recipient: str, amount: int) -> any:
         """Validate the inputs to the transfer method."""
         self.validator.assert_valid(
             method_name='transfer',
@@ -1019,9 +994,7 @@ class TransferMethod(ContractMethod): # pylint: disable=invalid-name
         amount = int(amount)
         return (recipient, amount)
 
-
-
-    def block_send(self, recipient: str, amount: int,_gaswei:int,_pricewei:int,_valeth:int=0,_debugtx: bool = False,_receipList: bool = False) -> bool:
+    def block_send(self, recipient: str, amount: int, _valeth: int = 0) -> bool:
         """Execute underlying contract method via eth_call.
 
         :param tx_params: transaction parameters
@@ -1032,15 +1005,15 @@ class TransferMethod(ContractMethod): # pylint: disable=invalid-name
 
             _t = _fn.buildTransaction({
                 'from': self._operate,
-                'gas': _gaswei,
-                'gasPrice': _pricewei
+                'gas': self.gas_limit,
+                'gasPrice': self.gas_price_wei
             })
             _t['nonce'] = self._web3_eth.getTransactionCount(self._operate)
 
             if _valeth > 0:
                 _t['value'] = _valeth
 
-            if _debugtx:
+            if self.debug_method:
                 print(f"======== Signing ✅ by {self._operate}")
                 print(f"======== Transaction ✅ check")
                 print(_t)
@@ -1050,33 +1023,32 @@ class TransferMethod(ContractMethod): # pylint: disable=invalid-name
                 signed = self._web3_eth.account.sign_transaction(_t)
                 txHash = self._web3_eth.sendRawTransaction(signed.rawTransaction)
                 tx_receipt = None
-                if _receipList is True:
+                if self.auto_reciept is True:
                     print(f"======== awaiting Confirmation 🚸️ {self.sign}")
-                    tx_receipt = self._web3_eth.waitForTransactionReceipt(txHash)
-                    if _debugtx:
+                    tx_receipt = self._web3_eth.wait_for_transaction_receipt(txHash)
+                    if self.debug_method:
                         print("======== TX Result ✅")
                         print(tx_receipt)
 
-                print(f"======== TX blockHash ✅")
-                if tx_receipt is not None:
-                    print(f"{Bolors.OK}{tx_receipt.blockHash.hex()}{Bolors.RESET}")
-                else:
-                    print(f"{Bolors.WARNING}{txHash.hex()}{Bolors.RESET} - broadcast hash")
+                self._on_receipt_handle("transfer", tx_receipt, txHash)
 
-            if _receipList is False:
+            if self.auto_reciept is False:
                 time.sleep(self._wait)
 
 
         except ContractLogicError as er:
             print(f"{Bolors.FAIL}Error {er} {Bolors.RESET}: transfer")
-
+            message = f"Error {er}: transfer"
+            self._on_fail("transfer", message)
         except ValueError as err:
             if "message" in err.args[0]:
                 message = err.args[0]["message"]
                 print(f"{Bolors.FAIL}Error Revert {Bolors.RESET}, transfer: {message}")
             else:
+                message = "Error Revert , Reason: Unknown"
                 print(f"{Bolors.FAIL}Error Revert {Bolors.RESET}, transfer. Reason: Unknown")
 
+            self._on_fail("transfer", message)
 
     def send_transaction(self, recipient: str, amount: int, tx_params: Optional[TxParams] = None) -> Union[HexBytes, bytes]:
         """Execute underlying contract method via eth_sendTransaction.
@@ -1099,16 +1071,17 @@ class TransferMethod(ContractMethod): # pylint: disable=invalid-name
         tx_params = super().normalize_tx_params(tx_params)
         return self._underlying_method(recipient, amount).estimateGas(tx_params.as_dict())
 
-class TransferFromMethod(ContractMethod): # pylint: disable=invalid-name
+
+class TransferFromMethod(ContractMethod):  # pylint: disable=invalid-name
     """Various interfaces to the transferFrom method."""
 
-    def __init__(self, elib: MiliDoS, contract_address: str, contract_function: ContractFunction, validator: Validator=None):
+    def __init__(self, elib: MiliDoS, contract_address: str, contract_function: ContractFunction, validator: Validator = None):
         """Persist instance data."""
         super().__init__(elib, contract_address, validator)
         self._underlying_method = contract_function
         self.sign = validator.getSignature("transferFrom")
 
-    def validate_and_normalize_inputs(self, sender: str, recipient: str, amount: int)->any:
+    def validate_and_normalize_inputs(self, sender: str, recipient: str, amount: int) -> any:
         """Validate the inputs to the transferFrom method."""
         self.validator.assert_valid(
             method_name='transferFrom',
@@ -1131,9 +1104,7 @@ class TransferFromMethod(ContractMethod): # pylint: disable=invalid-name
         amount = int(amount)
         return (sender, recipient, amount)
 
-
-
-    def block_send(self, sender: str, recipient: str, amount: int,_gaswei:int,_pricewei:int,_valeth:int=0,_debugtx: bool = False,_receipList: bool = False) -> bool:
+    def block_send(self, sender: str, recipient: str, amount: int, _valeth: int = 0) -> bool:
         """Execute underlying contract method via eth_call.
 
         :param tx_params: transaction parameters
@@ -1144,15 +1115,15 @@ class TransferFromMethod(ContractMethod): # pylint: disable=invalid-name
 
             _t = _fn.buildTransaction({
                 'from': self._operate,
-                'gas': _gaswei,
-                'gasPrice': _pricewei
+                'gas': self.gas_limit,
+                'gasPrice': self.gas_price_wei
             })
             _t['nonce'] = self._web3_eth.getTransactionCount(self._operate)
 
             if _valeth > 0:
                 _t['value'] = _valeth
 
-            if _debugtx:
+            if self.debug_method:
                 print(f"======== Signing ✅ by {self._operate}")
                 print(f"======== Transaction ✅ check")
                 print(_t)
@@ -1162,33 +1133,32 @@ class TransferFromMethod(ContractMethod): # pylint: disable=invalid-name
                 signed = self._web3_eth.account.sign_transaction(_t)
                 txHash = self._web3_eth.sendRawTransaction(signed.rawTransaction)
                 tx_receipt = None
-                if _receipList is True:
+                if self.auto_reciept is True:
                     print(f"======== awaiting Confirmation 🚸️ {self.sign}")
-                    tx_receipt = self._web3_eth.waitForTransactionReceipt(txHash)
-                    if _debugtx:
+                    tx_receipt = self._web3_eth.wait_for_transaction_receipt(txHash)
+                    if self.debug_method:
                         print("======== TX Result ✅")
                         print(tx_receipt)
 
-                print(f"======== TX blockHash ✅")
-                if tx_receipt is not None:
-                    print(f"{Bolors.OK}{tx_receipt.blockHash.hex()}{Bolors.RESET}")
-                else:
-                    print(f"{Bolors.WARNING}{txHash.hex()}{Bolors.RESET} - broadcast hash")
+                self._on_receipt_handle("transfer_from", tx_receipt, txHash)
 
-            if _receipList is False:
+            if self.auto_reciept is False:
                 time.sleep(self._wait)
 
 
         except ContractLogicError as er:
             print(f"{Bolors.FAIL}Error {er} {Bolors.RESET}: transfer_from")
-
+            message = f"Error {er}: transfer_from"
+            self._on_fail("transfer_from", message)
         except ValueError as err:
             if "message" in err.args[0]:
                 message = err.args[0]["message"]
                 print(f"{Bolors.FAIL}Error Revert {Bolors.RESET}, transfer_from: {message}")
             else:
+                message = "Error Revert , Reason: Unknown"
                 print(f"{Bolors.FAIL}Error Revert {Bolors.RESET}, transfer_from. Reason: Unknown")
 
+            self._on_fail("transfer_from", message)
 
     def send_transaction(self, sender: str, recipient: str, amount: int, tx_params: Optional[TxParams] = None) -> Union[HexBytes, bytes]:
         """Execute underlying contract method via eth_sendTransaction.
@@ -1211,47 +1181,66 @@ class TransferFromMethod(ContractMethod): # pylint: disable=invalid-name
         tx_params = super().normalize_tx_params(tx_params)
         return self._underlying_method(sender, recipient, amount).estimateGas(tx_params.as_dict())
 
+
 class SignatureGenerator(Signatures):
     """
         The signature is generated for this and it is installed.
     """
+
     def __init__(self, abi: any):
         super().__init__(abi)
 
     def add_minter(self) -> str:
         return self._function_signatures["addMinter"]
+
     def allowance(self) -> str:
         return self._function_signatures["allowance"]
+
     def approve(self) -> str:
         return self._function_signatures["approve"]
+
     def balance_of(self) -> str:
         return self._function_signatures["balanceOf"]
+
     def decimals(self) -> str:
         return self._function_signatures["decimals"]
+
     def decrease_allowance(self) -> str:
         return self._function_signatures["decreaseAllowance"]
+
     def governance(self) -> str:
         return self._function_signatures["governance"]
+
     def increase_allowance(self) -> str:
         return self._function_signatures["increaseAllowance"]
+
     def mint(self) -> str:
         return self._function_signatures["mint"]
+
     def minters(self) -> str:
         return self._function_signatures["minters"]
+
     def name(self) -> str:
         return self._function_signatures["name"]
+
     def remove_minter(self) -> str:
         return self._function_signatures["removeMinter"]
+
     def set_governance(self) -> str:
         return self._function_signatures["setGovernance"]
+
     def symbol(self) -> str:
         return self._function_signatures["symbol"]
+
     def total_supply(self) -> str:
         return self._function_signatures["totalSupply"]
+
     def transfer(self) -> str:
         return self._function_signatures["transfer"]
+
     def transfer_from(self) -> str:
         return self._function_signatures["transferFrom"]
+
 
 # pylint: disable=too-many-public-methods,too-many-instance-attributes
 class Tc20(ContractBase):
@@ -1341,26 +1330,22 @@ class Tc20(ContractBase):
     :class:`TransferFromMethod`.
     """
 
-    SIGNATURES:SignatureGenerator = None
+    SIGNATURES: SignatureGenerator = None
 
     def __init__(
-        self,
-        core_lib: MiliDoS,
-        contract_address: str,
-        validator: Tc20Validator = None,
+            self,
+            core_lib: MiliDoS,
+            contract_address: str,
+            validator: Tc20Validator = None,
     ):
         """Get an instance of wrapper for smart contract.
         """
         # pylint: disable=too-many-statements
-        super().__init__()
-        self.contract_address = contract_address
+        super().__init__(contract_address, Tc20.abi())
         web3 = core_lib.w3
 
         if not validator:
             validator = Tc20Validator(web3, contract_address)
-
-
-
 
         # if any middleware was imported, inject it
         try:
@@ -1371,7 +1356,7 @@ class Tc20(ContractBase):
             try:
                 for middleware in MIDDLEWARE:
                     web3.middleware_onion.inject(
-                         middleware['function'], layer=middleware['layer'],
+                        middleware['function'], layer=middleware['layer'],
                     )
             except ValueError as value_error:
                 if value_error.args == ("You can't add the same un-named instance twice",):
@@ -1379,9 +1364,9 @@ class Tc20(ContractBase):
 
         self._web3_eth = web3.eth
         functions = self._web3_eth.contract(address=to_checksum_address(contract_address), abi=Tc20.abi()).functions
-        signed = SignatureGenerator(Tc20.abi())
-        validator.bindSignatures(signed)
-        self.SIGNATURES = signed
+        self._signatures = SignatureGenerator(Tc20.abi())
+        validator.bindSignatures(self._signatures)
+
         self._fn_add_minter = AddMinterMethod(core_lib, contract_address, functions.addMinter, validator)
         self._fn_allowance = AllowanceMethod(core_lib, contract_address, functions.allowance, validator)
         self._fn_approve = ApproveMethod(core_lib, contract_address, functions.approve, validator)
@@ -1400,8 +1385,6 @@ class Tc20(ContractBase):
         self._fn_transfer = TransferMethod(core_lib, contract_address, functions.transfer, validator)
         self._fn_transfer_from = TransferFromMethod(core_lib, contract_address, functions.transferFrom, validator)
 
-    
-    
     def event_approval(
             self, tx_hash: Union[HexBytes, bytes]
     ) -> Tuple[AttributeDict]:
@@ -1412,8 +1395,7 @@ class Tc20(ContractBase):
         """
         tx_receipt = self._web3_eth.getTransactionReceipt(tx_hash)
         return self._web3_eth.contract(address=to_checksum_address(self.contract_address), abi=Tc20.abi()).events.Approval().processReceipt(tx_receipt)
-    
-    
+
     def event_transfer(
             self, tx_hash: Union[HexBytes, bytes]
     ) -> Tuple[AttributeDict]:
@@ -1425,297 +1407,279 @@ class Tc20(ContractBase):
         tx_receipt = self._web3_eth.getTransactionReceipt(tx_hash)
         return self._web3_eth.contract(address=to_checksum_address(self.contract_address), abi=Tc20.abi()).events.Transfer().processReceipt(tx_receipt)
 
-    
-    
-    
     def add_minter(self, minter: str) -> None:
         """
         Implementation of add_minter in contract Tc20
         Method of the function
-    
-    
-    
+
         """
-    
-        return self._fn_add_minter.block_send(minter, self.call_contract_fee_amount,self.call_contract_fee_price,0,self.call_contract_debug_flag, self.call_contract_enforce_tx_receipt)
-    
-    
-    
-    
-    
-    
-    
+
+        self._fn_add_minter.callback_onfail = self._callback_onfail
+        self._fn_add_minter.callback_onsuccess = self._callback_onsuccess
+        self._fn_add_minter.auto_reciept = self.call_contract_enforce_tx_receipt
+        self._fn_add_minter.gas_limit = self.call_contract_fee_amount
+        self._fn_add_minter.gas_price_wei = self.call_contract_fee_price
+        self._fn_add_minter.debug_method = self.call_contract_debug_flag
+
+        return self._fn_add_minter.block_send(minter)
+
     def allowance(self, owner: str, spender: str) -> int:
         """
         Implementation of allowance in contract Tc20
         Method of the function
-    
-    
-    
+
         """
-    
-    
-    
-    
-    
+
+        self._fn_allowance.callback_onfail = self._callback_onfail
+        self._fn_allowance.callback_onsuccess = self._callback_onsuccess
+        self._fn_allowance.auto_reciept = self.call_contract_enforce_tx_receipt
+        self._fn_allowance.gas_limit = self.call_contract_fee_amount
+        self._fn_allowance.gas_price_wei = self.call_contract_fee_price
+        self._fn_allowance.debug_method = self.call_contract_debug_flag
+
         return self._fn_allowance.block_call(owner, spender)
-    
-    
-    
+
     def approve(self, spender: str, amount: int) -> bool:
         """
         Implementation of approve in contract Tc20
         Method of the function
-    
-    
-    
+
         """
-    
-        return self._fn_approve.block_send(spender, amount, self.call_contract_fee_amount,self.call_contract_fee_price,0,self.call_contract_debug_flag, self.call_contract_enforce_tx_receipt)
-    
-    
-    
-    
-    
-    
-    
+
+        self._fn_approve.callback_onfail = self._callback_onfail
+        self._fn_approve.callback_onsuccess = self._callback_onsuccess
+        self._fn_approve.auto_reciept = self.call_contract_enforce_tx_receipt
+        self._fn_approve.gas_limit = self.call_contract_fee_amount
+        self._fn_approve.gas_price_wei = self.call_contract_fee_price
+        self._fn_approve.debug_method = self.call_contract_debug_flag
+
+        return self._fn_approve.block_send(spender, amount)
+
     def balance_of(self, account: str) -> int:
         """
         Implementation of balance_of in contract Tc20
         Method of the function
-    
-    
-    
+
         """
-    
-    
-    
-    
-    
+
+        self._fn_balance_of.callback_onfail = self._callback_onfail
+        self._fn_balance_of.callback_onsuccess = self._callback_onsuccess
+        self._fn_balance_of.auto_reciept = self.call_contract_enforce_tx_receipt
+        self._fn_balance_of.gas_limit = self.call_contract_fee_amount
+        self._fn_balance_of.gas_price_wei = self.call_contract_fee_price
+        self._fn_balance_of.debug_method = self.call_contract_debug_flag
+
         return self._fn_balance_of.block_call(account)
-    
-    
-    
+
     def decimals(self) -> int:
         """
         Implementation of decimals in contract Tc20
         Method of the function
-    
-    
-    
+
         """
-    
-    
-    
-    
-    
+
+        self._fn_decimals.callback_onfail = self._callback_onfail
+        self._fn_decimals.callback_onsuccess = self._callback_onsuccess
+        self._fn_decimals.auto_reciept = self.call_contract_enforce_tx_receipt
+        self._fn_decimals.gas_limit = self.call_contract_fee_amount
+        self._fn_decimals.gas_price_wei = self.call_contract_fee_price
+        self._fn_decimals.debug_method = self.call_contract_debug_flag
+
         return self._fn_decimals.block_call()
-    
-    
-    
+
     def decrease_allowance(self, spender: str, subtracted_value: int) -> bool:
         """
         Implementation of decrease_allowance in contract Tc20
         Method of the function
-    
-    
-    
+
         """
-    
-        return self._fn_decrease_allowance.block_send(spender, subtracted_value, self.call_contract_fee_amount,self.call_contract_fee_price,0,self.call_contract_debug_flag, self.call_contract_enforce_tx_receipt)
-    
-    
-    
-    
-    
-    
-    
+
+        self._fn_decrease_allowance.callback_onfail = self._callback_onfail
+        self._fn_decrease_allowance.callback_onsuccess = self._callback_onsuccess
+        self._fn_decrease_allowance.auto_reciept = self.call_contract_enforce_tx_receipt
+        self._fn_decrease_allowance.gas_limit = self.call_contract_fee_amount
+        self._fn_decrease_allowance.gas_price_wei = self.call_contract_fee_price
+        self._fn_decrease_allowance.debug_method = self.call_contract_debug_flag
+
+        return self._fn_decrease_allowance.block_send(spender, subtracted_value)
+
     def governance(self) -> str:
         """
         Implementation of governance in contract Tc20
         Method of the function
-    
-    
-    
+
         """
-    
-    
-    
-    
-    
+
+        self._fn_governance.callback_onfail = self._callback_onfail
+        self._fn_governance.callback_onsuccess = self._callback_onsuccess
+        self._fn_governance.auto_reciept = self.call_contract_enforce_tx_receipt
+        self._fn_governance.gas_limit = self.call_contract_fee_amount
+        self._fn_governance.gas_price_wei = self.call_contract_fee_price
+        self._fn_governance.debug_method = self.call_contract_debug_flag
+
         return self._fn_governance.block_call()
-    
-    
-    
+
     def increase_allowance(self, spender: str, added_value: int) -> bool:
         """
         Implementation of increase_allowance in contract Tc20
         Method of the function
-    
-    
-    
+
         """
-    
-        return self._fn_increase_allowance.block_send(spender, added_value, self.call_contract_fee_amount,self.call_contract_fee_price,0,self.call_contract_debug_flag, self.call_contract_enforce_tx_receipt)
-    
-    
-    
-    
-    
-    
-    
+
+        self._fn_increase_allowance.callback_onfail = self._callback_onfail
+        self._fn_increase_allowance.callback_onsuccess = self._callback_onsuccess
+        self._fn_increase_allowance.auto_reciept = self.call_contract_enforce_tx_receipt
+        self._fn_increase_allowance.gas_limit = self.call_contract_fee_amount
+        self._fn_increase_allowance.gas_price_wei = self.call_contract_fee_price
+        self._fn_increase_allowance.debug_method = self.call_contract_debug_flag
+
+        return self._fn_increase_allowance.block_send(spender, added_value)
+
     def mint(self, account: str, amount: int) -> None:
         """
         Implementation of mint in contract Tc20
         Method of the function
-    
-    
-    
+
         """
-    
-        return self._fn_mint.block_send(account, amount, self.call_contract_fee_amount,self.call_contract_fee_price,0,self.call_contract_debug_flag, self.call_contract_enforce_tx_receipt)
-    
-    
-    
-    
-    
-    
-    
+
+        self._fn_mint.callback_onfail = self._callback_onfail
+        self._fn_mint.callback_onsuccess = self._callback_onsuccess
+        self._fn_mint.auto_reciept = self.call_contract_enforce_tx_receipt
+        self._fn_mint.gas_limit = self.call_contract_fee_amount
+        self._fn_mint.gas_price_wei = self.call_contract_fee_price
+        self._fn_mint.debug_method = self.call_contract_debug_flag
+
+        return self._fn_mint.block_send(account, amount)
+
     def minters(self, index_0: str) -> bool:
         """
         Implementation of minters in contract Tc20
         Method of the function
-    
-    
-    
+
         """
-    
-    
-    
-    
-    
+
+        self._fn_minters.callback_onfail = self._callback_onfail
+        self._fn_minters.callback_onsuccess = self._callback_onsuccess
+        self._fn_minters.auto_reciept = self.call_contract_enforce_tx_receipt
+        self._fn_minters.gas_limit = self.call_contract_fee_amount
+        self._fn_minters.gas_price_wei = self.call_contract_fee_price
+        self._fn_minters.debug_method = self.call_contract_debug_flag
+
         return self._fn_minters.block_call(index_0)
-    
-    
-    
+
     def name(self) -> str:
         """
         Implementation of name in contract Tc20
         Method of the function
-    
-    
-    
+
         """
-    
-    
-    
-    
-    
+
+        self._fn_name.callback_onfail = self._callback_onfail
+        self._fn_name.callback_onsuccess = self._callback_onsuccess
+        self._fn_name.auto_reciept = self.call_contract_enforce_tx_receipt
+        self._fn_name.gas_limit = self.call_contract_fee_amount
+        self._fn_name.gas_price_wei = self.call_contract_fee_price
+        self._fn_name.debug_method = self.call_contract_debug_flag
+
         return self._fn_name.block_call()
-    
-    
-    
+
     def remove_minter(self, minter: str) -> None:
         """
         Implementation of remove_minter in contract Tc20
         Method of the function
-    
-    
-    
+
         """
-    
-        return self._fn_remove_minter.block_send(minter, self.call_contract_fee_amount,self.call_contract_fee_price,0,self.call_contract_debug_flag, self.call_contract_enforce_tx_receipt)
-    
-    
-    
-    
-    
-    
-    
+
+        self._fn_remove_minter.callback_onfail = self._callback_onfail
+        self._fn_remove_minter.callback_onsuccess = self._callback_onsuccess
+        self._fn_remove_minter.auto_reciept = self.call_contract_enforce_tx_receipt
+        self._fn_remove_minter.gas_limit = self.call_contract_fee_amount
+        self._fn_remove_minter.gas_price_wei = self.call_contract_fee_price
+        self._fn_remove_minter.debug_method = self.call_contract_debug_flag
+
+        return self._fn_remove_minter.block_send(minter)
+
     def set_governance(self, governance: str) -> None:
         """
         Implementation of set_governance in contract Tc20
         Method of the function
-    
-    
-    
+
         """
-    
-        return self._fn_set_governance.block_send(governance, self.call_contract_fee_amount,self.call_contract_fee_price,0,self.call_contract_debug_flag, self.call_contract_enforce_tx_receipt)
-    
-    
-    
-    
-    
-    
-    
+
+        self._fn_set_governance.callback_onfail = self._callback_onfail
+        self._fn_set_governance.callback_onsuccess = self._callback_onsuccess
+        self._fn_set_governance.auto_reciept = self.call_contract_enforce_tx_receipt
+        self._fn_set_governance.gas_limit = self.call_contract_fee_amount
+        self._fn_set_governance.gas_price_wei = self.call_contract_fee_price
+        self._fn_set_governance.debug_method = self.call_contract_debug_flag
+
+        return self._fn_set_governance.block_send(governance)
+
     def symbol(self) -> str:
         """
         Implementation of symbol in contract Tc20
         Method of the function
-    
-    
-    
+
         """
-    
-    
-    
-    
-    
+
+        self._fn_symbol.callback_onfail = self._callback_onfail
+        self._fn_symbol.callback_onsuccess = self._callback_onsuccess
+        self._fn_symbol.auto_reciept = self.call_contract_enforce_tx_receipt
+        self._fn_symbol.gas_limit = self.call_contract_fee_amount
+        self._fn_symbol.gas_price_wei = self.call_contract_fee_price
+        self._fn_symbol.debug_method = self.call_contract_debug_flag
+
         return self._fn_symbol.block_call()
-    
-    
-    
+
     def total_supply(self) -> int:
         """
         Implementation of total_supply in contract Tc20
         Method of the function
-    
-    
-    
+
         """
-    
-    
-    
-    
-    
+
+        self._fn_total_supply.callback_onfail = self._callback_onfail
+        self._fn_total_supply.callback_onsuccess = self._callback_onsuccess
+        self._fn_total_supply.auto_reciept = self.call_contract_enforce_tx_receipt
+        self._fn_total_supply.gas_limit = self.call_contract_fee_amount
+        self._fn_total_supply.gas_price_wei = self.call_contract_fee_price
+        self._fn_total_supply.debug_method = self.call_contract_debug_flag
+
         return self._fn_total_supply.block_call()
-    
-    
-    
+
     def transfer(self, recipient: str, amount: int) -> bool:
         """
         Implementation of transfer in contract Tc20
         Method of the function
-    
-    
-    
+
         """
-    
-        return self._fn_transfer.block_send(recipient, amount, self.call_contract_fee_amount,self.call_contract_fee_price,0,self.call_contract_debug_flag, self.call_contract_enforce_tx_receipt)
-    
-    
-    
-    
-    
-    
-    
+
+        self._fn_transfer.callback_onfail = self._callback_onfail
+        self._fn_transfer.callback_onsuccess = self._callback_onsuccess
+        self._fn_transfer.auto_reciept = self.call_contract_enforce_tx_receipt
+        self._fn_transfer.gas_limit = self.call_contract_fee_amount
+        self._fn_transfer.gas_price_wei = self.call_contract_fee_price
+        self._fn_transfer.debug_method = self.call_contract_debug_flag
+
+        return self._fn_transfer.block_send(recipient, amount)
+
     def transfer_from(self, sender: str, recipient: str, amount: int) -> bool:
         """
         Implementation of transfer_from in contract Tc20
         Method of the function
-    
-    
-    
-        """
-    
-        return self._fn_transfer_from.block_send(sender, recipient, amount, self.call_contract_fee_amount,self.call_contract_fee_price,0,self.call_contract_debug_flag, self.call_contract_enforce_tx_receipt)
-    
-    
-    
-    
 
-    def CallContractWait(self, t_long:int)-> "Tc20":
+        """
+
+        self._fn_transfer_from.callback_onfail = self._callback_onfail
+        self._fn_transfer_from.callback_onsuccess = self._callback_onsuccess
+        self._fn_transfer_from.auto_reciept = self.call_contract_enforce_tx_receipt
+        self._fn_transfer_from.gas_limit = self.call_contract_fee_amount
+        self._fn_transfer_from.gas_price_wei = self.call_contract_fee_price
+        self._fn_transfer_from.debug_method = self.call_contract_debug_flag
+
+        return self._fn_transfer_from.block_send(sender, recipient, amount)
+
+    def CallContractWait(self, t_long: int) -> "Tc20":
         self._fn_add_minter.setWait(t_long)
         self._fn_allowance.setWait(t_long)
         self._fn_approve.setWait(t_long)
@@ -1735,12 +1699,12 @@ class Tc20(ContractBase):
         self._fn_transfer_from.setWait(t_long)
         return self
 
-
     @staticmethod
     def abi():
         """Return the ABI to the underlying contract."""
         return json.loads(
-            '[{"inputs":[],"payable":false,"stateMutability":"nonpayable","type":"constructor"},{"anonymous":false,"inputs":[{"indexed":true,"internalType":"address","name":"owner","type":"address"},{"indexed":true,"internalType":"address","name":"spender","type":"address"},{"indexed":false,"internalType":"uint256","name":"value","type":"uint256"}],"name":"Approval","type":"event"},{"anonymous":false,"inputs":[{"indexed":true,"internalType":"address","name":"from","type":"address"},{"indexed":true,"internalType":"address","name":"to","type":"address"},{"indexed":false,"internalType":"uint256","name":"value","type":"uint256"}],"name":"Transfer","type":"event"},{"constant":false,"inputs":[{"internalType":"address","name":"_minter","type":"address"}],"name":"addMinter","outputs":[],"payable":false,"stateMutability":"nonpayable","type":"function"},{"constant":true,"inputs":[{"internalType":"address","name":"owner","type":"address"},{"internalType":"address","name":"spender","type":"address"}],"name":"allowance","outputs":[{"internalType":"uint256","name":"","type":"uint256"}],"payable":false,"stateMutability":"view","type":"function"},{"constant":false,"inputs":[{"internalType":"address","name":"spender","type":"address"},{"internalType":"uint256","name":"amount","type":"uint256"}],"name":"approve","outputs":[{"internalType":"bool","name":"","type":"bool"}],"payable":false,"stateMutability":"nonpayable","type":"function"},{"constant":true,"inputs":[{"internalType":"address","name":"account","type":"address"}],"name":"balanceOf","outputs":[{"internalType":"uint256","name":"","type":"uint256"}],"payable":false,"stateMutability":"view","type":"function"},{"constant":true,"inputs":[],"name":"decimals","outputs":[{"internalType":"uint8","name":"","type":"uint8"}],"payable":false,"stateMutability":"view","type":"function"},{"constant":false,"inputs":[{"internalType":"address","name":"spender","type":"address"},{"internalType":"uint256","name":"subtractedValue","type":"uint256"}],"name":"decreaseAllowance","outputs":[{"internalType":"bool","name":"","type":"bool"}],"payable":false,"stateMutability":"nonpayable","type":"function"},{"constant":true,"inputs":[],"name":"governance","outputs":[{"internalType":"address","name":"","type":"address"}],"payable":false,"stateMutability":"view","type":"function"},{"constant":false,"inputs":[{"internalType":"address","name":"spender","type":"address"},{"internalType":"uint256","name":"addedValue","type":"uint256"}],"name":"increaseAllowance","outputs":[{"internalType":"bool","name":"","type":"bool"}],"payable":false,"stateMutability":"nonpayable","type":"function"},{"constant":false,"inputs":[{"internalType":"address","name":"account","type":"address"},{"internalType":"uint256","name":"amount","type":"uint256"}],"name":"mint","outputs":[],"payable":false,"stateMutability":"nonpayable","type":"function"},{"constant":true,"inputs":[{"internalType":"address","name":"index_0","type":"address"}],"name":"minters","outputs":[{"internalType":"bool","name":"","type":"bool"}],"payable":false,"stateMutability":"view","type":"function"},{"constant":true,"inputs":[],"name":"name","outputs":[{"internalType":"string","name":"","type":"string"}],"payable":false,"stateMutability":"view","type":"function"},{"constant":false,"inputs":[{"internalType":"address","name":"_minter","type":"address"}],"name":"removeMinter","outputs":[],"payable":false,"stateMutability":"nonpayable","type":"function"},{"constant":false,"inputs":[{"internalType":"address","name":"_governance","type":"address"}],"name":"setGovernance","outputs":[],"payable":false,"stateMutability":"nonpayable","type":"function"},{"constant":true,"inputs":[],"name":"symbol","outputs":[{"internalType":"string","name":"","type":"string"}],"payable":false,"stateMutability":"view","type":"function"},{"constant":true,"inputs":[],"name":"totalSupply","outputs":[{"internalType":"uint256","name":"","type":"uint256"}],"payable":false,"stateMutability":"view","type":"function"},{"constant":false,"inputs":[{"internalType":"address","name":"recipient","type":"address"},{"internalType":"uint256","name":"amount","type":"uint256"}],"name":"transfer","outputs":[{"internalType":"bool","name":"","type":"bool"}],"payable":false,"stateMutability":"nonpayable","type":"function"},{"constant":false,"inputs":[{"internalType":"address","name":"sender","type":"address"},{"internalType":"address","name":"recipient","type":"address"},{"internalType":"uint256","name":"amount","type":"uint256"}],"name":"transferFrom","outputs":[{"internalType":"bool","name":"","type":"bool"}],"payable":false,"stateMutability":"nonpayable","type":"function"}]'  # noqa: E501 (line-too-long)
+            '[{"inputs":[],"payable":false,"stateMutability":"nonpayable","type":"constructor"},{"anonymous":false,"inputs":[{"indexed":true,"internalType":"address","name":"owner","type":"address"},{"indexed":true,"internalType":"address","name":"spender","type":"address"},{"indexed":false,"internalType":"uint256","name":"value","type":"uint256"}],"name":"Approval","type":"event"},{"anonymous":false,"inputs":[{"indexed":true,"internalType":"address","name":"from","type":"address"},{"indexed":true,"internalType":"address","name":"to","type":"address"},{"indexed":false,"internalType":"uint256","name":"value","type":"uint256"}],"name":"Transfer","type":"event"},{"constant":false,"inputs":[{"internalType":"address","name":"_minter","type":"address"}],"name":"addMinter","outputs":[],"payable":false,"stateMutability":"nonpayable","type":"function"},{"constant":true,"inputs":[{"internalType":"address","name":"owner","type":"address"},{"internalType":"address","name":"spender","type":"address"}],"name":"allowance","outputs":[{"internalType":"uint256","name":"","type":"uint256"}],"payable":false,"stateMutability":"view","type":"function"},{"constant":false,"inputs":[{"internalType":"address","name":"spender","type":"address"},{"internalType":"uint256","name":"amount","type":"uint256"}],"name":"approve","outputs":[{"internalType":"bool","name":"","type":"bool"}],"payable":false,"stateMutability":"nonpayable","type":"function"},{"constant":true,"inputs":[{"internalType":"address","name":"account","type":"address"}],"name":"balanceOf","outputs":[{"internalType":"uint256","name":"","type":"uint256"}],"payable":false,"stateMutability":"view","type":"function"},{"constant":true,"inputs":[],"name":"decimals","outputs":[{"internalType":"uint8","name":"","type":"uint8"}],"payable":false,"stateMutability":"view","type":"function"},{"constant":false,"inputs":[{"internalType":"address","name":"spender","type":"address"},{"internalType":"uint256","name":"subtractedValue","type":"uint256"}],"name":"decreaseAllowance","outputs":[{"internalType":"bool","name":"","type":"bool"}],"payable":false,"stateMutability":"nonpayable","type":"function"},{"constant":true,"inputs":[],"name":"governance","outputs":[{"internalType":"address","name":"","type":"address"}],"payable":false,"stateMutability":"view","type":"function"},{"constant":false,"inputs":[{"internalType":"address","name":"spender","type":"address"},{"internalType":"uint256","name":"addedValue","type":"uint256"}],"name":"increaseAllowance","outputs":[{"internalType":"bool","name":"","type":"bool"}],"payable":false,"stateMutability":"nonpayable","type":"function"},{"constant":false,"inputs":[{"internalType":"address","name":"account","type":"address"},{"internalType":"uint256","name":"amount","type":"uint256"}],"name":"mint","outputs":[],"payable":false,"stateMutability":"nonpayable","type":"function"},{"constant":true,"inputs":[{"internalType":"address","name":"index_0","type":"address"}],"name":"minters","outputs":[{"internalType":"bool","name":"","type":"bool"}],"payable":false,"stateMutability":"view","type":"function"},{"constant":true,"inputs":[],"name":"name","outputs":[{"internalType":"string","name":"","type":"string"}],"payable":false,"stateMutability":"view","type":"function"},{"constant":false,"inputs":[{"internalType":"address","name":"_minter","type":"address"}],"name":"removeMinter","outputs":[],"payable":false,"stateMutability":"nonpayable","type":"function"},{"constant":false,"inputs":[{"internalType":"address","name":"_governance","type":"address"}],"name":"setGovernance","outputs":[],"payable":false,"stateMutability":"nonpayable","type":"function"},{"constant":true,"inputs":[],"name":"symbol","outputs":[{"internalType":"string","name":"","type":"string"}],"payable":false,"stateMutability":"view","type":"function"},{"constant":true,"inputs":[],"name":"totalSupply","outputs":[{"internalType":"uint256","name":"","type":"uint256"}],"payable":false,"stateMutability":"view","type":"function"},{"constant":false,"inputs":[{"internalType":"address","name":"recipient","type":"address"},{"internalType":"uint256","name":"amount","type":"uint256"}],"name":"transfer","outputs":[{"internalType":"bool","name":"","type":"bool"}],"payable":false,"stateMutability":"nonpayable","type":"function"},{"constant":false,"inputs":[{"internalType":"address","name":"sender","type":"address"},{"internalType":"address","name":"recipient","type":"address"},{"internalType":"uint256","name":"amount","type":"uint256"}],"name":"transferFrom","outputs":[{"internalType":"bool","name":"","type":"bool"}],"payable":false,"stateMutability":"nonpayable","type":"function"}]'
+            # noqa: E501 (line-too-long)
         )
 
 # pylint: disable=too-many-lines

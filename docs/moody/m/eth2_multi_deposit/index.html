@@ -108,7 +108,7 @@ class DepositMethod(ContractMethod):  # pylint: disable=invalid-name
         )
         return (pubkey, withdrawal_credentials, signature, deposit_data_root)
 
-    def block_send(self, pubkey: List[Union[bytes, str]], withdrawal_credentials: List[Union[bytes, str]], signature: List[Union[bytes, str]], deposit_data_root: List[Union[bytes, str]], _gaswei: int, _pricewei: int, _valeth: int = 0, _debugtx: bool = False, _receipList: bool = False) -&gt; None:
+    def block_send(self, pubkey: List[Union[bytes, str]], withdrawal_credentials: List[Union[bytes, str]], signature: List[Union[bytes, str]], deposit_data_root: List[Union[bytes, str]], _valeth: int = 0) -&gt; None:
         &#34;&#34;&#34;Execute underlying contract method via eth_call.
 
         :param tx_params: transaction parameters
@@ -119,15 +119,15 @@ class DepositMethod(ContractMethod):  # pylint: disable=invalid-name
 
             _t = _fn.buildTransaction({
                 &#39;from&#39;: self._operate,
-                &#39;gas&#39;: _gaswei,
-                &#39;gasPrice&#39;: _pricewei
+                &#39;gas&#39;: self.gas_limit,
+                &#39;gasPrice&#39;: self.gas_price_wei
             })
             _t[&#39;nonce&#39;] = self._web3_eth.getTransactionCount(self._operate)
 
             if _valeth &gt; 0:
                 _t[&#39;value&#39;] = _valeth
 
-            if _debugtx:
+            if self.debug_method:
                 print(f&#34;======== Signing ✅ by {self._operate}&#34;)
                 print(f&#34;======== Transaction ✅ check&#34;)
                 print(_t)
@@ -137,32 +137,32 @@ class DepositMethod(ContractMethod):  # pylint: disable=invalid-name
                 signed = self._web3_eth.account.sign_transaction(_t)
                 txHash = self._web3_eth.sendRawTransaction(signed.rawTransaction)
                 tx_receipt = None
-                if _receipList is True:
+                if self.auto_reciept is True:
                     print(f&#34;======== awaiting Confirmation 🚸️ {self.sign}&#34;)
-                    tx_receipt = self._web3_eth.waitForTransactionReceipt(txHash)
-                    if _debugtx:
+                    tx_receipt = self._web3_eth.wait_for_transaction_receipt(txHash)
+                    if self.debug_method:
                         print(&#34;======== TX Result ✅&#34;)
                         print(tx_receipt)
 
-                print(f&#34;======== TX blockHash ✅&#34;)
-                if tx_receipt is not None:
-                    print(f&#34;{Bolors.OK}{tx_receipt.blockHash.hex()}{Bolors.RESET}&#34;)
-                else:
-                    print(f&#34;{Bolors.WARNING}{txHash.hex()}{Bolors.RESET} - broadcast hash&#34;)
+                self._on_receipt_handle(&#34;deposit&#34;, tx_receipt, txHash)
 
-            if _receipList is False:
+            if self.auto_reciept is False:
                 time.sleep(self._wait)
 
 
         except ContractLogicError as er:
             print(f&#34;{Bolors.FAIL}Error {er} {Bolors.RESET}: deposit&#34;)
-
+            message = f&#34;Error {er}: deposit&#34;
+            self._on_fail(&#34;deposit&#34;, message)
         except ValueError as err:
             if &#34;message&#34; in err.args[0]:
                 message = err.args[0][&#34;message&#34;]
                 print(f&#34;{Bolors.FAIL}Error Revert {Bolors.RESET}, deposit: {message}&#34;)
             else:
+                message = &#34;Error Revert , Reason: Unknown&#34;
                 print(f&#34;{Bolors.FAIL}Error Revert {Bolors.RESET}, deposit. Reason: Unknown&#34;)
+
+            self._on_fail(&#34;deposit&#34;, message)
 
     def send_transaction(self, pubkey: List[Union[bytes, str]], withdrawal_credentials: List[Union[bytes, str]], signature: List[Union[bytes, str]], deposit_data_root: List[Union[bytes, str]], tx_params: Optional[TxParams] = None) -&gt; Union[HexBytes, bytes]:
         &#34;&#34;&#34;Execute underlying contract method via eth_sendTransaction.
@@ -217,8 +217,7 @@ class Eth2MultiDeposit(ContractBase):
         &#34;&#34;&#34;Get an instance of wrapper for smart contract.
         &#34;&#34;&#34;
         # pylint: disable=too-many-statements
-        super().__init__()
-        self.contract_address = contract_address
+        super().__init__(contract_address, Eth2MultiDeposit.abi())
         web3 = core_lib.w3
 
         if not validator:
@@ -241,9 +240,9 @@ class Eth2MultiDeposit(ContractBase):
 
         self._web3_eth = web3.eth
         functions = self._web3_eth.contract(address=to_checksum_address(contract_address), abi=Eth2MultiDeposit.abi()).functions
-        signed = SignatureGenerator(Eth2MultiDeposit.abi())
-        validator.bindSignatures(signed)
-        self.SIGNATURES = signed
+        self._signatures = SignatureGenerator(Eth2MultiDeposit.abi())
+        validator.bindSignatures(self._signatures)
+
         self._fn_deposit = DepositMethod(core_lib, contract_address, functions.deposit, validator)
 
     def deposit(self, pubkey: List[Union[bytes, str]], withdrawal_credentials: List[Union[bytes, str]], signature: List[Union[bytes, str]], deposit_data_root: List[Union[bytes, str]], wei: int = 0) -&gt; None:
@@ -251,11 +250,18 @@ class Eth2MultiDeposit(ContractBase):
         Implementation of deposit in contract Eth2MultiDeposit
         Method of the function
     
-    
-    
         &#34;&#34;&#34;
 
-        return self._fn_deposit.block_send(pubkey, withdrawal_credentials, signature, deposit_data_root, self.call_contract_fee_amount, self.call_contract_fee_price, wei, self.call_contract_debug_flag, self.call_contract_enforce_tx_receipt)
+        self._fn_deposit.callback_onfail = self._callback_onfail
+        self._fn_deposit.callback_onsuccess = self._callback_onsuccess
+        self._fn_deposit.auto_reciept = self.call_contract_enforce_tx_receipt
+        self._fn_deposit.gas_limit = self.call_contract_fee_amount
+        self._fn_deposit.gas_price_wei = self.call_contract_fee_price
+        self._fn_deposit.debug_method = self.call_contract_debug_flag
+
+        self._fn_deposit.wei_value = wei
+
+        return self._fn_deposit.block_send(pubkey, withdrawal_credentials, signature, deposit_data_root, wei)
 
     def CallContractWait(self, t_long: int) -&gt; &#34;Eth2MultiDeposit&#34;:
         self._fn_deposit.setWait(t_long)
@@ -324,7 +330,7 @@ class Eth2MultiDeposit(ContractBase):
         )
         return (pubkey, withdrawal_credentials, signature, deposit_data_root)
 
-    def block_send(self, pubkey: List[Union[bytes, str]], withdrawal_credentials: List[Union[bytes, str]], signature: List[Union[bytes, str]], deposit_data_root: List[Union[bytes, str]], _gaswei: int, _pricewei: int, _valeth: int = 0, _debugtx: bool = False, _receipList: bool = False) -&gt; None:
+    def block_send(self, pubkey: List[Union[bytes, str]], withdrawal_credentials: List[Union[bytes, str]], signature: List[Union[bytes, str]], deposit_data_root: List[Union[bytes, str]], _valeth: int = 0) -&gt; None:
         &#34;&#34;&#34;Execute underlying contract method via eth_call.
 
         :param tx_params: transaction parameters
@@ -335,15 +341,15 @@ class Eth2MultiDeposit(ContractBase):
 
             _t = _fn.buildTransaction({
                 &#39;from&#39;: self._operate,
-                &#39;gas&#39;: _gaswei,
-                &#39;gasPrice&#39;: _pricewei
+                &#39;gas&#39;: self.gas_limit,
+                &#39;gasPrice&#39;: self.gas_price_wei
             })
             _t[&#39;nonce&#39;] = self._web3_eth.getTransactionCount(self._operate)
 
             if _valeth &gt; 0:
                 _t[&#39;value&#39;] = _valeth
 
-            if _debugtx:
+            if self.debug_method:
                 print(f&#34;======== Signing ✅ by {self._operate}&#34;)
                 print(f&#34;======== Transaction ✅ check&#34;)
                 print(_t)
@@ -353,32 +359,32 @@ class Eth2MultiDeposit(ContractBase):
                 signed = self._web3_eth.account.sign_transaction(_t)
                 txHash = self._web3_eth.sendRawTransaction(signed.rawTransaction)
                 tx_receipt = None
-                if _receipList is True:
+                if self.auto_reciept is True:
                     print(f&#34;======== awaiting Confirmation 🚸️ {self.sign}&#34;)
-                    tx_receipt = self._web3_eth.waitForTransactionReceipt(txHash)
-                    if _debugtx:
+                    tx_receipt = self._web3_eth.wait_for_transaction_receipt(txHash)
+                    if self.debug_method:
                         print(&#34;======== TX Result ✅&#34;)
                         print(tx_receipt)
 
-                print(f&#34;======== TX blockHash ✅&#34;)
-                if tx_receipt is not None:
-                    print(f&#34;{Bolors.OK}{tx_receipt.blockHash.hex()}{Bolors.RESET}&#34;)
-                else:
-                    print(f&#34;{Bolors.WARNING}{txHash.hex()}{Bolors.RESET} - broadcast hash&#34;)
+                self._on_receipt_handle(&#34;deposit&#34;, tx_receipt, txHash)
 
-            if _receipList is False:
+            if self.auto_reciept is False:
                 time.sleep(self._wait)
 
 
         except ContractLogicError as er:
             print(f&#34;{Bolors.FAIL}Error {er} {Bolors.RESET}: deposit&#34;)
-
+            message = f&#34;Error {er}: deposit&#34;
+            self._on_fail(&#34;deposit&#34;, message)
         except ValueError as err:
             if &#34;message&#34; in err.args[0]:
                 message = err.args[0][&#34;message&#34;]
                 print(f&#34;{Bolors.FAIL}Error Revert {Bolors.RESET}, deposit: {message}&#34;)
             else:
+                message = &#34;Error Revert , Reason: Unknown&#34;
                 print(f&#34;{Bolors.FAIL}Error Revert {Bolors.RESET}, deposit. Reason: Unknown&#34;)
+
+            self._on_fail(&#34;deposit&#34;, message)
 
     def send_transaction(self, pubkey: List[Union[bytes, str]], withdrawal_credentials: List[Union[bytes, str]], signature: List[Union[bytes, str]], deposit_data_root: List[Union[bytes, str]], tx_params: Optional[TxParams] = None) -&gt; Union[HexBytes, bytes]:
         &#34;&#34;&#34;Execute underlying contract method via eth_sendTransaction.
@@ -408,7 +414,7 @@ class Eth2MultiDeposit(ContractBase):
 <h3>Methods</h3>
 <dl>
 <dt id="moody.m.eth2_multi_deposit.DepositMethod.block_send"><code class="name flex">
-<span>def <span class="ident">block_send</span></span>(<span>self, pubkey: List[Union[bytes, str]], withdrawal_credentials: List[Union[bytes, str]], signature: List[Union[bytes, str]], deposit_data_root: List[Union[bytes, str]], _gaswei: int, _pricewei: int) ‑> NoneType</span>
+<span>def <span class="ident">block_send</span></span>(<span>self, pubkey: List[Union[bytes, str]], withdrawal_credentials: List[Union[bytes, str]], signature: List[Union[bytes, str]], deposit_data_root: List[Union[bytes, str]]) ‑> NoneType</span>
 </code></dt>
 <dd>
 <div class="desc"><p>Execute underlying contract method via eth_call.</p>
@@ -418,7 +424,7 @@ class Eth2MultiDeposit(ContractBase):
 <summary>
 <span>Expand source code</span>
 </summary>
-<pre><code class="python">def block_send(self, pubkey: List[Union[bytes, str]], withdrawal_credentials: List[Union[bytes, str]], signature: List[Union[bytes, str]], deposit_data_root: List[Union[bytes, str]], _gaswei: int, _pricewei: int, _valeth: int = 0, _debugtx: bool = False, _receipList: bool = False) -&gt; None:
+<pre><code class="python">def block_send(self, pubkey: List[Union[bytes, str]], withdrawal_credentials: List[Union[bytes, str]], signature: List[Union[bytes, str]], deposit_data_root: List[Union[bytes, str]], _valeth: int = 0) -&gt; None:
     &#34;&#34;&#34;Execute underlying contract method via eth_call.
 
     :param tx_params: transaction parameters
@@ -429,15 +435,15 @@ class Eth2MultiDeposit(ContractBase):
 
         _t = _fn.buildTransaction({
             &#39;from&#39;: self._operate,
-            &#39;gas&#39;: _gaswei,
-            &#39;gasPrice&#39;: _pricewei
+            &#39;gas&#39;: self.gas_limit,
+            &#39;gasPrice&#39;: self.gas_price_wei
         })
         _t[&#39;nonce&#39;] = self._web3_eth.getTransactionCount(self._operate)
 
         if _valeth &gt; 0:
             _t[&#39;value&#39;] = _valeth
 
-        if _debugtx:
+        if self.debug_method:
             print(f&#34;======== Signing ✅ by {self._operate}&#34;)
             print(f&#34;======== Transaction ✅ check&#34;)
             print(_t)
@@ -447,32 +453,32 @@ class Eth2MultiDeposit(ContractBase):
             signed = self._web3_eth.account.sign_transaction(_t)
             txHash = self._web3_eth.sendRawTransaction(signed.rawTransaction)
             tx_receipt = None
-            if _receipList is True:
+            if self.auto_reciept is True:
                 print(f&#34;======== awaiting Confirmation 🚸️ {self.sign}&#34;)
-                tx_receipt = self._web3_eth.waitForTransactionReceipt(txHash)
-                if _debugtx:
+                tx_receipt = self._web3_eth.wait_for_transaction_receipt(txHash)
+                if self.debug_method:
                     print(&#34;======== TX Result ✅&#34;)
                     print(tx_receipt)
 
-            print(f&#34;======== TX blockHash ✅&#34;)
-            if tx_receipt is not None:
-                print(f&#34;{Bolors.OK}{tx_receipt.blockHash.hex()}{Bolors.RESET}&#34;)
-            else:
-                print(f&#34;{Bolors.WARNING}{txHash.hex()}{Bolors.RESET} - broadcast hash&#34;)
+            self._on_receipt_handle(&#34;deposit&#34;, tx_receipt, txHash)
 
-        if _receipList is False:
+        if self.auto_reciept is False:
             time.sleep(self._wait)
 
 
     except ContractLogicError as er:
         print(f&#34;{Bolors.FAIL}Error {er} {Bolors.RESET}: deposit&#34;)
-
+        message = f&#34;Error {er}: deposit&#34;
+        self._on_fail(&#34;deposit&#34;, message)
     except ValueError as err:
         if &#34;message&#34; in err.args[0]:
             message = err.args[0][&#34;message&#34;]
             print(f&#34;{Bolors.FAIL}Error Revert {Bolors.RESET}, deposit: {message}&#34;)
         else:
-            print(f&#34;{Bolors.FAIL}Error Revert {Bolors.RESET}, deposit. Reason: Unknown&#34;)</code></pre>
+            message = &#34;Error Revert , Reason: Unknown&#34;
+            print(f&#34;{Bolors.FAIL}Error Revert {Bolors.RESET}, deposit. Reason: Unknown&#34;)
+
+        self._on_fail(&#34;deposit&#34;, message)</code></pre>
 </details>
 </dd>
 <dt id="moody.m.eth2_multi_deposit.DepositMethod.build_transaction"><code class="name flex">
@@ -601,8 +607,7 @@ class Eth2MultiDeposit(ContractBase):
         &#34;&#34;&#34;Get an instance of wrapper for smart contract.
         &#34;&#34;&#34;
         # pylint: disable=too-many-statements
-        super().__init__()
-        self.contract_address = contract_address
+        super().__init__(contract_address, Eth2MultiDeposit.abi())
         web3 = core_lib.w3
 
         if not validator:
@@ -625,9 +630,9 @@ class Eth2MultiDeposit(ContractBase):
 
         self._web3_eth = web3.eth
         functions = self._web3_eth.contract(address=to_checksum_address(contract_address), abi=Eth2MultiDeposit.abi()).functions
-        signed = SignatureGenerator(Eth2MultiDeposit.abi())
-        validator.bindSignatures(signed)
-        self.SIGNATURES = signed
+        self._signatures = SignatureGenerator(Eth2MultiDeposit.abi())
+        validator.bindSignatures(self._signatures)
+
         self._fn_deposit = DepositMethod(core_lib, contract_address, functions.deposit, validator)
 
     def deposit(self, pubkey: List[Union[bytes, str]], withdrawal_credentials: List[Union[bytes, str]], signature: List[Union[bytes, str]], deposit_data_root: List[Union[bytes, str]], wei: int = 0) -&gt; None:
@@ -635,11 +640,18 @@ class Eth2MultiDeposit(ContractBase):
         Implementation of deposit in contract Eth2MultiDeposit
         Method of the function
     
-    
-    
         &#34;&#34;&#34;
 
-        return self._fn_deposit.block_send(pubkey, withdrawal_credentials, signature, deposit_data_root, self.call_contract_fee_amount, self.call_contract_fee_price, wei, self.call_contract_debug_flag, self.call_contract_enforce_tx_receipt)
+        self._fn_deposit.callback_onfail = self._callback_onfail
+        self._fn_deposit.callback_onsuccess = self._callback_onsuccess
+        self._fn_deposit.auto_reciept = self.call_contract_enforce_tx_receipt
+        self._fn_deposit.gas_limit = self.call_contract_fee_amount
+        self._fn_deposit.gas_price_wei = self.call_contract_fee_price
+        self._fn_deposit.debug_method = self.call_contract_debug_flag
+
+        self._fn_deposit.wei_value = wei
+
+        return self._fn_deposit.block_send(pubkey, withdrawal_credentials, signature, deposit_data_root, wei)
 
     def CallContractWait(self, t_long: int) -&gt; &#34;Eth2MultiDeposit&#34;:
         self._fn_deposit.setWait(t_long)
@@ -714,11 +726,18 @@ Method of the function</p></div>
     Implementation of deposit in contract Eth2MultiDeposit
     Method of the function
 
-
-
     &#34;&#34;&#34;
 
-    return self._fn_deposit.block_send(pubkey, withdrawal_credentials, signature, deposit_data_root, self.call_contract_fee_amount, self.call_contract_fee_price, wei, self.call_contract_debug_flag, self.call_contract_enforce_tx_receipt)</code></pre>
+    self._fn_deposit.callback_onfail = self._callback_onfail
+    self._fn_deposit.callback_onsuccess = self._callback_onsuccess
+    self._fn_deposit.auto_reciept = self.call_contract_enforce_tx_receipt
+    self._fn_deposit.gas_limit = self.call_contract_fee_amount
+    self._fn_deposit.gas_price_wei = self.call_contract_fee_price
+    self._fn_deposit.debug_method = self.call_contract_debug_flag
+
+    self._fn_deposit.wei_value = wei
+
+    return self._fn_deposit.block_send(pubkey, withdrawal_credentials, signature, deposit_data_root, wei)</code></pre>
 </details>
 </dd>
 </dl>

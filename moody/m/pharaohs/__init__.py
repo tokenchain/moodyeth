@@ -177,7 +177,7 @@ class ApproveMethod(ContractMethod):  # pylint: disable=invalid-name
         raw_amount = int(raw_amount)
         return (spender, raw_amount)
 
-    def block_send(self, spender: str, raw_amount: int, _gaswei: int, _pricewei: int, _valeth: int = 0, _debugtx: bool = False, _receipList: bool = False) -> bool:
+    def block_send(self, spender: str, raw_amount: int, _valeth: int = 0) -> bool:
         """Execute underlying contract method via eth_call.
 
         :param tx_params: transaction parameters
@@ -188,15 +188,15 @@ class ApproveMethod(ContractMethod):  # pylint: disable=invalid-name
 
             _t = _fn.buildTransaction({
                 'from': self._operate,
-                'gas': _gaswei,
-                'gasPrice': _pricewei
+                'gas': self.gas_limit,
+                'gasPrice': self.gas_price_wei
             })
             _t['nonce'] = self._web3_eth.getTransactionCount(self._operate)
 
             if _valeth > 0:
                 _t['value'] = _valeth
 
-            if _debugtx:
+            if self.debug_method:
                 print(f"======== Signing ✅ by {self._operate}")
                 print(f"======== Transaction ✅ check")
                 print(_t)
@@ -206,32 +206,32 @@ class ApproveMethod(ContractMethod):  # pylint: disable=invalid-name
                 signed = self._web3_eth.account.sign_transaction(_t)
                 txHash = self._web3_eth.sendRawTransaction(signed.rawTransaction)
                 tx_receipt = None
-                if _receipList is True:
+                if self.auto_reciept is True:
                     print(f"======== awaiting Confirmation 🚸️ {self.sign}")
-                    tx_receipt = self._web3_eth.waitForTransactionReceipt(txHash)
-                    if _debugtx:
+                    tx_receipt = self._web3_eth.wait_for_transaction_receipt(txHash)
+                    if self.debug_method:
                         print("======== TX Result ✅")
                         print(tx_receipt)
 
-                print(f"======== TX blockHash ✅")
-                if tx_receipt is not None:
-                    print(f"{Bolors.OK}{tx_receipt.blockHash.hex()}{Bolors.RESET}")
-                else:
-                    print(f"{Bolors.WARNING}{txHash.hex()}{Bolors.RESET} - broadcast hash")
+                self._on_receipt_handle("approve", tx_receipt, txHash)
 
-            if _receipList is False:
+            if self.auto_reciept is False:
                 time.sleep(self._wait)
 
 
         except ContractLogicError as er:
             print(f"{Bolors.FAIL}Error {er} {Bolors.RESET}: approve")
-
+            message = f"Error {er}: approve"
+            self._on_fail("approve", message)
         except ValueError as err:
             if "message" in err.args[0]:
                 message = err.args[0]["message"]
                 print(f"{Bolors.FAIL}Error Revert {Bolors.RESET}, approve: {message}")
             else:
+                message = "Error Revert , Reason: Unknown"
                 print(f"{Bolors.FAIL}Error Revert {Bolors.RESET}, approve. Reason: Unknown")
+
+            self._on_fail("approve", message)
 
     def send_transaction(self, spender: str, raw_amount: int, tx_params: Optional[TxParams] = None) -> Union[HexBytes, bytes]:
         """Execute underlying contract method via eth_sendTransaction.
@@ -367,7 +367,7 @@ class DelegateMethod(ContractMethod):  # pylint: disable=invalid-name
         delegatee = self.validate_and_checksum_address(delegatee)
         return (delegatee)
 
-    def block_send(self, delegatee: str, _gaswei: int, _pricewei: int, _valeth: int = 0, _debugtx: bool = False, _receipList: bool = False) -> None:
+    def block_send(self, delegatee: str, _valeth: int = 0) -> None:
         """Execute underlying contract method via eth_call.
 
         :param tx_params: transaction parameters
@@ -378,15 +378,15 @@ class DelegateMethod(ContractMethod):  # pylint: disable=invalid-name
 
             _t = _fn.buildTransaction({
                 'from': self._operate,
-                'gas': _gaswei,
-                'gasPrice': _pricewei
+                'gas': self.gas_limit,
+                'gasPrice': self.gas_price_wei
             })
             _t['nonce'] = self._web3_eth.getTransactionCount(self._operate)
 
             if _valeth > 0:
                 _t['value'] = _valeth
 
-            if _debugtx:
+            if self.debug_method:
                 print(f"======== Signing ✅ by {self._operate}")
                 print(f"======== Transaction ✅ check")
                 print(_t)
@@ -396,32 +396,32 @@ class DelegateMethod(ContractMethod):  # pylint: disable=invalid-name
                 signed = self._web3_eth.account.sign_transaction(_t)
                 txHash = self._web3_eth.sendRawTransaction(signed.rawTransaction)
                 tx_receipt = None
-                if _receipList is True:
+                if self.auto_reciept is True:
                     print(f"======== awaiting Confirmation 🚸️ {self.sign}")
-                    tx_receipt = self._web3_eth.waitForTransactionReceipt(txHash)
-                    if _debugtx:
+                    tx_receipt = self._web3_eth.wait_for_transaction_receipt(txHash)
+                    if self.debug_method:
                         print("======== TX Result ✅")
                         print(tx_receipt)
 
-                print(f"======== TX blockHash ✅")
-                if tx_receipt is not None:
-                    print(f"{Bolors.OK}{tx_receipt.blockHash.hex()}{Bolors.RESET}")
-                else:
-                    print(f"{Bolors.WARNING}{txHash.hex()}{Bolors.RESET} - broadcast hash")
+                self._on_receipt_handle("delegate", tx_receipt, txHash)
 
-            if _receipList is False:
+            if self.auto_reciept is False:
                 time.sleep(self._wait)
 
 
         except ContractLogicError as er:
             print(f"{Bolors.FAIL}Error {er} {Bolors.RESET}: delegate")
-
+            message = f"Error {er}: delegate"
+            self._on_fail("delegate", message)
         except ValueError as err:
             if "message" in err.args[0]:
                 message = err.args[0]["message"]
                 print(f"{Bolors.FAIL}Error Revert {Bolors.RESET}, delegate: {message}")
             else:
+                message = "Error Revert , Reason: Unknown"
                 print(f"{Bolors.FAIL}Error Revert {Bolors.RESET}, delegate. Reason: Unknown")
+
+            self._on_fail("delegate", message)
 
     def send_transaction(self, delegatee: str, tx_params: Optional[TxParams] = None) -> Union[HexBytes, bytes]:
         """Execute underlying contract method via eth_sendTransaction.
@@ -493,7 +493,7 @@ class DelegateBySigMethod(ContractMethod):  # pylint: disable=invalid-name
         )
         return (delegatee, nonce, expiry, v, r, s)
 
-    def block_send(self, delegatee: str, nonce: int, expiry: int, v: int, r: Union[bytes, str], s: Union[bytes, str], _gaswei: int, _pricewei: int, _valeth: int = 0, _debugtx: bool = False, _receipList: bool = False) -> None:
+    def block_send(self, delegatee: str, nonce: int, expiry: int, v: int, r: Union[bytes, str], s: Union[bytes, str], _valeth: int = 0) -> None:
         """Execute underlying contract method via eth_call.
 
         :param tx_params: transaction parameters
@@ -504,15 +504,15 @@ class DelegateBySigMethod(ContractMethod):  # pylint: disable=invalid-name
 
             _t = _fn.buildTransaction({
                 'from': self._operate,
-                'gas': _gaswei,
-                'gasPrice': _pricewei
+                'gas': self.gas_limit,
+                'gasPrice': self.gas_price_wei
             })
             _t['nonce'] = self._web3_eth.getTransactionCount(self._operate)
 
             if _valeth > 0:
                 _t['value'] = _valeth
 
-            if _debugtx:
+            if self.debug_method:
                 print(f"======== Signing ✅ by {self._operate}")
                 print(f"======== Transaction ✅ check")
                 print(_t)
@@ -522,32 +522,32 @@ class DelegateBySigMethod(ContractMethod):  # pylint: disable=invalid-name
                 signed = self._web3_eth.account.sign_transaction(_t)
                 txHash = self._web3_eth.sendRawTransaction(signed.rawTransaction)
                 tx_receipt = None
-                if _receipList is True:
+                if self.auto_reciept is True:
                     print(f"======== awaiting Confirmation 🚸️ {self.sign}")
-                    tx_receipt = self._web3_eth.waitForTransactionReceipt(txHash)
-                    if _debugtx:
+                    tx_receipt = self._web3_eth.wait_for_transaction_receipt(txHash)
+                    if self.debug_method:
                         print("======== TX Result ✅")
                         print(tx_receipt)
 
-                print(f"======== TX blockHash ✅")
-                if tx_receipt is not None:
-                    print(f"{Bolors.OK}{tx_receipt.blockHash.hex()}{Bolors.RESET}")
-                else:
-                    print(f"{Bolors.WARNING}{txHash.hex()}{Bolors.RESET} - broadcast hash")
+                self._on_receipt_handle("delegate_by_sig", tx_receipt, txHash)
 
-            if _receipList is False:
+            if self.auto_reciept is False:
                 time.sleep(self._wait)
 
 
         except ContractLogicError as er:
             print(f"{Bolors.FAIL}Error {er} {Bolors.RESET}: delegate_by_sig")
-
+            message = f"Error {er}: delegate_by_sig"
+            self._on_fail("delegate_by_sig", message)
         except ValueError as err:
             if "message" in err.args[0]:
                 message = err.args[0]["message"]
                 print(f"{Bolors.FAIL}Error Revert {Bolors.RESET}, delegate_by_sig: {message}")
             else:
+                message = "Error Revert , Reason: Unknown"
                 print(f"{Bolors.FAIL}Error Revert {Bolors.RESET}, delegate_by_sig. Reason: Unknown")
+
+            self._on_fail("delegate_by_sig", message)
 
     def send_transaction(self, delegatee: str, nonce: int, expiry: int, v: int, r: Union[bytes, str], s: Union[bytes, str], tx_params: Optional[TxParams] = None) -> Union[HexBytes, bytes]:
         """Execute underlying contract method via eth_sendTransaction.
@@ -819,7 +819,7 @@ class PermitMethod(ContractMethod):  # pylint: disable=invalid-name
         )
         return (owner, spender, raw_amount, deadline, v, r, s)
 
-    def block_send(self, owner: str, spender: str, raw_amount: int, deadline: int, v: int, r: Union[bytes, str], s: Union[bytes, str], _gaswei: int, _pricewei: int, _valeth: int = 0, _debugtx: bool = False, _receipList: bool = False) -> None:
+    def block_send(self, owner: str, spender: str, raw_amount: int, deadline: int, v: int, r: Union[bytes, str], s: Union[bytes, str], _valeth: int = 0) -> None:
         """Execute underlying contract method via eth_call.
 
         :param tx_params: transaction parameters
@@ -830,15 +830,15 @@ class PermitMethod(ContractMethod):  # pylint: disable=invalid-name
 
             _t = _fn.buildTransaction({
                 'from': self._operate,
-                'gas': _gaswei,
-                'gasPrice': _pricewei
+                'gas': self.gas_limit,
+                'gasPrice': self.gas_price_wei
             })
             _t['nonce'] = self._web3_eth.getTransactionCount(self._operate)
 
             if _valeth > 0:
                 _t['value'] = _valeth
 
-            if _debugtx:
+            if self.debug_method:
                 print(f"======== Signing ✅ by {self._operate}")
                 print(f"======== Transaction ✅ check")
                 print(_t)
@@ -848,32 +848,32 @@ class PermitMethod(ContractMethod):  # pylint: disable=invalid-name
                 signed = self._web3_eth.account.sign_transaction(_t)
                 txHash = self._web3_eth.sendRawTransaction(signed.rawTransaction)
                 tx_receipt = None
-                if _receipList is True:
+                if self.auto_reciept is True:
                     print(f"======== awaiting Confirmation 🚸️ {self.sign}")
-                    tx_receipt = self._web3_eth.waitForTransactionReceipt(txHash)
-                    if _debugtx:
+                    tx_receipt = self._web3_eth.wait_for_transaction_receipt(txHash)
+                    if self.debug_method:
                         print("======== TX Result ✅")
                         print(tx_receipt)
 
-                print(f"======== TX blockHash ✅")
-                if tx_receipt is not None:
-                    print(f"{Bolors.OK}{tx_receipt.blockHash.hex()}{Bolors.RESET}")
-                else:
-                    print(f"{Bolors.WARNING}{txHash.hex()}{Bolors.RESET} - broadcast hash")
+                self._on_receipt_handle("permit", tx_receipt, txHash)
 
-            if _receipList is False:
+            if self.auto_reciept is False:
                 time.sleep(self._wait)
 
 
         except ContractLogicError as er:
             print(f"{Bolors.FAIL}Error {er} {Bolors.RESET}: permit")
-
+            message = f"Error {er}: permit"
+            self._on_fail("permit", message)
         except ValueError as err:
             if "message" in err.args[0]:
                 message = err.args[0]["message"]
                 print(f"{Bolors.FAIL}Error Revert {Bolors.RESET}, permit: {message}")
             else:
+                message = "Error Revert , Reason: Unknown"
                 print(f"{Bolors.FAIL}Error Revert {Bolors.RESET}, permit. Reason: Unknown")
+
+            self._on_fail("permit", message)
 
     def send_transaction(self, owner: str, spender: str, raw_amount: int, deadline: int, v: int, r: Union[bytes, str], s: Union[bytes, str], tx_params: Optional[TxParams] = None) -> Union[HexBytes, bytes]:
         """Execute underlying contract method via eth_sendTransaction.
@@ -967,7 +967,7 @@ class TransferMethod(ContractMethod):  # pylint: disable=invalid-name
         raw_amount = int(raw_amount)
         return (dst, raw_amount)
 
-    def block_send(self, dst: str, raw_amount: int, _gaswei: int, _pricewei: int, _valeth: int = 0, _debugtx: bool = False, _receipList: bool = False) -> bool:
+    def block_send(self, dst: str, raw_amount: int, _valeth: int = 0) -> bool:
         """Execute underlying contract method via eth_call.
 
         :param tx_params: transaction parameters
@@ -978,15 +978,15 @@ class TransferMethod(ContractMethod):  # pylint: disable=invalid-name
 
             _t = _fn.buildTransaction({
                 'from': self._operate,
-                'gas': _gaswei,
-                'gasPrice': _pricewei
+                'gas': self.gas_limit,
+                'gasPrice': self.gas_price_wei
             })
             _t['nonce'] = self._web3_eth.getTransactionCount(self._operate)
 
             if _valeth > 0:
                 _t['value'] = _valeth
 
-            if _debugtx:
+            if self.debug_method:
                 print(f"======== Signing ✅ by {self._operate}")
                 print(f"======== Transaction ✅ check")
                 print(_t)
@@ -996,32 +996,32 @@ class TransferMethod(ContractMethod):  # pylint: disable=invalid-name
                 signed = self._web3_eth.account.sign_transaction(_t)
                 txHash = self._web3_eth.sendRawTransaction(signed.rawTransaction)
                 tx_receipt = None
-                if _receipList is True:
+                if self.auto_reciept is True:
                     print(f"======== awaiting Confirmation 🚸️ {self.sign}")
-                    tx_receipt = self._web3_eth.waitForTransactionReceipt(txHash)
-                    if _debugtx:
+                    tx_receipt = self._web3_eth.wait_for_transaction_receipt(txHash)
+                    if self.debug_method:
                         print("======== TX Result ✅")
                         print(tx_receipt)
 
-                print(f"======== TX blockHash ✅")
-                if tx_receipt is not None:
-                    print(f"{Bolors.OK}{tx_receipt.blockHash.hex()}{Bolors.RESET}")
-                else:
-                    print(f"{Bolors.WARNING}{txHash.hex()}{Bolors.RESET} - broadcast hash")
+                self._on_receipt_handle("transfer", tx_receipt, txHash)
 
-            if _receipList is False:
+            if self.auto_reciept is False:
                 time.sleep(self._wait)
 
 
         except ContractLogicError as er:
             print(f"{Bolors.FAIL}Error {er} {Bolors.RESET}: transfer")
-
+            message = f"Error {er}: transfer"
+            self._on_fail("transfer", message)
         except ValueError as err:
             if "message" in err.args[0]:
                 message = err.args[0]["message"]
                 print(f"{Bolors.FAIL}Error Revert {Bolors.RESET}, transfer: {message}")
             else:
+                message = "Error Revert , Reason: Unknown"
                 print(f"{Bolors.FAIL}Error Revert {Bolors.RESET}, transfer. Reason: Unknown")
+
+            self._on_fail("transfer", message)
 
     def send_transaction(self, dst: str, raw_amount: int, tx_params: Optional[TxParams] = None) -> Union[HexBytes, bytes]:
         """Execute underlying contract method via eth_sendTransaction.
@@ -1077,7 +1077,7 @@ class TransferFromMethod(ContractMethod):  # pylint: disable=invalid-name
         raw_amount = int(raw_amount)
         return (src, dst, raw_amount)
 
-    def block_send(self, src: str, dst: str, raw_amount: int, _gaswei: int, _pricewei: int, _valeth: int = 0, _debugtx: bool = False, _receipList: bool = False) -> bool:
+    def block_send(self, src: str, dst: str, raw_amount: int, _valeth: int = 0) -> bool:
         """Execute underlying contract method via eth_call.
 
         :param tx_params: transaction parameters
@@ -1088,15 +1088,15 @@ class TransferFromMethod(ContractMethod):  # pylint: disable=invalid-name
 
             _t = _fn.buildTransaction({
                 'from': self._operate,
-                'gas': _gaswei,
-                'gasPrice': _pricewei
+                'gas': self.gas_limit,
+                'gasPrice': self.gas_price_wei
             })
             _t['nonce'] = self._web3_eth.getTransactionCount(self._operate)
 
             if _valeth > 0:
                 _t['value'] = _valeth
 
-            if _debugtx:
+            if self.debug_method:
                 print(f"======== Signing ✅ by {self._operate}")
                 print(f"======== Transaction ✅ check")
                 print(_t)
@@ -1106,32 +1106,32 @@ class TransferFromMethod(ContractMethod):  # pylint: disable=invalid-name
                 signed = self._web3_eth.account.sign_transaction(_t)
                 txHash = self._web3_eth.sendRawTransaction(signed.rawTransaction)
                 tx_receipt = None
-                if _receipList is True:
+                if self.auto_reciept is True:
                     print(f"======== awaiting Confirmation 🚸️ {self.sign}")
-                    tx_receipt = self._web3_eth.waitForTransactionReceipt(txHash)
-                    if _debugtx:
+                    tx_receipt = self._web3_eth.wait_for_transaction_receipt(txHash)
+                    if self.debug_method:
                         print("======== TX Result ✅")
                         print(tx_receipt)
 
-                print(f"======== TX blockHash ✅")
-                if tx_receipt is not None:
-                    print(f"{Bolors.OK}{tx_receipt.blockHash.hex()}{Bolors.RESET}")
-                else:
-                    print(f"{Bolors.WARNING}{txHash.hex()}{Bolors.RESET} - broadcast hash")
+                self._on_receipt_handle("transfer_from", tx_receipt, txHash)
 
-            if _receipList is False:
+            if self.auto_reciept is False:
                 time.sleep(self._wait)
 
 
         except ContractLogicError as er:
             print(f"{Bolors.FAIL}Error {er} {Bolors.RESET}: transfer_from")
-
+            message = f"Error {er}: transfer_from"
+            self._on_fail("transfer_from", message)
         except ValueError as err:
             if "message" in err.args[0]:
                 message = err.args[0]["message"]
                 print(f"{Bolors.FAIL}Error Revert {Bolors.RESET}, transfer_from: {message}")
             else:
+                message = "Error Revert , Reason: Unknown"
                 print(f"{Bolors.FAIL}Error Revert {Bolors.RESET}, transfer_from. Reason: Unknown")
+
+            self._on_fail("transfer_from", message)
 
     def send_transaction(self, src: str, dst: str, raw_amount: int, tx_params: Optional[TxParams] = None) -> Union[HexBytes, bytes]:
         """Execute underlying contract method via eth_sendTransaction.
@@ -1346,8 +1346,7 @@ class pharaohs(ContractBase):
         """Get an instance of wrapper for smart contract.
         """
         # pylint: disable=too-many-statements
-        super().__init__()
-        self.contract_address = contract_address
+        super().__init__(contract_address, pharaohs.abi())
         web3 = core_lib.w3
 
         if not validator:
@@ -1370,9 +1369,9 @@ class pharaohs(ContractBase):
 
         self._web3_eth = web3.eth
         functions = self._web3_eth.contract(address=to_checksum_address(contract_address), abi=pharaohs.abi()).functions
-        signed = SignatureGenerator(pharaohs.abi())
-        validator.bindSignatures(signed)
-        self.SIGNATURES = signed
+        self._signatures = SignatureGenerator(pharaohs.abi())
+        validator.bindSignatures(self._signatures)
+
         self._fn_delegation_typehash = DelegationTypehashMethod(core_lib, contract_address, functions.DELEGATION_TYPEHASH, validator)
         self._fn_domain_typehash = DomainTypehashMethod(core_lib, contract_address, functions.DOMAIN_TYPEHASH, validator)
         self._fn_permit_typehash = PermitTypehashMethod(core_lib, contract_address, functions.PERMIT_TYPEHASH, validator)
@@ -1443,10 +1442,15 @@ class pharaohs(ContractBase):
         """
         Implementation of delegation_typehash in contract pharaohs
         Method of the function
-    
-    
-    
+
         """
+
+        self._fn_delegation_typehash.callback_onfail = self._callback_onfail
+        self._fn_delegation_typehash.callback_onsuccess = self._callback_onsuccess
+        self._fn_delegation_typehash.auto_reciept = self.call_contract_enforce_tx_receipt
+        self._fn_delegation_typehash.gas_limit = self.call_contract_fee_amount
+        self._fn_delegation_typehash.gas_price_wei = self.call_contract_fee_price
+        self._fn_delegation_typehash.debug_method = self.call_contract_debug_flag
 
         return self._fn_delegation_typehash.block_call()
 
@@ -1454,10 +1458,15 @@ class pharaohs(ContractBase):
         """
         Implementation of domain_typehash in contract pharaohs
         Method of the function
-    
-    
-    
+
         """
+
+        self._fn_domain_typehash.callback_onfail = self._callback_onfail
+        self._fn_domain_typehash.callback_onsuccess = self._callback_onsuccess
+        self._fn_domain_typehash.auto_reciept = self.call_contract_enforce_tx_receipt
+        self._fn_domain_typehash.gas_limit = self.call_contract_fee_amount
+        self._fn_domain_typehash.gas_price_wei = self.call_contract_fee_price
+        self._fn_domain_typehash.debug_method = self.call_contract_debug_flag
 
         return self._fn_domain_typehash.block_call()
 
@@ -1465,10 +1474,15 @@ class pharaohs(ContractBase):
         """
         Implementation of permit_typehash in contract pharaohs
         Method of the function
-    
-    
-    
+
         """
+
+        self._fn_permit_typehash.callback_onfail = self._callback_onfail
+        self._fn_permit_typehash.callback_onsuccess = self._callback_onsuccess
+        self._fn_permit_typehash.auto_reciept = self.call_contract_enforce_tx_receipt
+        self._fn_permit_typehash.gas_limit = self.call_contract_fee_amount
+        self._fn_permit_typehash.gas_price_wei = self.call_contract_fee_price
+        self._fn_permit_typehash.debug_method = self.call_contract_debug_flag
 
         return self._fn_permit_typehash.block_call()
 
@@ -1476,10 +1490,15 @@ class pharaohs(ContractBase):
         """
         Implementation of allowance in contract pharaohs
         Method of the function
-    
-    
-    
+
         """
+
+        self._fn_allowance.callback_onfail = self._callback_onfail
+        self._fn_allowance.callback_onsuccess = self._callback_onsuccess
+        self._fn_allowance.auto_reciept = self.call_contract_enforce_tx_receipt
+        self._fn_allowance.gas_limit = self.call_contract_fee_amount
+        self._fn_allowance.gas_price_wei = self.call_contract_fee_price
+        self._fn_allowance.debug_method = self.call_contract_debug_flag
 
         return self._fn_allowance.block_call(account, spender)
 
@@ -1487,21 +1506,31 @@ class pharaohs(ContractBase):
         """
         Implementation of approve in contract pharaohs
         Method of the function
-    
-    
-    
+
         """
 
-        return self._fn_approve.block_send(spender, raw_amount, self.call_contract_fee_amount, self.call_contract_fee_price, 0, self.call_contract_debug_flag, self.call_contract_enforce_tx_receipt)
+        self._fn_approve.callback_onfail = self._callback_onfail
+        self._fn_approve.callback_onsuccess = self._callback_onsuccess
+        self._fn_approve.auto_reciept = self.call_contract_enforce_tx_receipt
+        self._fn_approve.gas_limit = self.call_contract_fee_amount
+        self._fn_approve.gas_price_wei = self.call_contract_fee_price
+        self._fn_approve.debug_method = self.call_contract_debug_flag
+
+        return self._fn_approve.block_send(spender, raw_amount)
 
     def balance_of(self, account: str) -> int:
         """
         Implementation of balance_of in contract pharaohs
         Method of the function
-    
-    
-    
+
         """
+
+        self._fn_balance_of.callback_onfail = self._callback_onfail
+        self._fn_balance_of.callback_onsuccess = self._callback_onsuccess
+        self._fn_balance_of.auto_reciept = self.call_contract_enforce_tx_receipt
+        self._fn_balance_of.gas_limit = self.call_contract_fee_amount
+        self._fn_balance_of.gas_price_wei = self.call_contract_fee_price
+        self._fn_balance_of.debug_method = self.call_contract_debug_flag
 
         return self._fn_balance_of.block_call(account)
 
@@ -1509,10 +1538,15 @@ class pharaohs(ContractBase):
         """
         Implementation of checkpoints in contract pharaohs
         Method of the function
-    
-    
-    
+
         """
+
+        self._fn_checkpoints.callback_onfail = self._callback_onfail
+        self._fn_checkpoints.callback_onsuccess = self._callback_onsuccess
+        self._fn_checkpoints.auto_reciept = self.call_contract_enforce_tx_receipt
+        self._fn_checkpoints.gas_limit = self.call_contract_fee_amount
+        self._fn_checkpoints.gas_price_wei = self.call_contract_fee_price
+        self._fn_checkpoints.debug_method = self.call_contract_debug_flag
 
         return self._fn_checkpoints.block_call(index_0, index_1)
 
@@ -1520,10 +1554,15 @@ class pharaohs(ContractBase):
         """
         Implementation of decimals in contract pharaohs
         Method of the function
-    
-    
-    
+
         """
+
+        self._fn_decimals.callback_onfail = self._callback_onfail
+        self._fn_decimals.callback_onsuccess = self._callback_onsuccess
+        self._fn_decimals.auto_reciept = self.call_contract_enforce_tx_receipt
+        self._fn_decimals.gas_limit = self.call_contract_fee_amount
+        self._fn_decimals.gas_price_wei = self.call_contract_fee_price
+        self._fn_decimals.debug_method = self.call_contract_debug_flag
 
         return self._fn_decimals.block_call()
 
@@ -1531,32 +1570,47 @@ class pharaohs(ContractBase):
         """
         Implementation of delegate in contract pharaohs
         Method of the function
-    
-    
-    
+
         """
 
-        return self._fn_delegate.block_send(delegatee, self.call_contract_fee_amount, self.call_contract_fee_price, 0, self.call_contract_debug_flag, self.call_contract_enforce_tx_receipt)
+        self._fn_delegate.callback_onfail = self._callback_onfail
+        self._fn_delegate.callback_onsuccess = self._callback_onsuccess
+        self._fn_delegate.auto_reciept = self.call_contract_enforce_tx_receipt
+        self._fn_delegate.gas_limit = self.call_contract_fee_amount
+        self._fn_delegate.gas_price_wei = self.call_contract_fee_price
+        self._fn_delegate.debug_method = self.call_contract_debug_flag
+
+        return self._fn_delegate.block_send(delegatee)
 
     def delegate_by_sig(self, delegatee: str, nonce: int, expiry: int, v: int, r: Union[bytes, str], s: Union[bytes, str]) -> None:
         """
         Implementation of delegate_by_sig in contract pharaohs
         Method of the function
-    
-    
-    
+
         """
 
-        return self._fn_delegate_by_sig.block_send(delegatee, nonce, expiry, v, r, s, self.call_contract_fee_amount, self.call_contract_fee_price, 0, self.call_contract_debug_flag, self.call_contract_enforce_tx_receipt)
+        self._fn_delegate_by_sig.callback_onfail = self._callback_onfail
+        self._fn_delegate_by_sig.callback_onsuccess = self._callback_onsuccess
+        self._fn_delegate_by_sig.auto_reciept = self.call_contract_enforce_tx_receipt
+        self._fn_delegate_by_sig.gas_limit = self.call_contract_fee_amount
+        self._fn_delegate_by_sig.gas_price_wei = self.call_contract_fee_price
+        self._fn_delegate_by_sig.debug_method = self.call_contract_debug_flag
+
+        return self._fn_delegate_by_sig.block_send(delegatee, nonce, expiry, v, r, s)
 
     def delegates(self, index_0: str) -> str:
         """
         Implementation of delegates in contract pharaohs
         Method of the function
-    
-    
-    
+
         """
+
+        self._fn_delegates.callback_onfail = self._callback_onfail
+        self._fn_delegates.callback_onsuccess = self._callback_onsuccess
+        self._fn_delegates.auto_reciept = self.call_contract_enforce_tx_receipt
+        self._fn_delegates.gas_limit = self.call_contract_fee_amount
+        self._fn_delegates.gas_price_wei = self.call_contract_fee_price
+        self._fn_delegates.debug_method = self.call_contract_debug_flag
 
         return self._fn_delegates.block_call(index_0)
 
@@ -1564,10 +1618,15 @@ class pharaohs(ContractBase):
         """
         Implementation of get_current_votes in contract pharaohs
         Method of the function
-    
-    
-    
+
         """
+
+        self._fn_get_current_votes.callback_onfail = self._callback_onfail
+        self._fn_get_current_votes.callback_onsuccess = self._callback_onsuccess
+        self._fn_get_current_votes.auto_reciept = self.call_contract_enforce_tx_receipt
+        self._fn_get_current_votes.gas_limit = self.call_contract_fee_amount
+        self._fn_get_current_votes.gas_price_wei = self.call_contract_fee_price
+        self._fn_get_current_votes.debug_method = self.call_contract_debug_flag
 
         return self._fn_get_current_votes.block_call(account)
 
@@ -1575,10 +1634,15 @@ class pharaohs(ContractBase):
         """
         Implementation of get_prior_votes in contract pharaohs
         Method of the function
-    
-    
-    
+
         """
+
+        self._fn_get_prior_votes.callback_onfail = self._callback_onfail
+        self._fn_get_prior_votes.callback_onsuccess = self._callback_onsuccess
+        self._fn_get_prior_votes.auto_reciept = self.call_contract_enforce_tx_receipt
+        self._fn_get_prior_votes.gas_limit = self.call_contract_fee_amount
+        self._fn_get_prior_votes.gas_price_wei = self.call_contract_fee_price
+        self._fn_get_prior_votes.debug_method = self.call_contract_debug_flag
 
         return self._fn_get_prior_votes.block_call(account, block_number)
 
@@ -1586,10 +1650,15 @@ class pharaohs(ContractBase):
         """
         Implementation of name in contract pharaohs
         Method of the function
-    
-    
-    
+
         """
+
+        self._fn_name.callback_onfail = self._callback_onfail
+        self._fn_name.callback_onsuccess = self._callback_onsuccess
+        self._fn_name.auto_reciept = self.call_contract_enforce_tx_receipt
+        self._fn_name.gas_limit = self.call_contract_fee_amount
+        self._fn_name.gas_price_wei = self.call_contract_fee_price
+        self._fn_name.debug_method = self.call_contract_debug_flag
 
         return self._fn_name.block_call()
 
@@ -1597,10 +1666,15 @@ class pharaohs(ContractBase):
         """
         Implementation of nonces in contract pharaohs
         Method of the function
-    
-    
-    
+
         """
+
+        self._fn_nonces.callback_onfail = self._callback_onfail
+        self._fn_nonces.callback_onsuccess = self._callback_onsuccess
+        self._fn_nonces.auto_reciept = self.call_contract_enforce_tx_receipt
+        self._fn_nonces.gas_limit = self.call_contract_fee_amount
+        self._fn_nonces.gas_price_wei = self.call_contract_fee_price
+        self._fn_nonces.debug_method = self.call_contract_debug_flag
 
         return self._fn_nonces.block_call(index_0)
 
@@ -1608,10 +1682,15 @@ class pharaohs(ContractBase):
         """
         Implementation of num_checkpoints in contract pharaohs
         Method of the function
-    
-    
-    
+
         """
+
+        self._fn_num_checkpoints.callback_onfail = self._callback_onfail
+        self._fn_num_checkpoints.callback_onsuccess = self._callback_onsuccess
+        self._fn_num_checkpoints.auto_reciept = self.call_contract_enforce_tx_receipt
+        self._fn_num_checkpoints.gas_limit = self.call_contract_fee_amount
+        self._fn_num_checkpoints.gas_price_wei = self.call_contract_fee_price
+        self._fn_num_checkpoints.debug_method = self.call_contract_debug_flag
 
         return self._fn_num_checkpoints.block_call(index_0)
 
@@ -1619,21 +1698,31 @@ class pharaohs(ContractBase):
         """
         Implementation of permit in contract pharaohs
         Method of the function
-    
-    
-    
+
         """
 
-        return self._fn_permit.block_send(owner, spender, raw_amount, deadline, v, r, s, self.call_contract_fee_amount, self.call_contract_fee_price, 0, self.call_contract_debug_flag, self.call_contract_enforce_tx_receipt)
+        self._fn_permit.callback_onfail = self._callback_onfail
+        self._fn_permit.callback_onsuccess = self._callback_onsuccess
+        self._fn_permit.auto_reciept = self.call_contract_enforce_tx_receipt
+        self._fn_permit.gas_limit = self.call_contract_fee_amount
+        self._fn_permit.gas_price_wei = self.call_contract_fee_price
+        self._fn_permit.debug_method = self.call_contract_debug_flag
+
+        return self._fn_permit.block_send(owner, spender, raw_amount, deadline, v, r, s)
 
     def symbol(self) -> str:
         """
         Implementation of symbol in contract pharaohs
         Method of the function
-    
-    
-    
+
         """
+
+        self._fn_symbol.callback_onfail = self._callback_onfail
+        self._fn_symbol.callback_onsuccess = self._callback_onsuccess
+        self._fn_symbol.auto_reciept = self.call_contract_enforce_tx_receipt
+        self._fn_symbol.gas_limit = self.call_contract_fee_amount
+        self._fn_symbol.gas_price_wei = self.call_contract_fee_price
+        self._fn_symbol.debug_method = self.call_contract_debug_flag
 
         return self._fn_symbol.block_call()
 
@@ -1641,10 +1730,15 @@ class pharaohs(ContractBase):
         """
         Implementation of total_supply in contract pharaohs
         Method of the function
-    
-    
-    
+
         """
+
+        self._fn_total_supply.callback_onfail = self._callback_onfail
+        self._fn_total_supply.callback_onsuccess = self._callback_onsuccess
+        self._fn_total_supply.auto_reciept = self.call_contract_enforce_tx_receipt
+        self._fn_total_supply.gas_limit = self.call_contract_fee_amount
+        self._fn_total_supply.gas_price_wei = self.call_contract_fee_price
+        self._fn_total_supply.debug_method = self.call_contract_debug_flag
 
         return self._fn_total_supply.block_call()
 
@@ -1652,23 +1746,33 @@ class pharaohs(ContractBase):
         """
         Implementation of transfer in contract pharaohs
         Method of the function
-    
-    
-    
+
         """
 
-        return self._fn_transfer.block_send(dst, raw_amount, self.call_contract_fee_amount, self.call_contract_fee_price, 0, self.call_contract_debug_flag, self.call_contract_enforce_tx_receipt)
+        self._fn_transfer.callback_onfail = self._callback_onfail
+        self._fn_transfer.callback_onsuccess = self._callback_onsuccess
+        self._fn_transfer.auto_reciept = self.call_contract_enforce_tx_receipt
+        self._fn_transfer.gas_limit = self.call_contract_fee_amount
+        self._fn_transfer.gas_price_wei = self.call_contract_fee_price
+        self._fn_transfer.debug_method = self.call_contract_debug_flag
+
+        return self._fn_transfer.block_send(dst, raw_amount)
 
     def transfer_from(self, src: str, dst: str, raw_amount: int) -> bool:
         """
         Implementation of transfer_from in contract pharaohs
         Method of the function
-    
-    
-    
+
         """
 
-        return self._fn_transfer_from.block_send(src, dst, raw_amount, self.call_contract_fee_amount, self.call_contract_fee_price, 0, self.call_contract_debug_flag, self.call_contract_enforce_tx_receipt)
+        self._fn_transfer_from.callback_onfail = self._callback_onfail
+        self._fn_transfer_from.callback_onsuccess = self._callback_onsuccess
+        self._fn_transfer_from.auto_reciept = self.call_contract_enforce_tx_receipt
+        self._fn_transfer_from.gas_limit = self.call_contract_fee_amount
+        self._fn_transfer_from.gas_price_wei = self.call_contract_fee_price
+        self._fn_transfer_from.debug_method = self.call_contract_debug_flag
+
+        return self._fn_transfer_from.block_send(src, dst, raw_amount)
 
     def CallContractWait(self, t_long: int) -> "pharaohs":
         self._fn_delegation_typehash.setWait(t_long)

@@ -85,7 +85,7 @@ class AggregateMethod(ContractMethod):  # pylint: disable=invalid-name
         )
         return (calls)
 
-    def block_send(self, calls: List[MulticallCall], _gaswei: int, _pricewei: int, _valeth: int = 0, _debugtx: bool = False, _receipList: bool = False) -> Tuple[int, List[Union[bytes, str]]]:
+    def block_send(self, calls: List[MulticallCall], _valeth: int = 0) -> Tuple[int, List[Union[bytes, str]]]:
         """Execute underlying contract method via eth_call.
 
         :param tx_params: transaction parameters
@@ -96,15 +96,15 @@ class AggregateMethod(ContractMethod):  # pylint: disable=invalid-name
 
             _t = _fn.buildTransaction({
                 'from': self._operate,
-                'gas': _gaswei,
-                'gasPrice': _pricewei
+                'gas': self.gas_limit,
+                'gasPrice': self.gas_price_wei
             })
             _t['nonce'] = self._web3_eth.getTransactionCount(self._operate)
 
             if _valeth > 0:
                 _t['value'] = _valeth
 
-            if _debugtx:
+            if self.debug_method:
                 print(f"======== Signing ✅ by {self._operate}")
                 print(f"======== Transaction ✅ check")
                 print(_t)
@@ -114,32 +114,32 @@ class AggregateMethod(ContractMethod):  # pylint: disable=invalid-name
                 signed = self._web3_eth.account.sign_transaction(_t)
                 txHash = self._web3_eth.sendRawTransaction(signed.rawTransaction)
                 tx_receipt = None
-                if _receipList is True:
+                if self.auto_reciept is True:
                     print(f"======== awaiting Confirmation 🚸️ {self.sign}")
-                    tx_receipt = self._web3_eth.waitForTransactionReceipt(txHash)
-                    if _debugtx:
+                    tx_receipt = self._web3_eth.wait_for_transaction_receipt(txHash)
+                    if self.debug_method:
                         print("======== TX Result ✅")
                         print(tx_receipt)
 
-                print(f"======== TX blockHash ✅")
-                if tx_receipt is not None:
-                    print(f"{Bolors.OK}{tx_receipt.blockHash.hex()}{Bolors.RESET}")
-                else:
-                    print(f"{Bolors.WARNING}{txHash.hex()}{Bolors.RESET} - broadcast hash")
+                self._on_receipt_handle("aggregate", tx_receipt, txHash)
 
-            if _receipList is False:
+            if self.auto_reciept is False:
                 time.sleep(self._wait)
 
 
         except ContractLogicError as er:
             print(f"{Bolors.FAIL}Error {er} {Bolors.RESET}: aggregate")
-
+            message = f"Error {er}: aggregate"
+            self._on_fail("aggregate", message)
         except ValueError as err:
             if "message" in err.args[0]:
                 message = err.args[0]["message"]
                 print(f"{Bolors.FAIL}Error Revert {Bolors.RESET}, aggregate: {message}")
             else:
+                message = "Error Revert , Reason: Unknown"
                 print(f"{Bolors.FAIL}Error Revert {Bolors.RESET}, aggregate. Reason: Unknown")
+
+            self._on_fail("aggregate", message)
 
     def send_transaction(self, calls: List[MulticallCall], tx_params: Optional[TxParams] = None) -> Union[HexBytes, bytes]:
         """Execute underlying contract method via eth_sendTransaction.
@@ -427,8 +427,7 @@ class Multicall(ContractBase):
         """Get an instance of wrapper for smart contract.
         """
         # pylint: disable=too-many-statements
-        super().__init__()
-        self.contract_address = contract_address
+        super().__init__(contract_address, Multicall.abi())
         web3 = core_lib.w3
 
         if not validator:
@@ -451,9 +450,9 @@ class Multicall(ContractBase):
 
         self._web3_eth = web3.eth
         functions = self._web3_eth.contract(address=to_checksum_address(contract_address), abi=Multicall.abi()).functions
-        signed = SignatureGenerator(Multicall.abi())
-        validator.bindSignatures(signed)
-        self.SIGNATURES = signed
+        self._signatures = SignatureGenerator(Multicall.abi())
+        validator.bindSignatures(self._signatures)
+
         self._fn_aggregate = AggregateMethod(core_lib, contract_address, functions.aggregate, validator)
         self._fn_get_block_hash = GetBlockHashMethod(core_lib, contract_address, functions.getBlockHash, validator)
         self._fn_get_current_block_coinbase = GetCurrentBlockCoinbaseMethod(core_lib, contract_address, functions.getCurrentBlockCoinbase, validator)
@@ -467,21 +466,31 @@ class Multicall(ContractBase):
         """
         Implementation of aggregate in contract Multicall
         Method of the function
-    
-    
-    
+
         """
 
-        return self._fn_aggregate.block_send(calls, self.call_contract_fee_amount, self.call_contract_fee_price, 0, self.call_contract_debug_flag, self.call_contract_enforce_tx_receipt)
+        self._fn_aggregate.callback_onfail = self._callback_onfail
+        self._fn_aggregate.callback_onsuccess = self._callback_onsuccess
+        self._fn_aggregate.auto_reciept = self.call_contract_enforce_tx_receipt
+        self._fn_aggregate.gas_limit = self.call_contract_fee_amount
+        self._fn_aggregate.gas_price_wei = self.call_contract_fee_price
+        self._fn_aggregate.debug_method = self.call_contract_debug_flag
+
+        return self._fn_aggregate.block_send(calls)
 
     def get_block_hash(self, block_number: int) -> Union[bytes, str]:
         """
         Implementation of get_block_hash in contract Multicall
         Method of the function
-    
-    
-    
+
         """
+
+        self._fn_get_block_hash.callback_onfail = self._callback_onfail
+        self._fn_get_block_hash.callback_onsuccess = self._callback_onsuccess
+        self._fn_get_block_hash.auto_reciept = self.call_contract_enforce_tx_receipt
+        self._fn_get_block_hash.gas_limit = self.call_contract_fee_amount
+        self._fn_get_block_hash.gas_price_wei = self.call_contract_fee_price
+        self._fn_get_block_hash.debug_method = self.call_contract_debug_flag
 
         return self._fn_get_block_hash.block_call(block_number)
 
@@ -489,10 +498,15 @@ class Multicall(ContractBase):
         """
         Implementation of get_current_block_coinbase in contract Multicall
         Method of the function
-    
-    
-    
+
         """
+
+        self._fn_get_current_block_coinbase.callback_onfail = self._callback_onfail
+        self._fn_get_current_block_coinbase.callback_onsuccess = self._callback_onsuccess
+        self._fn_get_current_block_coinbase.auto_reciept = self.call_contract_enforce_tx_receipt
+        self._fn_get_current_block_coinbase.gas_limit = self.call_contract_fee_amount
+        self._fn_get_current_block_coinbase.gas_price_wei = self.call_contract_fee_price
+        self._fn_get_current_block_coinbase.debug_method = self.call_contract_debug_flag
 
         return self._fn_get_current_block_coinbase.block_call()
 
@@ -500,10 +514,15 @@ class Multicall(ContractBase):
         """
         Implementation of get_current_block_difficulty in contract Multicall
         Method of the function
-    
-    
-    
+
         """
+
+        self._fn_get_current_block_difficulty.callback_onfail = self._callback_onfail
+        self._fn_get_current_block_difficulty.callback_onsuccess = self._callback_onsuccess
+        self._fn_get_current_block_difficulty.auto_reciept = self.call_contract_enforce_tx_receipt
+        self._fn_get_current_block_difficulty.gas_limit = self.call_contract_fee_amount
+        self._fn_get_current_block_difficulty.gas_price_wei = self.call_contract_fee_price
+        self._fn_get_current_block_difficulty.debug_method = self.call_contract_debug_flag
 
         return self._fn_get_current_block_difficulty.block_call()
 
@@ -511,10 +530,15 @@ class Multicall(ContractBase):
         """
         Implementation of get_current_block_gas_limit in contract Multicall
         Method of the function
-    
-    
-    
+
         """
+
+        self._fn_get_current_block_gas_limit.callback_onfail = self._callback_onfail
+        self._fn_get_current_block_gas_limit.callback_onsuccess = self._callback_onsuccess
+        self._fn_get_current_block_gas_limit.auto_reciept = self.call_contract_enforce_tx_receipt
+        self._fn_get_current_block_gas_limit.gas_limit = self.call_contract_fee_amount
+        self._fn_get_current_block_gas_limit.gas_price_wei = self.call_contract_fee_price
+        self._fn_get_current_block_gas_limit.debug_method = self.call_contract_debug_flag
 
         return self._fn_get_current_block_gas_limit.block_call()
 
@@ -522,10 +546,15 @@ class Multicall(ContractBase):
         """
         Implementation of get_current_block_timestamp in contract Multicall
         Method of the function
-    
-    
-    
+
         """
+
+        self._fn_get_current_block_timestamp.callback_onfail = self._callback_onfail
+        self._fn_get_current_block_timestamp.callback_onsuccess = self._callback_onsuccess
+        self._fn_get_current_block_timestamp.auto_reciept = self.call_contract_enforce_tx_receipt
+        self._fn_get_current_block_timestamp.gas_limit = self.call_contract_fee_amount
+        self._fn_get_current_block_timestamp.gas_price_wei = self.call_contract_fee_price
+        self._fn_get_current_block_timestamp.debug_method = self.call_contract_debug_flag
 
         return self._fn_get_current_block_timestamp.block_call()
 
@@ -533,10 +562,15 @@ class Multicall(ContractBase):
         """
         Implementation of get_eth_balance in contract Multicall
         Method of the function
-    
-    
-    
+
         """
+
+        self._fn_get_eth_balance.callback_onfail = self._callback_onfail
+        self._fn_get_eth_balance.callback_onsuccess = self._callback_onsuccess
+        self._fn_get_eth_balance.auto_reciept = self.call_contract_enforce_tx_receipt
+        self._fn_get_eth_balance.gas_limit = self.call_contract_fee_amount
+        self._fn_get_eth_balance.gas_price_wei = self.call_contract_fee_price
+        self._fn_get_eth_balance.debug_method = self.call_contract_debug_flag
 
         return self._fn_get_eth_balance.block_call(addr)
 
@@ -544,10 +578,15 @@ class Multicall(ContractBase):
         """
         Implementation of get_last_block_hash in contract Multicall
         Method of the function
-    
-    
-    
+
         """
+
+        self._fn_get_last_block_hash.callback_onfail = self._callback_onfail
+        self._fn_get_last_block_hash.callback_onsuccess = self._callback_onsuccess
+        self._fn_get_last_block_hash.auto_reciept = self.call_contract_enforce_tx_receipt
+        self._fn_get_last_block_hash.gas_limit = self.call_contract_fee_amount
+        self._fn_get_last_block_hash.gas_price_wei = self.call_contract_fee_price
+        self._fn_get_last_block_hash.debug_method = self.call_contract_debug_flag
 
         return self._fn_get_last_block_hash.block_call()
 
