@@ -1,7 +1,7 @@
 import os
 import re
 
-from moody.paths import Paths
+from ..paths import Paths
 from . import ITEM_CP_LOCAL, ITEM_TRANSPILE_GO, TRANS_LOCAL, ITEM_TRANSPILE_PYTHON, ITEM_TRANSPILE_TS, PRE_HEAD, SUB_FOOTER
 
 REG = r"(.+?)([A-Z])"
@@ -63,8 +63,8 @@ def buildCmdGo(p: Paths, pathName: str) -> str:
 def wrapContentTranspile(tar: Paths, compile_list: list) -> str:
     """
     wrap content
-    :param tar:
-    :param compile_list:
+    :param tar: path in string
+    :param compile_list: the list in compile
     :return:
     """
     head_section = PRE_HEAD.format(path_definitions=tar.LOCAL_BASH_INCLUDE)
@@ -82,8 +82,8 @@ def wrapContentTranspile(tar: Paths, compile_list: list) -> str:
 def BuildLang(p: Paths, list_class_names: list) -> None:
     """
 
-    :param p:
-    :param list_class_names:
+    :param p: path in string
+    :param list_class_names: the class name
     :return:
     """
     k = list()
