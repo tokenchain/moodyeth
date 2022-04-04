@@ -2,7 +2,7 @@
 # -*- coding: utf-8 -*-
 from typing import List
 
-from . import conf, Key
+from . import conf, Key, Config
 from .libeb import MiliDoS
 from .m.b_send import BSend
 
@@ -12,7 +12,8 @@ class BusExpress(MiliDoS):
     Application for MiliDoS that allows sender to setup their own contract in python
     """
 
-    def __init__(self):
+    def __init__(self, _nodeCfg: Config):
+        super().__init__(_nodeCfg)
         self.kol = None
         self.ContractBusExpress: BSend = None
 
