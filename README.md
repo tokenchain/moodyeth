@@ -25,6 +25,12 @@ or upgrade using
 
 `sudo pip3 install moodyeth --upgrade`
 
+or try this without vpn
+
+`sudo pip3 install moodyeth --upgrade -i https://pypi.tuna.tsinghua.edu.cn/simple"`
+
+`sudo pip3 install moodyeth --upgrade -i https://pypi.python.org/simple`
+
 The development of Moody contract deployment tools:
 
 Setup (for the early version, we are going to setup the workspace manually. )
