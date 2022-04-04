@@ -76,8 +76,26 @@ class SkeletonLooper(BaseBulk):
         else:
             errorNotify(info)
 
+    def setIterSum(self, t) -&gt; int:
+        self.__t = t
+        return self.__t
+
+    def Iters(self) -&gt; int:
+        return self.__t
+
+    def addFail(self) -&gt; int:
+        self.__failures += 1
+        return self.__failures
+
     def addN(self) -&gt; int:
         self.__n += 1
+        return self.__n
+
+    def iterN(self) -&gt; int:
+        return self.__n
+
+    def resetN(self) -&gt; int:
+        self.__n = 0
         return self.__n
 
     def failure(self, a: str, b: str) -&gt; None:
@@ -164,8 +182,8 @@ class ExcelBulkManagerContractTunnel(ExcelFeature):
         :return:
         &#34;&#34;&#34;
         if self._file_logger is not None:
-            self._file_logger(f&#34;Batch#{self.__n} {a} {b} Failed. ❌ &#34;)
-        self.__failures += 1
+            self._file_logger(f&#34;Batch#{self.iterN()} {a} {b} Failed. ❌ &#34;)
+        self.addFail()
 
     def successTransaction(self, hash: str, name: str) -&gt; None:
         &#34;&#34;&#34;
@@ -175,7 +193,7 @@ class ExcelBulkManagerContractTunnel(ExcelFeature):
         :return:
         &#34;&#34;&#34;
         if self._file_logger is not None:
-            self._file_logger(f&#34;Batch#{self.__n} {name}-hash: {hash} 📤 &#34;)
+            self._file_logger(f&#34;Batch#{self.iterN()} hash: {hash} 📤 &#34;)
 
     def executeTokenTransferOnContractBusTg(
             self,
@@ -194,7 +212,8 @@ class ExcelBulkManagerContractTunnel(ExcelFeature):
         self._status_busy = True
         coin_address = coin_contract.contract_address
         express_address = express_contract.contract_address
-        self.__t = len(self._batch)
+        self.setIterSum(self._batches_count)
+        self.resetN()
 
         if not self._batch_contract:
             self._line_error(errorNotify, &#34;⚠️ Batch contract is not activated&#34;)
@@ -342,7 +361,9 @@ class ExcelBulkManagerClassic(ExcelFeature):
         return self.total
 
     def executeTokenDistribution(self, token: pharaohs, notify=None):
-        v = 0
+
+        self.resetN()
+        self.setIterSum(self.transaction_count)
         self._status_busy = True
 
         if len(self.list_amount) != len(self.list_address):
@@ -350,25 +371,20 @@ class ExcelBulkManagerClassic(ExcelFeature):
             return
 
         for address in self.list_address:
-            token.transfer(address, self.list_amount[v])
-            v += 1
-
+            token.transfer(address, self.list_amount[self.iterN()])
+            self.addN()
             self._line_progress(notify)
-            if notify is not None:
-                self.processed_count = v
-                perc = &#34;{0:.0f}%&#34;.format(v / self.transaction_count * 100)
-                notify(v, self.transaction_count, perc)
 
         self._status_busy = False
 
     def failure(self, a: str, b: str) -&gt; None:
         if self._file_logger is not None:
-            self._file_logger(f&#34;#{self.__n} {a} {b} Failed. ❌ &#34;)
-        self.__failures += 1
+            self._file_logger(f&#34;#{self.iterN()} {a} {b} Failed. ❌ &#34;)
+        self.addFail()
 
     def successTransaction(self, hash: str, name: str) -&gt; None:
         if self._file_logger is not None:
-            self._file_logger(f&#34;#{self.__n} {hash} OK, {self._in_process_address} {self._in_process_amount} 📤 &#34;)
+            self._file_logger(f&#34;#{self.iterN()} {hash} OK, {self._in_process_address} {self._in_process_amount} 📤 &#34;)
 
     def executeTokenTransferDistributionTg(self, token: pharaohs, notify=None, errorNotify=None) -&gt; None:
         &#34;&#34;&#34;
@@ -383,12 +399,12 @@ class ExcelBulkManagerClassic(ExcelFeature):
         :param notify: callback function
         :param errorNotify: callback function
         &#34;&#34;&#34;
-        self.__n = 0
-        self.__t = len(self.list_address)
+        self.resetN()
+        self.setIterSum(len(self.list_address))
         self._status_busy = True
 
         _timestamp = self.nowSec
-        if len(self.list_amount) != self.__t:
+        if len(self.list_amount) != self.Iters():
             errorNotify(&#34;error in checking the length of transaction list&#34;)
             return
 
@@ -399,13 +415,13 @@ class ExcelBulkManagerClassic(ExcelFeature):
 
             for address in self.list_address:
                 self._in_process_address = address
-                report_amount = self.list_amount[self.__n]
+                report_amount = self.list_amount[self.iterN()]
                 self._in_process_amount = report_amount
                 token.transfer(address, report_amount)
                 self.addN()
                 _dela = self.nowSec
                 if notify is not None:
-                    if _dela &gt; _timestamp + 5 or self.__n &gt;= self.__t:
+                    if _dela &gt; _timestamp + 5 or self.iterN() &gt;= self.Iters():
                         _timestamp = self.nowSec
                         self._line_progress(notify)
 
@@ -488,7 +504,9 @@ class ExcelBulkManagerClassic(ExcelFeature):
         return self.total
 
     def executeTokenDistribution(self, token: pharaohs, notify=None):
-        v = 0
+
+        self.resetN()
+        self.setIterSum(self.transaction_count)
         self._status_busy = True
 
         if len(self.list_amount) != len(self.list_address):
@@ -496,25 +514,20 @@ class ExcelBulkManagerClassic(ExcelFeature):
             return
 
         for address in self.list_address:
-            token.transfer(address, self.list_amount[v])
-            v += 1
-
+            token.transfer(address, self.list_amount[self.iterN()])
+            self.addN()
             self._line_progress(notify)
-            if notify is not None:
-                self.processed_count = v
-                perc = &#34;{0:.0f}%&#34;.format(v / self.transaction_count * 100)
-                notify(v, self.transaction_count, perc)
 
         self._status_busy = False
 
     def failure(self, a: str, b: str) -&gt; None:
         if self._file_logger is not None:
-            self._file_logger(f&#34;#{self.__n} {a} {b} Failed. ❌ &#34;)
-        self.__failures += 1
+            self._file_logger(f&#34;#{self.iterN()} {a} {b} Failed. ❌ &#34;)
+        self.addFail()
 
     def successTransaction(self, hash: str, name: str) -&gt; None:
         if self._file_logger is not None:
-            self._file_logger(f&#34;#{self.__n} {hash} OK, {self._in_process_address} {self._in_process_amount} 📤 &#34;)
+            self._file_logger(f&#34;#{self.iterN()} {hash} OK, {self._in_process_address} {self._in_process_amount} 📤 &#34;)
 
     def executeTokenTransferDistributionTg(self, token: pharaohs, notify=None, errorNotify=None) -&gt; None:
         &#34;&#34;&#34;
@@ -529,12 +542,12 @@ class ExcelBulkManagerClassic(ExcelFeature):
         :param notify: callback function
         :param errorNotify: callback function
         &#34;&#34;&#34;
-        self.__n = 0
-        self.__t = len(self.list_address)
+        self.resetN()
+        self.setIterSum(len(self.list_address))
         self._status_busy = True
 
         _timestamp = self.nowSec
-        if len(self.list_amount) != self.__t:
+        if len(self.list_amount) != self.Iters():
             errorNotify(&#34;error in checking the length of transaction list&#34;)
             return
 
@@ -545,13 +558,13 @@ class ExcelBulkManagerClassic(ExcelFeature):
 
             for address in self.list_address:
                 self._in_process_address = address
-                report_amount = self.list_amount[self.__n]
+                report_amount = self.list_amount[self.iterN()]
                 self._in_process_amount = report_amount
                 token.transfer(address, report_amount)
                 self.addN()
                 _dela = self.nowSec
                 if notify is not None:
-                    if _dela &gt; _timestamp + 5 or self.__n &gt;= self.__t:
+                    if _dela &gt; _timestamp + 5 or self.iterN() &gt;= self.Iters():
                         _timestamp = self.nowSec
                         self._line_progress(notify)
 
@@ -581,7 +594,9 @@ class ExcelBulkManagerClassic(ExcelFeature):
 <span>Expand source code</span>
 </summary>
 <pre><code class="python">def executeTokenDistribution(self, token: pharaohs, notify=None):
-    v = 0
+
+    self.resetN()
+    self.setIterSum(self.transaction_count)
     self._status_busy = True
 
     if len(self.list_amount) != len(self.list_address):
@@ -589,14 +604,9 @@ class ExcelBulkManagerClassic(ExcelFeature):
         return
 
     for address in self.list_address:
-        token.transfer(address, self.list_amount[v])
-        v += 1
-
+        token.transfer(address, self.list_amount[self.iterN()])
+        self.addN()
         self._line_progress(notify)
-        if notify is not None:
-            self.processed_count = v
-            perc = &#34;{0:.0f}%&#34;.format(v / self.transaction_count * 100)
-            notify(v, self.transaction_count, perc)
 
     self._status_busy = False</code></pre>
 </details>
@@ -630,12 +640,12 @@ Also note that your bot will not be able to send more than 20 messages per minut
     :param notify: callback function
     :param errorNotify: callback function
     &#34;&#34;&#34;
-    self.__n = 0
-    self.__t = len(self.list_address)
+    self.resetN()
+    self.setIterSum(len(self.list_address))
     self._status_busy = True
 
     _timestamp = self.nowSec
-    if len(self.list_amount) != self.__t:
+    if len(self.list_amount) != self.Iters():
         errorNotify(&#34;error in checking the length of transaction list&#34;)
         return
 
@@ -646,13 +656,13 @@ Also note that your bot will not be able to send more than 20 messages per minut
 
         for address in self.list_address:
             self._in_process_address = address
-            report_amount = self.list_amount[self.__n]
+            report_amount = self.list_amount[self.iterN()]
             self._in_process_amount = report_amount
             token.transfer(address, report_amount)
             self.addN()
             _dela = self.nowSec
             if notify is not None:
-                if _dela &gt; _timestamp + 5 or self.__n &gt;= self.__t:
+                if _dela &gt; _timestamp + 5 or self.iterN() &gt;= self.Iters():
                     _timestamp = self.nowSec
                     self._line_progress(notify)
 
@@ -676,8 +686,8 @@ Also note that your bot will not be able to send more than 20 messages per minut
 </summary>
 <pre><code class="python">def failure(self, a: str, b: str) -&gt; None:
     if self._file_logger is not None:
-        self._file_logger(f&#34;#{self.__n} {a} {b} Failed. ❌ &#34;)
-    self.__failures += 1</code></pre>
+        self._file_logger(f&#34;#{self.iterN()} {a} {b} Failed. ❌ &#34;)
+    self.addFail()</code></pre>
 </details>
 </dd>
 <dt id="moody.m.b_send.looper.ExcelBulkManagerClassic.getSENDAddresses"><code class="name flex">
@@ -759,7 +769,7 @@ Also note that your bot will not be able to send more than 20 messages per minut
 </summary>
 <pre><code class="python">def successTransaction(self, hash: str, name: str) -&gt; None:
     if self._file_logger is not None:
-        self._file_logger(f&#34;#{self.__n} {hash} OK, {self._in_process_address} {self._in_process_amount} 📤 &#34;)</code></pre>
+        self._file_logger(f&#34;#{self.iterN()} {hash} OK, {self._in_process_address} {self._in_process_amount} 📤 &#34;)</code></pre>
 </details>
 </dd>
 </dl>
@@ -807,8 +817,8 @@ Also note that your bot will not be able to send more than 20 messages per minut
         :return:
         &#34;&#34;&#34;
         if self._file_logger is not None:
-            self._file_logger(f&#34;Batch#{self.__n} {a} {b} Failed. ❌ &#34;)
-        self.__failures += 1
+            self._file_logger(f&#34;Batch#{self.iterN()} {a} {b} Failed. ❌ &#34;)
+        self.addFail()
 
     def successTransaction(self, hash: str, name: str) -&gt; None:
         &#34;&#34;&#34;
@@ -818,7 +828,7 @@ Also note that your bot will not be able to send more than 20 messages per minut
         :return:
         &#34;&#34;&#34;
         if self._file_logger is not None:
-            self._file_logger(f&#34;Batch#{self.__n} {name}-hash: {hash} 📤 &#34;)
+            self._file_logger(f&#34;Batch#{self.iterN()} hash: {hash} 📤 &#34;)
 
     def executeTokenTransferOnContractBusTg(
             self,
@@ -837,7 +847,8 @@ Also note that your bot will not be able to send more than 20 messages per minut
         self._status_busy = True
         coin_address = coin_contract.contract_address
         express_address = express_contract.contract_address
-        self.__t = len(self._batch)
+        self.setIterSum(self._batches_count)
+        self.resetN()
 
         if not self._batch_contract:
             self._line_error(errorNotify, &#34;⚠️ Batch contract is not activated&#34;)
@@ -970,7 +981,8 @@ Also note that your bot will not be able to send more than 20 messages per minut
     self._status_busy = True
     coin_address = coin_contract.contract_address
     express_address = express_contract.contract_address
-    self.__t = len(self._batch)
+    self.setIterSum(self._batches_count)
+    self.resetN()
 
     if not self._batch_contract:
         self._line_error(errorNotify, &#34;⚠️ Batch contract is not activated&#34;)
@@ -1046,8 +1058,8 @@ Also note that your bot will not be able to send more than 20 messages per minut
     :return:
     &#34;&#34;&#34;
     if self._file_logger is not None:
-        self._file_logger(f&#34;Batch#{self.__n} {a} {b} Failed. ❌ &#34;)
-    self.__failures += 1</code></pre>
+        self._file_logger(f&#34;Batch#{self.iterN()} {a} {b} Failed. ❌ &#34;)
+    self.addFail()</code></pre>
 </details>
 </dd>
 <dt id="moody.m.b_send.looper.ExcelBulkManagerContractTunnel.getSENDAddresses"><code class="name flex">
@@ -1136,7 +1148,7 @@ Also note that your bot will not be able to send more than 20 messages per minut
     :return:
     &#34;&#34;&#34;
     if self._file_logger is not None:
-        self._file_logger(f&#34;Batch#{self.__n} {name}-hash: {hash} 📤 &#34;)</code></pre>
+        self._file_logger(f&#34;Batch#{self.iterN()} hash: {hash} 📤 &#34;)</code></pre>
 </details>
 </dd>
 </dl>
@@ -1290,8 +1302,26 @@ Also note that your bot will not be able to send more than 20 messages per minut
         else:
             errorNotify(info)
 
+    def setIterSum(self, t) -&gt; int:
+        self.__t = t
+        return self.__t
+
+    def Iters(self) -&gt; int:
+        return self.__t
+
+    def addFail(self) -&gt; int:
+        self.__failures += 1
+        return self.__failures
+
     def addN(self) -&gt; int:
         self.__n += 1
+        return self.__n
+
+    def iterN(self) -&gt; int:
+        return self.__n
+
+    def resetN(self) -&gt; int:
+        self.__n = 0
         return self.__n
 
     def failure(self, a: str, b: str) -&gt; None:
@@ -1322,6 +1352,33 @@ Also note that your bot will not be able to send more than 20 messages per minut
 </summary>
 <pre><code class="python">def ActivateWaitPause(self):
     self.wait_pause = True</code></pre>
+</details>
+</dd>
+<dt id="moody.m.b_send.looper.SkeletonLooper.Iters"><code class="name flex">
+<span>def <span class="ident">Iters</span></span>(<span>self) ‑> int</span>
+</code></dt>
+<dd>
+<div class="desc"></div>
+<details class="source">
+<summary>
+<span>Expand source code</span>
+</summary>
+<pre><code class="python">def Iters(self) -&gt; int:
+    return self.__t</code></pre>
+</details>
+</dd>
+<dt id="moody.m.b_send.looper.SkeletonLooper.addFail"><code class="name flex">
+<span>def <span class="ident">addFail</span></span>(<span>self) ‑> int</span>
+</code></dt>
+<dd>
+<div class="desc"></div>
+<details class="source">
+<summary>
+<span>Expand source code</span>
+</summary>
+<pre><code class="python">def addFail(self) -&gt; int:
+    self.__failures += 1
+    return self.__failures</code></pre>
 </details>
 </dd>
 <dt id="moody.m.b_send.looper.SkeletonLooper.addN"><code class="name flex">
@@ -1362,6 +1419,47 @@ Also note that your bot will not be able to send more than 20 messages per minut
 </summary>
 <pre><code class="python">def failureCounts(self) -&gt; int:
     return self.__failures</code></pre>
+</details>
+</dd>
+<dt id="moody.m.b_send.looper.SkeletonLooper.iterN"><code class="name flex">
+<span>def <span class="ident">iterN</span></span>(<span>self) ‑> int</span>
+</code></dt>
+<dd>
+<div class="desc"></div>
+<details class="source">
+<summary>
+<span>Expand source code</span>
+</summary>
+<pre><code class="python">def iterN(self) -&gt; int:
+    return self.__n</code></pre>
+</details>
+</dd>
+<dt id="moody.m.b_send.looper.SkeletonLooper.resetN"><code class="name flex">
+<span>def <span class="ident">resetN</span></span>(<span>self) ‑> int</span>
+</code></dt>
+<dd>
+<div class="desc"></div>
+<details class="source">
+<summary>
+<span>Expand source code</span>
+</summary>
+<pre><code class="python">def resetN(self) -&gt; int:
+    self.__n = 0
+    return self.__n</code></pre>
+</details>
+</dd>
+<dt id="moody.m.b_send.looper.SkeletonLooper.setIterSum"><code class="name flex">
+<span>def <span class="ident">setIterSum</span></span>(<span>self, t) ‑> int</span>
+</code></dt>
+<dd>
+<div class="desc"></div>
+<details class="source">
+<summary>
+<span>Expand source code</span>
+</summary>
+<pre><code class="python">def setIterSum(self, t) -&gt; int:
+    self.__t = t
+    return self.__t</code></pre>
 </details>
 </dd>
 <dt id="moody.m.b_send.looper.SkeletonLooper.successTransaction"><code class="name flex">
@@ -1589,11 +1687,16 @@ Also note that your bot will not be able to send more than 20 messages per minut
 </li>
 <li>
 <h4><code><a title="moody.m.b_send.looper.SkeletonLooper" href="#moody.m.b_send.looper.SkeletonLooper">SkeletonLooper</a></code></h4>
-<ul class="">
+<ul class="two-column">
 <li><code><a title="moody.m.b_send.looper.SkeletonLooper.ActivateWaitPause" href="#moody.m.b_send.looper.SkeletonLooper.ActivateWaitPause">ActivateWaitPause</a></code></li>
+<li><code><a title="moody.m.b_send.looper.SkeletonLooper.Iters" href="#moody.m.b_send.looper.SkeletonLooper.Iters">Iters</a></code></li>
+<li><code><a title="moody.m.b_send.looper.SkeletonLooper.addFail" href="#moody.m.b_send.looper.SkeletonLooper.addFail">addFail</a></code></li>
 <li><code><a title="moody.m.b_send.looper.SkeletonLooper.addN" href="#moody.m.b_send.looper.SkeletonLooper.addN">addN</a></code></li>
 <li><code><a title="moody.m.b_send.looper.SkeletonLooper.failure" href="#moody.m.b_send.looper.SkeletonLooper.failure">failure</a></code></li>
 <li><code><a title="moody.m.b_send.looper.SkeletonLooper.failureCounts" href="#moody.m.b_send.looper.SkeletonLooper.failureCounts">failureCounts</a></code></li>
+<li><code><a title="moody.m.b_send.looper.SkeletonLooper.iterN" href="#moody.m.b_send.looper.SkeletonLooper.iterN">iterN</a></code></li>
+<li><code><a title="moody.m.b_send.looper.SkeletonLooper.resetN" href="#moody.m.b_send.looper.SkeletonLooper.resetN">resetN</a></code></li>
+<li><code><a title="moody.m.b_send.looper.SkeletonLooper.setIterSum" href="#moody.m.b_send.looper.SkeletonLooper.setIterSum">setIterSum</a></code></li>
 <li><code><a title="moody.m.b_send.looper.SkeletonLooper.successTransaction" href="#moody.m.b_send.looper.SkeletonLooper.successTransaction">successTransaction</a></code></li>
 </ul>
 </li>

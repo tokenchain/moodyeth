@@ -48,8 +48,26 @@ class SkeletonLooper(BaseBulk):
         else:
             errorNotify(info)
 
+    def setIterSum(self, t) -> int:
+        self.__t = t
+        return self.__t
+
+    def Iters(self) -> int:
+        return self.__t
+
+    def addFail(self) -> int:
+        self.__failures += 1
+        return self.__failures
+
     def addN(self) -> int:
         self.__n += 1
+        return self.__n
+
+    def iterN(self) -> int:
+        return self.__n
+
+    def resetN(self) -> int:
+        self.__n = 0
         return self.__n
 
     def failure(self, a: str, b: str) -> None:
@@ -136,8 +154,8 @@ class ExcelBulkManagerContractTunnel(ExcelFeature):
         :return:
         """
         if self._file_logger is not None:
-            self._file_logger(f"Batch#{self.__n} {a} {b} Failed. ❌ ")
-        self.__failures += 1
+            self._file_logger(f"Batch#{self.iterN()} {a} {b} Failed. ❌ ")
+        self.addFail()
 
     def successTransaction(self, hash: str, name: str) -> None:
         """
@@ -147,7 +165,7 @@ class ExcelBulkManagerContractTunnel(ExcelFeature):
         :return:
         """
         if self._file_logger is not None:
-            self._file_logger(f"Batch#{self.__n} {name}-hash: {hash} 📤 ")
+            self._file_logger(f"Batch#{self.iterN()} hash: {hash} 📤 ")
 
     def executeTokenTransferOnContractBusTg(
             self,
@@ -166,7 +184,8 @@ class ExcelBulkManagerContractTunnel(ExcelFeature):
         self._status_busy = True
         coin_address = coin_contract.contract_address
         express_address = express_contract.contract_address
-        self.__t = len(self._batch)
+        self.setIterSum(self._batches_count)
+        self.resetN()
 
         if not self._batch_contract:
             self._line_error(errorNotify, "⚠️ Batch contract is not activated")
@@ -314,7 +333,9 @@ class ExcelBulkManagerClassic(ExcelFeature):
         return self.total
 
     def executeTokenDistribution(self, token: pharaohs, notify=None):
-        v = 0
+
+        self.resetN()
+        self.setIterSum(self.transaction_count)
         self._status_busy = True
 
         if len(self.list_amount) != len(self.list_address):
@@ -322,25 +343,20 @@ class ExcelBulkManagerClassic(ExcelFeature):
             return
 
         for address in self.list_address:
-            token.transfer(address, self.list_amount[v])
-            v += 1
-
+            token.transfer(address, self.list_amount[self.iterN()])
+            self.addN()
             self._line_progress(notify)
-            if notify is not None:
-                self.processed_count = v
-                perc = "{0:.0f}%".format(v / self.transaction_count * 100)
-                notify(v, self.transaction_count, perc)
 
         self._status_busy = False
 
     def failure(self, a: str, b: str) -> None:
         if self._file_logger is not None:
-            self._file_logger(f"#{self.__n} {a} {b} Failed. ❌ ")
-        self.__failures += 1
+            self._file_logger(f"#{self.iterN()} {a} {b} Failed. ❌ ")
+        self.addFail()
 
     def successTransaction(self, hash: str, name: str) -> None:
         if self._file_logger is not None:
-            self._file_logger(f"#{self.__n} {hash} OK, {self._in_process_address} {self._in_process_amount} 📤 ")
+            self._file_logger(f"#{self.iterN()} {hash} OK, {self._in_process_address} {self._in_process_amount} 📤 ")
 
     def executeTokenTransferDistributionTg(self, token: pharaohs, notify=None, errorNotify=None) -> None:
         """
@@ -355,12 +371,12 @@ class ExcelBulkManagerClassic(ExcelFeature):
         :param notify: callback function
         :param errorNotify: callback function
         """
-        self.__n = 0
-        self.__t = len(self.list_address)
+        self.resetN()
+        self.setIterSum(len(self.list_address))
         self._status_busy = True
 
         _timestamp = self.nowSec
-        if len(self.list_amount) != self.__t:
+        if len(self.list_amount) != self.Iters():
             errorNotify("error in checking the length of transaction list")
             return
 
@@ -371,13 +387,13 @@ class ExcelBulkManagerClassic(ExcelFeature):
 
             for address in self.list_address:
                 self._in_process_address = address
-                report_amount = self.list_amount[self.__n]
+                report_amount = self.list_amount[self.iterN()]
                 self._in_process_amount = report_amount
                 token.transfer(address, report_amount)
                 self.addN()
                 _dela = self.nowSec
                 if notify is not None:
-                    if _dela > _timestamp + 5 or self.__n >= self.__t:
+                    if _dela > _timestamp + 5 or self.iterN() >= self.Iters():
                         _timestamp = self.nowSec
                         self._line_progress(notify)
 
