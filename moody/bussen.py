@@ -17,9 +17,9 @@ class BusExpress(MiliDoS):
         self.kol = None
         self.ContractBusExpress: BSend = None
 
-    def start(self, holder: Key, rootpath: str) -> "BusExpress":
+    def start(self, privat_key: str, rootpath: str) -> "BusExpress":
         super().__init__(conf.XDaiMainnet())
-        self.Auth(holder.private_key).connect(rootpath, "xDaiBusSend")
+        self.Auth(privat_key).connect(rootpath, "xDaiBusSend")
         self.OverrideGasConfig(2000000000, 6000000)
         self.ready_io(True)
         return self

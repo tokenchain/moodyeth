@@ -45,9 +45,9 @@ class BusExpress(MiliDoS):
         self.kol = None
         self.ContractBusExpress: BSend = None
 
-    def start(self, holder: Key, rootpath: str) -&gt; &#34;BusExpress&#34;:
+    def start(self, privat_key: str, rootpath: str) -&gt; &#34;BusExpress&#34;:
         super().__init__(conf.XDaiMainnet())
-        self.Auth(holder.private_key).connect(rootpath, &#34;xDaiBusSend&#34;)
+        self.Auth(privat_key).connect(rootpath, &#34;xDaiBusSend&#34;)
         self.OverrideGasConfig(2000000000, 6000000)
         self.ready_io(True)
         return self
@@ -116,9 +116,9 @@ class BusExpress(MiliDoS):
         self.kol = None
         self.ContractBusExpress: BSend = None
 
-    def start(self, holder: Key, rootpath: str) -&gt; &#34;BusExpress&#34;:
+    def start(self, privat_key: str, rootpath: str) -&gt; &#34;BusExpress&#34;:
         super().__init__(conf.XDaiMainnet())
-        self.Auth(holder.private_key).connect(rootpath, &#34;xDaiBusSend&#34;)
+        self.Auth(privat_key).connect(rootpath, &#34;xDaiBusSend&#34;)
         self.OverrideGasConfig(2000000000, 6000000)
         self.ready_io(True)
         return self
@@ -250,7 +250,7 @@ def BSendAddress(self) -&gt; str:
 </details>
 </dd>
 <dt id="moody.bussen.BusExpress.start"><code class="name flex">
-<span>def <span class="ident">start</span></span>(<span>self, holder: moody.Key, rootpath: str) ‑> <a title="moody.bussen.BusExpress" href="#moody.bussen.BusExpress">BusExpress</a></span>
+<span>def <span class="ident">start</span></span>(<span>self, privat_key: str, rootpath: str) ‑> <a title="moody.bussen.BusExpress" href="#moody.bussen.BusExpress">BusExpress</a></span>
 </code></dt>
 <dd>
 <div class="desc"></div>
@@ -258,9 +258,9 @@ def BSendAddress(self) -&gt; str:
 <summary>
 <span>Expand source code</span>
 </summary>
-<pre><code class="python">def start(self, holder: Key, rootpath: str) -&gt; &#34;BusExpress&#34;:
+<pre><code class="python">def start(self, privat_key: str, rootpath: str) -&gt; &#34;BusExpress&#34;:
     super().__init__(conf.XDaiMainnet())
-    self.Auth(holder.private_key).connect(rootpath, &#34;xDaiBusSend&#34;)
+    self.Auth(privat_key).connect(rootpath, &#34;xDaiBusSend&#34;)
     self.OverrideGasConfig(2000000000, 6000000)
     self.ready_io(True)
     return self</code></pre>
