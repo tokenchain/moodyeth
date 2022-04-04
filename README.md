@@ -27,7 +27,7 @@ or upgrade using
 
 or try this without vpn
 
-`sudo pip3 install moodyeth --upgrade -i https://pypi.tuna.tsinghua.edu.cn/simple"`
+`sudo pip3 install moodyeth --upgrade -i https://pypi.tuna.tsinghua.edu.cn/simple`
 
 `sudo pip3 install moodyeth --upgrade -i https://pypi.python.org/simple`
 
