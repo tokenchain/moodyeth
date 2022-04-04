@@ -94,7 +94,7 @@ PRE_HEAD = """
 
 # . ./{path_definitions}
 
-if [[ ! -f /factoryabi ]]; then
+if [[ ! -d factoryabi ]]; then
   echo "The factory abi module is not found"
   exit
 fi
