@@ -1,0 +1,1769 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, minimum-scale=1" />
+<meta name="generator" content="pdoc 0.9.1" />
+<title>moody.m.v_r_f_consumer API documentation</title>
+<meta name="description" content="Generated wrapper for VRFConsumer Solidity contract." />
+<link rel="preload stylesheet" as="style" href="https://cdnjs.cloudflare.com/ajax/libs/10up-sanitize.css/11.0.1/sanitize.min.css" integrity="sha256-PK9q560IAAa6WVRRh76LtCaI8pjTJ2z11v0miyNNjrs=" crossorigin>
+<link rel="preload stylesheet" as="style" href="https://cdnjs.cloudflare.com/ajax/libs/10up-sanitize.css/11.0.1/typography.min.css" integrity="sha256-7l/o7C8jubJiy74VsKTidCy1yBkRtiUGbVkYBylBqUg=" crossorigin>
+<link rel="stylesheet preload" as="style" href="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/10.1.1/styles/github.min.css" crossorigin>
+<style>:root{--highlight-color:#fe9}.flex{display:flex !important}body{line-height:1.5em}#content{padding:20px}#sidebar{padding:30px;overflow:hidden}#sidebar > *:last-child{margin-bottom:2cm}.http-server-breadcrumbs{font-size:130%;margin:0 0 15px 0}#footer{font-size:.75em;padding:5px 30px;border-top:1px solid #ddd;text-align:right}#footer p{margin:0 0 0 1em;display:inline-block}#footer p:last-child{margin-right:30px}h1,h2,h3,h4,h5{font-weight:300}h1{font-size:2.5em;line-height:1.1em}h2{font-size:1.75em;margin:1em 0 .50em 0}h3{font-size:1.4em;margin:25px 0 10px 0}h4{margin:0;font-size:105%}h1:target,h2:target,h3:target,h4:target,h5:target,h6:target{background:var(--highlight-color);padding:.2em 0}a{color:#058;text-decoration:none;transition:color .3s ease-in-out}a:hover{color:#e82}.title code{font-weight:bold}h2[id^="header-"]{margin-top:2em}.ident{color:#900}pre code{background:#f8f8f8;font-size:.8em;line-height:1.4em}code{background:#f2f2f1;padding:1px 4px;overflow-wrap:break-word}h1 code{background:transparent}pre{background:#f8f8f8;border:0;border-top:1px solid #ccc;border-bottom:1px solid #ccc;margin:1em 0;padding:1ex}#http-server-module-list{display:flex;flex-flow:column}#http-server-module-list div{display:flex}#http-server-module-list dt{min-width:10%}#http-server-module-list p{margin-top:0}.toc ul,#index{list-style-type:none;margin:0;padding:0}#index code{background:transparent}#index h3{border-bottom:1px solid #ddd}#index ul{padding:0}#index h4{margin-top:.6em;font-weight:bold}@media (min-width:200ex){#index .two-column{column-count:2}}@media (min-width:300ex){#index .two-column{column-count:3}}dl{margin-bottom:2em}dl dl:last-child{margin-bottom:4em}dd{margin:0 0 1em 3em}#header-classes + dl > dd{margin-bottom:3em}dd dd{margin-left:2em}dd p{margin:10px 0}.name{background:#eee;font-weight:bold;font-size:.85em;padding:5px 10px;display:inline-block;min-width:40%}.name:hover{background:#e0e0e0}dt:target .name{background:var(--highlight-color)}.name > span:first-child{white-space:nowrap}.name.class > span:nth-child(2){margin-left:.4em}.inherited{color:#999;border-left:5px solid #eee;padding-left:1em}.inheritance em{font-style:normal;font-weight:bold}.desc h2{font-weight:400;font-size:1.25em}.desc h3{font-size:1em}.desc dt code{background:inherit}.source summary,.git-link-div{color:#666;text-align:right;font-weight:400;font-size:.8em;text-transform:uppercase}.source summary > *{white-space:nowrap;cursor:pointer}.git-link{color:inherit;margin-left:1em}.source pre{max-height:500px;overflow:auto;margin:0}.source pre code{font-size:12px;overflow:visible}.hlist{list-style:none}.hlist li{display:inline}.hlist li:after{content:',\2002'}.hlist li:last-child:after{content:none}.hlist .hlist{display:inline;padding-left:1em}img{max-width:100%}td{padding:0 .5em}.admonition{padding:.1em .5em;margin-bottom:1em}.admonition-title{font-weight:bold}.admonition.note,.admonition.info,.admonition.important{background:#aef}.admonition.todo,.admonition.versionadded,.admonition.tip,.admonition.hint{background:#dfd}.admonition.warning,.admonition.versionchanged,.admonition.deprecated{background:#fd4}.admonition.error,.admonition.danger,.admonition.caution{background:lightpink}</style>
+<style media="screen and (min-width: 700px)">@media screen and (min-width:700px){#sidebar{width:30%;height:100vh;overflow:auto;position:sticky;top:0}#content{width:70%;max-width:100ch;padding:3em 4em;border-left:1px solid #ddd}pre code{font-size:1em}.item .name{font-size:1em}main{display:flex;flex-direction:row-reverse;justify-content:flex-end}.toc ul ul,#index ul{padding-left:1.5em}.toc > ul > li{margin-top:.5em}}</style>
+<style media="print">@media print{#sidebar h1{page-break-before:always}.source{display:none}}@media print{*{background:transparent !important;color:#000 !important;box-shadow:none !important;text-shadow:none !important}a[href]:after{content:" (" attr(href) ")";font-size:90%}a[href][title]:after{content:none}abbr[title]:after{content:" (" attr(title) ")"}.ir a:after,a[href^="javascript:"]:after,a[href^="#"]:after{content:""}pre,blockquote{border:1px solid #999;page-break-inside:avoid}thead{display:table-header-group}tr,img{page-break-inside:avoid}img{max-width:100% !important}@page{margin:0.5cm}p,h2,h3{orphans:3;widows:3}h1,h2,h3,h4,h5,h6{page-break-after:avoid}}</style>
+<script defer src="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/10.1.1/highlight.min.js" integrity="sha256-Uv3H6lx7dJmRfRvH8TH6kJD1TSK1aFcwgx+mdg3epi8=" crossorigin></script>
+<script>window.addEventListener('DOMContentLoaded', () => hljs.initHighlighting())</script>
+</head>
+<body>
+<main>
+<article id="content">
+<header>
+<h1 class="title">Module <code>moody.m.v_r_f_consumer</code></h1>
+</header>
+<section id="section-intro">
+<p>Generated wrapper for VRFConsumer Solidity contract.</p>
+<details class="source">
+<summary>
+<span>Expand source code</span>
+</summary>
+<pre><code class="python">&#34;&#34;&#34;Generated wrapper for VRFConsumer Solidity contract.&#34;&#34;&#34;
+
+# pylint: disable=too-many-arguments
+
+import json
+from typing import (  # pylint: disable=unused-import
+    Any,
+    List,
+    Optional,
+    Tuple,
+    Union,
+)
+import time
+from eth_utils import to_checksum_address
+from mypy_extensions import TypedDict  # pylint: disable=unused-import
+from hexbytes import HexBytes
+from web3 import Web3
+from web3.contract import ContractFunction
+from web3.datastructures import AttributeDict
+from web3.providers.base import BaseProvider
+from web3.exceptions import ContractLogicError
+from moody.m.bases import ContractMethod, Validator, ContractBase, Signatures
+from moody.m.tx_params import TxParams
+from moody.libeb import MiliDoS
+from moody import Bolors
+
+# Try to import a custom validator class definition; if there isn&#39;t one,
+# declare one that we can instantiate for the default argument to the
+# constructor for VRFConsumer below.
+try:
+    # both mypy and pylint complain about what we&#39;re doing here, but this
+    # works just fine, so their messages have been disabled here.
+    from . import (  # type: ignore # pylint: disable=import-self
+        VRFConsumerValidator,
+    )
+except ImportError:
+
+    class VRFConsumerValidator(  # type: ignore
+        Validator
+    ):
+        &#34;&#34;&#34;No-op input validator.&#34;&#34;&#34;
+
+try:
+    from .middleware import MIDDLEWARE  # type: ignore
+except ImportError:
+    pass
+
+
+
+
+
+class GetRandomNumberMethod(ContractMethod): # pylint: disable=invalid-name
+    &#34;&#34;&#34;Various interfaces to the getRandomNumber method.&#34;&#34;&#34;
+
+    def __init__(self, elib: MiliDoS, contract_address: str, contract_function: ContractFunction, validator: Validator=None):
+        &#34;&#34;&#34;Persist instance data.&#34;&#34;&#34;
+        super().__init__(elib, contract_address)
+        self._underlying_method = contract_function
+        self.sign = validator.getSignature(&#34;getRandomNumber&#34;)
+
+
+
+    def block_send(self, _gaswei:int,_pricewei:int,_valeth:int=0,_debugtx: bool = False,_receipList: bool = False) -&gt; Union[bytes, str]:
+        &#34;&#34;&#34;Execute underlying contract method via eth_call.
+
+        :param tx_params: transaction parameters
+        :returns: the return value of the underlying method.
+        &#34;&#34;&#34;
+        _fn = self._underlying_method()
+        try:
+
+            _t = _fn.buildTransaction({
+                &#39;from&#39;: self._operate,
+                &#39;gas&#39;: _gaswei,
+                &#39;gasPrice&#39;: _pricewei
+            })
+            _t[&#39;nonce&#39;] = self._web3_eth.getTransactionCount(self._operate)
+
+            if _valeth &gt; 0:
+                _t[&#39;value&#39;] = _valeth
+
+            if _debugtx:
+                print(f&#34;======== Signing ✅ by {self._operate}&#34;)
+                print(f&#34;======== Transaction ✅ check&#34;)
+                print(_t)
+
+            if &#39;data&#39; in _t:
+
+                signed = self._web3_eth.account.sign_transaction(_t)
+                txHash = self._web3_eth.sendRawTransaction(signed.rawTransaction)
+                tx_receipt = None
+                if _receipList is True:
+                    print(f&#34;======== awaiting Confirmation 🚸️ {self.sign}&#34;)
+                    tx_receipt = self._web3_eth.waitForTransactionReceipt(txHash)
+                    if _debugtx:
+                        print(&#34;======== TX Result ✅&#34;)
+                        print(tx_receipt)
+
+                print(f&#34;======== TX blockHash ✅&#34;)
+                if tx_receipt is not None:
+                    print(f&#34;{Bolors.OK}{tx_receipt.blockHash.hex()}{Bolors.RESET}&#34;)
+                else:
+                    print(f&#34;{Bolors.WARNING}{txHash.hex()}{Bolors.RESET} - broadcast hash&#34;)
+
+            if _receipList is False:
+                time.sleep(self._wait)
+
+
+        except ContractLogicError as er:
+            print(f&#34;{Bolors.FAIL}Error {er} {Bolors.RESET}: get_random_number&#34;)
+
+        except ValueError as err:
+            if &#34;message&#34; in err.args[0]:
+                message = err.args[0][&#34;message&#34;]
+                print(f&#34;{Bolors.FAIL}Error Revert {Bolors.RESET}, get_random_number: {message}&#34;)
+            else:
+                print(f&#34;{Bolors.FAIL}Error Revert {Bolors.RESET}, get_random_number. Reason: Unknown&#34;)
+
+
+    def send_transaction(self, tx_params: Optional[TxParams] = None) -&gt; Union[HexBytes, bytes]:
+        &#34;&#34;&#34;Execute underlying contract method via eth_sendTransaction.
+
+        :param tx_params: transaction parameters
+        &#34;&#34;&#34;
+        tx_params = super().normalize_tx_params(tx_params)
+        return self._underlying_method().transact(tx_params.as_dict())
+
+    def build_transaction(self, tx_params: Optional[TxParams] = None) -&gt; dict:
+        &#34;&#34;&#34;Construct calldata to be used as input to the method.&#34;&#34;&#34;
+        tx_params = super().normalize_tx_params(tx_params)
+        return self._underlying_method().buildTransaction(tx_params.as_dict())
+
+    def estimate_gas(self, tx_params: Optional[TxParams] = None) -&gt; int:
+        &#34;&#34;&#34;Estimate gas consumption of method call.&#34;&#34;&#34;
+        tx_params = super().normalize_tx_params(tx_params)
+        return self._underlying_method().estimateGas(tx_params.as_dict())
+
+class RandomResultMethod(ContractMethod): # pylint: disable=invalid-name
+    &#34;&#34;&#34;Various interfaces to the randomResult method.&#34;&#34;&#34;
+
+    def __init__(self, elib: MiliDoS, contract_address: str, contract_function: ContractFunction, validator: Validator=None):
+        &#34;&#34;&#34;Persist instance data.&#34;&#34;&#34;
+        super().__init__(elib, contract_address)
+        self._underlying_method = contract_function
+        self.sign = validator.getSignature(&#34;randomResult&#34;)
+
+
+
+    def block_call(self, debug:bool=False) -&gt; int:
+        _fn = self._underlying_method()
+        returned = _fn.call({
+                &#39;from&#39;: self._operate
+            })
+        return int(returned)
+    def block_send(self, _gaswei:int,_pricewei:int,_valeth:int=0,_debugtx: bool = False,_receipList: bool = False) -&gt; int:
+        &#34;&#34;&#34;Execute underlying contract method via eth_call.
+
+        :param tx_params: transaction parameters
+        :returns: the return value of the underlying method.
+        &#34;&#34;&#34;
+        _fn = self._underlying_method()
+        try:
+
+            _t = _fn.buildTransaction({
+                &#39;from&#39;: self._operate,
+                &#39;gas&#39;: _gaswei,
+                &#39;gasPrice&#39;: _pricewei
+            })
+            _t[&#39;nonce&#39;] = self._web3_eth.getTransactionCount(self._operate)
+
+            if _valeth &gt; 0:
+                _t[&#39;value&#39;] = _valeth
+
+            if _debugtx:
+                print(f&#34;======== Signing ✅ by {self._operate}&#34;)
+                print(f&#34;======== Transaction ✅ check&#34;)
+                print(_t)
+
+            if &#39;data&#39; in _t:
+
+                signed = self._web3_eth.account.sign_transaction(_t)
+                txHash = self._web3_eth.sendRawTransaction(signed.rawTransaction)
+                tx_receipt = None
+                if _receipList is True:
+                    print(f&#34;======== awaiting Confirmation 🚸️ {self.sign}&#34;)
+                    tx_receipt = self._web3_eth.waitForTransactionReceipt(txHash)
+                    if _debugtx:
+                        print(&#34;======== TX Result ✅&#34;)
+                        print(tx_receipt)
+
+                print(f&#34;======== TX blockHash ✅&#34;)
+                if tx_receipt is not None:
+                    print(f&#34;{Bolors.OK}{tx_receipt.blockHash.hex()}{Bolors.RESET}&#34;)
+                else:
+                    print(f&#34;{Bolors.WARNING}{txHash.hex()}{Bolors.RESET} - broadcast hash&#34;)
+
+            if _receipList is False:
+                time.sleep(self._wait)
+
+
+        except ContractLogicError as er:
+            print(f&#34;{Bolors.FAIL}Error {er} {Bolors.RESET}: random_result&#34;)
+
+        except ValueError as err:
+            if &#34;message&#34; in err.args[0]:
+                message = err.args[0][&#34;message&#34;]
+                print(f&#34;{Bolors.FAIL}Error Revert {Bolors.RESET}, random_result: {message}&#34;)
+            else:
+                print(f&#34;{Bolors.FAIL}Error Revert {Bolors.RESET}, random_result. Reason: Unknown&#34;)
+
+
+    def send_transaction(self, tx_params: Optional[TxParams] = None) -&gt; Union[HexBytes, bytes]:
+        &#34;&#34;&#34;Execute underlying contract method via eth_sendTransaction.
+
+        :param tx_params: transaction parameters
+        &#34;&#34;&#34;
+        tx_params = super().normalize_tx_params(tx_params)
+        return self._underlying_method().transact(tx_params.as_dict())
+
+    def build_transaction(self, tx_params: Optional[TxParams] = None) -&gt; dict:
+        &#34;&#34;&#34;Construct calldata to be used as input to the method.&#34;&#34;&#34;
+        tx_params = super().normalize_tx_params(tx_params)
+        return self._underlying_method().buildTransaction(tx_params.as_dict())
+
+    def estimate_gas(self, tx_params: Optional[TxParams] = None) -&gt; int:
+        &#34;&#34;&#34;Estimate gas consumption of method call.&#34;&#34;&#34;
+        tx_params = super().normalize_tx_params(tx_params)
+        return self._underlying_method().estimateGas(tx_params.as_dict())
+
+class RawFulfillRandomnessMethod(ContractMethod): # pylint: disable=invalid-name
+    &#34;&#34;&#34;Various interfaces to the rawFulfillRandomness method.&#34;&#34;&#34;
+
+    def __init__(self, elib: MiliDoS, contract_address: str, contract_function: ContractFunction, validator: Validator=None):
+        &#34;&#34;&#34;Persist instance data.&#34;&#34;&#34;
+        super().__init__(elib, contract_address, validator)
+        self._underlying_method = contract_function
+        self.sign = validator.getSignature(&#34;rawFulfillRandomness&#34;)
+
+    def validate_and_normalize_inputs(self, request_id: Union[bytes, str], randomness: int)-&gt;any:
+        &#34;&#34;&#34;Validate the inputs to the rawFulfillRandomness method.&#34;&#34;&#34;
+        self.validator.assert_valid(
+            method_name=&#39;rawFulfillRandomness&#39;,
+            parameter_name=&#39;requestId&#39;,
+            argument_value=request_id,
+        )
+        self.validator.assert_valid(
+            method_name=&#39;rawFulfillRandomness&#39;,
+            parameter_name=&#39;randomness&#39;,
+            argument_value=randomness,
+        )
+        # safeguard against fractional inputs
+        randomness = int(randomness)
+        return (request_id, randomness)
+
+
+
+    def block_send(self, request_id: Union[bytes, str], randomness: int,_gaswei:int,_pricewei:int,_valeth:int=0,_debugtx: bool = False,_receipList: bool = False) -&gt; None:
+        &#34;&#34;&#34;Execute underlying contract method via eth_call.
+
+        :param tx_params: transaction parameters
+        :returns: the return value of the underlying method.
+        &#34;&#34;&#34;
+        _fn = self._underlying_method(request_id, randomness)
+        try:
+
+            _t = _fn.buildTransaction({
+                &#39;from&#39;: self._operate,
+                &#39;gas&#39;: _gaswei,
+                &#39;gasPrice&#39;: _pricewei
+            })
+            _t[&#39;nonce&#39;] = self._web3_eth.getTransactionCount(self._operate)
+
+            if _valeth &gt; 0:
+                _t[&#39;value&#39;] = _valeth
+
+            if _debugtx:
+                print(f&#34;======== Signing ✅ by {self._operate}&#34;)
+                print(f&#34;======== Transaction ✅ check&#34;)
+                print(_t)
+
+            if &#39;data&#39; in _t:
+
+                signed = self._web3_eth.account.sign_transaction(_t)
+                txHash = self._web3_eth.sendRawTransaction(signed.rawTransaction)
+                tx_receipt = None
+                if _receipList is True:
+                    print(f&#34;======== awaiting Confirmation 🚸️ {self.sign}&#34;)
+                    tx_receipt = self._web3_eth.waitForTransactionReceipt(txHash)
+                    if _debugtx:
+                        print(&#34;======== TX Result ✅&#34;)
+                        print(tx_receipt)
+
+                print(f&#34;======== TX blockHash ✅&#34;)
+                if tx_receipt is not None:
+                    print(f&#34;{Bolors.OK}{tx_receipt.blockHash.hex()}{Bolors.RESET}&#34;)
+                else:
+                    print(f&#34;{Bolors.WARNING}{txHash.hex()}{Bolors.RESET} - broadcast hash&#34;)
+
+            if _receipList is False:
+                time.sleep(self._wait)
+
+
+        except ContractLogicError as er:
+            print(f&#34;{Bolors.FAIL}Error {er} {Bolors.RESET}: raw_fulfill_randomness&#34;)
+
+        except ValueError as err:
+            if &#34;message&#34; in err.args[0]:
+                message = err.args[0][&#34;message&#34;]
+                print(f&#34;{Bolors.FAIL}Error Revert {Bolors.RESET}, raw_fulfill_randomness: {message}&#34;)
+            else:
+                print(f&#34;{Bolors.FAIL}Error Revert {Bolors.RESET}, raw_fulfill_randomness. Reason: Unknown&#34;)
+
+
+    def send_transaction(self, request_id: Union[bytes, str], randomness: int, tx_params: Optional[TxParams] = None) -&gt; Union[HexBytes, bytes]:
+        &#34;&#34;&#34;Execute underlying contract method via eth_sendTransaction.
+
+        :param tx_params: transaction parameters
+        &#34;&#34;&#34;
+        (request_id, randomness) = self.validate_and_normalize_inputs(request_id, randomness)
+        tx_params = super().normalize_tx_params(tx_params)
+        return self._underlying_method(request_id, randomness).transact(tx_params.as_dict())
+
+    def build_transaction(self, request_id: Union[bytes, str], randomness: int, tx_params: Optional[TxParams] = None) -&gt; dict:
+        &#34;&#34;&#34;Construct calldata to be used as input to the method.&#34;&#34;&#34;
+        (request_id, randomness) = self.validate_and_normalize_inputs(request_id, randomness)
+        tx_params = super().normalize_tx_params(tx_params)
+        return self._underlying_method(request_id, randomness).buildTransaction(tx_params.as_dict())
+
+    def estimate_gas(self, request_id: Union[bytes, str], randomness: int, tx_params: Optional[TxParams] = None) -&gt; int:
+        &#34;&#34;&#34;Estimate gas consumption of method call.&#34;&#34;&#34;
+        (request_id, randomness) = self.validate_and_normalize_inputs(request_id, randomness)
+        tx_params = super().normalize_tx_params(tx_params)
+        return self._underlying_method(request_id, randomness).estimateGas(tx_params.as_dict())
+
+class SignatureGenerator(Signatures):
+    &#34;&#34;&#34;
+        The signature is generated for this and it is installed.
+    &#34;&#34;&#34;
+    def __init__(self, abi: any):
+        super().__init__(abi)
+
+    def get_random_number(self) -&gt; str:
+        return self._function_signatures[&#34;getRandomNumber&#34;]
+    def random_result(self) -&gt; str:
+        return self._function_signatures[&#34;randomResult&#34;]
+    def raw_fulfill_randomness(self) -&gt; str:
+        return self._function_signatures[&#34;rawFulfillRandomness&#34;]
+
+# pylint: disable=too-many-public-methods,too-many-instance-attributes
+class VRFConsumer(ContractBase):
+    &#34;&#34;&#34;Wrapper class for VRFConsumer Solidity contract.&#34;&#34;&#34;
+    _fn_get_random_number: GetRandomNumberMethod
+    &#34;&#34;&#34;Constructor-initialized instance of
+    :class:`GetRandomNumberMethod`.
+    &#34;&#34;&#34;
+
+    _fn_random_result: RandomResultMethod
+    &#34;&#34;&#34;Constructor-initialized instance of
+    :class:`RandomResultMethod`.
+    &#34;&#34;&#34;
+
+    _fn_raw_fulfill_randomness: RawFulfillRandomnessMethod
+    &#34;&#34;&#34;Constructor-initialized instance of
+    :class:`RawFulfillRandomnessMethod`.
+    &#34;&#34;&#34;
+
+    SIGNATURES:SignatureGenerator = None
+
+    def __init__(
+        self,
+        core_lib: MiliDoS,
+        contract_address: str,
+        validator: VRFConsumerValidator = None,
+    ):
+        &#34;&#34;&#34;Get an instance of wrapper for smart contract.
+        &#34;&#34;&#34;
+        # pylint: disable=too-many-statements
+        super().__init__()
+        self.contract_address = contract_address
+        web3 = core_lib.w3
+
+        if not validator:
+            validator = VRFConsumerValidator(web3, contract_address)
+
+
+
+
+        # if any middleware was imported, inject it
+        try:
+            MIDDLEWARE
+        except NameError:
+            pass
+        else:
+            try:
+                for middleware in MIDDLEWARE:
+                    web3.middleware_onion.inject(
+                         middleware[&#39;function&#39;], layer=middleware[&#39;layer&#39;],
+                    )
+            except ValueError as value_error:
+                if value_error.args == (&#34;You can&#39;t add the same un-named instance twice&#34;,):
+                    pass
+
+        self._web3_eth = web3.eth
+        functions = self._web3_eth.contract(address=to_checksum_address(contract_address), abi=VRFConsumer.abi()).functions
+        signed = SignatureGenerator(VRFConsumer.abi())
+        validator.bindSignatures(signed)
+        self.SIGNATURES = signed
+        self._fn_get_random_number = GetRandomNumberMethod(core_lib, contract_address, functions.getRandomNumber, validator)
+        self._fn_random_result = RandomResultMethod(core_lib, contract_address, functions.randomResult, validator)
+        self._fn_raw_fulfill_randomness = RawFulfillRandomnessMethod(core_lib, contract_address, functions.rawFulfillRandomness, validator)
+
+    
+    
+    def event_random_number_arrived(
+            self, tx_hash: Union[HexBytes, bytes]
+    ) -&gt; Tuple[AttributeDict]:
+        &#34;&#34;&#34;
+        Implementation of event random_number_arrived in contract VRFConsumer
+        Get log entry for randomNumberArrived event.
+                :param tx_hash: hash of transaction emitting randomNumberArrived event
+        &#34;&#34;&#34;
+        tx_receipt = self._web3_eth.getTransactionReceipt(tx_hash)
+        return self._web3_eth.contract(address=to_checksum_address(self.contract_address), abi=VRFConsumer.abi()).events.randomNumberArrived().processReceipt(tx_receipt)
+
+    
+    
+    
+    def get_random_number(self) -&gt; Union[bytes, str]:
+        &#34;&#34;&#34;
+        Implementation of get_random_number in contract VRFConsumer
+        Method of the function
+    
+    
+    
+        &#34;&#34;&#34;
+    
+        return self._fn_get_random_number.block_send(self.call_contract_fee_amount,self.call_contract_fee_price,0,self.call_contract_debug_flag, self.call_contract_enforce_tx_receipt)
+    
+    
+    
+    
+    
+    
+    
+    def random_result(self) -&gt; int:
+        &#34;&#34;&#34;
+        Implementation of random_result in contract VRFConsumer
+        Method of the function
+    
+    
+    
+        &#34;&#34;&#34;
+    
+    
+    
+    
+    
+        return self._fn_random_result.block_call()
+    
+    
+    
+    def raw_fulfill_randomness(self, request_id: Union[bytes, str], randomness: int) -&gt; None:
+        &#34;&#34;&#34;
+        Implementation of raw_fulfill_randomness in contract VRFConsumer
+        Method of the function
+    
+    
+    
+        &#34;&#34;&#34;
+    
+        return self._fn_raw_fulfill_randomness.block_send(request_id, randomness, self.call_contract_fee_amount,self.call_contract_fee_price,0,self.call_contract_debug_flag, self.call_contract_enforce_tx_receipt)
+    
+    
+    
+    
+
+    def CallContractWait(self, t_long:int)-&gt; &#34;VRFConsumer&#34;:
+        self._fn_get_random_number.setWait(t_long)
+        self._fn_random_result.setWait(t_long)
+        self._fn_raw_fulfill_randomness.setWait(t_long)
+        return self
+
+
+    @staticmethod
+    def abi():
+        &#34;&#34;&#34;Return the ABI to the underlying contract.&#34;&#34;&#34;
+        return json.loads(
+            &#39;[{&#34;inputs&#34;:[],&#34;stateMutability&#34;:&#34;nonpayable&#34;,&#34;type&#34;:&#34;constructor&#34;},{&#34;anonymous&#34;:false,&#34;inputs&#34;:[{&#34;indexed&#34;:false,&#34;internalType&#34;:&#34;bool&#34;,&#34;name&#34;:&#34;arrived&#34;,&#34;type&#34;:&#34;bool&#34;},{&#34;indexed&#34;:false,&#34;internalType&#34;:&#34;uint256&#34;,&#34;name&#34;:&#34;randomNumber&#34;,&#34;type&#34;:&#34;uint256&#34;},{&#34;indexed&#34;:false,&#34;internalType&#34;:&#34;bytes32&#34;,&#34;name&#34;:&#34;batchID&#34;,&#34;type&#34;:&#34;bytes32&#34;}],&#34;name&#34;:&#34;randomNumberArrived&#34;,&#34;type&#34;:&#34;event&#34;},{&#34;inputs&#34;:[],&#34;name&#34;:&#34;getRandomNumber&#34;,&#34;outputs&#34;:[{&#34;internalType&#34;:&#34;bytes32&#34;,&#34;name&#34;:&#34;requestId&#34;,&#34;type&#34;:&#34;bytes32&#34;}],&#34;stateMutability&#34;:&#34;nonpayable&#34;,&#34;type&#34;:&#34;function&#34;},{&#34;inputs&#34;:[],&#34;name&#34;:&#34;randomResult&#34;,&#34;outputs&#34;:[{&#34;internalType&#34;:&#34;uint256&#34;,&#34;name&#34;:&#34;&#34;,&#34;type&#34;:&#34;uint256&#34;}],&#34;stateMutability&#34;:&#34;view&#34;,&#34;type&#34;:&#34;function&#34;},{&#34;inputs&#34;:[{&#34;internalType&#34;:&#34;bytes32&#34;,&#34;name&#34;:&#34;requestId&#34;,&#34;type&#34;:&#34;bytes32&#34;},{&#34;internalType&#34;:&#34;uint256&#34;,&#34;name&#34;:&#34;randomness&#34;,&#34;type&#34;:&#34;uint256&#34;}],&#34;name&#34;:&#34;rawFulfillRandomness&#34;,&#34;outputs&#34;:[],&#34;stateMutability&#34;:&#34;nonpayable&#34;,&#34;type&#34;:&#34;function&#34;}]&#39;  # noqa: E501 (line-too-long)
+        )
+
+# pylint: disable=too-many-lines</code></pre>
+</details>
+</section>
+<section>
+</section>
+<section>
+</section>
+<section>
+</section>
+<section>
+<h2 class="section-title" id="header-classes">Classes</h2>
+<dl>
+<dt id="moody.m.v_r_f_consumer.GetRandomNumberMethod"><code class="flex name class">
+<span>class <span class="ident">GetRandomNumberMethod</span></span>
+<span>(</span><span>elib: <a title="moody.libeb.MiliDoS" href="../../libeb.html#moody.libeb.MiliDoS">MiliDoS</a>, contract_address: str, contract_function: web3.contract.ContractFunction, validator: <a title="moody.m.bases.Validator" href="../bases.html#moody.m.bases.Validator">Validator</a> = None)</span>
+</code></dt>
+<dd>
+<div class="desc"><p>Various interfaces to the getRandomNumber method.</p>
+<p>Persist instance data.</p></div>
+<details class="source">
+<summary>
+<span>Expand source code</span>
+</summary>
+<pre><code class="python">class GetRandomNumberMethod(ContractMethod): # pylint: disable=invalid-name
+    &#34;&#34;&#34;Various interfaces to the getRandomNumber method.&#34;&#34;&#34;
+
+    def __init__(self, elib: MiliDoS, contract_address: str, contract_function: ContractFunction, validator: Validator=None):
+        &#34;&#34;&#34;Persist instance data.&#34;&#34;&#34;
+        super().__init__(elib, contract_address)
+        self._underlying_method = contract_function
+        self.sign = validator.getSignature(&#34;getRandomNumber&#34;)
+
+
+
+    def block_send(self, _gaswei:int,_pricewei:int,_valeth:int=0,_debugtx: bool = False,_receipList: bool = False) -&gt; Union[bytes, str]:
+        &#34;&#34;&#34;Execute underlying contract method via eth_call.
+
+        :param tx_params: transaction parameters
+        :returns: the return value of the underlying method.
+        &#34;&#34;&#34;
+        _fn = self._underlying_method()
+        try:
+
+            _t = _fn.buildTransaction({
+                &#39;from&#39;: self._operate,
+                &#39;gas&#39;: _gaswei,
+                &#39;gasPrice&#39;: _pricewei
+            })
+            _t[&#39;nonce&#39;] = self._web3_eth.getTransactionCount(self._operate)
+
+            if _valeth &gt; 0:
+                _t[&#39;value&#39;] = _valeth
+
+            if _debugtx:
+                print(f&#34;======== Signing ✅ by {self._operate}&#34;)
+                print(f&#34;======== Transaction ✅ check&#34;)
+                print(_t)
+
+            if &#39;data&#39; in _t:
+
+                signed = self._web3_eth.account.sign_transaction(_t)
+                txHash = self._web3_eth.sendRawTransaction(signed.rawTransaction)
+                tx_receipt = None
+                if _receipList is True:
+                    print(f&#34;======== awaiting Confirmation 🚸️ {self.sign}&#34;)
+                    tx_receipt = self._web3_eth.waitForTransactionReceipt(txHash)
+                    if _debugtx:
+                        print(&#34;======== TX Result ✅&#34;)
+                        print(tx_receipt)
+
+                print(f&#34;======== TX blockHash ✅&#34;)
+                if tx_receipt is not None:
+                    print(f&#34;{Bolors.OK}{tx_receipt.blockHash.hex()}{Bolors.RESET}&#34;)
+                else:
+                    print(f&#34;{Bolors.WARNING}{txHash.hex()}{Bolors.RESET} - broadcast hash&#34;)
+
+            if _receipList is False:
+                time.sleep(self._wait)
+
+
+        except ContractLogicError as er:
+            print(f&#34;{Bolors.FAIL}Error {er} {Bolors.RESET}: get_random_number&#34;)
+
+        except ValueError as err:
+            if &#34;message&#34; in err.args[0]:
+                message = err.args[0][&#34;message&#34;]
+                print(f&#34;{Bolors.FAIL}Error Revert {Bolors.RESET}, get_random_number: {message}&#34;)
+            else:
+                print(f&#34;{Bolors.FAIL}Error Revert {Bolors.RESET}, get_random_number. Reason: Unknown&#34;)
+
+
+    def send_transaction(self, tx_params: Optional[TxParams] = None) -&gt; Union[HexBytes, bytes]:
+        &#34;&#34;&#34;Execute underlying contract method via eth_sendTransaction.
+
+        :param tx_params: transaction parameters
+        &#34;&#34;&#34;
+        tx_params = super().normalize_tx_params(tx_params)
+        return self._underlying_method().transact(tx_params.as_dict())
+
+    def build_transaction(self, tx_params: Optional[TxParams] = None) -&gt; dict:
+        &#34;&#34;&#34;Construct calldata to be used as input to the method.&#34;&#34;&#34;
+        tx_params = super().normalize_tx_params(tx_params)
+        return self._underlying_method().buildTransaction(tx_params.as_dict())
+
+    def estimate_gas(self, tx_params: Optional[TxParams] = None) -&gt; int:
+        &#34;&#34;&#34;Estimate gas consumption of method call.&#34;&#34;&#34;
+        tx_params = super().normalize_tx_params(tx_params)
+        return self._underlying_method().estimateGas(tx_params.as_dict())</code></pre>
+</details>
+<h3>Ancestors</h3>
+<ul class="hlist">
+<li><a title="moody.m.bases.ContractMethod" href="../bases.html#moody.m.bases.ContractMethod">ContractMethod</a></li>
+</ul>
+<h3>Methods</h3>
+<dl>
+<dt id="moody.m.v_r_f_consumer.GetRandomNumberMethod.block_send"><code class="name flex">
+<span>def <span class="ident">block_send</span></span>(<span>self, _gaswei: int, _pricewei: int) ‑> Union[bytes, str]</span>
+</code></dt>
+<dd>
+<div class="desc"><p>Execute underlying contract method via eth_call.</p>
+<p>:param tx_params: transaction parameters
+:returns: the return value of the underlying method.</p></div>
+<details class="source">
+<summary>
+<span>Expand source code</span>
+</summary>
+<pre><code class="python">def block_send(self, _gaswei:int,_pricewei:int,_valeth:int=0,_debugtx: bool = False,_receipList: bool = False) -&gt; Union[bytes, str]:
+    &#34;&#34;&#34;Execute underlying contract method via eth_call.
+
+    :param tx_params: transaction parameters
+    :returns: the return value of the underlying method.
+    &#34;&#34;&#34;
+    _fn = self._underlying_method()
+    try:
+
+        _t = _fn.buildTransaction({
+            &#39;from&#39;: self._operate,
+            &#39;gas&#39;: _gaswei,
+            &#39;gasPrice&#39;: _pricewei
+        })
+        _t[&#39;nonce&#39;] = self._web3_eth.getTransactionCount(self._operate)
+
+        if _valeth &gt; 0:
+            _t[&#39;value&#39;] = _valeth
+
+        if _debugtx:
+            print(f&#34;======== Signing ✅ by {self._operate}&#34;)
+            print(f&#34;======== Transaction ✅ check&#34;)
+            print(_t)
+
+        if &#39;data&#39; in _t:
+
+            signed = self._web3_eth.account.sign_transaction(_t)
+            txHash = self._web3_eth.sendRawTransaction(signed.rawTransaction)
+            tx_receipt = None
+            if _receipList is True:
+                print(f&#34;======== awaiting Confirmation 🚸️ {self.sign}&#34;)
+                tx_receipt = self._web3_eth.waitForTransactionReceipt(txHash)
+                if _debugtx:
+                    print(&#34;======== TX Result ✅&#34;)
+                    print(tx_receipt)
+
+            print(f&#34;======== TX blockHash ✅&#34;)
+            if tx_receipt is not None:
+                print(f&#34;{Bolors.OK}{tx_receipt.blockHash.hex()}{Bolors.RESET}&#34;)
+            else:
+                print(f&#34;{Bolors.WARNING}{txHash.hex()}{Bolors.RESET} - broadcast hash&#34;)
+
+        if _receipList is False:
+            time.sleep(self._wait)
+
+
+    except ContractLogicError as er:
+        print(f&#34;{Bolors.FAIL}Error {er} {Bolors.RESET}: get_random_number&#34;)
+
+    except ValueError as err:
+        if &#34;message&#34; in err.args[0]:
+            message = err.args[0][&#34;message&#34;]
+            print(f&#34;{Bolors.FAIL}Error Revert {Bolors.RESET}, get_random_number: {message}&#34;)
+        else:
+            print(f&#34;{Bolors.FAIL}Error Revert {Bolors.RESET}, get_random_number. Reason: Unknown&#34;)</code></pre>
+</details>
+</dd>
+<dt id="moody.m.v_r_f_consumer.GetRandomNumberMethod.build_transaction"><code class="name flex">
+<span>def <span class="ident">build_transaction</span></span>(<span>self, tx_params: Union[<a title="moody.m.tx_params.TxParams" href="../tx_params.html#moody.m.tx_params.TxParams">TxParams</a>, NoneType] = None) ‑> dict</span>
+</code></dt>
+<dd>
+<div class="desc"><p>Construct calldata to be used as input to the method.</p></div>
+<details class="source">
+<summary>
+<span>Expand source code</span>
+</summary>
+<pre><code class="python">def build_transaction(self, tx_params: Optional[TxParams] = None) -&gt; dict:
+    &#34;&#34;&#34;Construct calldata to be used as input to the method.&#34;&#34;&#34;
+    tx_params = super().normalize_tx_params(tx_params)
+    return self._underlying_method().buildTransaction(tx_params.as_dict())</code></pre>
+</details>
+</dd>
+<dt id="moody.m.v_r_f_consumer.GetRandomNumberMethod.estimate_gas"><code class="name flex">
+<span>def <span class="ident">estimate_gas</span></span>(<span>self, tx_params: Union[<a title="moody.m.tx_params.TxParams" href="../tx_params.html#moody.m.tx_params.TxParams">TxParams</a>, NoneType] = None) ‑> int</span>
+</code></dt>
+<dd>
+<div class="desc"><p>Estimate gas consumption of method call.</p></div>
+<details class="source">
+<summary>
+<span>Expand source code</span>
+</summary>
+<pre><code class="python">def estimate_gas(self, tx_params: Optional[TxParams] = None) -&gt; int:
+    &#34;&#34;&#34;Estimate gas consumption of method call.&#34;&#34;&#34;
+    tx_params = super().normalize_tx_params(tx_params)
+    return self._underlying_method().estimateGas(tx_params.as_dict())</code></pre>
+</details>
+</dd>
+<dt id="moody.m.v_r_f_consumer.GetRandomNumberMethod.send_transaction"><code class="name flex">
+<span>def <span class="ident">send_transaction</span></span>(<span>self, tx_params: Union[<a title="moody.m.tx_params.TxParams" href="../tx_params.html#moody.m.tx_params.TxParams">TxParams</a>, NoneType] = None) ‑> Union[hexbytes.main.HexBytes, bytes]</span>
+</code></dt>
+<dd>
+<div class="desc"><p>Execute underlying contract method via eth_sendTransaction.</p>
+<p>:param tx_params: transaction parameters</p></div>
+<details class="source">
+<summary>
+<span>Expand source code</span>
+</summary>
+<pre><code class="python">def send_transaction(self, tx_params: Optional[TxParams] = None) -&gt; Union[HexBytes, bytes]:
+    &#34;&#34;&#34;Execute underlying contract method via eth_sendTransaction.
+
+    :param tx_params: transaction parameters
+    &#34;&#34;&#34;
+    tx_params = super().normalize_tx_params(tx_params)
+    return self._underlying_method().transact(tx_params.as_dict())</code></pre>
+</details>
+</dd>
+</dl>
+<h3>Inherited members</h3>
+<ul class="hlist">
+<li><code><b><a title="moody.m.bases.ContractMethod" href="../bases.html#moody.m.bases.ContractMethod">ContractMethod</a></b></code>:
+<ul class="hlist">
+<li><code><a title="moody.m.bases.ContractMethod.normalize_tx_params" href="../bases.html#moody.m.bases.ContractMethod.normalize_tx_params">normalize_tx_params</a></code></li>
+<li><code><a title="moody.m.bases.ContractMethod.validate_and_checksum_address" href="../bases.html#moody.m.bases.ContractMethod.validate_and_checksum_address">validate_and_checksum_address</a></code></li>
+</ul>
+</li>
+</ul>
+</dd>
+<dt id="moody.m.v_r_f_consumer.RandomResultMethod"><code class="flex name class">
+<span>class <span class="ident">RandomResultMethod</span></span>
+<span>(</span><span>elib: <a title="moody.libeb.MiliDoS" href="../../libeb.html#moody.libeb.MiliDoS">MiliDoS</a>, contract_address: str, contract_function: web3.contract.ContractFunction, validator: <a title="moody.m.bases.Validator" href="../bases.html#moody.m.bases.Validator">Validator</a> = None)</span>
+</code></dt>
+<dd>
+<div class="desc"><p>Various interfaces to the randomResult method.</p>
+<p>Persist instance data.</p></div>
+<details class="source">
+<summary>
+<span>Expand source code</span>
+</summary>
+<pre><code class="python">class RandomResultMethod(ContractMethod): # pylint: disable=invalid-name
+    &#34;&#34;&#34;Various interfaces to the randomResult method.&#34;&#34;&#34;
+
+    def __init__(self, elib: MiliDoS, contract_address: str, contract_function: ContractFunction, validator: Validator=None):
+        &#34;&#34;&#34;Persist instance data.&#34;&#34;&#34;
+        super().__init__(elib, contract_address)
+        self._underlying_method = contract_function
+        self.sign = validator.getSignature(&#34;randomResult&#34;)
+
+
+
+    def block_call(self, debug:bool=False) -&gt; int:
+        _fn = self._underlying_method()
+        returned = _fn.call({
+                &#39;from&#39;: self._operate
+            })
+        return int(returned)
+    def block_send(self, _gaswei:int,_pricewei:int,_valeth:int=0,_debugtx: bool = False,_receipList: bool = False) -&gt; int:
+        &#34;&#34;&#34;Execute underlying contract method via eth_call.
+
+        :param tx_params: transaction parameters
+        :returns: the return value of the underlying method.
+        &#34;&#34;&#34;
+        _fn = self._underlying_method()
+        try:
+
+            _t = _fn.buildTransaction({
+                &#39;from&#39;: self._operate,
+                &#39;gas&#39;: _gaswei,
+                &#39;gasPrice&#39;: _pricewei
+            })
+            _t[&#39;nonce&#39;] = self._web3_eth.getTransactionCount(self._operate)
+
+            if _valeth &gt; 0:
+                _t[&#39;value&#39;] = _valeth
+
+            if _debugtx:
+                print(f&#34;======== Signing ✅ by {self._operate}&#34;)
+                print(f&#34;======== Transaction ✅ check&#34;)
+                print(_t)
+
+            if &#39;data&#39; in _t:
+
+                signed = self._web3_eth.account.sign_transaction(_t)
+                txHash = self._web3_eth.sendRawTransaction(signed.rawTransaction)
+                tx_receipt = None
+                if _receipList is True:
+                    print(f&#34;======== awaiting Confirmation 🚸️ {self.sign}&#34;)
+                    tx_receipt = self._web3_eth.waitForTransactionReceipt(txHash)
+                    if _debugtx:
+                        print(&#34;======== TX Result ✅&#34;)
+                        print(tx_receipt)
+
+                print(f&#34;======== TX blockHash ✅&#34;)
+                if tx_receipt is not None:
+                    print(f&#34;{Bolors.OK}{tx_receipt.blockHash.hex()}{Bolors.RESET}&#34;)
+                else:
+                    print(f&#34;{Bolors.WARNING}{txHash.hex()}{Bolors.RESET} - broadcast hash&#34;)
+
+            if _receipList is False:
+                time.sleep(self._wait)
+
+
+        except ContractLogicError as er:
+            print(f&#34;{Bolors.FAIL}Error {er} {Bolors.RESET}: random_result&#34;)
+
+        except ValueError as err:
+            if &#34;message&#34; in err.args[0]:
+                message = err.args[0][&#34;message&#34;]
+                print(f&#34;{Bolors.FAIL}Error Revert {Bolors.RESET}, random_result: {message}&#34;)
+            else:
+                print(f&#34;{Bolors.FAIL}Error Revert {Bolors.RESET}, random_result. Reason: Unknown&#34;)
+
+
+    def send_transaction(self, tx_params: Optional[TxParams] = None) -&gt; Union[HexBytes, bytes]:
+        &#34;&#34;&#34;Execute underlying contract method via eth_sendTransaction.
+
+        :param tx_params: transaction parameters
+        &#34;&#34;&#34;
+        tx_params = super().normalize_tx_params(tx_params)
+        return self._underlying_method().transact(tx_params.as_dict())
+
+    def build_transaction(self, tx_params: Optional[TxParams] = None) -&gt; dict:
+        &#34;&#34;&#34;Construct calldata to be used as input to the method.&#34;&#34;&#34;
+        tx_params = super().normalize_tx_params(tx_params)
+        return self._underlying_method().buildTransaction(tx_params.as_dict())
+
+    def estimate_gas(self, tx_params: Optional[TxParams] = None) -&gt; int:
+        &#34;&#34;&#34;Estimate gas consumption of method call.&#34;&#34;&#34;
+        tx_params = super().normalize_tx_params(tx_params)
+        return self._underlying_method().estimateGas(tx_params.as_dict())</code></pre>
+</details>
+<h3>Ancestors</h3>
+<ul class="hlist">
+<li><a title="moody.m.bases.ContractMethod" href="../bases.html#moody.m.bases.ContractMethod">ContractMethod</a></li>
+</ul>
+<h3>Methods</h3>
+<dl>
+<dt id="moody.m.v_r_f_consumer.RandomResultMethod.block_call"><code class="name flex">
+<span>def <span class="ident">block_call</span></span>(<span>self, debug: bool = False) ‑> int</span>
+</code></dt>
+<dd>
+<div class="desc"></div>
+<details class="source">
+<summary>
+<span>Expand source code</span>
+</summary>
+<pre><code class="python">def block_call(self, debug:bool=False) -&gt; int:
+    _fn = self._underlying_method()
+    returned = _fn.call({
+            &#39;from&#39;: self._operate
+        })
+    return int(returned)</code></pre>
+</details>
+</dd>
+<dt id="moody.m.v_r_f_consumer.RandomResultMethod.block_send"><code class="name flex">
+<span>def <span class="ident">block_send</span></span>(<span>self, _gaswei: int, _pricewei: int) ‑> int</span>
+</code></dt>
+<dd>
+<div class="desc"><p>Execute underlying contract method via eth_call.</p>
+<p>:param tx_params: transaction parameters
+:returns: the return value of the underlying method.</p></div>
+<details class="source">
+<summary>
+<span>Expand source code</span>
+</summary>
+<pre><code class="python">def block_send(self, _gaswei:int,_pricewei:int,_valeth:int=0,_debugtx: bool = False,_receipList: bool = False) -&gt; int:
+    &#34;&#34;&#34;Execute underlying contract method via eth_call.
+
+    :param tx_params: transaction parameters
+    :returns: the return value of the underlying method.
+    &#34;&#34;&#34;
+    _fn = self._underlying_method()
+    try:
+
+        _t = _fn.buildTransaction({
+            &#39;from&#39;: self._operate,
+            &#39;gas&#39;: _gaswei,
+            &#39;gasPrice&#39;: _pricewei
+        })
+        _t[&#39;nonce&#39;] = self._web3_eth.getTransactionCount(self._operate)
+
+        if _valeth &gt; 0:
+            _t[&#39;value&#39;] = _valeth
+
+        if _debugtx:
+            print(f&#34;======== Signing ✅ by {self._operate}&#34;)
+            print(f&#34;======== Transaction ✅ check&#34;)
+            print(_t)
+
+        if &#39;data&#39; in _t:
+
+            signed = self._web3_eth.account.sign_transaction(_t)
+            txHash = self._web3_eth.sendRawTransaction(signed.rawTransaction)
+            tx_receipt = None
+            if _receipList is True:
+                print(f&#34;======== awaiting Confirmation 🚸️ {self.sign}&#34;)
+                tx_receipt = self._web3_eth.waitForTransactionReceipt(txHash)
+                if _debugtx:
+                    print(&#34;======== TX Result ✅&#34;)
+                    print(tx_receipt)
+
+            print(f&#34;======== TX blockHash ✅&#34;)
+            if tx_receipt is not None:
+                print(f&#34;{Bolors.OK}{tx_receipt.blockHash.hex()}{Bolors.RESET}&#34;)
+            else:
+                print(f&#34;{Bolors.WARNING}{txHash.hex()}{Bolors.RESET} - broadcast hash&#34;)
+
+        if _receipList is False:
+            time.sleep(self._wait)
+
+
+    except ContractLogicError as er:
+        print(f&#34;{Bolors.FAIL}Error {er} {Bolors.RESET}: random_result&#34;)
+
+    except ValueError as err:
+        if &#34;message&#34; in err.args[0]:
+            message = err.args[0][&#34;message&#34;]
+            print(f&#34;{Bolors.FAIL}Error Revert {Bolors.RESET}, random_result: {message}&#34;)
+        else:
+            print(f&#34;{Bolors.FAIL}Error Revert {Bolors.RESET}, random_result. Reason: Unknown&#34;)</code></pre>
+</details>
+</dd>
+<dt id="moody.m.v_r_f_consumer.RandomResultMethod.build_transaction"><code class="name flex">
+<span>def <span class="ident">build_transaction</span></span>(<span>self, tx_params: Union[<a title="moody.m.tx_params.TxParams" href="../tx_params.html#moody.m.tx_params.TxParams">TxParams</a>, NoneType] = None) ‑> dict</span>
+</code></dt>
+<dd>
+<div class="desc"><p>Construct calldata to be used as input to the method.</p></div>
+<details class="source">
+<summary>
+<span>Expand source code</span>
+</summary>
+<pre><code class="python">def build_transaction(self, tx_params: Optional[TxParams] = None) -&gt; dict:
+    &#34;&#34;&#34;Construct calldata to be used as input to the method.&#34;&#34;&#34;
+    tx_params = super().normalize_tx_params(tx_params)
+    return self._underlying_method().buildTransaction(tx_params.as_dict())</code></pre>
+</details>
+</dd>
+<dt id="moody.m.v_r_f_consumer.RandomResultMethod.estimate_gas"><code class="name flex">
+<span>def <span class="ident">estimate_gas</span></span>(<span>self, tx_params: Union[<a title="moody.m.tx_params.TxParams" href="../tx_params.html#moody.m.tx_params.TxParams">TxParams</a>, NoneType] = None) ‑> int</span>
+</code></dt>
+<dd>
+<div class="desc"><p>Estimate gas consumption of method call.</p></div>
+<details class="source">
+<summary>
+<span>Expand source code</span>
+</summary>
+<pre><code class="python">def estimate_gas(self, tx_params: Optional[TxParams] = None) -&gt; int:
+    &#34;&#34;&#34;Estimate gas consumption of method call.&#34;&#34;&#34;
+    tx_params = super().normalize_tx_params(tx_params)
+    return self._underlying_method().estimateGas(tx_params.as_dict())</code></pre>
+</details>
+</dd>
+<dt id="moody.m.v_r_f_consumer.RandomResultMethod.send_transaction"><code class="name flex">
+<span>def <span class="ident">send_transaction</span></span>(<span>self, tx_params: Union[<a title="moody.m.tx_params.TxParams" href="../tx_params.html#moody.m.tx_params.TxParams">TxParams</a>, NoneType] = None) ‑> Union[hexbytes.main.HexBytes, bytes]</span>
+</code></dt>
+<dd>
+<div class="desc"><p>Execute underlying contract method via eth_sendTransaction.</p>
+<p>:param tx_params: transaction parameters</p></div>
+<details class="source">
+<summary>
+<span>Expand source code</span>
+</summary>
+<pre><code class="python">def send_transaction(self, tx_params: Optional[TxParams] = None) -&gt; Union[HexBytes, bytes]:
+    &#34;&#34;&#34;Execute underlying contract method via eth_sendTransaction.
+
+    :param tx_params: transaction parameters
+    &#34;&#34;&#34;
+    tx_params = super().normalize_tx_params(tx_params)
+    return self._underlying_method().transact(tx_params.as_dict())</code></pre>
+</details>
+</dd>
+</dl>
+<h3>Inherited members</h3>
+<ul class="hlist">
+<li><code><b><a title="moody.m.bases.ContractMethod" href="../bases.html#moody.m.bases.ContractMethod">ContractMethod</a></b></code>:
+<ul class="hlist">
+<li><code><a title="moody.m.bases.ContractMethod.normalize_tx_params" href="../bases.html#moody.m.bases.ContractMethod.normalize_tx_params">normalize_tx_params</a></code></li>
+<li><code><a title="moody.m.bases.ContractMethod.validate_and_checksum_address" href="../bases.html#moody.m.bases.ContractMethod.validate_and_checksum_address">validate_and_checksum_address</a></code></li>
+</ul>
+</li>
+</ul>
+</dd>
+<dt id="moody.m.v_r_f_consumer.RawFulfillRandomnessMethod"><code class="flex name class">
+<span>class <span class="ident">RawFulfillRandomnessMethod</span></span>
+<span>(</span><span>elib: <a title="moody.libeb.MiliDoS" href="../../libeb.html#moody.libeb.MiliDoS">MiliDoS</a>, contract_address: str, contract_function: web3.contract.ContractFunction, validator: <a title="moody.m.bases.Validator" href="../bases.html#moody.m.bases.Validator">Validator</a> = None)</span>
+</code></dt>
+<dd>
+<div class="desc"><p>Various interfaces to the rawFulfillRandomness method.</p>
+<p>Persist instance data.</p></div>
+<details class="source">
+<summary>
+<span>Expand source code</span>
+</summary>
+<pre><code class="python">class RawFulfillRandomnessMethod(ContractMethod): # pylint: disable=invalid-name
+    &#34;&#34;&#34;Various interfaces to the rawFulfillRandomness method.&#34;&#34;&#34;
+
+    def __init__(self, elib: MiliDoS, contract_address: str, contract_function: ContractFunction, validator: Validator=None):
+        &#34;&#34;&#34;Persist instance data.&#34;&#34;&#34;
+        super().__init__(elib, contract_address, validator)
+        self._underlying_method = contract_function
+        self.sign = validator.getSignature(&#34;rawFulfillRandomness&#34;)
+
+    def validate_and_normalize_inputs(self, request_id: Union[bytes, str], randomness: int)-&gt;any:
+        &#34;&#34;&#34;Validate the inputs to the rawFulfillRandomness method.&#34;&#34;&#34;
+        self.validator.assert_valid(
+            method_name=&#39;rawFulfillRandomness&#39;,
+            parameter_name=&#39;requestId&#39;,
+            argument_value=request_id,
+        )
+        self.validator.assert_valid(
+            method_name=&#39;rawFulfillRandomness&#39;,
+            parameter_name=&#39;randomness&#39;,
+            argument_value=randomness,
+        )
+        # safeguard against fractional inputs
+        randomness = int(randomness)
+        return (request_id, randomness)
+
+
+
+    def block_send(self, request_id: Union[bytes, str], randomness: int,_gaswei:int,_pricewei:int,_valeth:int=0,_debugtx: bool = False,_receipList: bool = False) -&gt; None:
+        &#34;&#34;&#34;Execute underlying contract method via eth_call.
+
+        :param tx_params: transaction parameters
+        :returns: the return value of the underlying method.
+        &#34;&#34;&#34;
+        _fn = self._underlying_method(request_id, randomness)
+        try:
+
+            _t = _fn.buildTransaction({
+                &#39;from&#39;: self._operate,
+                &#39;gas&#39;: _gaswei,
+                &#39;gasPrice&#39;: _pricewei
+            })
+            _t[&#39;nonce&#39;] = self._web3_eth.getTransactionCount(self._operate)
+
+            if _valeth &gt; 0:
+                _t[&#39;value&#39;] = _valeth
+
+            if _debugtx:
+                print(f&#34;======== Signing ✅ by {self._operate}&#34;)
+                print(f&#34;======== Transaction ✅ check&#34;)
+                print(_t)
+
+            if &#39;data&#39; in _t:
+
+                signed = self._web3_eth.account.sign_transaction(_t)
+                txHash = self._web3_eth.sendRawTransaction(signed.rawTransaction)
+                tx_receipt = None
+                if _receipList is True:
+                    print(f&#34;======== awaiting Confirmation 🚸️ {self.sign}&#34;)
+                    tx_receipt = self._web3_eth.waitForTransactionReceipt(txHash)
+                    if _debugtx:
+                        print(&#34;======== TX Result ✅&#34;)
+                        print(tx_receipt)
+
+                print(f&#34;======== TX blockHash ✅&#34;)
+                if tx_receipt is not None:
+                    print(f&#34;{Bolors.OK}{tx_receipt.blockHash.hex()}{Bolors.RESET}&#34;)
+                else:
+                    print(f&#34;{Bolors.WARNING}{txHash.hex()}{Bolors.RESET} - broadcast hash&#34;)
+
+            if _receipList is False:
+                time.sleep(self._wait)
+
+
+        except ContractLogicError as er:
+            print(f&#34;{Bolors.FAIL}Error {er} {Bolors.RESET}: raw_fulfill_randomness&#34;)
+
+        except ValueError as err:
+            if &#34;message&#34; in err.args[0]:
+                message = err.args[0][&#34;message&#34;]
+                print(f&#34;{Bolors.FAIL}Error Revert {Bolors.RESET}, raw_fulfill_randomness: {message}&#34;)
+            else:
+                print(f&#34;{Bolors.FAIL}Error Revert {Bolors.RESET}, raw_fulfill_randomness. Reason: Unknown&#34;)
+
+
+    def send_transaction(self, request_id: Union[bytes, str], randomness: int, tx_params: Optional[TxParams] = None) -&gt; Union[HexBytes, bytes]:
+        &#34;&#34;&#34;Execute underlying contract method via eth_sendTransaction.
+
+        :param tx_params: transaction parameters
+        &#34;&#34;&#34;
+        (request_id, randomness) = self.validate_and_normalize_inputs(request_id, randomness)
+        tx_params = super().normalize_tx_params(tx_params)
+        return self._underlying_method(request_id, randomness).transact(tx_params.as_dict())
+
+    def build_transaction(self, request_id: Union[bytes, str], randomness: int, tx_params: Optional[TxParams] = None) -&gt; dict:
+        &#34;&#34;&#34;Construct calldata to be used as input to the method.&#34;&#34;&#34;
+        (request_id, randomness) = self.validate_and_normalize_inputs(request_id, randomness)
+        tx_params = super().normalize_tx_params(tx_params)
+        return self._underlying_method(request_id, randomness).buildTransaction(tx_params.as_dict())
+
+    def estimate_gas(self, request_id: Union[bytes, str], randomness: int, tx_params: Optional[TxParams] = None) -&gt; int:
+        &#34;&#34;&#34;Estimate gas consumption of method call.&#34;&#34;&#34;
+        (request_id, randomness) = self.validate_and_normalize_inputs(request_id, randomness)
+        tx_params = super().normalize_tx_params(tx_params)
+        return self._underlying_method(request_id, randomness).estimateGas(tx_params.as_dict())</code></pre>
+</details>
+<h3>Ancestors</h3>
+<ul class="hlist">
+<li><a title="moody.m.bases.ContractMethod" href="../bases.html#moody.m.bases.ContractMethod">ContractMethod</a></li>
+</ul>
+<h3>Methods</h3>
+<dl>
+<dt id="moody.m.v_r_f_consumer.RawFulfillRandomnessMethod.block_send"><code class="name flex">
+<span>def <span class="ident">block_send</span></span>(<span>self, request_id: Union[bytes, str], randomness: int, _gaswei: int, _pricewei: int) ‑> NoneType</span>
+</code></dt>
+<dd>
+<div class="desc"><p>Execute underlying contract method via eth_call.</p>
+<p>:param tx_params: transaction parameters
+:returns: the return value of the underlying method.</p></div>
+<details class="source">
+<summary>
+<span>Expand source code</span>
+</summary>
+<pre><code class="python">def block_send(self, request_id: Union[bytes, str], randomness: int,_gaswei:int,_pricewei:int,_valeth:int=0,_debugtx: bool = False,_receipList: bool = False) -&gt; None:
+    &#34;&#34;&#34;Execute underlying contract method via eth_call.
+
+    :param tx_params: transaction parameters
+    :returns: the return value of the underlying method.
+    &#34;&#34;&#34;
+    _fn = self._underlying_method(request_id, randomness)
+    try:
+
+        _t = _fn.buildTransaction({
+            &#39;from&#39;: self._operate,
+            &#39;gas&#39;: _gaswei,
+            &#39;gasPrice&#39;: _pricewei
+        })
+        _t[&#39;nonce&#39;] = self._web3_eth.getTransactionCount(self._operate)
+
+        if _valeth &gt; 0:
+            _t[&#39;value&#39;] = _valeth
+
+        if _debugtx:
+            print(f&#34;======== Signing ✅ by {self._operate}&#34;)
+            print(f&#34;======== Transaction ✅ check&#34;)
+            print(_t)
+
+        if &#39;data&#39; in _t:
+
+            signed = self._web3_eth.account.sign_transaction(_t)
+            txHash = self._web3_eth.sendRawTransaction(signed.rawTransaction)
+            tx_receipt = None
+            if _receipList is True:
+                print(f&#34;======== awaiting Confirmation 🚸️ {self.sign}&#34;)
+                tx_receipt = self._web3_eth.waitForTransactionReceipt(txHash)
+                if _debugtx:
+                    print(&#34;======== TX Result ✅&#34;)
+                    print(tx_receipt)
+
+            print(f&#34;======== TX blockHash ✅&#34;)
+            if tx_receipt is not None:
+                print(f&#34;{Bolors.OK}{tx_receipt.blockHash.hex()}{Bolors.RESET}&#34;)
+            else:
+                print(f&#34;{Bolors.WARNING}{txHash.hex()}{Bolors.RESET} - broadcast hash&#34;)
+
+        if _receipList is False:
+            time.sleep(self._wait)
+
+
+    except ContractLogicError as er:
+        print(f&#34;{Bolors.FAIL}Error {er} {Bolors.RESET}: raw_fulfill_randomness&#34;)
+
+    except ValueError as err:
+        if &#34;message&#34; in err.args[0]:
+            message = err.args[0][&#34;message&#34;]
+            print(f&#34;{Bolors.FAIL}Error Revert {Bolors.RESET}, raw_fulfill_randomness: {message}&#34;)
+        else:
+            print(f&#34;{Bolors.FAIL}Error Revert {Bolors.RESET}, raw_fulfill_randomness. Reason: Unknown&#34;)</code></pre>
+</details>
+</dd>
+<dt id="moody.m.v_r_f_consumer.RawFulfillRandomnessMethod.build_transaction"><code class="name flex">
+<span>def <span class="ident">build_transaction</span></span>(<span>self, request_id: Union[bytes, str], randomness: int, tx_params: Union[<a title="moody.m.tx_params.TxParams" href="../tx_params.html#moody.m.tx_params.TxParams">TxParams</a>, NoneType] = None) ‑> dict</span>
+</code></dt>
+<dd>
+<div class="desc"><p>Construct calldata to be used as input to the method.</p></div>
+<details class="source">
+<summary>
+<span>Expand source code</span>
+</summary>
+<pre><code class="python">def build_transaction(self, request_id: Union[bytes, str], randomness: int, tx_params: Optional[TxParams] = None) -&gt; dict:
+    &#34;&#34;&#34;Construct calldata to be used as input to the method.&#34;&#34;&#34;
+    (request_id, randomness) = self.validate_and_normalize_inputs(request_id, randomness)
+    tx_params = super().normalize_tx_params(tx_params)
+    return self._underlying_method(request_id, randomness).buildTransaction(tx_params.as_dict())</code></pre>
+</details>
+</dd>
+<dt id="moody.m.v_r_f_consumer.RawFulfillRandomnessMethod.estimate_gas"><code class="name flex">
+<span>def <span class="ident">estimate_gas</span></span>(<span>self, request_id: Union[bytes, str], randomness: int, tx_params: Union[<a title="moody.m.tx_params.TxParams" href="../tx_params.html#moody.m.tx_params.TxParams">TxParams</a>, NoneType] = None) ‑> int</span>
+</code></dt>
+<dd>
+<div class="desc"><p>Estimate gas consumption of method call.</p></div>
+<details class="source">
+<summary>
+<span>Expand source code</span>
+</summary>
+<pre><code class="python">def estimate_gas(self, request_id: Union[bytes, str], randomness: int, tx_params: Optional[TxParams] = None) -&gt; int:
+    &#34;&#34;&#34;Estimate gas consumption of method call.&#34;&#34;&#34;
+    (request_id, randomness) = self.validate_and_normalize_inputs(request_id, randomness)
+    tx_params = super().normalize_tx_params(tx_params)
+    return self._underlying_method(request_id, randomness).estimateGas(tx_params.as_dict())</code></pre>
+</details>
+</dd>
+<dt id="moody.m.v_r_f_consumer.RawFulfillRandomnessMethod.send_transaction"><code class="name flex">
+<span>def <span class="ident">send_transaction</span></span>(<span>self, request_id: Union[bytes, str], randomness: int, tx_params: Union[<a title="moody.m.tx_params.TxParams" href="../tx_params.html#moody.m.tx_params.TxParams">TxParams</a>, NoneType] = None) ‑> Union[hexbytes.main.HexBytes, bytes]</span>
+</code></dt>
+<dd>
+<div class="desc"><p>Execute underlying contract method via eth_sendTransaction.</p>
+<p>:param tx_params: transaction parameters</p></div>
+<details class="source">
+<summary>
+<span>Expand source code</span>
+</summary>
+<pre><code class="python">def send_transaction(self, request_id: Union[bytes, str], randomness: int, tx_params: Optional[TxParams] = None) -&gt; Union[HexBytes, bytes]:
+    &#34;&#34;&#34;Execute underlying contract method via eth_sendTransaction.
+
+    :param tx_params: transaction parameters
+    &#34;&#34;&#34;
+    (request_id, randomness) = self.validate_and_normalize_inputs(request_id, randomness)
+    tx_params = super().normalize_tx_params(tx_params)
+    return self._underlying_method(request_id, randomness).transact(tx_params.as_dict())</code></pre>
+</details>
+</dd>
+<dt id="moody.m.v_r_f_consumer.RawFulfillRandomnessMethod.validate_and_normalize_inputs"><code class="name flex">
+<span>def <span class="ident">validate_and_normalize_inputs</span></span>(<span>self, request_id: Union[bytes, str], randomness: int) ‑> <built-in function any></span>
+</code></dt>
+<dd>
+<div class="desc"><p>Validate the inputs to the rawFulfillRandomness method.</p></div>
+<details class="source">
+<summary>
+<span>Expand source code</span>
+</summary>
+<pre><code class="python">def validate_and_normalize_inputs(self, request_id: Union[bytes, str], randomness: int)-&gt;any:
+    &#34;&#34;&#34;Validate the inputs to the rawFulfillRandomness method.&#34;&#34;&#34;
+    self.validator.assert_valid(
+        method_name=&#39;rawFulfillRandomness&#39;,
+        parameter_name=&#39;requestId&#39;,
+        argument_value=request_id,
+    )
+    self.validator.assert_valid(
+        method_name=&#39;rawFulfillRandomness&#39;,
+        parameter_name=&#39;randomness&#39;,
+        argument_value=randomness,
+    )
+    # safeguard against fractional inputs
+    randomness = int(randomness)
+    return (request_id, randomness)</code></pre>
+</details>
+</dd>
+</dl>
+<h3>Inherited members</h3>
+<ul class="hlist">
+<li><code><b><a title="moody.m.bases.ContractMethod" href="../bases.html#moody.m.bases.ContractMethod">ContractMethod</a></b></code>:
+<ul class="hlist">
+<li><code><a title="moody.m.bases.ContractMethod.normalize_tx_params" href="../bases.html#moody.m.bases.ContractMethod.normalize_tx_params">normalize_tx_params</a></code></li>
+<li><code><a title="moody.m.bases.ContractMethod.validate_and_checksum_address" href="../bases.html#moody.m.bases.ContractMethod.validate_and_checksum_address">validate_and_checksum_address</a></code></li>
+</ul>
+</li>
+</ul>
+</dd>
+<dt id="moody.m.v_r_f_consumer.SignatureGenerator"><code class="flex name class">
+<span>class <span class="ident">SignatureGenerator</span></span>
+<span>(</span><span>abi: <built-in function any>)</span>
+</code></dt>
+<dd>
+<div class="desc"><p>The signature is generated for this and it is installed.</p></div>
+<details class="source">
+<summary>
+<span>Expand source code</span>
+</summary>
+<pre><code class="python">class SignatureGenerator(Signatures):
+    &#34;&#34;&#34;
+        The signature is generated for this and it is installed.
+    &#34;&#34;&#34;
+    def __init__(self, abi: any):
+        super().__init__(abi)
+
+    def get_random_number(self) -&gt; str:
+        return self._function_signatures[&#34;getRandomNumber&#34;]
+    def random_result(self) -&gt; str:
+        return self._function_signatures[&#34;randomResult&#34;]
+    def raw_fulfill_randomness(self) -&gt; str:
+        return self._function_signatures[&#34;rawFulfillRandomness&#34;]</code></pre>
+</details>
+<h3>Ancestors</h3>
+<ul class="hlist">
+<li><a title="moody.m.bases.Signatures" href="../bases.html#moody.m.bases.Signatures">Signatures</a></li>
+</ul>
+<h3>Methods</h3>
+<dl>
+<dt id="moody.m.v_r_f_consumer.SignatureGenerator.get_random_number"><code class="name flex">
+<span>def <span class="ident">get_random_number</span></span>(<span>self) ‑> str</span>
+</code></dt>
+<dd>
+<div class="desc"></div>
+<details class="source">
+<summary>
+<span>Expand source code</span>
+</summary>
+<pre><code class="python">def get_random_number(self) -&gt; str:
+    return self._function_signatures[&#34;getRandomNumber&#34;]</code></pre>
+</details>
+</dd>
+<dt id="moody.m.v_r_f_consumer.SignatureGenerator.random_result"><code class="name flex">
+<span>def <span class="ident">random_result</span></span>(<span>self) ‑> str</span>
+</code></dt>
+<dd>
+<div class="desc"></div>
+<details class="source">
+<summary>
+<span>Expand source code</span>
+</summary>
+<pre><code class="python">def random_result(self) -&gt; str:
+    return self._function_signatures[&#34;randomResult&#34;]</code></pre>
+</details>
+</dd>
+<dt id="moody.m.v_r_f_consumer.SignatureGenerator.raw_fulfill_randomness"><code class="name flex">
+<span>def <span class="ident">raw_fulfill_randomness</span></span>(<span>self) ‑> str</span>
+</code></dt>
+<dd>
+<div class="desc"></div>
+<details class="source">
+<summary>
+<span>Expand source code</span>
+</summary>
+<pre><code class="python">def raw_fulfill_randomness(self) -&gt; str:
+    return self._function_signatures[&#34;rawFulfillRandomness&#34;]</code></pre>
+</details>
+</dd>
+</dl>
+</dd>
+<dt id="moody.m.v_r_f_consumer.VRFConsumer"><code class="flex name class">
+<span>class <span class="ident">VRFConsumer</span></span>
+<span>(</span><span>core_lib: <a title="moody.libeb.MiliDoS" href="../../libeb.html#moody.libeb.MiliDoS">MiliDoS</a>, contract_address: str, validator: <a title="moody.m.v_r_f_consumer.VRFConsumerValidator" href="#moody.m.v_r_f_consumer.VRFConsumerValidator">VRFConsumerValidator</a> = None)</span>
+</code></dt>
+<dd>
+<div class="desc"><p>Wrapper class for VRFConsumer Solidity contract.</p>
+<p>Get an instance of wrapper for smart contract.</p></div>
+<details class="source">
+<summary>
+<span>Expand source code</span>
+</summary>
+<pre><code class="python">class VRFConsumer(ContractBase):
+    &#34;&#34;&#34;Wrapper class for VRFConsumer Solidity contract.&#34;&#34;&#34;
+    _fn_get_random_number: GetRandomNumberMethod
+    &#34;&#34;&#34;Constructor-initialized instance of
+    :class:`GetRandomNumberMethod`.
+    &#34;&#34;&#34;
+
+    _fn_random_result: RandomResultMethod
+    &#34;&#34;&#34;Constructor-initialized instance of
+    :class:`RandomResultMethod`.
+    &#34;&#34;&#34;
+
+    _fn_raw_fulfill_randomness: RawFulfillRandomnessMethod
+    &#34;&#34;&#34;Constructor-initialized instance of
+    :class:`RawFulfillRandomnessMethod`.
+    &#34;&#34;&#34;
+
+    SIGNATURES:SignatureGenerator = None
+
+    def __init__(
+        self,
+        core_lib: MiliDoS,
+        contract_address: str,
+        validator: VRFConsumerValidator = None,
+    ):
+        &#34;&#34;&#34;Get an instance of wrapper for smart contract.
+        &#34;&#34;&#34;
+        # pylint: disable=too-many-statements
+        super().__init__()
+        self.contract_address = contract_address
+        web3 = core_lib.w3
+
+        if not validator:
+            validator = VRFConsumerValidator(web3, contract_address)
+
+
+
+
+        # if any middleware was imported, inject it
+        try:
+            MIDDLEWARE
+        except NameError:
+            pass
+        else:
+            try:
+                for middleware in MIDDLEWARE:
+                    web3.middleware_onion.inject(
+                         middleware[&#39;function&#39;], layer=middleware[&#39;layer&#39;],
+                    )
+            except ValueError as value_error:
+                if value_error.args == (&#34;You can&#39;t add the same un-named instance twice&#34;,):
+                    pass
+
+        self._web3_eth = web3.eth
+        functions = self._web3_eth.contract(address=to_checksum_address(contract_address), abi=VRFConsumer.abi()).functions
+        signed = SignatureGenerator(VRFConsumer.abi())
+        validator.bindSignatures(signed)
+        self.SIGNATURES = signed
+        self._fn_get_random_number = GetRandomNumberMethod(core_lib, contract_address, functions.getRandomNumber, validator)
+        self._fn_random_result = RandomResultMethod(core_lib, contract_address, functions.randomResult, validator)
+        self._fn_raw_fulfill_randomness = RawFulfillRandomnessMethod(core_lib, contract_address, functions.rawFulfillRandomness, validator)
+
+    
+    
+    def event_random_number_arrived(
+            self, tx_hash: Union[HexBytes, bytes]
+    ) -&gt; Tuple[AttributeDict]:
+        &#34;&#34;&#34;
+        Implementation of event random_number_arrived in contract VRFConsumer
+        Get log entry for randomNumberArrived event.
+                :param tx_hash: hash of transaction emitting randomNumberArrived event
+        &#34;&#34;&#34;
+        tx_receipt = self._web3_eth.getTransactionReceipt(tx_hash)
+        return self._web3_eth.contract(address=to_checksum_address(self.contract_address), abi=VRFConsumer.abi()).events.randomNumberArrived().processReceipt(tx_receipt)
+
+    
+    
+    
+    def get_random_number(self) -&gt; Union[bytes, str]:
+        &#34;&#34;&#34;
+        Implementation of get_random_number in contract VRFConsumer
+        Method of the function
+    
+    
+    
+        &#34;&#34;&#34;
+    
+        return self._fn_get_random_number.block_send(self.call_contract_fee_amount,self.call_contract_fee_price,0,self.call_contract_debug_flag, self.call_contract_enforce_tx_receipt)
+    
+    
+    
+    
+    
+    
+    
+    def random_result(self) -&gt; int:
+        &#34;&#34;&#34;
+        Implementation of random_result in contract VRFConsumer
+        Method of the function
+    
+    
+    
+        &#34;&#34;&#34;
+    
+    
+    
+    
+    
+        return self._fn_random_result.block_call()
+    
+    
+    
+    def raw_fulfill_randomness(self, request_id: Union[bytes, str], randomness: int) -&gt; None:
+        &#34;&#34;&#34;
+        Implementation of raw_fulfill_randomness in contract VRFConsumer
+        Method of the function
+    
+    
+    
+        &#34;&#34;&#34;
+    
+        return self._fn_raw_fulfill_randomness.block_send(request_id, randomness, self.call_contract_fee_amount,self.call_contract_fee_price,0,self.call_contract_debug_flag, self.call_contract_enforce_tx_receipt)
+    
+    
+    
+    
+
+    def CallContractWait(self, t_long:int)-&gt; &#34;VRFConsumer&#34;:
+        self._fn_get_random_number.setWait(t_long)
+        self._fn_random_result.setWait(t_long)
+        self._fn_raw_fulfill_randomness.setWait(t_long)
+        return self
+
+
+    @staticmethod
+    def abi():
+        &#34;&#34;&#34;Return the ABI to the underlying contract.&#34;&#34;&#34;
+        return json.loads(
+            &#39;[{&#34;inputs&#34;:[],&#34;stateMutability&#34;:&#34;nonpayable&#34;,&#34;type&#34;:&#34;constructor&#34;},{&#34;anonymous&#34;:false,&#34;inputs&#34;:[{&#34;indexed&#34;:false,&#34;internalType&#34;:&#34;bool&#34;,&#34;name&#34;:&#34;arrived&#34;,&#34;type&#34;:&#34;bool&#34;},{&#34;indexed&#34;:false,&#34;internalType&#34;:&#34;uint256&#34;,&#34;name&#34;:&#34;randomNumber&#34;,&#34;type&#34;:&#34;uint256&#34;},{&#34;indexed&#34;:false,&#34;internalType&#34;:&#34;bytes32&#34;,&#34;name&#34;:&#34;batchID&#34;,&#34;type&#34;:&#34;bytes32&#34;}],&#34;name&#34;:&#34;randomNumberArrived&#34;,&#34;type&#34;:&#34;event&#34;},{&#34;inputs&#34;:[],&#34;name&#34;:&#34;getRandomNumber&#34;,&#34;outputs&#34;:[{&#34;internalType&#34;:&#34;bytes32&#34;,&#34;name&#34;:&#34;requestId&#34;,&#34;type&#34;:&#34;bytes32&#34;}],&#34;stateMutability&#34;:&#34;nonpayable&#34;,&#34;type&#34;:&#34;function&#34;},{&#34;inputs&#34;:[],&#34;name&#34;:&#34;randomResult&#34;,&#34;outputs&#34;:[{&#34;internalType&#34;:&#34;uint256&#34;,&#34;name&#34;:&#34;&#34;,&#34;type&#34;:&#34;uint256&#34;}],&#34;stateMutability&#34;:&#34;view&#34;,&#34;type&#34;:&#34;function&#34;},{&#34;inputs&#34;:[{&#34;internalType&#34;:&#34;bytes32&#34;,&#34;name&#34;:&#34;requestId&#34;,&#34;type&#34;:&#34;bytes32&#34;},{&#34;internalType&#34;:&#34;uint256&#34;,&#34;name&#34;:&#34;randomness&#34;,&#34;type&#34;:&#34;uint256&#34;}],&#34;name&#34;:&#34;rawFulfillRandomness&#34;,&#34;outputs&#34;:[],&#34;stateMutability&#34;:&#34;nonpayable&#34;,&#34;type&#34;:&#34;function&#34;}]&#39;  # noqa: E501 (line-too-long)
+        )</code></pre>
+</details>
+<h3>Ancestors</h3>
+<ul class="hlist">
+<li><a title="moody.m.bases.ContractBase" href="../bases.html#moody.m.bases.ContractBase">ContractBase</a></li>
+</ul>
+<h3>Class variables</h3>
+<dl>
+<dt id="moody.m.v_r_f_consumer.VRFConsumer.SIGNATURES"><code class="name">var <span class="ident">SIGNATURES</span> : <a title="moody.m.v_r_f_consumer.SignatureGenerator" href="#moody.m.v_r_f_consumer.SignatureGenerator">SignatureGenerator</a></code></dt>
+<dd>
+<div class="desc"></div>
+</dd>
+</dl>
+<h3>Static methods</h3>
+<dl>
+<dt id="moody.m.v_r_f_consumer.VRFConsumer.abi"><code class="name flex">
+<span>def <span class="ident">abi</span></span>(<span>)</span>
+</code></dt>
+<dd>
+<div class="desc"><p>Return the ABI to the underlying contract.</p></div>
+<details class="source">
+<summary>
+<span>Expand source code</span>
+</summary>
+<pre><code class="python">@staticmethod
+def abi():
+    &#34;&#34;&#34;Return the ABI to the underlying contract.&#34;&#34;&#34;
+    return json.loads(
+        &#39;[{&#34;inputs&#34;:[],&#34;stateMutability&#34;:&#34;nonpayable&#34;,&#34;type&#34;:&#34;constructor&#34;},{&#34;anonymous&#34;:false,&#34;inputs&#34;:[{&#34;indexed&#34;:false,&#34;internalType&#34;:&#34;bool&#34;,&#34;name&#34;:&#34;arrived&#34;,&#34;type&#34;:&#34;bool&#34;},{&#34;indexed&#34;:false,&#34;internalType&#34;:&#34;uint256&#34;,&#34;name&#34;:&#34;randomNumber&#34;,&#34;type&#34;:&#34;uint256&#34;},{&#34;indexed&#34;:false,&#34;internalType&#34;:&#34;bytes32&#34;,&#34;name&#34;:&#34;batchID&#34;,&#34;type&#34;:&#34;bytes32&#34;}],&#34;name&#34;:&#34;randomNumberArrived&#34;,&#34;type&#34;:&#34;event&#34;},{&#34;inputs&#34;:[],&#34;name&#34;:&#34;getRandomNumber&#34;,&#34;outputs&#34;:[{&#34;internalType&#34;:&#34;bytes32&#34;,&#34;name&#34;:&#34;requestId&#34;,&#34;type&#34;:&#34;bytes32&#34;}],&#34;stateMutability&#34;:&#34;nonpayable&#34;,&#34;type&#34;:&#34;function&#34;},{&#34;inputs&#34;:[],&#34;name&#34;:&#34;randomResult&#34;,&#34;outputs&#34;:[{&#34;internalType&#34;:&#34;uint256&#34;,&#34;name&#34;:&#34;&#34;,&#34;type&#34;:&#34;uint256&#34;}],&#34;stateMutability&#34;:&#34;view&#34;,&#34;type&#34;:&#34;function&#34;},{&#34;inputs&#34;:[{&#34;internalType&#34;:&#34;bytes32&#34;,&#34;name&#34;:&#34;requestId&#34;,&#34;type&#34;:&#34;bytes32&#34;},{&#34;internalType&#34;:&#34;uint256&#34;,&#34;name&#34;:&#34;randomness&#34;,&#34;type&#34;:&#34;uint256&#34;}],&#34;name&#34;:&#34;rawFulfillRandomness&#34;,&#34;outputs&#34;:[],&#34;stateMutability&#34;:&#34;nonpayable&#34;,&#34;type&#34;:&#34;function&#34;}]&#39;  # noqa: E501 (line-too-long)
+    )</code></pre>
+</details>
+</dd>
+</dl>
+<h3>Methods</h3>
+<dl>
+<dt id="moody.m.v_r_f_consumer.VRFConsumer.CallContractWait"><code class="name flex">
+<span>def <span class="ident">CallContractWait</span></span>(<span>self, t_long: int) ‑> <a title="moody.m.v_r_f_consumer.VRFConsumer" href="#moody.m.v_r_f_consumer.VRFConsumer">VRFConsumer</a></span>
+</code></dt>
+<dd>
+<div class="desc"></div>
+<details class="source">
+<summary>
+<span>Expand source code</span>
+</summary>
+<pre><code class="python">def CallContractWait(self, t_long:int)-&gt; &#34;VRFConsumer&#34;:
+    self._fn_get_random_number.setWait(t_long)
+    self._fn_random_result.setWait(t_long)
+    self._fn_raw_fulfill_randomness.setWait(t_long)
+    return self</code></pre>
+</details>
+</dd>
+<dt id="moody.m.v_r_f_consumer.VRFConsumer.event_random_number_arrived"><code class="name flex">
+<span>def <span class="ident">event_random_number_arrived</span></span>(<span>self, tx_hash: Union[hexbytes.main.HexBytes, bytes]) ‑> Tuple[web3.datastructures.AttributeDict]</span>
+</code></dt>
+<dd>
+<div class="desc"><p>Implementation of event random_number_arrived in contract VRFConsumer
+Get log entry for randomNumberArrived event.
+:param tx_hash: hash of transaction emitting randomNumberArrived event</p></div>
+<details class="source">
+<summary>
+<span>Expand source code</span>
+</summary>
+<pre><code class="python">def event_random_number_arrived(
+        self, tx_hash: Union[HexBytes, bytes]
+) -&gt; Tuple[AttributeDict]:
+    &#34;&#34;&#34;
+    Implementation of event random_number_arrived in contract VRFConsumer
+    Get log entry for randomNumberArrived event.
+            :param tx_hash: hash of transaction emitting randomNumberArrived event
+    &#34;&#34;&#34;
+    tx_receipt = self._web3_eth.getTransactionReceipt(tx_hash)
+    return self._web3_eth.contract(address=to_checksum_address(self.contract_address), abi=VRFConsumer.abi()).events.randomNumberArrived().processReceipt(tx_receipt)</code></pre>
+</details>
+</dd>
+<dt id="moody.m.v_r_f_consumer.VRFConsumer.get_random_number"><code class="name flex">
+<span>def <span class="ident">get_random_number</span></span>(<span>self) ‑> Union[bytes, str]</span>
+</code></dt>
+<dd>
+<div class="desc"><p>Implementation of get_random_number in contract VRFConsumer
+Method of the function</p></div>
+<details class="source">
+<summary>
+<span>Expand source code</span>
+</summary>
+<pre><code class="python">def get_random_number(self) -&gt; Union[bytes, str]:
+    &#34;&#34;&#34;
+    Implementation of get_random_number in contract VRFConsumer
+    Method of the function
+
+
+
+    &#34;&#34;&#34;
+
+    return self._fn_get_random_number.block_send(self.call_contract_fee_amount,self.call_contract_fee_price,0,self.call_contract_debug_flag, self.call_contract_enforce_tx_receipt)</code></pre>
+</details>
+</dd>
+<dt id="moody.m.v_r_f_consumer.VRFConsumer.random_result"><code class="name flex">
+<span>def <span class="ident">random_result</span></span>(<span>self) ‑> int</span>
+</code></dt>
+<dd>
+<div class="desc"><p>Implementation of random_result in contract VRFConsumer
+Method of the function</p></div>
+<details class="source">
+<summary>
+<span>Expand source code</span>
+</summary>
+<pre><code class="python">def random_result(self) -&gt; int:
+    &#34;&#34;&#34;
+    Implementation of random_result in contract VRFConsumer
+    Method of the function
+
+
+
+    &#34;&#34;&#34;
+
+
+
+
+
+    return self._fn_random_result.block_call()</code></pre>
+</details>
+</dd>
+<dt id="moody.m.v_r_f_consumer.VRFConsumer.raw_fulfill_randomness"><code class="name flex">
+<span>def <span class="ident">raw_fulfill_randomness</span></span>(<span>self, request_id: Union[bytes, str], randomness: int) ‑> NoneType</span>
+</code></dt>
+<dd>
+<div class="desc"><p>Implementation of raw_fulfill_randomness in contract VRFConsumer
+Method of the function</p></div>
+<details class="source">
+<summary>
+<span>Expand source code</span>
+</summary>
+<pre><code class="python">def raw_fulfill_randomness(self, request_id: Union[bytes, str], randomness: int) -&gt; None:
+    &#34;&#34;&#34;
+    Implementation of raw_fulfill_randomness in contract VRFConsumer
+    Method of the function
+
+
+
+    &#34;&#34;&#34;
+
+    return self._fn_raw_fulfill_randomness.block_send(request_id, randomness, self.call_contract_fee_amount,self.call_contract_fee_price,0,self.call_contract_debug_flag, self.call_contract_enforce_tx_receipt)</code></pre>
+</details>
+</dd>
+</dl>
+</dd>
+<dt id="moody.m.v_r_f_consumer.VRFConsumerValidator"><code class="flex name class">
+<span>class <span class="ident">VRFConsumerValidator</span></span>
+<span>(</span><span>web3_or_provider: web3.main.Web3, contract_address: str)</span>
+</code></dt>
+<dd>
+<div class="desc"><p>No-op input validator.</p>
+<p>Initialize the instance.</p></div>
+<details class="source">
+<summary>
+<span>Expand source code</span>
+</summary>
+<pre><code class="python">class VRFConsumerValidator(  # type: ignore
+    Validator
+):
+    &#34;&#34;&#34;No-op input validator.&#34;&#34;&#34;</code></pre>
+</details>
+<h3>Ancestors</h3>
+<ul class="hlist">
+<li><a title="moody.m.bases.Validator" href="../bases.html#moody.m.bases.Validator">Validator</a></li>
+</ul>
+<h3>Inherited members</h3>
+<ul class="hlist">
+<li><code><b><a title="moody.m.bases.Validator" href="../bases.html#moody.m.bases.Validator">Validator</a></b></code>:
+<ul class="hlist">
+<li><code><a title="moody.m.bases.Validator.assert_valid" href="../bases.html#moody.m.bases.Validator.assert_valid">assert_valid</a></code></li>
+</ul>
+</li>
+</ul>
+</dd>
+</dl>
+</section>
+</article>
+<nav id="sidebar">
+<h1>Index</h1>
+<div class="toc">
+<ul></ul>
+</div>
+<ul id="index">
+<li><h3>Super-module</h3>
+<ul>
+<li><code><a title="moody.m" href="../index.html">moody.m</a></code></li>
+</ul>
+</li>
+<li><h3><a href="#header-classes">Classes</a></h3>
+<ul>
+<li>
+<h4><code><a title="moody.m.v_r_f_consumer.GetRandomNumberMethod" href="#moody.m.v_r_f_consumer.GetRandomNumberMethod">GetRandomNumberMethod</a></code></h4>
+<ul class="">
+<li><code><a title="moody.m.v_r_f_consumer.GetRandomNumberMethod.block_send" href="#moody.m.v_r_f_consumer.GetRandomNumberMethod.block_send">block_send</a></code></li>
+<li><code><a title="moody.m.v_r_f_consumer.GetRandomNumberMethod.build_transaction" href="#moody.m.v_r_f_consumer.GetRandomNumberMethod.build_transaction">build_transaction</a></code></li>
+<li><code><a title="moody.m.v_r_f_consumer.GetRandomNumberMethod.estimate_gas" href="#moody.m.v_r_f_consumer.GetRandomNumberMethod.estimate_gas">estimate_gas</a></code></li>
+<li><code><a title="moody.m.v_r_f_consumer.GetRandomNumberMethod.send_transaction" href="#moody.m.v_r_f_consumer.GetRandomNumberMethod.send_transaction">send_transaction</a></code></li>
+</ul>
+</li>
+<li>
+<h4><code><a title="moody.m.v_r_f_consumer.RandomResultMethod" href="#moody.m.v_r_f_consumer.RandomResultMethod">RandomResultMethod</a></code></h4>
+<ul class="">
+<li><code><a title="moody.m.v_r_f_consumer.RandomResultMethod.block_call" href="#moody.m.v_r_f_consumer.RandomResultMethod.block_call">block_call</a></code></li>
+<li><code><a title="moody.m.v_r_f_consumer.RandomResultMethod.block_send" href="#moody.m.v_r_f_consumer.RandomResultMethod.block_send">block_send</a></code></li>
+<li><code><a title="moody.m.v_r_f_consumer.RandomResultMethod.build_transaction" href="#moody.m.v_r_f_consumer.RandomResultMethod.build_transaction">build_transaction</a></code></li>
+<li><code><a title="moody.m.v_r_f_consumer.RandomResultMethod.estimate_gas" href="#moody.m.v_r_f_consumer.RandomResultMethod.estimate_gas">estimate_gas</a></code></li>
+<li><code><a title="moody.m.v_r_f_consumer.RandomResultMethod.send_transaction" href="#moody.m.v_r_f_consumer.RandomResultMethod.send_transaction">send_transaction</a></code></li>
+</ul>
+</li>
+<li>
+<h4><code><a title="moody.m.v_r_f_consumer.RawFulfillRandomnessMethod" href="#moody.m.v_r_f_consumer.RawFulfillRandomnessMethod">RawFulfillRandomnessMethod</a></code></h4>
+<ul class="">
+<li><code><a title="moody.m.v_r_f_consumer.RawFulfillRandomnessMethod.block_send" href="#moody.m.v_r_f_consumer.RawFulfillRandomnessMethod.block_send">block_send</a></code></li>
+<li><code><a title="moody.m.v_r_f_consumer.RawFulfillRandomnessMethod.build_transaction" href="#moody.m.v_r_f_consumer.RawFulfillRandomnessMethod.build_transaction">build_transaction</a></code></li>
+<li><code><a title="moody.m.v_r_f_consumer.RawFulfillRandomnessMethod.estimate_gas" href="#moody.m.v_r_f_consumer.RawFulfillRandomnessMethod.estimate_gas">estimate_gas</a></code></li>
+<li><code><a title="moody.m.v_r_f_consumer.RawFulfillRandomnessMethod.send_transaction" href="#moody.m.v_r_f_consumer.RawFulfillRandomnessMethod.send_transaction">send_transaction</a></code></li>
+<li><code><a title="moody.m.v_r_f_consumer.RawFulfillRandomnessMethod.validate_and_normalize_inputs" href="#moody.m.v_r_f_consumer.RawFulfillRandomnessMethod.validate_and_normalize_inputs">validate_and_normalize_inputs</a></code></li>
+</ul>
+</li>
+<li>
+<h4><code><a title="moody.m.v_r_f_consumer.SignatureGenerator" href="#moody.m.v_r_f_consumer.SignatureGenerator">SignatureGenerator</a></code></h4>
+<ul class="">
+<li><code><a title="moody.m.v_r_f_consumer.SignatureGenerator.get_random_number" href="#moody.m.v_r_f_consumer.SignatureGenerator.get_random_number">get_random_number</a></code></li>
+<li><code><a title="moody.m.v_r_f_consumer.SignatureGenerator.random_result" href="#moody.m.v_r_f_consumer.SignatureGenerator.random_result">random_result</a></code></li>
+<li><code><a title="moody.m.v_r_f_consumer.SignatureGenerator.raw_fulfill_randomness" href="#moody.m.v_r_f_consumer.SignatureGenerator.raw_fulfill_randomness">raw_fulfill_randomness</a></code></li>
+</ul>
+</li>
+<li>
+<h4><code><a title="moody.m.v_r_f_consumer.VRFConsumer" href="#moody.m.v_r_f_consumer.VRFConsumer">VRFConsumer</a></code></h4>
+<ul class="">
+<li><code><a title="moody.m.v_r_f_consumer.VRFConsumer.CallContractWait" href="#moody.m.v_r_f_consumer.VRFConsumer.CallContractWait">CallContractWait</a></code></li>
+<li><code><a title="moody.m.v_r_f_consumer.VRFConsumer.SIGNATURES" href="#moody.m.v_r_f_consumer.VRFConsumer.SIGNATURES">SIGNATURES</a></code></li>
+<li><code><a title="moody.m.v_r_f_consumer.VRFConsumer.abi" href="#moody.m.v_r_f_consumer.VRFConsumer.abi">abi</a></code></li>
+<li><code><a title="moody.m.v_r_f_consumer.VRFConsumer.event_random_number_arrived" href="#moody.m.v_r_f_consumer.VRFConsumer.event_random_number_arrived">event_random_number_arrived</a></code></li>
+<li><code><a title="moody.m.v_r_f_consumer.VRFConsumer.get_random_number" href="#moody.m.v_r_f_consumer.VRFConsumer.get_random_number">get_random_number</a></code></li>
+<li><code><a title="moody.m.v_r_f_consumer.VRFConsumer.random_result" href="#moody.m.v_r_f_consumer.VRFConsumer.random_result">random_result</a></code></li>
+<li><code><a title="moody.m.v_r_f_consumer.VRFConsumer.raw_fulfill_randomness" href="#moody.m.v_r_f_consumer.VRFConsumer.raw_fulfill_randomness">raw_fulfill_randomness</a></code></li>
+</ul>
+</li>
+<li>
+<h4><code><a title="moody.m.v_r_f_consumer.VRFConsumerValidator" href="#moody.m.v_r_f_consumer.VRFConsumerValidator">VRFConsumerValidator</a></code></h4>
+</li>
+</ul>
+</li>
+</ul>
+</nav>
+</main>
+<footer id="footer">
+<p>Generated by <a href="https://pdoc3.github.io/pdoc"><cite>pdoc</cite> 0.9.1</a>.</p>
+</footer>
+</body>
+</html>
