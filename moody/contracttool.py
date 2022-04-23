@@ -9,6 +9,9 @@ from .libeb import MiliDoS
 
 
 class ContractTool(MiliDoS):
+    """
+    This is the helper tool to help generating the easy access to the contract information
+    """
     classes = [
         "Genesis", "GenesisKey"
     ]
@@ -106,10 +109,8 @@ class ContractTool(MiliDoS):
             raise ValueError("not USDC contract address is found")
 
     """
-    
-    This is the ETH transfer functions
+    This is the batch function to transfer native coins
     """
-
     def DistributeCoins(self, from_account_index: int, loops: int, exclude: list, gas: int, price: int) -> None:
         ind = 0
         # self.AuthIndex(from_account_index)
@@ -122,7 +123,9 @@ class ContractTool(MiliDoS):
                 continue
             self.TransferRefer(ind, 0.1, gas, price)
             ind += 1
-
+    """
+    The function used for transfer the native coin
+    """
     def Transfer(self, address_receive: str, amount: float, gas_limit: int = 0, gas_price: int = 0) -> str:
         tx = {
             'to': address_receive,

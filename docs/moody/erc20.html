@@ -36,6 +36,9 @@ from .m.pharaohs import pharaohs
 
 
 class ERC20H(MiliDoS):
+    &#34;&#34;&#34;
+    The similar operation for ERC20
+    &#34;&#34;&#34;
     def __init__(self, network):
         super().__init__(network)
         self.TokenContract: pharaohs = None
@@ -90,13 +93,15 @@ class ERC20H(MiliDoS):
 <span>(</span><span>network)</span>
 </code></dt>
 <dd>
-<div class="desc"><p>wrap the web3 into the package
-@</p></div>
+<div class="desc"><p>The similar operation for ERC20</p></div>
 <details class="source">
 <summary>
 <span>Expand source code</span>
 </summary>
 <pre><code class="python">class ERC20H(MiliDoS):
+    &#34;&#34;&#34;
+    The similar operation for ERC20
+    &#34;&#34;&#34;
     def __init__(self, network):
         super().__init__(network)
         self.TokenContract: pharaohs = None
@@ -241,6 +246,7 @@ def TokenAddress(self) -&gt; str:
 <ul class="hlist">
 <li><code><b><a title="moody.libeb.MiliDoS" href="libeb.html#moody.libeb.MiliDoS">MiliDoS</a></b></code>:
 <ul class="hlist">
+<li><code><a title="moody.libeb.MiliDoS.Auth" href="libeb.html#moody.libeb.MiliDoS.Auth">Auth</a></code></li>
 <li><code><a title="moody.libeb.MiliDoS.OverrideChainConfig" href="libeb.html#moody.libeb.MiliDoS.OverrideChainConfig">OverrideChainConfig</a></code></li>
 <li><code><a title="moody.libeb.MiliDoS.OverrideGasConfig" href="libeb.html#moody.libeb.MiliDoS.OverrideGasConfig">OverrideGasConfig</a></code></li>
 <li><code><a title="moody.libeb.MiliDoS.after_deployment_initialize_settings" href="libeb.html#moody.libeb.MiliDoS.after_deployment_initialize_settings">after_deployment_initialize_settings</a></code></li>
@@ -251,12 +257,14 @@ def TokenAddress(self) -&gt; str:
 <li><code><a title="moody.libeb.MiliDoS.estimateGas" href="libeb.html#moody.libeb.MiliDoS.estimateGas">estimateGas</a></code></li>
 <li><code><a title="moody.libeb.MiliDoS.getAddr" href="libeb.html#moody.libeb.MiliDoS.getAddr">getAddr</a></code></li>
 <li><code><a title="moody.libeb.MiliDoS.get_block" href="libeb.html#moody.libeb.MiliDoS.get_block">get_block</a></code></li>
+<li><code><a title="moody.libeb.MiliDoS.isAddress" href="libeb.html#moody.libeb.MiliDoS.isAddress">isAddress</a></code></li>
 <li><code><a title="moody.libeb.MiliDoS.localTranspile" href="libeb.html#moody.libeb.MiliDoS.localTranspile">localTranspile</a></code></li>
 <li><code><a title="moody.libeb.MiliDoS.one" href="libeb.html#moody.libeb.MiliDoS.one">one</a></code></li>
 <li><code><a title="moody.libeb.MiliDoS.ready_io" href="libeb.html#moody.libeb.MiliDoS.ready_io">ready_io</a></code></li>
 <li><code><a title="moody.libeb.MiliDoS.remoteCompile" href="libeb.html#moody.libeb.MiliDoS.remoteCompile">remoteCompile</a></code></li>
 <li><code><a title="moody.libeb.MiliDoS.send_contract_tx" href="libeb.html#moody.libeb.MiliDoS.send_contract_tx">send_contract_tx</a></code></li>
 <li><code><a title="moody.libeb.MiliDoS.setEvm" href="libeb.html#moody.libeb.MiliDoS.setEvm">setEvm</a></code></li>
+<li><code><a title="moody.libeb.MiliDoS.withPOA" href="libeb.html#moody.libeb.MiliDoS.withPOA">withPOA</a></code></li>
 </ul>
 </li>
 </ul>

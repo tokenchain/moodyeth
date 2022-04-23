@@ -34,7 +34,7 @@ TRANS_LOCAL = """#!/bin/bash
 """
 ITEM = """
 echo "🍯 Compiling from {COMPILE_COIN} 🧀"
-SOLC_VERSION={SOLVER} solc --evm-version {EVMVERSION} --allow-paths {SOLCPATH} -o build --bin --bin-runtime --abi --optimize-runs={RUNS} --metadata --overwrite {COMPILE_COIN}
+SOLC_VERSION={SOLVER} solc --evm-version {EVMVERSION} --allow-paths {SOLCPATH} -o build --bin --bin-runtime --abi --optimize --optimize-runs={RUNS} --metadata --overwrite {COMPILE_COIN}
 echo "=> 🍺🍺🍺 {COMPILE_COIN}"
 """
 

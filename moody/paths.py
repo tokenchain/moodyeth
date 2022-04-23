@@ -13,6 +13,7 @@ class Paths:
     """
     :type statement
     Manage the workspace paths
+    It takes cared the paths related primitives
 
     """
     statement = 'End : {}, IO File {}'

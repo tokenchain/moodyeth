@@ -138,6 +138,10 @@ class IDos:
 
 
 class BinOp:
+    """
+    The binary operation for the ops. Taking care the operations for library linking and the related stuffs.
+    """
+
     def __init__(self, bin_content: str, file_name: str):
         self.bin_raw = bin_content
         self.bin_knifed = bin_content
@@ -209,6 +213,11 @@ class BinOp:
 
 
 class SolWeb3Tool(object):
+    """
+    This is the tool to build operation of the compiling solidity contract source code
+    Try to make some improvement of code to make better access
+    This is the artifact manager as we know it
+    """
     OUTPUT_BUILD = "build"
     WORKSPACE_PATH = ""
     solfolder = ""
@@ -242,7 +251,7 @@ class SolWeb3Tool(object):
         self._abi = json.load(codecs.open(p2abi, 'r', 'utf-8-sig'))
         return self
 
-    def GetCombinedFile(self):
+    def GetCombinedFile(self) -> "SolWeb3Tool":
         pathc = os.path.join(self.WORKSPACE_PATH, self.OUTPUT_BUILD, "combined.json")
         try:
             pathcli = codecs.open(pathc, 'r', 'utf-8-sig')
@@ -252,21 +261,27 @@ class SolWeb3Tool(object):
         return self
 
     def byClassName(self, path: str, classname: str) -> str:
+        # generating the string with path and class name
         return "{prefix}:{name}".format(prefix=path, name=classname)
 
-    def GetCodeTag(self, fullname):
+    def GetCodeTag(self, fullname) -> [str, str]:
+        """
+        Search for the abi session and the bin session from the meta source file
+        from combined.json
+        :param fullname: initial file name
+        :return: abi code and the bin code
+        """
         return self.combined_data["contracts"][fullname]["abi"], self.combined_data["contracts"][fullname]["bin"]
 
     def GetCode(self, path: str, classname: str) -> [str, str]:
         """
+        Search for the abi session and the bin session from the meta source file
         get the code and abi from combined.json
         :param path:
         :param classname:
         :return:
         """
-        abi = self.combined_data["contracts"][self.byClassName(path, classname)]["abi"]
-        bin = self.combined_data["contracts"][self.byClassName(path, classname)]["bin"]
-        return abi, bin
+        return self.GetCodeTag(self.byClassName(path, classname))
 
     def CompileBash(self) -> None:
         """
@@ -286,18 +301,24 @@ class SolWeb3Tool(object):
         return self._bin
 
     @property
-    def workspace(self):
+    def workspace(self) -> str:
         return self.WORKSPACE_PATH
 
-    def StoreTxResult(self, tx_result_data: any, filepath: str):
+    def StoreTxResult(self, tx_result_data: any, filepath: str) -> None:
+        """
+        Having the result of the transaction data to be stored in an external JSON file.
+        :param tx_result_data: input data
+        :param filepath: the file name path
+        :return: nothing to return
+        """
         predump = toDict(tx_result_data)
         writeFile(json.dumps(predump, ensure_ascii=False), filepath)
 
 
 class MiliDoS(IDos):
     """
-    wrap the web3 into the package
-    @
+    This is the base package function core for all the related operations to execute
+    The center hub of the progress source code is in here
     """
 
     EVM_VERSION = Evm.BERLIN
@@ -327,10 +348,19 @@ class MiliDoS(IDos):
             print(f"You are now connected to {Bolors.OK} {self.network_cfg.network_name} {self.network_cfg.rpc_url} {Bolors.RESET}")
 
     def withPOA(self) -> "MiliDoS":
+        """
+        the normal usual term to fix some POA related problems
+        :return:
+        """
         self.w3.middleware_onion.inject(geth_poa_middleware, layer=0)
         return self
 
     def isAddress(self, address: str) -> bool:
+        """
+        Verification of the valid EVM address
+        :param address:
+        :return:
+        """
         return self.w3.isAddress(address)
 
     def connect(self, workspace: str, history: any) -> None:
@@ -494,6 +524,11 @@ class MiliDoS(IDos):
                     yield log
 
     def Auth(self, private_key_line: str) -> "MiliDoS":
+        """
+        switching the operating address to a different one that is given by the private key
+        :param private_key_line: the input private key
+        :return:
+        """
         # f"0x{private_key_line}"
         keyLo = self.w3.eth.account.from_key(f"0x{private_key_line}")
         # self.w3.eth.defaultAccount = keyoo.address
@@ -586,8 +621,7 @@ class MiliDoS(IDos):
         else:
             return self.network_cfg.link_token
 
-    def _checkErrorForTxReceipt(self, receipt: any, class_name: str, jsonfile: str):
-
+    def _checkErrorForTxReceipt(self, receipt: any, class_name: str, jsonfile: str) -> None:
         if "contractAddress" not in receipt:
             print(f"⚠️ Error from deploy contract and no valid address found for {class_name}.")
             raise InvalidAddress
@@ -602,13 +636,16 @@ class MiliDoS(IDos):
             print(f"⚠️ The deployment is failed because there is no valid address found from {class_name}. Please check for internal errors from deployment hash from {jsonfile}")
             raise InvalidAddress
 
-    def deploy(self, class_name: str,
-               params: list = [],
-               gas_price: int = 0,
-               gas_limit: int = 0) -> bool:
+    def deploy(self, class_name: str, params: list = [], gas_price: int = 0, gas_limit: int = 0) -> bool:
         """
-        This is using the faster way to deploy files by using the specific abi and bin files
-
+        This is using the faster way to deploy files by using the specific abi and bin files.
+        If all these parameters to be ignored then these things will be taken from other available
+        valuables for gas price and gas limit
+        :param class_name: the input class name
+        :param params: the parameters
+        :param gas_price: the gas price
+        :param gas_limit: the gas limit
+        :return:
         """
         contract_nv = None
         solc_artifact = None

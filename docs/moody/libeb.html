@@ -166,6 +166,10 @@ class IDos:
 
 
 class BinOp:
+    &#34;&#34;&#34;
+    The binary operation for the ops. Taking care the operations for library linking and the related stuffs.
+    &#34;&#34;&#34;
+
     def __init__(self, bin_content: str, file_name: str):
         self.bin_raw = bin_content
         self.bin_knifed = bin_content
@@ -237,6 +241,11 @@ class BinOp:
 
 
 class SolWeb3Tool(object):
+    &#34;&#34;&#34;
+    This is the tool to build operation of the compiling solidity contract source code
+    Try to make some improvement of code to make better access
+    This is the artifact manager as we know it
+    &#34;&#34;&#34;
     OUTPUT_BUILD = &#34;build&#34;
     WORKSPACE_PATH = &#34;&#34;
     solfolder = &#34;&#34;
@@ -270,7 +279,7 @@ class SolWeb3Tool(object):
         self._abi = json.load(codecs.open(p2abi, &#39;r&#39;, &#39;utf-8-sig&#39;))
         return self
 
-    def GetCombinedFile(self):
+    def GetCombinedFile(self) -&gt; &#34;SolWeb3Tool&#34;:
         pathc = os.path.join(self.WORKSPACE_PATH, self.OUTPUT_BUILD, &#34;combined.json&#34;)
         try:
             pathcli = codecs.open(pathc, &#39;r&#39;, &#39;utf-8-sig&#39;)
@@ -280,21 +289,27 @@ class SolWeb3Tool(object):
         return self
 
     def byClassName(self, path: str, classname: str) -&gt; str:
+        # generating the string with path and class name
         return &#34;{prefix}:{name}&#34;.format(prefix=path, name=classname)
 
-    def GetCodeTag(self, fullname):
+    def GetCodeTag(self, fullname) -&gt; [str, str]:
+        &#34;&#34;&#34;
+        Search for the abi session and the bin session from the meta source file
+        from combined.json
+        :param fullname: initial file name
+        :return: abi code and the bin code
+        &#34;&#34;&#34;
         return self.combined_data[&#34;contracts&#34;][fullname][&#34;abi&#34;], self.combined_data[&#34;contracts&#34;][fullname][&#34;bin&#34;]
 
     def GetCode(self, path: str, classname: str) -&gt; [str, str]:
         &#34;&#34;&#34;
+        Search for the abi session and the bin session from the meta source file
         get the code and abi from combined.json
         :param path:
         :param classname:
         :return:
         &#34;&#34;&#34;
-        abi = self.combined_data[&#34;contracts&#34;][self.byClassName(path, classname)][&#34;abi&#34;]
-        bin = self.combined_data[&#34;contracts&#34;][self.byClassName(path, classname)][&#34;bin&#34;]
-        return abi, bin
+        return self.GetCodeTag(self.byClassName(path, classname))
 
     def CompileBash(self) -&gt; None:
         &#34;&#34;&#34;
@@ -314,18 +329,24 @@ class SolWeb3Tool(object):
         return self._bin
 
     @property
-    def workspace(self):
+    def workspace(self) -&gt; str:
         return self.WORKSPACE_PATH
 
-    def StoreTxResult(self, tx_result_data: any, filepath: str):
+    def StoreTxResult(self, tx_result_data: any, filepath: str) -&gt; None:
+        &#34;&#34;&#34;
+        Having the result of the transaction data to be stored in an external JSON file.
+        :param tx_result_data: input data
+        :param filepath: the file name path
+        :return: nothing to return
+        &#34;&#34;&#34;
         predump = toDict(tx_result_data)
         writeFile(json.dumps(predump, ensure_ascii=False), filepath)
 
 
 class MiliDoS(IDos):
     &#34;&#34;&#34;
-    wrap the web3 into the package
-    @
+    This is the base package function core for all the related operations to execute
+    The center hub of the progress source code is in here
     &#34;&#34;&#34;
 
     EVM_VERSION = Evm.BERLIN
@@ -355,10 +376,19 @@ class MiliDoS(IDos):
             print(f&#34;You are now connected to {Bolors.OK} {self.network_cfg.network_name} {self.network_cfg.rpc_url} {Bolors.RESET}&#34;)
 
     def withPOA(self) -&gt; &#34;MiliDoS&#34;:
+        &#34;&#34;&#34;
+        the normal usual term to fix some POA related problems
+        :return:
+        &#34;&#34;&#34;
         self.w3.middleware_onion.inject(geth_poa_middleware, layer=0)
         return self
 
     def isAddress(self, address: str) -&gt; bool:
+        &#34;&#34;&#34;
+        Verification of the valid EVM address
+        :param address:
+        :return:
+        &#34;&#34;&#34;
         return self.w3.isAddress(address)
 
     def connect(self, workspace: str, history: any) -&gt; None:
@@ -522,6 +552,11 @@ class MiliDoS(IDos):
                     yield log
 
     def Auth(self, private_key_line: str) -&gt; &#34;MiliDoS&#34;:
+        &#34;&#34;&#34;
+        switching the operating address to a different one that is given by the private key
+        :param private_key_line: the input private key
+        :return:
+        &#34;&#34;&#34;
         # f&#34;0x{private_key_line}&#34;
         keyLo = self.w3.eth.account.from_key(f&#34;0x{private_key_line}&#34;)
         # self.w3.eth.defaultAccount = keyoo.address
@@ -614,8 +649,7 @@ class MiliDoS(IDos):
         else:
             return self.network_cfg.link_token
 
-    def _checkErrorForTxReceipt(self, receipt: any, class_name: str, jsonfile: str):
-
+    def _checkErrorForTxReceipt(self, receipt: any, class_name: str, jsonfile: str) -&gt; None:
         if &#34;contractAddress&#34; not in receipt:
             print(f&#34;⚠️ Error from deploy contract and no valid address found for {class_name}.&#34;)
             raise InvalidAddress
@@ -630,13 +664,16 @@ class MiliDoS(IDos):
             print(f&#34;⚠️ The deployment is failed because there is no valid address found from {class_name}. Please check for internal errors from deployment hash from {jsonfile}&#34;)
             raise InvalidAddress
 
-    def deploy(self, class_name: str,
-               params: list = [],
-               gas_price: int = 0,
-               gas_limit: int = 0) -&gt; bool:
+    def deploy(self, class_name: str, params: list = [], gas_price: int = 0, gas_limit: int = 0) -&gt; bool:
         &#34;&#34;&#34;
-        This is using the faster way to deploy files by using the specific abi and bin files
-
+        This is using the faster way to deploy files by using the specific abi and bin files.
+        If all these parameters to be ignored then these things will be taken from other available
+        valuables for gas price and gas limit
+        :param class_name: the input class name
+        :param params: the parameters
+        :param gas_price: the gas price
+        :param gas_limit: the gas limit
+        :return:
         &#34;&#34;&#34;
         contract_nv = None
         solc_artifact = None
@@ -1019,12 +1056,16 @@ class MiliDoS(IDos):
 <span>(</span><span>bin_content: str, file_name: str)</span>
 </code></dt>
 <dd>
-<div class="desc"></div>
+<div class="desc"><p>The binary operation for the ops. Taking care the operations for library linking and the related stuffs.</p></div>
 <details class="source">
 <summary>
 <span>Expand source code</span>
 </summary>
 <pre><code class="python">class BinOp:
+    &#34;&#34;&#34;
+    The binary operation for the ops. Taking care the operations for library linking and the related stuffs.
+    &#34;&#34;&#34;
+
     def __init__(self, bin_content: str, file_name: str):
         self.bin_raw = bin_content
         self.bin_knifed = bin_content
@@ -1409,16 +1450,16 @@ implement default like this::</p>
 <span>(</span><span>_nodeCfg: <a title="moody.Config" href="index.html#moody.Config">Config</a>)</span>
 </code></dt>
 <dd>
-<div class="desc"><p>wrap the web3 into the package
-@</p></div>
+<div class="desc"><p>This is the base package function core for all the related operations to execute
+The center hub of the progress source code is in here</p></div>
 <details class="source">
 <summary>
 <span>Expand source code</span>
 </summary>
 <pre><code class="python">class MiliDoS(IDos):
     &#34;&#34;&#34;
-    wrap the web3 into the package
-    @
+    This is the base package function core for all the related operations to execute
+    The center hub of the progress source code is in here
     &#34;&#34;&#34;
 
     EVM_VERSION = Evm.BERLIN
@@ -1448,10 +1489,19 @@ implement default like this::</p>
             print(f&#34;You are now connected to {Bolors.OK} {self.network_cfg.network_name} {self.network_cfg.rpc_url} {Bolors.RESET}&#34;)
 
     def withPOA(self) -&gt; &#34;MiliDoS&#34;:
+        &#34;&#34;&#34;
+        the normal usual term to fix some POA related problems
+        :return:
+        &#34;&#34;&#34;
         self.w3.middleware_onion.inject(geth_poa_middleware, layer=0)
         return self
 
     def isAddress(self, address: str) -&gt; bool:
+        &#34;&#34;&#34;
+        Verification of the valid EVM address
+        :param address:
+        :return:
+        &#34;&#34;&#34;
         return self.w3.isAddress(address)
 
     def connect(self, workspace: str, history: any) -&gt; None:
@@ -1615,6 +1665,11 @@ implement default like this::</p>
                     yield log
 
     def Auth(self, private_key_line: str) -&gt; &#34;MiliDoS&#34;:
+        &#34;&#34;&#34;
+        switching the operating address to a different one that is given by the private key
+        :param private_key_line: the input private key
+        :return:
+        &#34;&#34;&#34;
         # f&#34;0x{private_key_line}&#34;
         keyLo = self.w3.eth.account.from_key(f&#34;0x{private_key_line}&#34;)
         # self.w3.eth.defaultAccount = keyoo.address
@@ -1707,8 +1762,7 @@ implement default like this::</p>
         else:
             return self.network_cfg.link_token
 
-    def _checkErrorForTxReceipt(self, receipt: any, class_name: str, jsonfile: str):
-
+    def _checkErrorForTxReceipt(self, receipt: any, class_name: str, jsonfile: str) -&gt; None:
         if &#34;contractAddress&#34; not in receipt:
             print(f&#34;⚠️ Error from deploy contract and no valid address found for {class_name}.&#34;)
             raise InvalidAddress
@@ -1723,13 +1777,16 @@ implement default like this::</p>
             print(f&#34;⚠️ The deployment is failed because there is no valid address found from {class_name}. Please check for internal errors from deployment hash from {jsonfile}&#34;)
             raise InvalidAddress
 
-    def deploy(self, class_name: str,
-               params: list = [],
-               gas_price: int = 0,
-               gas_limit: int = 0) -&gt; bool:
+    def deploy(self, class_name: str, params: list = [], gas_price: int = 0, gas_limit: int = 0) -&gt; bool:
         &#34;&#34;&#34;
-        This is using the faster way to deploy files by using the specific abi and bin files
-
+        This is using the faster way to deploy files by using the specific abi and bin files.
+        If all these parameters to be ignored then these things will be taken from other available
+        valuables for gas price and gas limit
+        :param class_name: the input class name
+        :param params: the parameters
+        :param gas_price: the gas price
+        :param gas_limit: the gas limit
+        :return:
         &#34;&#34;&#34;
         contract_nv = None
         solc_artifact = None
@@ -2077,12 +2134,19 @@ def waitSec(self) -&gt; int:
 <span>def <span class="ident">Auth</span></span>(<span>self, private_key_line: str) ‑> <a title="moody.libeb.MiliDoS" href="#moody.libeb.MiliDoS">MiliDoS</a></span>
 </code></dt>
 <dd>
-<div class="desc"></div>
+<div class="desc"><p>switching the operating address to a different one that is given by the private key
+:param private_key_line: the input private key
+:return:</p></div>
 <details class="source">
 <summary>
 <span>Expand source code</span>
 </summary>
 <pre><code class="python">def Auth(self, private_key_line: str) -&gt; &#34;MiliDoS&#34;:
+    &#34;&#34;&#34;
+    switching the operating address to a different one that is given by the private key
+    :param private_key_line: the input private key
+    :return:
+    &#34;&#34;&#34;
     # f&#34;0x{private_key_line}&#34;
     keyLo = self.w3.eth.account.from_key(f&#34;0x{private_key_line}&#34;)
     # self.w3.eth.defaultAccount = keyoo.address
@@ -2297,18 +2361,28 @@ Note: Be cautions with the range provided, as the logic creates query for each b
 <span>def <span class="ident">deploy</span></span>(<span>self, class_name: str, params: list = [], gas_price: int = 0, gas_limit: int = 0) ‑> bool</span>
 </code></dt>
 <dd>
-<div class="desc"><p>This is using the faster way to deploy files by using the specific abi and bin files</p></div>
+<div class="desc"><p>This is using the faster way to deploy files by using the specific abi and bin files.
+If all these parameters to be ignored then these things will be taken from other available
+valuables for gas price and gas limit
+:param class_name: the input class name
+:param params: the parameters
+:param gas_price: the gas price
+:param gas_limit: the gas limit
+:return:</p></div>
 <details class="source">
 <summary>
 <span>Expand source code</span>
 </summary>
-<pre><code class="python">def deploy(self, class_name: str,
-           params: list = [],
-           gas_price: int = 0,
-           gas_limit: int = 0) -&gt; bool:
+<pre><code class="python">def deploy(self, class_name: str, params: list = [], gas_price: int = 0, gas_limit: int = 0) -&gt; bool:
     &#34;&#34;&#34;
-    This is using the faster way to deploy files by using the specific abi and bin files
-
+    This is using the faster way to deploy files by using the specific abi and bin files.
+    If all these parameters to be ignored then these things will be taken from other available
+    valuables for gas price and gas limit
+    :param class_name: the input class name
+    :param params: the parameters
+    :param gas_price: the gas price
+    :param gas_limit: the gas limit
+    :return:
     &#34;&#34;&#34;
     contract_nv = None
     solc_artifact = None
@@ -2660,12 +2734,19 @@ Note: Be cautions with the range provided, as the logic creates query for each b
 <span>def <span class="ident">isAddress</span></span>(<span>self, address: str) ‑> bool</span>
 </code></dt>
 <dd>
-<div class="desc"></div>
+<div class="desc"><p>Verification of the valid EVM address
+:param address:
+:return:</p></div>
 <details class="source">
 <summary>
 <span>Expand source code</span>
 </summary>
 <pre><code class="python">def isAddress(self, address: str) -&gt; bool:
+    &#34;&#34;&#34;
+    Verification of the valid EVM address
+    :param address:
+    :return:
+    &#34;&#34;&#34;
     return self.w3.isAddress(address)</code></pre>
 </details>
 </dd>
@@ -2984,12 +3065,17 @@ if this valuable is None then there will not be any copy files to the destinatio
 <span>def <span class="ident">withPOA</span></span>(<span>self) ‑> <a title="moody.libeb.MiliDoS" href="#moody.libeb.MiliDoS">MiliDoS</a></span>
 </code></dt>
 <dd>
-<div class="desc"></div>
+<div class="desc"><p>the normal usual term to fix some POA related problems
+:return:</p></div>
 <details class="source">
 <summary>
 <span>Expand source code</span>
 </summary>
 <pre><code class="python">def withPOA(self) -&gt; &#34;MiliDoS&#34;:
+    &#34;&#34;&#34;
+    the normal usual term to fix some POA related problems
+    :return:
+    &#34;&#34;&#34;
     self.w3.middleware_onion.inject(geth_poa_middleware, layer=0)
     return self</code></pre>
 </details>
@@ -3000,12 +3086,19 @@ if this valuable is None then there will not be any copy files to the destinatio
 <span>class <span class="ident">SolWeb3Tool</span></span>
 </code></dt>
 <dd>
-<div class="desc"></div>
+<div class="desc"><p>This is the tool to build operation of the compiling solidity contract source code
+Try to make some improvement of code to make better access
+This is the artifact manager as we know it</p></div>
 <details class="source">
 <summary>
 <span>Expand source code</span>
 </summary>
 <pre><code class="python">class SolWeb3Tool(object):
+    &#34;&#34;&#34;
+    This is the tool to build operation of the compiling solidity contract source code
+    Try to make some improvement of code to make better access
+    This is the artifact manager as we know it
+    &#34;&#34;&#34;
     OUTPUT_BUILD = &#34;build&#34;
     WORKSPACE_PATH = &#34;&#34;
     solfolder = &#34;&#34;
@@ -3039,7 +3132,7 @@ if this valuable is None then there will not be any copy files to the destinatio
         self._abi = json.load(codecs.open(p2abi, &#39;r&#39;, &#39;utf-8-sig&#39;))
         return self
 
-    def GetCombinedFile(self):
+    def GetCombinedFile(self) -&gt; &#34;SolWeb3Tool&#34;:
         pathc = os.path.join(self.WORKSPACE_PATH, self.OUTPUT_BUILD, &#34;combined.json&#34;)
         try:
             pathcli = codecs.open(pathc, &#39;r&#39;, &#39;utf-8-sig&#39;)
@@ -3049,21 +3142,27 @@ if this valuable is None then there will not be any copy files to the destinatio
         return self
 
     def byClassName(self, path: str, classname: str) -&gt; str:
+        # generating the string with path and class name
         return &#34;{prefix}:{name}&#34;.format(prefix=path, name=classname)
 
-    def GetCodeTag(self, fullname):
+    def GetCodeTag(self, fullname) -&gt; [str, str]:
+        &#34;&#34;&#34;
+        Search for the abi session and the bin session from the meta source file
+        from combined.json
+        :param fullname: initial file name
+        :return: abi code and the bin code
+        &#34;&#34;&#34;
         return self.combined_data[&#34;contracts&#34;][fullname][&#34;abi&#34;], self.combined_data[&#34;contracts&#34;][fullname][&#34;bin&#34;]
 
     def GetCode(self, path: str, classname: str) -&gt; [str, str]:
         &#34;&#34;&#34;
+        Search for the abi session and the bin session from the meta source file
         get the code and abi from combined.json
         :param path:
         :param classname:
         :return:
         &#34;&#34;&#34;
-        abi = self.combined_data[&#34;contracts&#34;][self.byClassName(path, classname)][&#34;abi&#34;]
-        bin = self.combined_data[&#34;contracts&#34;][self.byClassName(path, classname)][&#34;bin&#34;]
-        return abi, bin
+        return self.GetCodeTag(self.byClassName(path, classname))
 
     def CompileBash(self) -&gt; None:
         &#34;&#34;&#34;
@@ -3083,10 +3182,16 @@ if this valuable is None then there will not be any copy files to the destinatio
         return self._bin
 
     @property
-    def workspace(self):
+    def workspace(self) -&gt; str:
         return self.WORKSPACE_PATH
 
-    def StoreTxResult(self, tx_result_data: any, filepath: str):
+    def StoreTxResult(self, tx_result_data: any, filepath: str) -&gt; None:
+        &#34;&#34;&#34;
+        Having the result of the transaction data to be stored in an external JSON file.
+        :param tx_result_data: input data
+        :param filepath: the file name path
+        :return: nothing to return
+        &#34;&#34;&#34;
         predump = toDict(tx_result_data)
         writeFile(json.dumps(predump, ensure_ascii=False), filepath)</code></pre>
 </details>
@@ -3143,7 +3248,7 @@ def bin(self) -&gt; str:
     return self._bin</code></pre>
 </details>
 </dd>
-<dt id="moody.libeb.SolWeb3Tool.workspace"><code class="name">var <span class="ident">workspace</span></code></dt>
+<dt id="moody.libeb.SolWeb3Tool.workspace"><code class="name">var <span class="ident">workspace</span> : str</code></dt>
 <dd>
 <div class="desc"></div>
 <details class="source">
@@ -3151,7 +3256,7 @@ def bin(self) -&gt; str:
 <span>Expand source code</span>
 </summary>
 <pre><code class="python">@property
-def workspace(self):
+def workspace(self) -&gt; str:
     return self.WORKSPACE_PATH</code></pre>
 </details>
 </dd>
@@ -3183,7 +3288,8 @@ all works will be done with the remote server or using the docker</p></div>
 <span>def <span class="ident">GetCode</span></span>(<span>self, path: str, classname: str) ‑> [<class 'str'>, <class 'str'>]</span>
 </code></dt>
 <dd>
-<div class="desc"><p>get the code and abi from combined.json
+<div class="desc"><p>Search for the abi session and the bin session from the meta source file
+get the code and abi from combined.json
 :param path:
 :param classname:
 :return:</p></div>
@@ -3193,14 +3299,13 @@ all works will be done with the remote server or using the docker</p></div>
 </summary>
 <pre><code class="python">def GetCode(self, path: str, classname: str) -&gt; [str, str]:
     &#34;&#34;&#34;
+    Search for the abi session and the bin session from the meta source file
     get the code and abi from combined.json
     :param path:
     :param classname:
     :return:
     &#34;&#34;&#34;
-    abi = self.combined_data[&#34;contracts&#34;][self.byClassName(path, classname)][&#34;abi&#34;]
-    bin = self.combined_data[&#34;contracts&#34;][self.byClassName(path, classname)][&#34;bin&#34;]
-    return abi, bin</code></pre>
+    return self.GetCodeTag(self.byClassName(path, classname))</code></pre>
 </details>
 </dd>
 <dt id="moody.libeb.SolWeb3Tool.GetCodeClassFromBuild"><code class="name flex">
@@ -3228,20 +3333,29 @@ all works will be done with the remote server or using the docker</p></div>
 </details>
 </dd>
 <dt id="moody.libeb.SolWeb3Tool.GetCodeTag"><code class="name flex">
-<span>def <span class="ident">GetCodeTag</span></span>(<span>self, fullname)</span>
+<span>def <span class="ident">GetCodeTag</span></span>(<span>self, fullname) ‑> [<class 'str'>, <class 'str'>]</span>
 </code></dt>
 <dd>
-<div class="desc"></div>
+<div class="desc"><p>Search for the abi session and the bin session from the meta source file
+from combined.json
+:param fullname: initial file name
+:return: abi code and the bin code</p></div>
 <details class="source">
 <summary>
 <span>Expand source code</span>
 </summary>
-<pre><code class="python">def GetCodeTag(self, fullname):
+<pre><code class="python">def GetCodeTag(self, fullname) -&gt; [str, str]:
+    &#34;&#34;&#34;
+    Search for the abi session and the bin session from the meta source file
+    from combined.json
+    :param fullname: initial file name
+    :return: abi code and the bin code
+    &#34;&#34;&#34;
     return self.combined_data[&#34;contracts&#34;][fullname][&#34;abi&#34;], self.combined_data[&#34;contracts&#34;][fullname][&#34;bin&#34;]</code></pre>
 </details>
 </dd>
 <dt id="moody.libeb.SolWeb3Tool.GetCombinedFile"><code class="name flex">
-<span>def <span class="ident">GetCombinedFile</span></span>(<span>self)</span>
+<span>def <span class="ident">GetCombinedFile</span></span>(<span>self) ‑> <a title="moody.libeb.SolWeb3Tool" href="#moody.libeb.SolWeb3Tool">SolWeb3Tool</a></span>
 </code></dt>
 <dd>
 <div class="desc"></div>
@@ -3249,7 +3363,7 @@ all works will be done with the remote server or using the docker</p></div>
 <summary>
 <span>Expand source code</span>
 </summary>
-<pre><code class="python">def GetCombinedFile(self):
+<pre><code class="python">def GetCombinedFile(self) -&gt; &#34;SolWeb3Tool&#34;:
     pathc = os.path.join(self.WORKSPACE_PATH, self.OUTPUT_BUILD, &#34;combined.json&#34;)
     try:
         pathcli = codecs.open(pathc, &#39;r&#39;, &#39;utf-8-sig&#39;)
@@ -3260,15 +3374,24 @@ all works will be done with the remote server or using the docker</p></div>
 </details>
 </dd>
 <dt id="moody.libeb.SolWeb3Tool.StoreTxResult"><code class="name flex">
-<span>def <span class="ident">StoreTxResult</span></span>(<span>self, tx_result_data: <built-in function any>, filepath: str)</span>
+<span>def <span class="ident">StoreTxResult</span></span>(<span>self, tx_result_data: <built-in function any>, filepath: str) ‑> NoneType</span>
 </code></dt>
 <dd>
-<div class="desc"></div>
+<div class="desc"><p>Having the result of the transaction data to be stored in an external JSON file.
+:param tx_result_data: input data
+:param filepath: the file name path
+:return: nothing to return</p></div>
 <details class="source">
 <summary>
 <span>Expand source code</span>
 </summary>
-<pre><code class="python">def StoreTxResult(self, tx_result_data: any, filepath: str):
+<pre><code class="python">def StoreTxResult(self, tx_result_data: any, filepath: str) -&gt; None:
+    &#34;&#34;&#34;
+    Having the result of the transaction data to be stored in an external JSON file.
+    :param tx_result_data: input data
+    :param filepath: the file name path
+    :return: nothing to return
+    &#34;&#34;&#34;
     predump = toDict(tx_result_data)
     writeFile(json.dumps(predump, ensure_ascii=False), filepath)</code></pre>
 </details>
@@ -3283,6 +3406,7 @@ all works will be done with the remote server or using the docker</p></div>
 <span>Expand source code</span>
 </summary>
 <pre><code class="python">def byClassName(self, path: str, classname: str) -&gt; str:
+    # generating the string with path and class name
     return &#34;{prefix}:{name}&#34;.format(prefix=path, name=classname)</code></pre>
 </details>
 </dd>

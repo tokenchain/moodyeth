@@ -8,6 +8,9 @@ from .m.pharaohs import pharaohs
 
 
 class ERC20H(MiliDoS):
+    """
+    The similar operation for ERC20
+    """
     def __init__(self, network):
         super().__init__(network)
         self.TokenContract: pharaohs = None

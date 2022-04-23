@@ -37,6 +37,9 @@ from .libeb import MiliDoS
 
 
 class ContractTool(MiliDoS):
+    &#34;&#34;&#34;
+    This is the helper tool to help generating the easy access to the contract information
+    &#34;&#34;&#34;
     classes = [
         &#34;Genesis&#34;, &#34;GenesisKey&#34;
     ]
@@ -134,10 +137,8 @@ class ContractTool(MiliDoS):
             raise ValueError(&#34;not USDC contract address is found&#34;)
 
     &#34;&#34;&#34;
-    
-    This is the ETH transfer functions
+    This is the batch function to transfer native coins
     &#34;&#34;&#34;
-
     def DistributeCoins(self, from_account_index: int, loops: int, exclude: list, gas: int, price: int) -&gt; None:
         ind = 0
         # self.AuthIndex(from_account_index)
@@ -150,7 +151,9 @@ class ContractTool(MiliDoS):
                 continue
             self.TransferRefer(ind, 0.1, gas, price)
             ind += 1
-
+    &#34;&#34;&#34;
+    The function used for transfer the native coin
+    &#34;&#34;&#34;
     def Transfer(self, address_receive: str, amount: float, gas_limit: int = 0, gas_price: int = 0) -&gt; str:
         tx = {
             &#39;to&#39;: address_receive,
@@ -189,13 +192,15 @@ class ContractTool(MiliDoS):
 <span>(</span><span>netconfig: <a title="moody.Config" href="index.html#moody.Config">Config</a>, root_path, deploy_list: dict, wallet_addresses: list)</span>
 </code></dt>
 <dd>
-<div class="desc"><p>wrap the web3 into the package
-@</p></div>
+<div class="desc"><p>This is the helper tool to help generating the easy access to the contract information</p></div>
 <details class="source">
 <summary>
 <span>Expand source code</span>
 </summary>
 <pre><code class="python">class ContractTool(MiliDoS):
+    &#34;&#34;&#34;
+    This is the helper tool to help generating the easy access to the contract information
+    &#34;&#34;&#34;
     classes = [
         &#34;Genesis&#34;, &#34;GenesisKey&#34;
     ]
@@ -293,10 +298,8 @@ class ContractTool(MiliDoS):
             raise ValueError(&#34;not USDC contract address is found&#34;)
 
     &#34;&#34;&#34;
-    
-    This is the ETH transfer functions
+    This is the batch function to transfer native coins
     &#34;&#34;&#34;
-
     def DistributeCoins(self, from_account_index: int, loops: int, exclude: list, gas: int, price: int) -&gt; None:
         ind = 0
         # self.AuthIndex(from_account_index)
@@ -309,7 +312,9 @@ class ContractTool(MiliDoS):
                 continue
             self.TransferRefer(ind, 0.1, gas, price)
             ind += 1
-
+    &#34;&#34;&#34;
+    The function used for transfer the native coin
+    &#34;&#34;&#34;
     def Transfer(self, address_receive: str, amount: float, gas_limit: int = 0, gas_price: int = 0) -&gt; str:
         tx = {
             &#39;to&#39;: address_receive,
@@ -609,6 +614,7 @@ def USDTAddress(self) -&gt; str:
 <ul class="hlist">
 <li><code><b><a title="moody.libeb.MiliDoS" href="libeb.html#moody.libeb.MiliDoS">MiliDoS</a></b></code>:
 <ul class="hlist">
+<li><code><a title="moody.libeb.MiliDoS.Auth" href="libeb.html#moody.libeb.MiliDoS.Auth">Auth</a></code></li>
 <li><code><a title="moody.libeb.MiliDoS.OverrideChainConfig" href="libeb.html#moody.libeb.MiliDoS.OverrideChainConfig">OverrideChainConfig</a></code></li>
 <li><code><a title="moody.libeb.MiliDoS.OverrideGasConfig" href="libeb.html#moody.libeb.MiliDoS.OverrideGasConfig">OverrideGasConfig</a></code></li>
 <li><code><a title="moody.libeb.MiliDoS.after_deployment_initialize_settings" href="libeb.html#moody.libeb.MiliDoS.after_deployment_initialize_settings">after_deployment_initialize_settings</a></code></li>
@@ -619,12 +625,14 @@ def USDTAddress(self) -&gt; str:
 <li><code><a title="moody.libeb.MiliDoS.estimateGas" href="libeb.html#moody.libeb.MiliDoS.estimateGas">estimateGas</a></code></li>
 <li><code><a title="moody.libeb.MiliDoS.getAddr" href="libeb.html#moody.libeb.MiliDoS.getAddr">getAddr</a></code></li>
 <li><code><a title="moody.libeb.MiliDoS.get_block" href="libeb.html#moody.libeb.MiliDoS.get_block">get_block</a></code></li>
+<li><code><a title="moody.libeb.MiliDoS.isAddress" href="libeb.html#moody.libeb.MiliDoS.isAddress">isAddress</a></code></li>
 <li><code><a title="moody.libeb.MiliDoS.localTranspile" href="libeb.html#moody.libeb.MiliDoS.localTranspile">localTranspile</a></code></li>
 <li><code><a title="moody.libeb.MiliDoS.one" href="libeb.html#moody.libeb.MiliDoS.one">one</a></code></li>
 <li><code><a title="moody.libeb.MiliDoS.ready_io" href="libeb.html#moody.libeb.MiliDoS.ready_io">ready_io</a></code></li>
 <li><code><a title="moody.libeb.MiliDoS.remoteCompile" href="libeb.html#moody.libeb.MiliDoS.remoteCompile">remoteCompile</a></code></li>
 <li><code><a title="moody.libeb.MiliDoS.send_contract_tx" href="libeb.html#moody.libeb.MiliDoS.send_contract_tx">send_contract_tx</a></code></li>
 <li><code><a title="moody.libeb.MiliDoS.setEvm" href="libeb.html#moody.libeb.MiliDoS.setEvm">setEvm</a></code></li>
+<li><code><a title="moody.libeb.MiliDoS.withPOA" href="libeb.html#moody.libeb.MiliDoS.withPOA">withPOA</a></code></li>
 </ul>
 </li>
 </ul>

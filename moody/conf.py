@@ -167,21 +167,6 @@ def OKChainTestnet() -> Config:
         block_explorer="https://www.oklink.com/okexchain-test/"
     )
 
-
-"""
-def RSCTestnet() -> Config:
-    return Config(
-        network_name="RSCTestnet",
-        rpc_url="",
-        chain_id=1235,
-        symbol="RSCT",
-        block_explorer="",
-        wait_time=6,
-        one=10 ** 18,
-    )
-"""
-
-
 def RSCMainnet() -> Config:
     return Config(
         network_name="RSCMainnet",
