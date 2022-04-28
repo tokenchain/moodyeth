@@ -66,9 +66,9 @@ def PolygonMainnet() -> Config:
     )
 
 
-def Kovan() -> Config:
+def KovanTestnet() -> Config:
     return Config(
-        network_name="Kovan",
+        network_name="KovanTestnet",
         rpc_url="https://kovan.infura.io/v3/2019a99711c648f8951a640e8031ca33",
         chain_id=42,
         symbol="KETH",
@@ -79,9 +79,9 @@ def Kovan() -> Config:
     )
 
 
-def Ropsten() -> Config:
+def RopstenTestnet() -> Config:
     return Config(
-        network_name="Ropsten",
+        network_name="RopstenTestnet",
         rpc_url="https://ropsten.infura.io/v3/9aa3d95b3bc440fa88ea12eaa4456161",
         chain_id=3,
         symbol="RETH",
@@ -91,11 +91,21 @@ def Ropsten() -> Config:
 
 def GoerliTestnet() -> Config:
     return Config(
-        network_name="Goerli",
+        network_name="GoerliTestnet",
         rpc_url="https://goerli.infura.io/v3/9aa3d95b3bc440fa88ea12eaa4456161",
         chain_id=5,
         symbol="ETH",
         block_explorer="https://goerli.etherscan.io"
+    )
+
+
+def RinkebyTestnet() -> Config:
+    return Config(
+        network_name="RinkebyTestnet",
+        rpc_url="https://rinkeby.infura.io/v3/",
+        chain_id=4,
+        symbol="ETH",
+        block_explorer="https://rinkeby.etherscan.io/"
     )
 
 
@@ -166,6 +176,7 @@ def OKChainTestnet() -> Config:
         symbol="OKT",
         block_explorer="https://www.oklink.com/okexchain-test/"
     )
+
 
 def RSCMainnet() -> Config:
     return Config(
@@ -238,4 +249,14 @@ def NearAuroraMainnet() -> Config:
         chain_id=1313161554,
         symbol="NEAR",
         block_explorer="https://explorer.near.org/"
+    )
+
+
+def ArbitrumOne() -> Config:
+    return Config(
+        network_name="ArbitrumOne",
+        rpc_url="https://arb1.arbitrum.io/rpc/",
+        chain_id=42161,
+        symbol="ETH",
+        block_explorer="https://arbiscan.io/"
     )

@@ -94,9 +94,9 @@ def PolygonMainnet() -&gt; Config:
     )
 
 
-def Kovan() -&gt; Config:
+def KovanTestnet() -&gt; Config:
     return Config(
-        network_name=&#34;Kovan&#34;,
+        network_name=&#34;KovanTestnet&#34;,
         rpc_url=&#34;https://kovan.infura.io/v3/2019a99711c648f8951a640e8031ca33&#34;,
         chain_id=42,
         symbol=&#34;KETH&#34;,
@@ -107,9 +107,9 @@ def Kovan() -&gt; Config:
     )
 
 
-def Ropsten() -&gt; Config:
+def RopstenTestnet() -&gt; Config:
     return Config(
-        network_name=&#34;Ropsten&#34;,
+        network_name=&#34;RopstenTestnet&#34;,
         rpc_url=&#34;https://ropsten.infura.io/v3/9aa3d95b3bc440fa88ea12eaa4456161&#34;,
         chain_id=3,
         symbol=&#34;RETH&#34;,
@@ -119,11 +119,21 @@ def Ropsten() -&gt; Config:
 
 def GoerliTestnet() -&gt; Config:
     return Config(
-        network_name=&#34;Goerli&#34;,
+        network_name=&#34;GoerliTestnet&#34;,
         rpc_url=&#34;https://goerli.infura.io/v3/9aa3d95b3bc440fa88ea12eaa4456161&#34;,
         chain_id=5,
         symbol=&#34;ETH&#34;,
         block_explorer=&#34;https://goerli.etherscan.io&#34;
+    )
+
+
+def RinkebyTestnet() -&gt; Config:
+    return Config(
+        network_name=&#34;RinkebyTestnet&#34;,
+        rpc_url=&#34;https://rinkeby.infura.io/v3/&#34;,
+        chain_id=4,
+        symbol=&#34;ETH&#34;,
+        block_explorer=&#34;https://rinkeby.etherscan.io/&#34;
     )
 
 
@@ -194,6 +204,7 @@ def OKChainTestnet() -&gt; Config:
         symbol=&#34;OKT&#34;,
         block_explorer=&#34;https://www.oklink.com/okexchain-test/&#34;
     )
+
 
 def RSCMainnet() -&gt; Config:
     return Config(
@@ -266,6 +277,16 @@ def NearAuroraMainnet() -&gt; Config:
         chain_id=1313161554,
         symbol=&#34;NEAR&#34;,
         block_explorer=&#34;https://explorer.near.org/&#34;
+    )
+
+
+def ArbitrumOne() -&gt; Config:
+    return Config(
+        network_name=&#34;ArbitrumOne&#34;,
+        rpc_url=&#34;https://arb1.arbitrum.io/rpc/&#34;,
+        chain_id=42161,
+        symbol=&#34;ETH&#34;,
+        block_explorer=&#34;https://arbiscan.io/&#34;
     )</code></pre>
 </details>
 </section>
@@ -276,6 +297,25 @@ def NearAuroraMainnet() -&gt; Config:
 <section>
 <h2 class="section-title" id="header-functions">Functions</h2>
 <dl>
+<dt id="moody.conf.ArbitrumOne"><code class="name flex">
+<span>def <span class="ident">ArbitrumOne</span></span>(<span>) ‑> <a title="moody.Config" href="index.html#moody.Config">Config</a></span>
+</code></dt>
+<dd>
+<div class="desc"></div>
+<details class="source">
+<summary>
+<span>Expand source code</span>
+</summary>
+<pre><code class="python">def ArbitrumOne() -&gt; Config:
+    return Config(
+        network_name=&#34;ArbitrumOne&#34;,
+        rpc_url=&#34;https://arb1.arbitrum.io/rpc/&#34;,
+        chain_id=42161,
+        symbol=&#34;ETH&#34;,
+        block_explorer=&#34;https://arbiscan.io/&#34;
+    )</code></pre>
+</details>
+</dd>
 <dt id="moody.conf.AvalancheFujiTestnet"><code class="name flex">
 <span>def <span class="ident">AvalancheFujiTestnet</span></span>(<span>) ‑> <a title="moody.Config" href="index.html#moody.Config">Config</a></span>
 </code></dt>
@@ -391,7 +431,7 @@ def NearAuroraMainnet() -&gt; Config:
 </summary>
 <pre><code class="python">def GoerliTestnet() -&gt; Config:
     return Config(
-        network_name=&#34;Goerli&#34;,
+        network_name=&#34;GoerliTestnet&#34;,
         rpc_url=&#34;https://goerli.infura.io/v3/9aa3d95b3bc440fa88ea12eaa4456161&#34;,
         chain_id=5,
         symbol=&#34;ETH&#34;,
@@ -437,8 +477,8 @@ def NearAuroraMainnet() -&gt; Config:
     )</code></pre>
 </details>
 </dd>
-<dt id="moody.conf.Kovan"><code class="name flex">
-<span>def <span class="ident">Kovan</span></span>(<span>) ‑> <a title="moody.Config" href="index.html#moody.Config">Config</a></span>
+<dt id="moody.conf.KovanTestnet"><code class="name flex">
+<span>def <span class="ident">KovanTestnet</span></span>(<span>) ‑> <a title="moody.Config" href="index.html#moody.Config">Config</a></span>
 </code></dt>
 <dd>
 <div class="desc"></div>
@@ -446,9 +486,9 @@ def NearAuroraMainnet() -&gt; Config:
 <summary>
 <span>Expand source code</span>
 </summary>
-<pre><code class="python">def Kovan() -&gt; Config:
+<pre><code class="python">def KovanTestnet() -&gt; Config:
     return Config(
-        network_name=&#34;Kovan&#34;,
+        network_name=&#34;KovanTestnet&#34;,
         rpc_url=&#34;https://kovan.infura.io/v3/2019a99711c648f8951a640e8031ca33&#34;,
         chain_id=42,
         symbol=&#34;KETH&#34;,
@@ -659,8 +699,8 @@ def NearAuroraMainnet() -&gt; Config:
     )</code></pre>
 </details>
 </dd>
-<dt id="moody.conf.Ropsten"><code class="name flex">
-<span>def <span class="ident">Ropsten</span></span>(<span>) ‑> <a title="moody.Config" href="index.html#moody.Config">Config</a></span>
+<dt id="moody.conf.RinkebyTestnet"><code class="name flex">
+<span>def <span class="ident">RinkebyTestnet</span></span>(<span>) ‑> <a title="moody.Config" href="index.html#moody.Config">Config</a></span>
 </code></dt>
 <dd>
 <div class="desc"></div>
@@ -668,9 +708,28 @@ def NearAuroraMainnet() -&gt; Config:
 <summary>
 <span>Expand source code</span>
 </summary>
-<pre><code class="python">def Ropsten() -&gt; Config:
+<pre><code class="python">def RinkebyTestnet() -&gt; Config:
     return Config(
-        network_name=&#34;Ropsten&#34;,
+        network_name=&#34;RinkebyTestnet&#34;,
+        rpc_url=&#34;https://rinkeby.infura.io/v3/&#34;,
+        chain_id=4,
+        symbol=&#34;ETH&#34;,
+        block_explorer=&#34;https://rinkeby.etherscan.io/&#34;
+    )</code></pre>
+</details>
+</dd>
+<dt id="moody.conf.RopstenTestnet"><code class="name flex">
+<span>def <span class="ident">RopstenTestnet</span></span>(<span>) ‑> <a title="moody.Config" href="index.html#moody.Config">Config</a></span>
+</code></dt>
+<dd>
+<div class="desc"></div>
+<details class="source">
+<summary>
+<span>Expand source code</span>
+</summary>
+<pre><code class="python">def RopstenTestnet() -&gt; Config:
+    return Config(
+        network_name=&#34;RopstenTestnet&#34;,
         rpc_url=&#34;https://ropsten.infura.io/v3/9aa3d95b3bc440fa88ea12eaa4456161&#34;,
         chain_id=3,
         symbol=&#34;RETH&#34;,
@@ -725,6 +784,7 @@ def NearAuroraMainnet() -&gt; Config:
 </li>
 <li><h3><a href="#header-functions">Functions</a></h3>
 <ul class="">
+<li><code><a title="moody.conf.ArbitrumOne" href="#moody.conf.ArbitrumOne">ArbitrumOne</a></code></li>
 <li><code><a title="moody.conf.AvalancheFujiTestnet" href="#moody.conf.AvalancheFujiTestnet">AvalancheFujiTestnet</a></code></li>
 <li><code><a title="moody.conf.AvalancheMainnet" href="#moody.conf.AvalancheMainnet">AvalancheMainnet</a></code></li>
 <li><code><a title="moody.conf.BSCMain" href="#moody.conf.BSCMain">BSCMain</a></code></li>
@@ -733,7 +793,7 @@ def NearAuroraMainnet() -&gt; Config:
 <li><code><a title="moody.conf.GoerliTestnet" href="#moody.conf.GoerliTestnet">GoerliTestnet</a></code></li>
 <li><code><a title="moody.conf.HuobiChainMainnet" href="#moody.conf.HuobiChainMainnet">HuobiChainMainnet</a></code></li>
 <li><code><a title="moody.conf.HuobiChainTestnet" href="#moody.conf.HuobiChainTestnet">HuobiChainTestnet</a></code></li>
-<li><code><a title="moody.conf.Kovan" href="#moody.conf.Kovan">Kovan</a></code></li>
+<li><code><a title="moody.conf.KovanTestnet" href="#moody.conf.KovanTestnet">KovanTestnet</a></code></li>
 <li><code><a title="moody.conf.MoonBeamTestnet" href="#moody.conf.MoonBeamTestnet">MoonBeamTestnet</a></code></li>
 <li><code><a title="moody.conf.NearAuroraMainnet" href="#moody.conf.NearAuroraMainnet">NearAuroraMainnet</a></code></li>
 <li><code><a title="moody.conf.NearAuroraTestnet" href="#moody.conf.NearAuroraTestnet">NearAuroraTestnet</a></code></li>
@@ -744,7 +804,8 @@ def NearAuroraMainnet() -&gt; Config:
 <li><code><a title="moody.conf.PolygonMainnet" href="#moody.conf.PolygonMainnet">PolygonMainnet</a></code></li>
 <li><code><a title="moody.conf.PolygonMumbai" href="#moody.conf.PolygonMumbai">PolygonMumbai</a></code></li>
 <li><code><a title="moody.conf.RSCMainnet" href="#moody.conf.RSCMainnet">RSCMainnet</a></code></li>
-<li><code><a title="moody.conf.Ropsten" href="#moody.conf.Ropsten">Ropsten</a></code></li>
+<li><code><a title="moody.conf.RinkebyTestnet" href="#moody.conf.RinkebyTestnet">RinkebyTestnet</a></code></li>
+<li><code><a title="moody.conf.RopstenTestnet" href="#moody.conf.RopstenTestnet">RopstenTestnet</a></code></li>
 <li><code><a title="moody.conf.XDaiMainnet" href="#moody.conf.XDaiMainnet">XDaiMainnet</a></code></li>
 </ul>
 </li>

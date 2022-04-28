@@ -69,6 +69,13 @@ if [[ ! -f {outputfolder} ]]; then
     mkdir -p {outputfolder}
 fi
 
+#if [ $? -ne 0 ] ; then
+
+if [[ ! -f {outputfolder} ]]; then
+    echo "❌ File system error"
+    exit 1;
+fi
+
 abi-gen-uni --abibins "{target_abi}" --out "{outputfolder}" \
     --partials "{BUILDPATH}/factoryabi/TypeScriptEthernum/partials/*.handlebars" \
     --template "{BUILDPATH}/factoryabi/TypeScriptEthernum/contract.handlebars" \
@@ -96,7 +103,7 @@ PRE_HEAD = """
 
 if [[ ! -d factoryabi ]]; then
   echo "The factory abi module is not found"
-  exit
+  exit 1;
 fi
 
 if ! command -v abi-gen-uni &>/dev/null; then
@@ -106,7 +113,7 @@ fi
 
 if ! command -v abigen &>/dev/null; then
     echo "abigen could not be found, please go check out: https://geth.ethereum.org/downloads/"
-    exit;
+    exit 1;
 fi
 """
 SUB_FOOTER= """
