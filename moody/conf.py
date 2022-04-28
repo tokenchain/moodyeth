@@ -102,7 +102,7 @@ def GoerliTestnet() -> Config:
 def RinkebyTestnet() -> Config:
     return Config(
         network_name="RinkebyTestnet",
-        rpc_url="https://rinkeby.infura.io/v3/",
+        rpc_url="https://rinkeby.infura.io/v3/9aa3d95b3bc440fa88ea12eaa4456161",
         chain_id=4,
         symbol="ETH",
         block_explorer="https://rinkeby.etherscan.io/"
@@ -214,7 +214,7 @@ def AvalancheMainnet() -> Config:
 def OptimisticEthereum() -> Config:
     return Config(
         network_name="OptimisticEthereumMainnet",
-        rpc_url="https://mainnet.optimism.io/",
+        rpc_url="https://mainnet.optimism.io",
         chain_id=10,
         symbol="ETH",
         block_explorer="https://optimistic.etherscan.io/"
@@ -224,7 +224,7 @@ def OptimisticEthereum() -> Config:
 def OptimisticEthereumTestnet() -> Config:
     return Config(
         network_name="OptimisticEthereumMainnet",
-        rpc_url="https://kovan.optimism.io/",
+        rpc_url="https://kovan.optimism.io",
         chain_id=69,
         symbol="ETH",
         block_explorer="https://kovan-optimistic.etherscan.io/"
@@ -235,7 +235,7 @@ def OptimisticEthereumTestnet() -> Config:
 def NearAuroraTestnet() -> Config:
     return Config(
         network_name="AuroraTestnet",
-        rpc_url="https://testnet.aurora.dev/",
+        rpc_url="https://testnet.aurora.dev",
         chain_id=1313161555,
         symbol="NEAR",
         block_explorer="https://explorer.testnet.near.org/"
@@ -245,7 +245,7 @@ def NearAuroraTestnet() -> Config:
 def NearAuroraMainnet() -> Config:
     return Config(
         network_name="AuroraTestnet",
-        rpc_url="https://testnet.aurora.dev/",
+        rpc_url="https://testnet.aurora.dev",
         chain_id=1313161554,
         symbol="NEAR",
         block_explorer="https://explorer.near.org/"
@@ -255,7 +255,7 @@ def NearAuroraMainnet() -> Config:
 def ArbitrumOne() -> Config:
     return Config(
         network_name="ArbitrumOne",
-        rpc_url="https://arb1.arbitrum.io/rpc/",
+        rpc_url="https://arb1.arbitrum.io/rpc",
         chain_id=42161,
         symbol="ETH",
         block_explorer="https://arbiscan.io/"
