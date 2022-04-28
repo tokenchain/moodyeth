@@ -87,6 +87,6 @@ serv_doc(){
 }
 swap_src
 gen_doc
-#pub_ver
+pub_ver
 git_update
 #serv_doc
