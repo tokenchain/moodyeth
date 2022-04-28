@@ -71,10 +71,10 @@ def BSCMain() -&gt; Config:
 def PolygonMumbai() -&gt; Config:
     return Config(
         network_name=&#34;PolygonMumbaiTestnet&#34;,
-        rpc_url=&#34;https://bsc-dataseed1.binance.org&#34;,
-        chain_id=56,
-        symbol=&#34;BNB&#34;,
-        block_explorer=&#34;https://bscscan.com&#34;,
+        rpc_url=&#34;https://rpc-mumbai.maticvigil.com&#34;,
+        chain_id=80001,
+        symbol=&#34;MATIC&#34;,
+        block_explorer=&#34;https://mumbai.polygonscan.com/&#34;,
         link_token=&#34;0x326C977E6efc84E512bB9C30f76E30c160eD06FB&#34;,
         link_keyhash=&#34;0x6e75b569a01ef56d18cab6a8e71e6600d6ce853834d4a5748b720d06f878b3a4&#34;,
         link_vrf_coordinator=&#34;0x8C7382F9D8f56b33781fE506E897a4F1e2d17255&#34;
@@ -84,10 +84,10 @@ def PolygonMumbai() -&gt; Config:
 def PolygonMainnet() -&gt; Config:
     return Config(
         network_name=&#34;PolygonMainnet&#34;,
-        rpc_url=&#34;https://bsc-dataseed1.binance.org&#34;,
-        chain_id=56,
-        symbol=&#34;BNB&#34;,
-        block_explorer=&#34;https://bscscan.com&#34;,
+        rpc_url=&#34;https://polygon-rpc.com&#34;,
+        chain_id=137,
+        symbol=&#34;MATIC&#34;,
+        block_explorer=&#34;https://explorer.matic.network/&#34;,
         link_token=&#34;0xb0897686c545045aFc77CF20eC7A532E3120E0F1&#34;,
         link_keyhash=&#34;0xf86195cf7690c55907b2b611ebb7343a6f649bff128701cc542f0569e2c549da&#34;,
         link_vrf_coordinator=&#34;0x3d2341ADb2D31f1c5530cDC622016af293177AE0&#34;
@@ -212,7 +212,7 @@ def RSCMainnet() -&gt; Config:
         rpc_url=&#34;https://rpc-mainnet.raisc.io&#34;,
         chain_id=1023,
         symbol=&#34;RSC&#34;,
-        block_explorer=&#34;http://www.raisc.io/&#34;,
+        block_explorer=&#34;http://explorer.raisc.io/&#34;,
         link_token=&#34;0x79e93714E4049Ae8745F1FA21838d6FdfDCa9cA6&#34;,
         link_vrf_coordinator=&#34;0x3c89bdbfF0B1a27c126b89e78F21a7B66DA2dbeC&#34;,
         link_keyhash=&#34;0x66c8089c4313b58a4344f69f796705ea1a7b2c180836e56f4785bde84f7af32f&#34;
@@ -273,7 +273,7 @@ def NearAuroraTestnet() -&gt; Config:
 def NearAuroraMainnet() -&gt; Config:
     return Config(
         network_name=&#34;AuroraTestnet&#34;,
-        rpc_url=&#34;https://testnet.aurora.dev&#34;,
+        rpc_url=&#34;https://rpc.ankr.com/near&#34;,
         chain_id=1313161554,
         symbol=&#34;NEAR&#34;,
         block_explorer=&#34;https://explorer.near.org/&#34;
@@ -283,10 +283,140 @@ def NearAuroraMainnet() -&gt; Config:
 def ArbitrumOne() -&gt; Config:
     return Config(
         network_name=&#34;ArbitrumOne&#34;,
-        rpc_url=&#34;https://arb1.arbitrum.io/rpc&#34;,
+        rpc_url=&#34;https://rpc.ankr.com/arbitrum&#34;,
         chain_id=42161,
         symbol=&#34;ETH&#34;,
         block_explorer=&#34;https://arbiscan.io/&#34;
+    )
+
+
+def FantomOperaMainnetRPC() -&gt; Config:
+    return Config(
+        network_name=&#34;FantomOpera&#34;,
+        rpc_url=&#34;https://rpc.ftm.tools&#34;,
+        chain_id=250,
+        symbol=&#34;FTM&#34;,
+        block_explorer=&#34;https://ftmscan.com/&#34;
+    )
+
+
+def FantomTestnetRPC() -&gt; Config:
+    return Config(
+        network_name=&#34;FantomTestnet&#34;,
+        rpc_url=&#34;https://rpc.testnet.fantom.network&#34;,
+        chain_id=4002,
+        symbol=&#34;FTM&#34;,
+        block_explorer=&#34;https://testnet.ftmscan.com/&#34;
+    )
+
+
+def HarmonyMainnet() -&gt; Config:
+    return Config(
+        network_name=&#34;HarmonyMainnet&#34;,
+        rpc_url=&#34;https://api.harmony.one&#34;,
+        chain_id=1666600000,
+        symbol=&#34;ONE&#34;,
+        block_explorer=&#34;https://explorer.harmony.one/&#34;
+    )
+
+
+def HarmonyTestnet() -&gt; Config:
+    return Config(
+        network_name=&#34;HarmonyTestnet&#34;,
+        rpc_url=&#34;https://api.s0.b.hmny.io&#34;,
+        chain_id=1666700000,
+        symbol=&#34;ONE&#34;,
+        block_explorer=&#34;https://explorer.harmony.one/&#34;
+    )
+
+
+def Kucoin() -&gt; Config:
+    return Config(
+        network_name=&#34;KucoinMainnet&#34;,
+        rpc_url=&#34;https://rpc-mainnet.kcc.network&#34;,
+        chain_id=321,
+        symbol=&#34;KCS&#34;,
+        block_explorer=&#34;https://scan.kcc.network/&#34;
+    )
+
+
+def KucoinTestnet() -&gt; Config:
+    return Config(
+        network_name=&#34;KucoinTestnet&#34;,
+        rpc_url=&#34;https://scan-testnet.kcc.network&#34;,
+        chain_id=322,
+        symbol=&#34;KCS&#34;,
+        block_explorer=&#34;https://scan-testnet.kcc.network/&#34;
+    )
+
+
+def Elastos() -&gt; Config:
+    return Config(
+        network_name=&#34;Elastos&#34;,
+        rpc_url=&#34;https://api.elastos.io/eth&#34;,
+        chain_id=20,
+        symbol=&#34;KCS&#34;,
+        block_explorer=&#34;https://explorer.elaeth.io/&#34;
+    )
+
+
+def Gnosis() -&gt; Config:
+    return Config(
+        network_name=&#34;Gnosis&#34;,
+        rpc_url=&#34;https://rpc.gnosischain.com&#34;,
+        chain_id=100,
+        symbol=&#34;XDAI&#34;,
+        block_explorer=&#34;https://blockscout.com/xdai/mainnet/&#34;
+    )
+
+
+def Ubiq() -&gt; Config:
+    return Config(
+        network_name=&#34;Ubiq&#34;,
+        rpc_url=&#34;https://rpc.octano.dev&#34;,
+        chain_id=8,
+        symbol=&#34;UBQ&#34;,
+        block_explorer=&#34;https://ubiqscan.io/&#34;
+    )
+
+
+def Cronos() -&gt; Config:
+    return Config(
+        network_name=&#34;Cronos&#34;,
+        rpc_url=&#34;https://evm-cronos.crypto.org&#34;,
+        chain_id=25,
+        symbol=&#34;CRO&#34;,
+        block_explorer=&#34;https://cronos.crypto.org/explorer/&#34;
+    )
+
+
+def Solana() -&gt; Config:
+    return Config(
+        network_name=&#34;SOL&#34;,
+        rpc_url=&#34;https://rpc.ankr.com/solana&#34;,
+        chain_id=25221,
+        symbol=&#34;CRO&#34;,
+        block_explorer=&#34;https://solscan.io/&#34;
+    )
+
+
+def SmartBCH() -&gt; Config:
+    return Config(
+        network_name=&#34;BCHMainnet&#34;,
+        rpc_url=&#34;https://smartbch.fountainhead.cash/mainnet&#34;,
+        chain_id=10000,
+        symbol=&#34;BCH&#34;,
+        block_explorer=&#34;https://www.smartscan.ca.sh/&#34;
+    )
+
+
+def CeloMainnet() -&gt; Config:
+    return Config(
+        network_name=&#34;CeloMainnet&#34;,
+        rpc_url=&#34;https://rpc.ankr.com/celo&#34;,
+        chain_id=42220,
+        symbol=&#34;CELO&#34;,
+        block_explorer=&#34;https://celoscan.com/&#34;
     )</code></pre>
 </details>
 </section>
@@ -309,7 +439,7 @@ def ArbitrumOne() -&gt; Config:
 <pre><code class="python">def ArbitrumOne() -&gt; Config:
     return Config(
         network_name=&#34;ArbitrumOne&#34;,
-        rpc_url=&#34;https://arb1.arbitrum.io/rpc&#34;,
+        rpc_url=&#34;https://rpc.ankr.com/arbitrum&#34;,
         chain_id=42161,
         symbol=&#34;ETH&#34;,
         block_explorer=&#34;https://arbiscan.io/&#34;
@@ -398,6 +528,63 @@ def ArbitrumOne() -&gt; Config:
     )</code></pre>
 </details>
 </dd>
+<dt id="moody.conf.CeloMainnet"><code class="name flex">
+<span>def <span class="ident">CeloMainnet</span></span>(<span>) ‑> <a title="moody.Config" href="index.html#moody.Config">Config</a></span>
+</code></dt>
+<dd>
+<div class="desc"></div>
+<details class="source">
+<summary>
+<span>Expand source code</span>
+</summary>
+<pre><code class="python">def CeloMainnet() -&gt; Config:
+    return Config(
+        network_name=&#34;CeloMainnet&#34;,
+        rpc_url=&#34;https://rpc.ankr.com/celo&#34;,
+        chain_id=42220,
+        symbol=&#34;CELO&#34;,
+        block_explorer=&#34;https://celoscan.com/&#34;
+    )</code></pre>
+</details>
+</dd>
+<dt id="moody.conf.Cronos"><code class="name flex">
+<span>def <span class="ident">Cronos</span></span>(<span>) ‑> <a title="moody.Config" href="index.html#moody.Config">Config</a></span>
+</code></dt>
+<dd>
+<div class="desc"></div>
+<details class="source">
+<summary>
+<span>Expand source code</span>
+</summary>
+<pre><code class="python">def Cronos() -&gt; Config:
+    return Config(
+        network_name=&#34;Cronos&#34;,
+        rpc_url=&#34;https://evm-cronos.crypto.org&#34;,
+        chain_id=25,
+        symbol=&#34;CRO&#34;,
+        block_explorer=&#34;https://cronos.crypto.org/explorer/&#34;
+    )</code></pre>
+</details>
+</dd>
+<dt id="moody.conf.Elastos"><code class="name flex">
+<span>def <span class="ident">Elastos</span></span>(<span>) ‑> <a title="moody.Config" href="index.html#moody.Config">Config</a></span>
+</code></dt>
+<dd>
+<div class="desc"></div>
+<details class="source">
+<summary>
+<span>Expand source code</span>
+</summary>
+<pre><code class="python">def Elastos() -&gt; Config:
+    return Config(
+        network_name=&#34;Elastos&#34;,
+        rpc_url=&#34;https://api.elastos.io/eth&#34;,
+        chain_id=20,
+        symbol=&#34;KCS&#34;,
+        block_explorer=&#34;https://explorer.elaeth.io/&#34;
+    )</code></pre>
+</details>
+</dd>
 <dt id="moody.conf.Ethereum"><code class="name flex">
 <span>def <span class="ident">Ethereum</span></span>(<span>) ‑> <a title="moody.Config" href="index.html#moody.Config">Config</a></span>
 </code></dt>
@@ -420,6 +607,63 @@ def ArbitrumOne() -&gt; Config:
     )</code></pre>
 </details>
 </dd>
+<dt id="moody.conf.FantomOperaMainnetRPC"><code class="name flex">
+<span>def <span class="ident">FantomOperaMainnetRPC</span></span>(<span>) ‑> <a title="moody.Config" href="index.html#moody.Config">Config</a></span>
+</code></dt>
+<dd>
+<div class="desc"></div>
+<details class="source">
+<summary>
+<span>Expand source code</span>
+</summary>
+<pre><code class="python">def FantomOperaMainnetRPC() -&gt; Config:
+    return Config(
+        network_name=&#34;FantomOpera&#34;,
+        rpc_url=&#34;https://rpc.ftm.tools&#34;,
+        chain_id=250,
+        symbol=&#34;FTM&#34;,
+        block_explorer=&#34;https://ftmscan.com/&#34;
+    )</code></pre>
+</details>
+</dd>
+<dt id="moody.conf.FantomTestnetRPC"><code class="name flex">
+<span>def <span class="ident">FantomTestnetRPC</span></span>(<span>) ‑> <a title="moody.Config" href="index.html#moody.Config">Config</a></span>
+</code></dt>
+<dd>
+<div class="desc"></div>
+<details class="source">
+<summary>
+<span>Expand source code</span>
+</summary>
+<pre><code class="python">def FantomTestnetRPC() -&gt; Config:
+    return Config(
+        network_name=&#34;FantomTestnet&#34;,
+        rpc_url=&#34;https://rpc.testnet.fantom.network&#34;,
+        chain_id=4002,
+        symbol=&#34;FTM&#34;,
+        block_explorer=&#34;https://testnet.ftmscan.com/&#34;
+    )</code></pre>
+</details>
+</dd>
+<dt id="moody.conf.Gnosis"><code class="name flex">
+<span>def <span class="ident">Gnosis</span></span>(<span>) ‑> <a title="moody.Config" href="index.html#moody.Config">Config</a></span>
+</code></dt>
+<dd>
+<div class="desc"></div>
+<details class="source">
+<summary>
+<span>Expand source code</span>
+</summary>
+<pre><code class="python">def Gnosis() -&gt; Config:
+    return Config(
+        network_name=&#34;Gnosis&#34;,
+        rpc_url=&#34;https://rpc.gnosischain.com&#34;,
+        chain_id=100,
+        symbol=&#34;XDAI&#34;,
+        block_explorer=&#34;https://blockscout.com/xdai/mainnet/&#34;
+    )</code></pre>
+</details>
+</dd>
 <dt id="moody.conf.GoerliTestnet"><code class="name flex">
 <span>def <span class="ident">GoerliTestnet</span></span>(<span>) ‑> <a title="moody.Config" href="index.html#moody.Config">Config</a></span>
 </code></dt>
@@ -436,6 +680,44 @@ def ArbitrumOne() -&gt; Config:
         chain_id=5,
         symbol=&#34;ETH&#34;,
         block_explorer=&#34;https://goerli.etherscan.io&#34;
+    )</code></pre>
+</details>
+</dd>
+<dt id="moody.conf.HarmonyMainnet"><code class="name flex">
+<span>def <span class="ident">HarmonyMainnet</span></span>(<span>) ‑> <a title="moody.Config" href="index.html#moody.Config">Config</a></span>
+</code></dt>
+<dd>
+<div class="desc"></div>
+<details class="source">
+<summary>
+<span>Expand source code</span>
+</summary>
+<pre><code class="python">def HarmonyMainnet() -&gt; Config:
+    return Config(
+        network_name=&#34;HarmonyMainnet&#34;,
+        rpc_url=&#34;https://api.harmony.one&#34;,
+        chain_id=1666600000,
+        symbol=&#34;ONE&#34;,
+        block_explorer=&#34;https://explorer.harmony.one/&#34;
+    )</code></pre>
+</details>
+</dd>
+<dt id="moody.conf.HarmonyTestnet"><code class="name flex">
+<span>def <span class="ident">HarmonyTestnet</span></span>(<span>) ‑> <a title="moody.Config" href="index.html#moody.Config">Config</a></span>
+</code></dt>
+<dd>
+<div class="desc"></div>
+<details class="source">
+<summary>
+<span>Expand source code</span>
+</summary>
+<pre><code class="python">def HarmonyTestnet() -&gt; Config:
+    return Config(
+        network_name=&#34;HarmonyTestnet&#34;,
+        rpc_url=&#34;https://api.s0.b.hmny.io&#34;,
+        chain_id=1666700000,
+        symbol=&#34;ONE&#34;,
+        block_explorer=&#34;https://explorer.harmony.one/&#34;
     )</code></pre>
 </details>
 </dd>
@@ -499,6 +781,44 @@ def ArbitrumOne() -&gt; Config:
     )</code></pre>
 </details>
 </dd>
+<dt id="moody.conf.Kucoin"><code class="name flex">
+<span>def <span class="ident">Kucoin</span></span>(<span>) ‑> <a title="moody.Config" href="index.html#moody.Config">Config</a></span>
+</code></dt>
+<dd>
+<div class="desc"></div>
+<details class="source">
+<summary>
+<span>Expand source code</span>
+</summary>
+<pre><code class="python">def Kucoin() -&gt; Config:
+    return Config(
+        network_name=&#34;KucoinMainnet&#34;,
+        rpc_url=&#34;https://rpc-mainnet.kcc.network&#34;,
+        chain_id=321,
+        symbol=&#34;KCS&#34;,
+        block_explorer=&#34;https://scan.kcc.network/&#34;
+    )</code></pre>
+</details>
+</dd>
+<dt id="moody.conf.KucoinTestnet"><code class="name flex">
+<span>def <span class="ident">KucoinTestnet</span></span>(<span>) ‑> <a title="moody.Config" href="index.html#moody.Config">Config</a></span>
+</code></dt>
+<dd>
+<div class="desc"></div>
+<details class="source">
+<summary>
+<span>Expand source code</span>
+</summary>
+<pre><code class="python">def KucoinTestnet() -&gt; Config:
+    return Config(
+        network_name=&#34;KucoinTestnet&#34;,
+        rpc_url=&#34;https://scan-testnet.kcc.network&#34;,
+        chain_id=322,
+        symbol=&#34;KCS&#34;,
+        block_explorer=&#34;https://scan-testnet.kcc.network/&#34;
+    )</code></pre>
+</details>
+</dd>
 <dt id="moody.conf.MoonBeamTestnet"><code class="name flex">
 <span>def <span class="ident">MoonBeamTestnet</span></span>(<span>) ‑> <a title="moody.Config" href="index.html#moody.Config">Config</a></span>
 </code></dt>
@@ -531,7 +851,7 @@ def ArbitrumOne() -&gt; Config:
 <pre><code class="python">def NearAuroraMainnet() -&gt; Config:
     return Config(
         network_name=&#34;AuroraTestnet&#34;,
-        rpc_url=&#34;https://testnet.aurora.dev&#34;,
+        rpc_url=&#34;https://rpc.ankr.com/near&#34;,
         chain_id=1313161554,
         symbol=&#34;NEAR&#34;,
         block_explorer=&#34;https://explorer.near.org/&#34;
@@ -645,10 +965,10 @@ def ArbitrumOne() -&gt; Config:
 <pre><code class="python">def PolygonMainnet() -&gt; Config:
     return Config(
         network_name=&#34;PolygonMainnet&#34;,
-        rpc_url=&#34;https://bsc-dataseed1.binance.org&#34;,
-        chain_id=56,
-        symbol=&#34;BNB&#34;,
-        block_explorer=&#34;https://bscscan.com&#34;,
+        rpc_url=&#34;https://polygon-rpc.com&#34;,
+        chain_id=137,
+        symbol=&#34;MATIC&#34;,
+        block_explorer=&#34;https://explorer.matic.network/&#34;,
         link_token=&#34;0xb0897686c545045aFc77CF20eC7A532E3120E0F1&#34;,
         link_keyhash=&#34;0xf86195cf7690c55907b2b611ebb7343a6f649bff128701cc542f0569e2c549da&#34;,
         link_vrf_coordinator=&#34;0x3d2341ADb2D31f1c5530cDC622016af293177AE0&#34;
@@ -667,10 +987,10 @@ def ArbitrumOne() -&gt; Config:
 <pre><code class="python">def PolygonMumbai() -&gt; Config:
     return Config(
         network_name=&#34;PolygonMumbaiTestnet&#34;,
-        rpc_url=&#34;https://bsc-dataseed1.binance.org&#34;,
-        chain_id=56,
-        symbol=&#34;BNB&#34;,
-        block_explorer=&#34;https://bscscan.com&#34;,
+        rpc_url=&#34;https://rpc-mumbai.maticvigil.com&#34;,
+        chain_id=80001,
+        symbol=&#34;MATIC&#34;,
+        block_explorer=&#34;https://mumbai.polygonscan.com/&#34;,
         link_token=&#34;0x326C977E6efc84E512bB9C30f76E30c160eD06FB&#34;,
         link_keyhash=&#34;0x6e75b569a01ef56d18cab6a8e71e6600d6ce853834d4a5748b720d06f878b3a4&#34;,
         link_vrf_coordinator=&#34;0x8C7382F9D8f56b33781fE506E897a4F1e2d17255&#34;
@@ -692,7 +1012,7 @@ def ArbitrumOne() -&gt; Config:
         rpc_url=&#34;https://rpc-mainnet.raisc.io&#34;,
         chain_id=1023,
         symbol=&#34;RSC&#34;,
-        block_explorer=&#34;http://www.raisc.io/&#34;,
+        block_explorer=&#34;http://explorer.raisc.io/&#34;,
         link_token=&#34;0x79e93714E4049Ae8745F1FA21838d6FdfDCa9cA6&#34;,
         link_vrf_coordinator=&#34;0x3c89bdbfF0B1a27c126b89e78F21a7B66DA2dbeC&#34;,
         link_keyhash=&#34;0x66c8089c4313b58a4344f69f796705ea1a7b2c180836e56f4785bde84f7af32f&#34;
@@ -734,6 +1054,63 @@ def ArbitrumOne() -&gt; Config:
         chain_id=3,
         symbol=&#34;RETH&#34;,
         block_explorer=&#34;https://ropsten.etherscan.io/&#34;
+    )</code></pre>
+</details>
+</dd>
+<dt id="moody.conf.SmartBCH"><code class="name flex">
+<span>def <span class="ident">SmartBCH</span></span>(<span>) ‑> <a title="moody.Config" href="index.html#moody.Config">Config</a></span>
+</code></dt>
+<dd>
+<div class="desc"></div>
+<details class="source">
+<summary>
+<span>Expand source code</span>
+</summary>
+<pre><code class="python">def SmartBCH() -&gt; Config:
+    return Config(
+        network_name=&#34;BCHMainnet&#34;,
+        rpc_url=&#34;https://smartbch.fountainhead.cash/mainnet&#34;,
+        chain_id=10000,
+        symbol=&#34;BCH&#34;,
+        block_explorer=&#34;https://www.smartscan.ca.sh/&#34;
+    )</code></pre>
+</details>
+</dd>
+<dt id="moody.conf.Solana"><code class="name flex">
+<span>def <span class="ident">Solana</span></span>(<span>) ‑> <a title="moody.Config" href="index.html#moody.Config">Config</a></span>
+</code></dt>
+<dd>
+<div class="desc"></div>
+<details class="source">
+<summary>
+<span>Expand source code</span>
+</summary>
+<pre><code class="python">def Solana() -&gt; Config:
+    return Config(
+        network_name=&#34;SOL&#34;,
+        rpc_url=&#34;https://rpc.ankr.com/solana&#34;,
+        chain_id=25221,
+        symbol=&#34;CRO&#34;,
+        block_explorer=&#34;https://solscan.io/&#34;
+    )</code></pre>
+</details>
+</dd>
+<dt id="moody.conf.Ubiq"><code class="name flex">
+<span>def <span class="ident">Ubiq</span></span>(<span>) ‑> <a title="moody.Config" href="index.html#moody.Config">Config</a></span>
+</code></dt>
+<dd>
+<div class="desc"></div>
+<details class="source">
+<summary>
+<span>Expand source code</span>
+</summary>
+<pre><code class="python">def Ubiq() -&gt; Config:
+    return Config(
+        network_name=&#34;Ubiq&#34;,
+        rpc_url=&#34;https://rpc.octano.dev&#34;,
+        chain_id=8,
+        symbol=&#34;UBQ&#34;,
+        block_explorer=&#34;https://ubiqscan.io/&#34;
     )</code></pre>
 </details>
 </dd>
@@ -789,11 +1166,21 @@ def ArbitrumOne() -&gt; Config:
 <li><code><a title="moody.conf.AvalancheMainnet" href="#moody.conf.AvalancheMainnet">AvalancheMainnet</a></code></li>
 <li><code><a title="moody.conf.BSCMain" href="#moody.conf.BSCMain">BSCMain</a></code></li>
 <li><code><a title="moody.conf.BSCTest" href="#moody.conf.BSCTest">BSCTest</a></code></li>
+<li><code><a title="moody.conf.CeloMainnet" href="#moody.conf.CeloMainnet">CeloMainnet</a></code></li>
+<li><code><a title="moody.conf.Cronos" href="#moody.conf.Cronos">Cronos</a></code></li>
+<li><code><a title="moody.conf.Elastos" href="#moody.conf.Elastos">Elastos</a></code></li>
 <li><code><a title="moody.conf.Ethereum" href="#moody.conf.Ethereum">Ethereum</a></code></li>
+<li><code><a title="moody.conf.FantomOperaMainnetRPC" href="#moody.conf.FantomOperaMainnetRPC">FantomOperaMainnetRPC</a></code></li>
+<li><code><a title="moody.conf.FantomTestnetRPC" href="#moody.conf.FantomTestnetRPC">FantomTestnetRPC</a></code></li>
+<li><code><a title="moody.conf.Gnosis" href="#moody.conf.Gnosis">Gnosis</a></code></li>
 <li><code><a title="moody.conf.GoerliTestnet" href="#moody.conf.GoerliTestnet">GoerliTestnet</a></code></li>
+<li><code><a title="moody.conf.HarmonyMainnet" href="#moody.conf.HarmonyMainnet">HarmonyMainnet</a></code></li>
+<li><code><a title="moody.conf.HarmonyTestnet" href="#moody.conf.HarmonyTestnet">HarmonyTestnet</a></code></li>
 <li><code><a title="moody.conf.HuobiChainMainnet" href="#moody.conf.HuobiChainMainnet">HuobiChainMainnet</a></code></li>
 <li><code><a title="moody.conf.HuobiChainTestnet" href="#moody.conf.HuobiChainTestnet">HuobiChainTestnet</a></code></li>
 <li><code><a title="moody.conf.KovanTestnet" href="#moody.conf.KovanTestnet">KovanTestnet</a></code></li>
+<li><code><a title="moody.conf.Kucoin" href="#moody.conf.Kucoin">Kucoin</a></code></li>
+<li><code><a title="moody.conf.KucoinTestnet" href="#moody.conf.KucoinTestnet">KucoinTestnet</a></code></li>
 <li><code><a title="moody.conf.MoonBeamTestnet" href="#moody.conf.MoonBeamTestnet">MoonBeamTestnet</a></code></li>
 <li><code><a title="moody.conf.NearAuroraMainnet" href="#moody.conf.NearAuroraMainnet">NearAuroraMainnet</a></code></li>
 <li><code><a title="moody.conf.NearAuroraTestnet" href="#moody.conf.NearAuroraTestnet">NearAuroraTestnet</a></code></li>
@@ -806,6 +1193,9 @@ def ArbitrumOne() -&gt; Config:
 <li><code><a title="moody.conf.RSCMainnet" href="#moody.conf.RSCMainnet">RSCMainnet</a></code></li>
 <li><code><a title="moody.conf.RinkebyTestnet" href="#moody.conf.RinkebyTestnet">RinkebyTestnet</a></code></li>
 <li><code><a title="moody.conf.RopstenTestnet" href="#moody.conf.RopstenTestnet">RopstenTestnet</a></code></li>
+<li><code><a title="moody.conf.SmartBCH" href="#moody.conf.SmartBCH">SmartBCH</a></code></li>
+<li><code><a title="moody.conf.Solana" href="#moody.conf.Solana">Solana</a></code></li>
+<li><code><a title="moody.conf.Ubiq" href="#moody.conf.Ubiq">Ubiq</a></code></li>
 <li><code><a title="moody.conf.XDaiMainnet" href="#moody.conf.XDaiMainnet">XDaiMainnet</a></code></li>
 </ul>
 </li>

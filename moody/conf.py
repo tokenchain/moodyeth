@@ -43,10 +43,10 @@ def BSCMain() -> Config:
 def PolygonMumbai() -> Config:
     return Config(
         network_name="PolygonMumbaiTestnet",
-        rpc_url="https://bsc-dataseed1.binance.org",
-        chain_id=56,
-        symbol="BNB",
-        block_explorer="https://bscscan.com",
+        rpc_url="https://rpc-mumbai.maticvigil.com",
+        chain_id=80001,
+        symbol="MATIC",
+        block_explorer="https://mumbai.polygonscan.com/",
         link_token="0x326C977E6efc84E512bB9C30f76E30c160eD06FB",
         link_keyhash="0x6e75b569a01ef56d18cab6a8e71e6600d6ce853834d4a5748b720d06f878b3a4",
         link_vrf_coordinator="0x8C7382F9D8f56b33781fE506E897a4F1e2d17255"
@@ -56,10 +56,10 @@ def PolygonMumbai() -> Config:
 def PolygonMainnet() -> Config:
     return Config(
         network_name="PolygonMainnet",
-        rpc_url="https://bsc-dataseed1.binance.org",
-        chain_id=56,
-        symbol="BNB",
-        block_explorer="https://bscscan.com",
+        rpc_url="https://polygon-rpc.com",
+        chain_id=137,
+        symbol="MATIC",
+        block_explorer="https://explorer.matic.network/",
         link_token="0xb0897686c545045aFc77CF20eC7A532E3120E0F1",
         link_keyhash="0xf86195cf7690c55907b2b611ebb7343a6f649bff128701cc542f0569e2c549da",
         link_vrf_coordinator="0x3d2341ADb2D31f1c5530cDC622016af293177AE0"
@@ -184,7 +184,7 @@ def RSCMainnet() -> Config:
         rpc_url="https://rpc-mainnet.raisc.io",
         chain_id=1023,
         symbol="RSC",
-        block_explorer="http://www.raisc.io/",
+        block_explorer="http://explorer.raisc.io/",
         link_token="0x79e93714E4049Ae8745F1FA21838d6FdfDCa9cA6",
         link_vrf_coordinator="0x3c89bdbfF0B1a27c126b89e78F21a7B66DA2dbeC",
         link_keyhash="0x66c8089c4313b58a4344f69f796705ea1a7b2c180836e56f4785bde84f7af32f"
@@ -245,7 +245,7 @@ def NearAuroraTestnet() -> Config:
 def NearAuroraMainnet() -> Config:
     return Config(
         network_name="AuroraTestnet",
-        rpc_url="https://testnet.aurora.dev",
+        rpc_url="https://rpc.ankr.com/near",
         chain_id=1313161554,
         symbol="NEAR",
         block_explorer="https://explorer.near.org/"
@@ -255,8 +255,138 @@ def NearAuroraMainnet() -> Config:
 def ArbitrumOne() -> Config:
     return Config(
         network_name="ArbitrumOne",
-        rpc_url="https://arb1.arbitrum.io/rpc",
+        rpc_url="https://rpc.ankr.com/arbitrum",
         chain_id=42161,
         symbol="ETH",
         block_explorer="https://arbiscan.io/"
+    )
+
+
+def FantomOperaMainnetRPC() -> Config:
+    return Config(
+        network_name="FantomOpera",
+        rpc_url="https://rpc.ftm.tools",
+        chain_id=250,
+        symbol="FTM",
+        block_explorer="https://ftmscan.com/"
+    )
+
+
+def FantomTestnetRPC() -> Config:
+    return Config(
+        network_name="FantomTestnet",
+        rpc_url="https://rpc.testnet.fantom.network",
+        chain_id=4002,
+        symbol="FTM",
+        block_explorer="https://testnet.ftmscan.com/"
+    )
+
+
+def HarmonyMainnet() -> Config:
+    return Config(
+        network_name="HarmonyMainnet",
+        rpc_url="https://api.harmony.one",
+        chain_id=1666600000,
+        symbol="ONE",
+        block_explorer="https://explorer.harmony.one/"
+    )
+
+
+def HarmonyTestnet() -> Config:
+    return Config(
+        network_name="HarmonyTestnet",
+        rpc_url="https://api.s0.b.hmny.io",
+        chain_id=1666700000,
+        symbol="ONE",
+        block_explorer="https://explorer.harmony.one/"
+    )
+
+
+def Kucoin() -> Config:
+    return Config(
+        network_name="KucoinMainnet",
+        rpc_url="https://rpc-mainnet.kcc.network",
+        chain_id=321,
+        symbol="KCS",
+        block_explorer="https://scan.kcc.network/"
+    )
+
+
+def KucoinTestnet() -> Config:
+    return Config(
+        network_name="KucoinTestnet",
+        rpc_url="https://scan-testnet.kcc.network",
+        chain_id=322,
+        symbol="KCS",
+        block_explorer="https://scan-testnet.kcc.network/"
+    )
+
+
+def Elastos() -> Config:
+    return Config(
+        network_name="Elastos",
+        rpc_url="https://api.elastos.io/eth",
+        chain_id=20,
+        symbol="KCS",
+        block_explorer="https://explorer.elaeth.io/"
+    )
+
+
+def Gnosis() -> Config:
+    return Config(
+        network_name="Gnosis",
+        rpc_url="https://rpc.gnosischain.com",
+        chain_id=100,
+        symbol="XDAI",
+        block_explorer="https://blockscout.com/xdai/mainnet/"
+    )
+
+
+def Ubiq() -> Config:
+    return Config(
+        network_name="Ubiq",
+        rpc_url="https://rpc.octano.dev",
+        chain_id=8,
+        symbol="UBQ",
+        block_explorer="https://ubiqscan.io/"
+    )
+
+
+def Cronos() -> Config:
+    return Config(
+        network_name="Cronos",
+        rpc_url="https://evm-cronos.crypto.org",
+        chain_id=25,
+        symbol="CRO",
+        block_explorer="https://cronos.crypto.org/explorer/"
+    )
+
+
+def Solana() -> Config:
+    return Config(
+        network_name="SOL",
+        rpc_url="https://rpc.ankr.com/solana",
+        chain_id=25221,
+        symbol="CRO",
+        block_explorer="https://solscan.io/"
+    )
+
+
+def SmartBCH() -> Config:
+    return Config(
+        network_name="BCHMainnet",
+        rpc_url="https://smartbch.fountainhead.cash/mainnet",
+        chain_id=10000,
+        symbol="BCH",
+        block_explorer="https://www.smartscan.ca.sh/"
+    )
+
+
+def CeloMainnet() -> Config:
+    return Config(
+        network_name="CeloMainnet",
+        rpc_url="https://rpc.ankr.com/celo",
+        chain_id=42220,
+        symbol="CELO",
+        block_explorer="https://celoscan.com/"
     )
