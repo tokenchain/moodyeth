@@ -1,0 +1,1721 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, minimum-scale=1" />
+<meta name="generator" content="pdoc 0.9.1" />
+<title>moody.m.b_send.looper API documentation</title>
+<meta name="description" content="" />
+<link rel="preload stylesheet" as="style" href="https://cdnjs.cloudflare.com/ajax/libs/10up-sanitize.css/11.0.1/sanitize.min.css" integrity="sha256-PK9q560IAAa6WVRRh76LtCaI8pjTJ2z11v0miyNNjrs=" crossorigin>
+<link rel="preload stylesheet" as="style" href="https://cdnjs.cloudflare.com/ajax/libs/10up-sanitize.css/11.0.1/typography.min.css" integrity="sha256-7l/o7C8jubJiy74VsKTidCy1yBkRtiUGbVkYBylBqUg=" crossorigin>
+<link rel="stylesheet preload" as="style" href="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/10.1.1/styles/github.min.css" crossorigin>
+<style>:root{--highlight-color:#fe9}.flex{display:flex !important}body{line-height:1.5em}#content{padding:20px}#sidebar{padding:30px;overflow:hidden}#sidebar > *:last-child{margin-bottom:2cm}.http-server-breadcrumbs{font-size:130%;margin:0 0 15px 0}#footer{font-size:.75em;padding:5px 30px;border-top:1px solid #ddd;text-align:right}#footer p{margin:0 0 0 1em;display:inline-block}#footer p:last-child{margin-right:30px}h1,h2,h3,h4,h5{font-weight:300}h1{font-size:2.5em;line-height:1.1em}h2{font-size:1.75em;margin:1em 0 .50em 0}h3{font-size:1.4em;margin:25px 0 10px 0}h4{margin:0;font-size:105%}h1:target,h2:target,h3:target,h4:target,h5:target,h6:target{background:var(--highlight-color);padding:.2em 0}a{color:#058;text-decoration:none;transition:color .3s ease-in-out}a:hover{color:#e82}.title code{font-weight:bold}h2[id^="header-"]{margin-top:2em}.ident{color:#900}pre code{background:#f8f8f8;font-size:.8em;line-height:1.4em}code{background:#f2f2f1;padding:1px 4px;overflow-wrap:break-word}h1 code{background:transparent}pre{background:#f8f8f8;border:0;border-top:1px solid #ccc;border-bottom:1px solid #ccc;margin:1em 0;padding:1ex}#http-server-module-list{display:flex;flex-flow:column}#http-server-module-list div{display:flex}#http-server-module-list dt{min-width:10%}#http-server-module-list p{margin-top:0}.toc ul,#index{list-style-type:none;margin:0;padding:0}#index code{background:transparent}#index h3{border-bottom:1px solid #ddd}#index ul{padding:0}#index h4{margin-top:.6em;font-weight:bold}@media (min-width:200ex){#index .two-column{column-count:2}}@media (min-width:300ex){#index .two-column{column-count:3}}dl{margin-bottom:2em}dl dl:last-child{margin-bottom:4em}dd{margin:0 0 1em 3em}#header-classes + dl > dd{margin-bottom:3em}dd dd{margin-left:2em}dd p{margin:10px 0}.name{background:#eee;font-weight:bold;font-size:.85em;padding:5px 10px;display:inline-block;min-width:40%}.name:hover{background:#e0e0e0}dt:target .name{background:var(--highlight-color)}.name > span:first-child{white-space:nowrap}.name.class > span:nth-child(2){margin-left:.4em}.inherited{color:#999;border-left:5px solid #eee;padding-left:1em}.inheritance em{font-style:normal;font-weight:bold}.desc h2{font-weight:400;font-size:1.25em}.desc h3{font-size:1em}.desc dt code{background:inherit}.source summary,.git-link-div{color:#666;text-align:right;font-weight:400;font-size:.8em;text-transform:uppercase}.source summary > *{white-space:nowrap;cursor:pointer}.git-link{color:inherit;margin-left:1em}.source pre{max-height:500px;overflow:auto;margin:0}.source pre code{font-size:12px;overflow:visible}.hlist{list-style:none}.hlist li{display:inline}.hlist li:after{content:',\2002'}.hlist li:last-child:after{content:none}.hlist .hlist{display:inline;padding-left:1em}img{max-width:100%}td{padding:0 .5em}.admonition{padding:.1em .5em;margin-bottom:1em}.admonition-title{font-weight:bold}.admonition.note,.admonition.info,.admonition.important{background:#aef}.admonition.todo,.admonition.versionadded,.admonition.tip,.admonition.hint{background:#dfd}.admonition.warning,.admonition.versionchanged,.admonition.deprecated{background:#fd4}.admonition.error,.admonition.danger,.admonition.caution{background:lightpink}</style>
+<style media="screen and (min-width: 700px)">@media screen and (min-width:700px){#sidebar{width:30%;height:100vh;overflow:auto;position:sticky;top:0}#content{width:70%;max-width:100ch;padding:3em 4em;border-left:1px solid #ddd}pre code{font-size:1em}.item .name{font-size:1em}main{display:flex;flex-direction:row-reverse;justify-content:flex-end}.toc ul ul,#index ul{padding-left:1.5em}.toc > ul > li{margin-top:.5em}}</style>
+<style media="print">@media print{#sidebar h1{page-break-before:always}.source{display:none}}@media print{*{background:transparent !important;color:#000 !important;box-shadow:none !important;text-shadow:none !important}a[href]:after{content:" (" attr(href) ")";font-size:90%}a[href][title]:after{content:none}abbr[title]:after{content:" (" attr(title) ")"}.ir a:after,a[href^="javascript:"]:after,a[href^="#"]:after{content:""}pre,blockquote{border:1px solid #999;page-break-inside:avoid}thead{display:table-header-group}tr,img{page-break-inside:avoid}img{max-width:100% !important}@page{margin:0.5cm}p,h2,h3{orphans:3;widows:3}h1,h2,h3,h4,h5,h6{page-break-after:avoid}}</style>
+<script defer src="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/10.1.1/highlight.min.js" integrity="sha256-Uv3H6lx7dJmRfRvH8TH6kJD1TSK1aFcwgx+mdg3epi8=" crossorigin></script>
+<script>window.addEventListener('DOMContentLoaded', () => hljs.initHighlighting())</script>
+</head>
+<body>
+<main>
+<article id="content">
+<header>
+<h1 class="title">Module <code>moody.m.b_send.looper</code></h1>
+</header>
+<section id="section-intro">
+<details class="source">
+<summary>
+<span>Expand source code</span>
+</summary>
+<pre><code class="python"># !/usr/bin/env python
+# -*- coding: utf-8 -*-
+# pylint: disable=C0116,W0613
+# This program is dedicated to the public domain under the CC0 license.
+import math
+import time
+
+import pandas as pd
+from web3 import exceptions, _utils
+
+from ..b_send import BSend
+from ..b_send.basec import BaseBulk, PrintNetworkName
+from ..pharaohs import pharaohs
+from ...libeb import MiliDoS
+
+
+class SkeletonLooper(BaseBulk):
+    &#34;&#34;&#34;
+    Bulk manager execution now
+    @
+    &#34;&#34;&#34;
+
+    def __init__(self, _core: MiliDoS):
+        self._c = _core
+        super().__init__()
+        self.__n = 0
+        self.__t = 0
+        self.__failures = 0
+        self.wait_pause = False
+        PrintNetworkName(_core.network_cfg)
+
+    def failureCounts(self) -&gt; int:
+        return self.__failures
+
+    def ActivateWaitPause(self):
+        self.wait_pause = True
+
+    def _line_progress(self, notify=None) -&gt; None:
+        if notify is None:
+            return
+        else:
+            perc = &#34;{0:.0f}%&#34;.format(self.__n / self.__t * 100)
+            notify(self.__n, self.__t, perc)
+
+    def _line_error(self, errorNotify=None, info: str = &#34;&#34;) -&gt; None:
+        if errorNotify is None:
+            print(f&#34;======{info}&#34;)
+        else:
+            errorNotify(info)
+
+    def setIterSum(self, t) -&gt; int:
+        self.__t = t
+        return self.__t
+
+    def Iters(self) -&gt; int:
+        return self.__t
+
+    def addFail(self) -&gt; int:
+        self.__failures += 1
+        return self.__failures
+
+    def addN(self) -&gt; int:
+        self.__n += 1
+        return self.__n
+
+    def iterN(self) -&gt; int:
+        return self.__n
+
+    def resetN(self) -&gt; int:
+        self.__n = 0
+        return self.__n
+
+    def failure(self, a: str, b: str) -&gt; None:
+        pass
+
+    def successTransaction(self, hash: str, name: str) -&gt; None:
+        pass
+
+
+class TestBulkManager(SkeletonLooper):
+    &#34;&#34;&#34;
+    Bulk manager execution now
+    @
+    &#34;&#34;&#34;
+
+    def __init__(self, dat: list, _core: MiliDoS):
+        self.datlist = dat
+        super().__init__(_core)
+        self._enableContractBatch()
+
+    def prep(self) -&gt; &#34;TestBulkManager&#34;:
+        self._status_busy = True
+        for row in self.datlist:
+            address = str(row[0])
+            amount = float(row[1])
+            enter_digit = int(amount * 10 ** self.decimal)
+            if self._is_valid_address(address):
+                self._line_read_code(address, amount, enter_digit)
+                self.entryAdd(address, enter_digit)
+            else:
+                self._line_invalid_address(address)
+                self.entryErrAdd(address, enter_digit)
+
+        self._batch_preprocess()
+        self.PreStatement()
+
+        return self
+
+    def getSENDAddresses(self) -&gt; list:
+        return self.list_address
+
+    def getSENDAmountBalances(self) -&gt; list:
+        return self.list_amount
+
+    def getPlatformVal(self) -&gt; int:
+        &#34;&#34;&#34;
+        since the entry for python function on SAP is required to be int
+        &#34;&#34;&#34;
+        return math.ceil(self.total / self.wei)
+
+
+class ExcelFeature(SkeletonLooper):
+
+    def __init__(self, filepath, _core: MiliDoS):
+        super().__init__(_core)
+        self.exeFilepath = filepath
+        self.useKeyEng()
+
+    def useKeyChinese(self) -&gt; &#34;ExcelFeature&#34;:
+        self.kAddress = &#34;提现地址&#34;
+        self.kAmount = &#34;提现金额&#34;
+        return self
+
+    def useKeyEng(self) -&gt; &#34;ExcelFeature&#34;:
+        self.kAddress = &#34;address&#34;
+        self.kAmount = &#34;amount&#34;
+        return self
+
+
+class ExcelBulkManagerContractTunnel(ExcelFeature):
+    &#34;&#34;&#34;
+    using contract on making at least XXX transactions in a batch.
+    &#34;&#34;&#34;
+
+    def __init__(self, filepath, m: MiliDoS):
+        super().__init__(filepath, m)
+        self._enableContractBatch()
+
+    def failure(self, a: str, b: str) -&gt; None:
+        &#34;&#34;&#34;
+        custom failure function and recording
+        :param a:
+        :param b:
+        :return:
+        &#34;&#34;&#34;
+        if self._file_logger is not None:
+            self._file_logger(f&#34;Batch#{self.iterN()} {a} {b} Failed. ❌ &#34;)
+        self.addFail()
+
+    def successTransaction(self, hash: str, name: str) -&gt; None:
+        &#34;&#34;&#34;
+        custom success function and the recording
+        :param hash:
+        :param name:
+        :return:
+        &#34;&#34;&#34;
+        if self._file_logger is not None:
+            self._file_logger(f&#34;Batch#{self.iterN()} hash: {hash} 📤 &#34;)
+
+    def executeTokenTransferOnContractBusTg(
+            self,
+            express_contract: BSend,
+            coin_contract: pharaohs,
+            notify=None, errorNotify=None) -&gt; None:
+        &#34;&#34;&#34;
+
+
+        :param express_contract:contract instance
+        :param coin_contract: token contract instance
+        :param notify: callback function
+        :param errorNotify: callback function
+
+        &#34;&#34;&#34;
+        self._status_busy = True
+        coin_address = coin_contract.contract_address
+        express_address = express_contract.contract_address
+        self.setIterSum(self._batches_count)
+        self.resetN()
+
+        if not self._batch_contract:
+            self._line_error(errorNotify, &#34;⚠️ Batch contract is not activated&#34;)
+            return
+
+        if not self._is_valid_address(coin_address):
+            self._line_error(errorNotify, f&#34;⚠️ ERC20 is not valid {coin_address}&#34;)
+            return
+
+        for batch in self._batch:
+            try:
+                batch_size = len(batch[0])
+                total_approval = sum(batch[1])
+                _address = batch[0]
+                _amount = batch[1]
+
+                print(f&#34;====== result batch len: {len(batch[0])}, approving: {total_approval}&#34;)
+                balance = coin_contract.balance_of(self._c.accountAddr)
+
+                if balance &gt;= total_approval:
+                    coin_contract.EnforceTxReceipt(True)
+                    coin_contract.approve(express_address, total_approval)
+                else:
+                    self._line_error(errorNotify, &#34;⚠️ not enough in the balance&#34;)
+                    return
+
+                print(f&#34;====== start batch transactions&#34;)
+                express_contract.onSuccssCallback(self.successTransaction)
+                express_contract.onFailCallback(self.failure)
+                express_contract.EnforceTxReceipt(True).bulk_send_token(
+                    coin_address, _address, _amount, 0
+                )
+
+                self.addN()
+                self._line_progress(notify)
+
+                if batch_size == self.batch_limit and self.wait_pause:
+                    print(&#34;====== result bulk_send_token, the next batch will start in 30 seconds&#34;)
+                    time.sleep(30)
+                else:
+                    print(&#34;====== Now the next wave of token send will start immediately&#34;)
+
+            except exceptions.CannotHandleRequest:
+                self._line_error(errorNotify, &#34;⚠️ request is not handled&#34;)
+                return
+            except exceptions.TimeExhausted:
+                self._line_error(errorNotify, &#34;⚠️ the transaction is not on chain after timeout&#34;)
+                return
+            except _utils.threads.Timeout:
+                self._line_error(errorNotify, &#34;⚠️ threads timeout&#34;)
+                return
+
+        self._status_busy = False
+
+    def prep(self) -&gt; &#34;ExcelBulkManagerContractTunnel&#34;:
+        &#34;&#34;&#34;
+        counting the excel sheet and filter the data
+        :return: This is a chained method
+        &#34;&#34;&#34;
+        self._status_busy = True
+        # df = pd.read_excel(r&#39;C:\Users\Ron\Desktop\Product List.xlsx&#39;)
+        data = pd.read_excel(self.exeFilepath)
+        # data = pd.read_excel(r&#39;C:\Users\Ron\Desktop\Product List.xlsx&#39;)
+        df = pd.DataFrame(data, columns=[self.kAddress, self.kAmount])
+        for index, row in df.iterrows():
+
+            # trim line
+            address = str(row[self.kAddress]).translate(str.maketrans(&#39;&#39;, &#39;&#39;, &#39; \n\t\r&#39;))
+            amount = float(row[self.kAmount])
+            enter_digit = int(amount * 10 ** self.decimal)
+            if self._is_valid_address(address):
+                self._line_read_code(row[self.kAddress], amount, enter_digit)
+                self.entryAdd(address, enter_digit)
+            else:
+                self._line_invalid_address(address)
+                self.entryErrAdd(address, enter_digit)
+                continue
+
+        self._batch_preprocess()
+        self.PreStatement()
+
+        return self
+
+    def getSENDAddresses(self) -&gt; list:
+        return self.list_address
+
+    def getSENDAmountBalances(self) -&gt; list:
+        return self.list_amount
+
+    def getSENDTotal(self) -&gt; int:
+        return self.total
+
+    def getPlatformVal(self) -&gt; int:
+        return int(self.total / self.wei)
+
+
+class ExcelBulkManagerClassic(ExcelFeature):
+    &#34;&#34;&#34;
+    This is the traditional wallet to wallet transaction transfer using the native method
+    &#34;&#34;&#34;
+
+    def __init__(self, filepath, tron):
+        super().__init__(filepath, tron)
+        self._in_process_address = None
+        self._in_process_amount = 0
+
+    def prep(self) -&gt; &#34;ExcelBulkManagerClassic&#34;:
+        &#34;&#34;&#34;
+        counting the excel sheet and filter the data
+        :return: This is a chained method
+        &#34;&#34;&#34;
+        self._status_busy = True
+        # df = pd.read_excel(r&#39;C:\Users\Ron\Desktop\Product List.xlsx&#39;)
+        data = pd.read_excel(self.exeFilepath)
+        # data = pd.read_excel(r&#39;C:\Users\Ron\Desktop\Product List.xlsx&#39;)
+        df = pd.DataFrame(data, columns=[self.kAddress, self.kAmount])
+        for index, row in df.iterrows():
+            # trim line
+            address = str(row[self.kAddress]).translate(str.maketrans(&#39;&#39;, &#39;&#39;, &#39; \n\t\r&#39;))
+            amount = float(row[self.kAmount])
+            enter_digit = int(amount * 10 ** self.decimal)
+            try:
+                if self._is_valid_address(address):
+                    self._line_color_code(address, amount, enter_digit)
+                    self.entryAdd(address, enter_digit)
+                else:
+                    self._line_color_invalid_address(address, enter_digit)
+                    self.entryErrAdd(address, enter_digit)
+
+            except ValueError as h:
+                self._line_color_invalid_address(address, enter_digit, h)
+                self.entryErrAdd(address, enter_digit)
+
+        self.PreStatement()
+
+        return self
+
+    def getSENDAddresses(self) -&gt; list:
+        return self.list_address
+
+    def getSENDAmountBalances(self) -&gt; list:
+        return self.list_amount
+
+    def getSENDTotal(self) -&gt; int:
+        return self.total
+
+    def executeTokenDistribution(self, token: pharaohs, notify=None):
+
+        self.resetN()
+        self.setIterSum(self.transaction_count)
+        self._status_busy = True
+
+        if len(self.list_amount) != len(self.list_address):
+            print(&#34;error in checking the length of transaction list&#34;)
+            return
+
+        for address in self.list_address:
+            token.transfer(address, self.list_amount[self.iterN()])
+            self.addN()
+            self._line_progress(notify)
+
+        self._status_busy = False
+
+    def failure(self, a: str, b: str) -&gt; None:
+        if self._file_logger is not None:
+            self._file_logger(f&#34;#{self.iterN()} {a} {b} Failed. ❌ &#34;)
+        self.addFail()
+
+    def successTransaction(self, hash: str, name: str) -&gt; None:
+        if self._file_logger is not None:
+            self._file_logger(f&#34;#{self.iterN()} {hash} OK, {self._in_process_address} {self._in_process_amount} 📤 &#34;)
+
+    def executeTokenTransferDistributionTg(self, token: pharaohs, notify=None, errorNotify=None) -&gt; None:
+        &#34;&#34;&#34;
+         Limitation: https://core.telegram.org/bots/faq#my-bot-is-hitting-limits-how-do-i-avoid-this
+         When sending messages inside a particular chat, avoid sending more than one message per second. We may allow short bursts that go over this limit, but eventually you&#39;ll begin receiving 429 errors.
+         If you&#39;re sending bulk notifications to multiple users, the API will not allow more than 30 messages per second or so. Consider spreading out notifications over large intervals of 8—12 hours for best results.
+         Also note that your bot will not be able to send more than 20 messages per minute to the same group.
+
+         This is a block function and it will take some time to complete
+
+        :param token: token instance
+        :param notify: callback function
+        :param errorNotify: callback function
+        &#34;&#34;&#34;
+        self.resetN()
+        self.setIterSum(len(self.list_address))
+        self._status_busy = True
+
+        _timestamp = self.nowSec
+        if len(self.list_amount) != self.Iters():
+            errorNotify(&#34;error in checking the length of transaction list&#34;)
+            return
+
+        token.onSuccssCallback(self.successTransaction)
+        token.onFailCallback(self.failure)
+
+        try:
+
+            for address in self.list_address:
+                self._in_process_address = address
+                report_amount = self.list_amount[self.iterN()]
+                self._in_process_amount = report_amount
+                token.transfer(address, report_amount)
+                self.addN()
+                _dela = self.nowSec
+                if notify is not None:
+                    if _dela &gt; _timestamp + 5 or self.iterN() &gt;= self.Iters():
+                        _timestamp = self.nowSec
+                        self._line_progress(notify)
+
+                time.sleep(0.5)
+
+        except ValueError:
+            errorNotify(&#34;Value error. unknown error&#34;)
+            return
+
+        self._status_busy = False</code></pre>
+</details>
+</section>
+<section>
+</section>
+<section>
+</section>
+<section>
+</section>
+<section>
+<h2 class="section-title" id="header-classes">Classes</h2>
+<dl>
+<dt id="moody.m.b_send.looper.ExcelBulkManagerClassic"><code class="flex name class">
+<span>class <span class="ident">ExcelBulkManagerClassic</span></span>
+<span>(</span><span>filepath, tron)</span>
+</code></dt>
+<dd>
+<div class="desc"><p>This is the traditional wallet to wallet transaction transfer using the native method</p></div>
+<details class="source">
+<summary>
+<span>Expand source code</span>
+</summary>
+<pre><code class="python">class ExcelBulkManagerClassic(ExcelFeature):
+    &#34;&#34;&#34;
+    This is the traditional wallet to wallet transaction transfer using the native method
+    &#34;&#34;&#34;
+
+    def __init__(self, filepath, tron):
+        super().__init__(filepath, tron)
+        self._in_process_address = None
+        self._in_process_amount = 0
+
+    def prep(self) -&gt; &#34;ExcelBulkManagerClassic&#34;:
+        &#34;&#34;&#34;
+        counting the excel sheet and filter the data
+        :return: This is a chained method
+        &#34;&#34;&#34;
+        self._status_busy = True
+        # df = pd.read_excel(r&#39;C:\Users\Ron\Desktop\Product List.xlsx&#39;)
+        data = pd.read_excel(self.exeFilepath)
+        # data = pd.read_excel(r&#39;C:\Users\Ron\Desktop\Product List.xlsx&#39;)
+        df = pd.DataFrame(data, columns=[self.kAddress, self.kAmount])
+        for index, row in df.iterrows():
+            # trim line
+            address = str(row[self.kAddress]).translate(str.maketrans(&#39;&#39;, &#39;&#39;, &#39; \n\t\r&#39;))
+            amount = float(row[self.kAmount])
+            enter_digit = int(amount * 10 ** self.decimal)
+            try:
+                if self._is_valid_address(address):
+                    self._line_color_code(address, amount, enter_digit)
+                    self.entryAdd(address, enter_digit)
+                else:
+                    self._line_color_invalid_address(address, enter_digit)
+                    self.entryErrAdd(address, enter_digit)
+
+            except ValueError as h:
+                self._line_color_invalid_address(address, enter_digit, h)
+                self.entryErrAdd(address, enter_digit)
+
+        self.PreStatement()
+
+        return self
+
+    def getSENDAddresses(self) -&gt; list:
+        return self.list_address
+
+    def getSENDAmountBalances(self) -&gt; list:
+        return self.list_amount
+
+    def getSENDTotal(self) -&gt; int:
+        return self.total
+
+    def executeTokenDistribution(self, token: pharaohs, notify=None):
+
+        self.resetN()
+        self.setIterSum(self.transaction_count)
+        self._status_busy = True
+
+        if len(self.list_amount) != len(self.list_address):
+            print(&#34;error in checking the length of transaction list&#34;)
+            return
+
+        for address in self.list_address:
+            token.transfer(address, self.list_amount[self.iterN()])
+            self.addN()
+            self._line_progress(notify)
+
+        self._status_busy = False
+
+    def failure(self, a: str, b: str) -&gt; None:
+        if self._file_logger is not None:
+            self._file_logger(f&#34;#{self.iterN()} {a} {b} Failed. ❌ &#34;)
+        self.addFail()
+
+    def successTransaction(self, hash: str, name: str) -&gt; None:
+        if self._file_logger is not None:
+            self._file_logger(f&#34;#{self.iterN()} {hash} OK, {self._in_process_address} {self._in_process_amount} 📤 &#34;)
+
+    def executeTokenTransferDistributionTg(self, token: pharaohs, notify=None, errorNotify=None) -&gt; None:
+        &#34;&#34;&#34;
+         Limitation: https://core.telegram.org/bots/faq#my-bot-is-hitting-limits-how-do-i-avoid-this
+         When sending messages inside a particular chat, avoid sending more than one message per second. We may allow short bursts that go over this limit, but eventually you&#39;ll begin receiving 429 errors.
+         If you&#39;re sending bulk notifications to multiple users, the API will not allow more than 30 messages per second or so. Consider spreading out notifications over large intervals of 8—12 hours for best results.
+         Also note that your bot will not be able to send more than 20 messages per minute to the same group.
+
+         This is a block function and it will take some time to complete
+
+        :param token: token instance
+        :param notify: callback function
+        :param errorNotify: callback function
+        &#34;&#34;&#34;
+        self.resetN()
+        self.setIterSum(len(self.list_address))
+        self._status_busy = True
+
+        _timestamp = self.nowSec
+        if len(self.list_amount) != self.Iters():
+            errorNotify(&#34;error in checking the length of transaction list&#34;)
+            return
+
+        token.onSuccssCallback(self.successTransaction)
+        token.onFailCallback(self.failure)
+
+        try:
+
+            for address in self.list_address:
+                self._in_process_address = address
+                report_amount = self.list_amount[self.iterN()]
+                self._in_process_amount = report_amount
+                token.transfer(address, report_amount)
+                self.addN()
+                _dela = self.nowSec
+                if notify is not None:
+                    if _dela &gt; _timestamp + 5 or self.iterN() &gt;= self.Iters():
+                        _timestamp = self.nowSec
+                        self._line_progress(notify)
+
+                time.sleep(0.5)
+
+        except ValueError:
+            errorNotify(&#34;Value error. unknown error&#34;)
+            return
+
+        self._status_busy = False</code></pre>
+</details>
+<h3>Ancestors</h3>
+<ul class="hlist">
+<li><a title="moody.m.b_send.looper.ExcelFeature" href="#moody.m.b_send.looper.ExcelFeature">ExcelFeature</a></li>
+<li><a title="moody.m.b_send.looper.SkeletonLooper" href="#moody.m.b_send.looper.SkeletonLooper">SkeletonLooper</a></li>
+<li><a title="moody.m.b_send.basec.BaseBulk" href="basec.html#moody.m.b_send.basec.BaseBulk">BaseBulk</a></li>
+</ul>
+<h3>Methods</h3>
+<dl>
+<dt id="moody.m.b_send.looper.ExcelBulkManagerClassic.executeTokenDistribution"><code class="name flex">
+<span>def <span class="ident">executeTokenDistribution</span></span>(<span>self, token: <a title="moody.m.pharaohs.pharaohs" href="../pharaohs/index.html#moody.m.pharaohs.pharaohs">pharaohs</a>, notify=None)</span>
+</code></dt>
+<dd>
+<div class="desc"></div>
+<details class="source">
+<summary>
+<span>Expand source code</span>
+</summary>
+<pre><code class="python">def executeTokenDistribution(self, token: pharaohs, notify=None):
+
+    self.resetN()
+    self.setIterSum(self.transaction_count)
+    self._status_busy = True
+
+    if len(self.list_amount) != len(self.list_address):
+        print(&#34;error in checking the length of transaction list&#34;)
+        return
+
+    for address in self.list_address:
+        token.transfer(address, self.list_amount[self.iterN()])
+        self.addN()
+        self._line_progress(notify)
+
+    self._status_busy = False</code></pre>
+</details>
+</dd>
+<dt id="moody.m.b_send.looper.ExcelBulkManagerClassic.executeTokenTransferDistributionTg"><code class="name flex">
+<span>def <span class="ident">executeTokenTransferDistributionTg</span></span>(<span>self, token: <a title="moody.m.pharaohs.pharaohs" href="../pharaohs/index.html#moody.m.pharaohs.pharaohs">pharaohs</a>, notify=None, errorNotify=None) ‑> NoneType</span>
+</code></dt>
+<dd>
+<div class="desc"><p>Limitation: <a href="https://core.telegram.org/bots/faq#my-bot-is-hitting-limits-how-do-i-avoid-this">https://core.telegram.org/bots/faq#my-bot-is-hitting-limits-how-do-i-avoid-this</a>
+When sending messages inside a particular chat, avoid sending more than one message per second. We may allow short bursts that go over this limit, but eventually you'll begin receiving 429 errors.
+If you're sending bulk notifications to multiple users, the API will not allow more than 30 messages per second or so. Consider spreading out notifications over large intervals of 8—12 hours for best results.
+Also note that your bot will not be able to send more than 20 messages per minute to the same group.</p>
+<p>This is a block function and it will take some time to complete</p>
+<p>:param token: token instance
+:param notify: callback function
+:param errorNotify: callback function</p></div>
+<details class="source">
+<summary>
+<span>Expand source code</span>
+</summary>
+<pre><code class="python">def executeTokenTransferDistributionTg(self, token: pharaohs, notify=None, errorNotify=None) -&gt; None:
+    &#34;&#34;&#34;
+     Limitation: https://core.telegram.org/bots/faq#my-bot-is-hitting-limits-how-do-i-avoid-this
+     When sending messages inside a particular chat, avoid sending more than one message per second. We may allow short bursts that go over this limit, but eventually you&#39;ll begin receiving 429 errors.
+     If you&#39;re sending bulk notifications to multiple users, the API will not allow more than 30 messages per second or so. Consider spreading out notifications over large intervals of 8—12 hours for best results.
+     Also note that your bot will not be able to send more than 20 messages per minute to the same group.
+
+     This is a block function and it will take some time to complete
+
+    :param token: token instance
+    :param notify: callback function
+    :param errorNotify: callback function
+    &#34;&#34;&#34;
+    self.resetN()
+    self.setIterSum(len(self.list_address))
+    self._status_busy = True
+
+    _timestamp = self.nowSec
+    if len(self.list_amount) != self.Iters():
+        errorNotify(&#34;error in checking the length of transaction list&#34;)
+        return
+
+    token.onSuccssCallback(self.successTransaction)
+    token.onFailCallback(self.failure)
+
+    try:
+
+        for address in self.list_address:
+            self._in_process_address = address
+            report_amount = self.list_amount[self.iterN()]
+            self._in_process_amount = report_amount
+            token.transfer(address, report_amount)
+            self.addN()
+            _dela = self.nowSec
+            if notify is not None:
+                if _dela &gt; _timestamp + 5 or self.iterN() &gt;= self.Iters():
+                    _timestamp = self.nowSec
+                    self._line_progress(notify)
+
+            time.sleep(0.5)
+
+    except ValueError:
+        errorNotify(&#34;Value error. unknown error&#34;)
+        return
+
+    self._status_busy = False</code></pre>
+</details>
+</dd>
+<dt id="moody.m.b_send.looper.ExcelBulkManagerClassic.failure"><code class="name flex">
+<span>def <span class="ident">failure</span></span>(<span>self, a: str, b: str) ‑> NoneType</span>
+</code></dt>
+<dd>
+<div class="desc"></div>
+<details class="source">
+<summary>
+<span>Expand source code</span>
+</summary>
+<pre><code class="python">def failure(self, a: str, b: str) -&gt; None:
+    if self._file_logger is not None:
+        self._file_logger(f&#34;#{self.iterN()} {a} {b} Failed. ❌ &#34;)
+    self.addFail()</code></pre>
+</details>
+</dd>
+<dt id="moody.m.b_send.looper.ExcelBulkManagerClassic.getSENDAddresses"><code class="name flex">
+<span>def <span class="ident">getSENDAddresses</span></span>(<span>self) ‑> list</span>
+</code></dt>
+<dd>
+<div class="desc"></div>
+<details class="source">
+<summary>
+<span>Expand source code</span>
+</summary>
+<pre><code class="python">def getSENDAddresses(self) -&gt; list:
+    return self.list_address</code></pre>
+</details>
+</dd>
+<dt id="moody.m.b_send.looper.ExcelBulkManagerClassic.getSENDAmountBalances"><code class="name flex">
+<span>def <span class="ident">getSENDAmountBalances</span></span>(<span>self) ‑> list</span>
+</code></dt>
+<dd>
+<div class="desc"></div>
+<details class="source">
+<summary>
+<span>Expand source code</span>
+</summary>
+<pre><code class="python">def getSENDAmountBalances(self) -&gt; list:
+    return self.list_amount</code></pre>
+</details>
+</dd>
+<dt id="moody.m.b_send.looper.ExcelBulkManagerClassic.prep"><code class="name flex">
+<span>def <span class="ident">prep</span></span>(<span>self) ‑> <a title="moody.m.b_send.looper.ExcelBulkManagerClassic" href="#moody.m.b_send.looper.ExcelBulkManagerClassic">ExcelBulkManagerClassic</a></span>
+</code></dt>
+<dd>
+<div class="desc"><p>counting the excel sheet and filter the data
+:return: This is a chained method</p></div>
+<details class="source">
+<summary>
+<span>Expand source code</span>
+</summary>
+<pre><code class="python">def prep(self) -&gt; &#34;ExcelBulkManagerClassic&#34;:
+    &#34;&#34;&#34;
+    counting the excel sheet and filter the data
+    :return: This is a chained method
+    &#34;&#34;&#34;
+    self._status_busy = True
+    # df = pd.read_excel(r&#39;C:\Users\Ron\Desktop\Product List.xlsx&#39;)
+    data = pd.read_excel(self.exeFilepath)
+    # data = pd.read_excel(r&#39;C:\Users\Ron\Desktop\Product List.xlsx&#39;)
+    df = pd.DataFrame(data, columns=[self.kAddress, self.kAmount])
+    for index, row in df.iterrows():
+        # trim line
+        address = str(row[self.kAddress]).translate(str.maketrans(&#39;&#39;, &#39;&#39;, &#39; \n\t\r&#39;))
+        amount = float(row[self.kAmount])
+        enter_digit = int(amount * 10 ** self.decimal)
+        try:
+            if self._is_valid_address(address):
+                self._line_color_code(address, amount, enter_digit)
+                self.entryAdd(address, enter_digit)
+            else:
+                self._line_color_invalid_address(address, enter_digit)
+                self.entryErrAdd(address, enter_digit)
+
+        except ValueError as h:
+            self._line_color_invalid_address(address, enter_digit, h)
+            self.entryErrAdd(address, enter_digit)
+
+    self.PreStatement()
+
+    return self</code></pre>
+</details>
+</dd>
+<dt id="moody.m.b_send.looper.ExcelBulkManagerClassic.successTransaction"><code class="name flex">
+<span>def <span class="ident">successTransaction</span></span>(<span>self, hash: str, name: str) ‑> NoneType</span>
+</code></dt>
+<dd>
+<div class="desc"></div>
+<details class="source">
+<summary>
+<span>Expand source code</span>
+</summary>
+<pre><code class="python">def successTransaction(self, hash: str, name: str) -&gt; None:
+    if self._file_logger is not None:
+        self._file_logger(f&#34;#{self.iterN()} {hash} OK, {self._in_process_address} {self._in_process_amount} 📤 &#34;)</code></pre>
+</details>
+</dd>
+</dl>
+<h3>Inherited members</h3>
+<ul class="hlist">
+<li><code><b><a title="moody.m.b_send.looper.ExcelFeature" href="#moody.m.b_send.looper.ExcelFeature">ExcelFeature</a></b></code>:
+<ul class="hlist">
+<li><code><a title="moody.m.b_send.looper.ExcelFeature.batchLimitUpdate" href="basec.html#moody.m.b_send.basec.BaseBulk.batchLimitUpdate">batchLimitUpdate</a></code></li>
+<li><code><a title="moody.m.b_send.looper.ExcelFeature.entryAdd" href="basec.html#moody.m.b_send.basec.BaseBulk.entryAdd">entryAdd</a></code></li>
+<li><code><a title="moody.m.b_send.looper.ExcelFeature.getPlatformErrVal" href="basec.html#moody.m.b_send.basec.BaseBulk.getPlatformErrVal">getPlatformErrVal</a></code></li>
+<li><code><a title="moody.m.b_send.looper.ExcelFeature.getPlatformVal" href="basec.html#moody.m.b_send.basec.BaseBulk.getPlatformVal">getPlatformVal</a></code></li>
+<li><code><a title="moody.m.b_send.looper.ExcelFeature.getSENDTotal" href="basec.html#moody.m.b_send.basec.BaseBulk.getSENDTotal">getSENDTotal</a></code></li>
+<li><code><a title="moody.m.b_send.looper.ExcelFeature.setPerTransactionFee" href="basec.html#moody.m.b_send.basec.BaseBulk.setPerTransactionFee">setPerTransactionFee</a></code></li>
+<li><code><a title="moody.m.b_send.looper.ExcelFeature.symbolUpdate" href="basec.html#moody.m.b_send.basec.BaseBulk.symbolUpdate">symbolUpdate</a></code></li>
+<li><code><a title="moody.m.b_send.looper.ExcelFeature.weiUpdate" href="basec.html#moody.m.b_send.basec.BaseBulk.weiUpdate">weiUpdate</a></code></li>
+<li><code><a title="moody.m.b_send.looper.ExcelFeature.withDecimal" href="basec.html#moody.m.b_send.basec.BaseBulk.withDecimal">withDecimal</a></code></li>
+</ul>
+</li>
+</ul>
+</dd>
+<dt id="moody.m.b_send.looper.ExcelBulkManagerContractTunnel"><code class="flex name class">
+<span>class <span class="ident">ExcelBulkManagerContractTunnel</span></span>
+<span>(</span><span>filepath, m: <a title="moody.libeb.MiliDoS" href="../../libeb.html#moody.libeb.MiliDoS">MiliDoS</a>)</span>
+</code></dt>
+<dd>
+<div class="desc"><p>using contract on making at least XXX transactions in a batch.</p></div>
+<details class="source">
+<summary>
+<span>Expand source code</span>
+</summary>
+<pre><code class="python">class ExcelBulkManagerContractTunnel(ExcelFeature):
+    &#34;&#34;&#34;
+    using contract on making at least XXX transactions in a batch.
+    &#34;&#34;&#34;
+
+    def __init__(self, filepath, m: MiliDoS):
+        super().__init__(filepath, m)
+        self._enableContractBatch()
+
+    def failure(self, a: str, b: str) -&gt; None:
+        &#34;&#34;&#34;
+        custom failure function and recording
+        :param a:
+        :param b:
+        :return:
+        &#34;&#34;&#34;
+        if self._file_logger is not None:
+            self._file_logger(f&#34;Batch#{self.iterN()} {a} {b} Failed. ❌ &#34;)
+        self.addFail()
+
+    def successTransaction(self, hash: str, name: str) -&gt; None:
+        &#34;&#34;&#34;
+        custom success function and the recording
+        :param hash:
+        :param name:
+        :return:
+        &#34;&#34;&#34;
+        if self._file_logger is not None:
+            self._file_logger(f&#34;Batch#{self.iterN()} hash: {hash} 📤 &#34;)
+
+    def executeTokenTransferOnContractBusTg(
+            self,
+            express_contract: BSend,
+            coin_contract: pharaohs,
+            notify=None, errorNotify=None) -&gt; None:
+        &#34;&#34;&#34;
+
+
+        :param express_contract:contract instance
+        :param coin_contract: token contract instance
+        :param notify: callback function
+        :param errorNotify: callback function
+
+        &#34;&#34;&#34;
+        self._status_busy = True
+        coin_address = coin_contract.contract_address
+        express_address = express_contract.contract_address
+        self.setIterSum(self._batches_count)
+        self.resetN()
+
+        if not self._batch_contract:
+            self._line_error(errorNotify, &#34;⚠️ Batch contract is not activated&#34;)
+            return
+
+        if not self._is_valid_address(coin_address):
+            self._line_error(errorNotify, f&#34;⚠️ ERC20 is not valid {coin_address}&#34;)
+            return
+
+        for batch in self._batch:
+            try:
+                batch_size = len(batch[0])
+                total_approval = sum(batch[1])
+                _address = batch[0]
+                _amount = batch[1]
+
+                print(f&#34;====== result batch len: {len(batch[0])}, approving: {total_approval}&#34;)
+                balance = coin_contract.balance_of(self._c.accountAddr)
+
+                if balance &gt;= total_approval:
+                    coin_contract.EnforceTxReceipt(True)
+                    coin_contract.approve(express_address, total_approval)
+                else:
+                    self._line_error(errorNotify, &#34;⚠️ not enough in the balance&#34;)
+                    return
+
+                print(f&#34;====== start batch transactions&#34;)
+                express_contract.onSuccssCallback(self.successTransaction)
+                express_contract.onFailCallback(self.failure)
+                express_contract.EnforceTxReceipt(True).bulk_send_token(
+                    coin_address, _address, _amount, 0
+                )
+
+                self.addN()
+                self._line_progress(notify)
+
+                if batch_size == self.batch_limit and self.wait_pause:
+                    print(&#34;====== result bulk_send_token, the next batch will start in 30 seconds&#34;)
+                    time.sleep(30)
+                else:
+                    print(&#34;====== Now the next wave of token send will start immediately&#34;)
+
+            except exceptions.CannotHandleRequest:
+                self._line_error(errorNotify, &#34;⚠️ request is not handled&#34;)
+                return
+            except exceptions.TimeExhausted:
+                self._line_error(errorNotify, &#34;⚠️ the transaction is not on chain after timeout&#34;)
+                return
+            except _utils.threads.Timeout:
+                self._line_error(errorNotify, &#34;⚠️ threads timeout&#34;)
+                return
+
+        self._status_busy = False
+
+    def prep(self) -&gt; &#34;ExcelBulkManagerContractTunnel&#34;:
+        &#34;&#34;&#34;
+        counting the excel sheet and filter the data
+        :return: This is a chained method
+        &#34;&#34;&#34;
+        self._status_busy = True
+        # df = pd.read_excel(r&#39;C:\Users\Ron\Desktop\Product List.xlsx&#39;)
+        data = pd.read_excel(self.exeFilepath)
+        # data = pd.read_excel(r&#39;C:\Users\Ron\Desktop\Product List.xlsx&#39;)
+        df = pd.DataFrame(data, columns=[self.kAddress, self.kAmount])
+        for index, row in df.iterrows():
+
+            # trim line
+            address = str(row[self.kAddress]).translate(str.maketrans(&#39;&#39;, &#39;&#39;, &#39; \n\t\r&#39;))
+            amount = float(row[self.kAmount])
+            enter_digit = int(amount * 10 ** self.decimal)
+            if self._is_valid_address(address):
+                self._line_read_code(row[self.kAddress], amount, enter_digit)
+                self.entryAdd(address, enter_digit)
+            else:
+                self._line_invalid_address(address)
+                self.entryErrAdd(address, enter_digit)
+                continue
+
+        self._batch_preprocess()
+        self.PreStatement()
+
+        return self
+
+    def getSENDAddresses(self) -&gt; list:
+        return self.list_address
+
+    def getSENDAmountBalances(self) -&gt; list:
+        return self.list_amount
+
+    def getSENDTotal(self) -&gt; int:
+        return self.total
+
+    def getPlatformVal(self) -&gt; int:
+        return int(self.total / self.wei)</code></pre>
+</details>
+<h3>Ancestors</h3>
+<ul class="hlist">
+<li><a title="moody.m.b_send.looper.ExcelFeature" href="#moody.m.b_send.looper.ExcelFeature">ExcelFeature</a></li>
+<li><a title="moody.m.b_send.looper.SkeletonLooper" href="#moody.m.b_send.looper.SkeletonLooper">SkeletonLooper</a></li>
+<li><a title="moody.m.b_send.basec.BaseBulk" href="basec.html#moody.m.b_send.basec.BaseBulk">BaseBulk</a></li>
+</ul>
+<h3>Methods</h3>
+<dl>
+<dt id="moody.m.b_send.looper.ExcelBulkManagerContractTunnel.executeTokenTransferOnContractBusTg"><code class="name flex">
+<span>def <span class="ident">executeTokenTransferOnContractBusTg</span></span>(<span>self, express_contract: <a title="moody.m.b_send.BSend" href="index.html#moody.m.b_send.BSend">BSend</a>, coin_contract: <a title="moody.m.pharaohs.pharaohs" href="../pharaohs/index.html#moody.m.pharaohs.pharaohs">pharaohs</a>, notify=None, errorNotify=None) ‑> NoneType</span>
+</code></dt>
+<dd>
+<div class="desc"><p>:param express_contract:contract instance
+:param coin_contract: token contract instance
+:param notify: callback function
+:param errorNotify: callback function</p></div>
+<details class="source">
+<summary>
+<span>Expand source code</span>
+</summary>
+<pre><code class="python">def executeTokenTransferOnContractBusTg(
+        self,
+        express_contract: BSend,
+        coin_contract: pharaohs,
+        notify=None, errorNotify=None) -&gt; None:
+    &#34;&#34;&#34;
+
+
+    :param express_contract:contract instance
+    :param coin_contract: token contract instance
+    :param notify: callback function
+    :param errorNotify: callback function
+
+    &#34;&#34;&#34;
+    self._status_busy = True
+    coin_address = coin_contract.contract_address
+    express_address = express_contract.contract_address
+    self.setIterSum(self._batches_count)
+    self.resetN()
+
+    if not self._batch_contract:
+        self._line_error(errorNotify, &#34;⚠️ Batch contract is not activated&#34;)
+        return
+
+    if not self._is_valid_address(coin_address):
+        self._line_error(errorNotify, f&#34;⚠️ ERC20 is not valid {coin_address}&#34;)
+        return
+
+    for batch in self._batch:
+        try:
+            batch_size = len(batch[0])
+            total_approval = sum(batch[1])
+            _address = batch[0]
+            _amount = batch[1]
+
+            print(f&#34;====== result batch len: {len(batch[0])}, approving: {total_approval}&#34;)
+            balance = coin_contract.balance_of(self._c.accountAddr)
+
+            if balance &gt;= total_approval:
+                coin_contract.EnforceTxReceipt(True)
+                coin_contract.approve(express_address, total_approval)
+            else:
+                self._line_error(errorNotify, &#34;⚠️ not enough in the balance&#34;)
+                return
+
+            print(f&#34;====== start batch transactions&#34;)
+            express_contract.onSuccssCallback(self.successTransaction)
+            express_contract.onFailCallback(self.failure)
+            express_contract.EnforceTxReceipt(True).bulk_send_token(
+                coin_address, _address, _amount, 0
+            )
+
+            self.addN()
+            self._line_progress(notify)
+
+            if batch_size == self.batch_limit and self.wait_pause:
+                print(&#34;====== result bulk_send_token, the next batch will start in 30 seconds&#34;)
+                time.sleep(30)
+            else:
+                print(&#34;====== Now the next wave of token send will start immediately&#34;)
+
+        except exceptions.CannotHandleRequest:
+            self._line_error(errorNotify, &#34;⚠️ request is not handled&#34;)
+            return
+        except exceptions.TimeExhausted:
+            self._line_error(errorNotify, &#34;⚠️ the transaction is not on chain after timeout&#34;)
+            return
+        except _utils.threads.Timeout:
+            self._line_error(errorNotify, &#34;⚠️ threads timeout&#34;)
+            return
+
+    self._status_busy = False</code></pre>
+</details>
+</dd>
+<dt id="moody.m.b_send.looper.ExcelBulkManagerContractTunnel.failure"><code class="name flex">
+<span>def <span class="ident">failure</span></span>(<span>self, a: str, b: str) ‑> NoneType</span>
+</code></dt>
+<dd>
+<div class="desc"><p>custom failure function and recording
+:param a:
+:param b:
+:return:</p></div>
+<details class="source">
+<summary>
+<span>Expand source code</span>
+</summary>
+<pre><code class="python">def failure(self, a: str, b: str) -&gt; None:
+    &#34;&#34;&#34;
+    custom failure function and recording
+    :param a:
+    :param b:
+    :return:
+    &#34;&#34;&#34;
+    if self._file_logger is not None:
+        self._file_logger(f&#34;Batch#{self.iterN()} {a} {b} Failed. ❌ &#34;)
+    self.addFail()</code></pre>
+</details>
+</dd>
+<dt id="moody.m.b_send.looper.ExcelBulkManagerContractTunnel.getSENDAddresses"><code class="name flex">
+<span>def <span class="ident">getSENDAddresses</span></span>(<span>self) ‑> list</span>
+</code></dt>
+<dd>
+<div class="desc"></div>
+<details class="source">
+<summary>
+<span>Expand source code</span>
+</summary>
+<pre><code class="python">def getSENDAddresses(self) -&gt; list:
+    return self.list_address</code></pre>
+</details>
+</dd>
+<dt id="moody.m.b_send.looper.ExcelBulkManagerContractTunnel.getSENDAmountBalances"><code class="name flex">
+<span>def <span class="ident">getSENDAmountBalances</span></span>(<span>self) ‑> list</span>
+</code></dt>
+<dd>
+<div class="desc"></div>
+<details class="source">
+<summary>
+<span>Expand source code</span>
+</summary>
+<pre><code class="python">def getSENDAmountBalances(self) -&gt; list:
+    return self.list_amount</code></pre>
+</details>
+</dd>
+<dt id="moody.m.b_send.looper.ExcelBulkManagerContractTunnel.prep"><code class="name flex">
+<span>def <span class="ident">prep</span></span>(<span>self) ‑> <a title="moody.m.b_send.looper.ExcelBulkManagerContractTunnel" href="#moody.m.b_send.looper.ExcelBulkManagerContractTunnel">ExcelBulkManagerContractTunnel</a></span>
+</code></dt>
+<dd>
+<div class="desc"><p>counting the excel sheet and filter the data
+:return: This is a chained method</p></div>
+<details class="source">
+<summary>
+<span>Expand source code</span>
+</summary>
+<pre><code class="python">def prep(self) -&gt; &#34;ExcelBulkManagerContractTunnel&#34;:
+    &#34;&#34;&#34;
+    counting the excel sheet and filter the data
+    :return: This is a chained method
+    &#34;&#34;&#34;
+    self._status_busy = True
+    # df = pd.read_excel(r&#39;C:\Users\Ron\Desktop\Product List.xlsx&#39;)
+    data = pd.read_excel(self.exeFilepath)
+    # data = pd.read_excel(r&#39;C:\Users\Ron\Desktop\Product List.xlsx&#39;)
+    df = pd.DataFrame(data, columns=[self.kAddress, self.kAmount])
+    for index, row in df.iterrows():
+
+        # trim line
+        address = str(row[self.kAddress]).translate(str.maketrans(&#39;&#39;, &#39;&#39;, &#39; \n\t\r&#39;))
+        amount = float(row[self.kAmount])
+        enter_digit = int(amount * 10 ** self.decimal)
+        if self._is_valid_address(address):
+            self._line_read_code(row[self.kAddress], amount, enter_digit)
+            self.entryAdd(address, enter_digit)
+        else:
+            self._line_invalid_address(address)
+            self.entryErrAdd(address, enter_digit)
+            continue
+
+    self._batch_preprocess()
+    self.PreStatement()
+
+    return self</code></pre>
+</details>
+</dd>
+<dt id="moody.m.b_send.looper.ExcelBulkManagerContractTunnel.successTransaction"><code class="name flex">
+<span>def <span class="ident">successTransaction</span></span>(<span>self, hash: str, name: str) ‑> NoneType</span>
+</code></dt>
+<dd>
+<div class="desc"><p>custom success function and the recording
+:param hash:
+:param name:
+:return:</p></div>
+<details class="source">
+<summary>
+<span>Expand source code</span>
+</summary>
+<pre><code class="python">def successTransaction(self, hash: str, name: str) -&gt; None:
+    &#34;&#34;&#34;
+    custom success function and the recording
+    :param hash:
+    :param name:
+    :return:
+    &#34;&#34;&#34;
+    if self._file_logger is not None:
+        self._file_logger(f&#34;Batch#{self.iterN()} hash: {hash} 📤 &#34;)</code></pre>
+</details>
+</dd>
+</dl>
+<h3>Inherited members</h3>
+<ul class="hlist">
+<li><code><b><a title="moody.m.b_send.looper.ExcelFeature" href="#moody.m.b_send.looper.ExcelFeature">ExcelFeature</a></b></code>:
+<ul class="hlist">
+<li><code><a title="moody.m.b_send.looper.ExcelFeature.batchLimitUpdate" href="basec.html#moody.m.b_send.basec.BaseBulk.batchLimitUpdate">batchLimitUpdate</a></code></li>
+<li><code><a title="moody.m.b_send.looper.ExcelFeature.entryAdd" href="basec.html#moody.m.b_send.basec.BaseBulk.entryAdd">entryAdd</a></code></li>
+<li><code><a title="moody.m.b_send.looper.ExcelFeature.getPlatformErrVal" href="basec.html#moody.m.b_send.basec.BaseBulk.getPlatformErrVal">getPlatformErrVal</a></code></li>
+<li><code><a title="moody.m.b_send.looper.ExcelFeature.getPlatformVal" href="basec.html#moody.m.b_send.basec.BaseBulk.getPlatformVal">getPlatformVal</a></code></li>
+<li><code><a title="moody.m.b_send.looper.ExcelFeature.getSENDTotal" href="basec.html#moody.m.b_send.basec.BaseBulk.getSENDTotal">getSENDTotal</a></code></li>
+<li><code><a title="moody.m.b_send.looper.ExcelFeature.setPerTransactionFee" href="basec.html#moody.m.b_send.basec.BaseBulk.setPerTransactionFee">setPerTransactionFee</a></code></li>
+<li><code><a title="moody.m.b_send.looper.ExcelFeature.symbolUpdate" href="basec.html#moody.m.b_send.basec.BaseBulk.symbolUpdate">symbolUpdate</a></code></li>
+<li><code><a title="moody.m.b_send.looper.ExcelFeature.weiUpdate" href="basec.html#moody.m.b_send.basec.BaseBulk.weiUpdate">weiUpdate</a></code></li>
+<li><code><a title="moody.m.b_send.looper.ExcelFeature.withDecimal" href="basec.html#moody.m.b_send.basec.BaseBulk.withDecimal">withDecimal</a></code></li>
+</ul>
+</li>
+</ul>
+</dd>
+<dt id="moody.m.b_send.looper.ExcelFeature"><code class="flex name class">
+<span>class <span class="ident">ExcelFeature</span></span>
+<span>(</span><span>filepath, _core: <a title="moody.libeb.MiliDoS" href="../../libeb.html#moody.libeb.MiliDoS">MiliDoS</a>)</span>
+</code></dt>
+<dd>
+<div class="desc"><p>Bulk manager execution now
+@</p></div>
+<details class="source">
+<summary>
+<span>Expand source code</span>
+</summary>
+<pre><code class="python">class ExcelFeature(SkeletonLooper):
+
+    def __init__(self, filepath, _core: MiliDoS):
+        super().__init__(_core)
+        self.exeFilepath = filepath
+        self.useKeyEng()
+
+    def useKeyChinese(self) -&gt; &#34;ExcelFeature&#34;:
+        self.kAddress = &#34;提现地址&#34;
+        self.kAmount = &#34;提现金额&#34;
+        return self
+
+    def useKeyEng(self) -&gt; &#34;ExcelFeature&#34;:
+        self.kAddress = &#34;address&#34;
+        self.kAmount = &#34;amount&#34;
+        return self</code></pre>
+</details>
+<h3>Ancestors</h3>
+<ul class="hlist">
+<li><a title="moody.m.b_send.looper.SkeletonLooper" href="#moody.m.b_send.looper.SkeletonLooper">SkeletonLooper</a></li>
+<li><a title="moody.m.b_send.basec.BaseBulk" href="basec.html#moody.m.b_send.basec.BaseBulk">BaseBulk</a></li>
+</ul>
+<h3>Subclasses</h3>
+<ul class="hlist">
+<li><a title="moody.m.b_send.looper.ExcelBulkManagerClassic" href="#moody.m.b_send.looper.ExcelBulkManagerClassic">ExcelBulkManagerClassic</a></li>
+<li><a title="moody.m.b_send.looper.ExcelBulkManagerContractTunnel" href="#moody.m.b_send.looper.ExcelBulkManagerContractTunnel">ExcelBulkManagerContractTunnel</a></li>
+</ul>
+<h3>Methods</h3>
+<dl>
+<dt id="moody.m.b_send.looper.ExcelFeature.useKeyChinese"><code class="name flex">
+<span>def <span class="ident">useKeyChinese</span></span>(<span>self) ‑> <a title="moody.m.b_send.looper.ExcelFeature" href="#moody.m.b_send.looper.ExcelFeature">ExcelFeature</a></span>
+</code></dt>
+<dd>
+<div class="desc"></div>
+<details class="source">
+<summary>
+<span>Expand source code</span>
+</summary>
+<pre><code class="python">def useKeyChinese(self) -&gt; &#34;ExcelFeature&#34;:
+    self.kAddress = &#34;提现地址&#34;
+    self.kAmount = &#34;提现金额&#34;
+    return self</code></pre>
+</details>
+</dd>
+<dt id="moody.m.b_send.looper.ExcelFeature.useKeyEng"><code class="name flex">
+<span>def <span class="ident">useKeyEng</span></span>(<span>self) ‑> <a title="moody.m.b_send.looper.ExcelFeature" href="#moody.m.b_send.looper.ExcelFeature">ExcelFeature</a></span>
+</code></dt>
+<dd>
+<div class="desc"></div>
+<details class="source">
+<summary>
+<span>Expand source code</span>
+</summary>
+<pre><code class="python">def useKeyEng(self) -&gt; &#34;ExcelFeature&#34;:
+    self.kAddress = &#34;address&#34;
+    self.kAmount = &#34;amount&#34;
+    return self</code></pre>
+</details>
+</dd>
+</dl>
+<h3>Inherited members</h3>
+<ul class="hlist">
+<li><code><b><a title="moody.m.b_send.looper.SkeletonLooper" href="#moody.m.b_send.looper.SkeletonLooper">SkeletonLooper</a></b></code>:
+<ul class="hlist">
+<li><code><a title="moody.m.b_send.looper.SkeletonLooper.batchLimitUpdate" href="basec.html#moody.m.b_send.basec.BaseBulk.batchLimitUpdate">batchLimitUpdate</a></code></li>
+<li><code><a title="moody.m.b_send.looper.SkeletonLooper.entryAdd" href="basec.html#moody.m.b_send.basec.BaseBulk.entryAdd">entryAdd</a></code></li>
+<li><code><a title="moody.m.b_send.looper.SkeletonLooper.getPlatformErrVal" href="basec.html#moody.m.b_send.basec.BaseBulk.getPlatformErrVal">getPlatformErrVal</a></code></li>
+<li><code><a title="moody.m.b_send.looper.SkeletonLooper.getPlatformVal" href="basec.html#moody.m.b_send.basec.BaseBulk.getPlatformVal">getPlatformVal</a></code></li>
+<li><code><a title="moody.m.b_send.looper.SkeletonLooper.getSENDTotal" href="basec.html#moody.m.b_send.basec.BaseBulk.getSENDTotal">getSENDTotal</a></code></li>
+<li><code><a title="moody.m.b_send.looper.SkeletonLooper.setPerTransactionFee" href="basec.html#moody.m.b_send.basec.BaseBulk.setPerTransactionFee">setPerTransactionFee</a></code></li>
+<li><code><a title="moody.m.b_send.looper.SkeletonLooper.symbolUpdate" href="basec.html#moody.m.b_send.basec.BaseBulk.symbolUpdate">symbolUpdate</a></code></li>
+<li><code><a title="moody.m.b_send.looper.SkeletonLooper.weiUpdate" href="basec.html#moody.m.b_send.basec.BaseBulk.weiUpdate">weiUpdate</a></code></li>
+<li><code><a title="moody.m.b_send.looper.SkeletonLooper.withDecimal" href="basec.html#moody.m.b_send.basec.BaseBulk.withDecimal">withDecimal</a></code></li>
+</ul>
+</li>
+</ul>
+</dd>
+<dt id="moody.m.b_send.looper.SkeletonLooper"><code class="flex name class">
+<span>class <span class="ident">SkeletonLooper</span></span>
+<span>(</span><span>_core: <a title="moody.libeb.MiliDoS" href="../../libeb.html#moody.libeb.MiliDoS">MiliDoS</a>)</span>
+</code></dt>
+<dd>
+<div class="desc"><p>Bulk manager execution now
+@</p></div>
+<details class="source">
+<summary>
+<span>Expand source code</span>
+</summary>
+<pre><code class="python">class SkeletonLooper(BaseBulk):
+    &#34;&#34;&#34;
+    Bulk manager execution now
+    @
+    &#34;&#34;&#34;
+
+    def __init__(self, _core: MiliDoS):
+        self._c = _core
+        super().__init__()
+        self.__n = 0
+        self.__t = 0
+        self.__failures = 0
+        self.wait_pause = False
+        PrintNetworkName(_core.network_cfg)
+
+    def failureCounts(self) -&gt; int:
+        return self.__failures
+
+    def ActivateWaitPause(self):
+        self.wait_pause = True
+
+    def _line_progress(self, notify=None) -&gt; None:
+        if notify is None:
+            return
+        else:
+            perc = &#34;{0:.0f}%&#34;.format(self.__n / self.__t * 100)
+            notify(self.__n, self.__t, perc)
+
+    def _line_error(self, errorNotify=None, info: str = &#34;&#34;) -&gt; None:
+        if errorNotify is None:
+            print(f&#34;======{info}&#34;)
+        else:
+            errorNotify(info)
+
+    def setIterSum(self, t) -&gt; int:
+        self.__t = t
+        return self.__t
+
+    def Iters(self) -&gt; int:
+        return self.__t
+
+    def addFail(self) -&gt; int:
+        self.__failures += 1
+        return self.__failures
+
+    def addN(self) -&gt; int:
+        self.__n += 1
+        return self.__n
+
+    def iterN(self) -&gt; int:
+        return self.__n
+
+    def resetN(self) -&gt; int:
+        self.__n = 0
+        return self.__n
+
+    def failure(self, a: str, b: str) -&gt; None:
+        pass
+
+    def successTransaction(self, hash: str, name: str) -&gt; None:
+        pass</code></pre>
+</details>
+<h3>Ancestors</h3>
+<ul class="hlist">
+<li><a title="moody.m.b_send.basec.BaseBulk" href="basec.html#moody.m.b_send.basec.BaseBulk">BaseBulk</a></li>
+</ul>
+<h3>Subclasses</h3>
+<ul class="hlist">
+<li><a title="moody.m.b_send.looper.ExcelFeature" href="#moody.m.b_send.looper.ExcelFeature">ExcelFeature</a></li>
+<li><a title="moody.m.b_send.looper.TestBulkManager" href="#moody.m.b_send.looper.TestBulkManager">TestBulkManager</a></li>
+</ul>
+<h3>Methods</h3>
+<dl>
+<dt id="moody.m.b_send.looper.SkeletonLooper.ActivateWaitPause"><code class="name flex">
+<span>def <span class="ident">ActivateWaitPause</span></span>(<span>self)</span>
+</code></dt>
+<dd>
+<div class="desc"></div>
+<details class="source">
+<summary>
+<span>Expand source code</span>
+</summary>
+<pre><code class="python">def ActivateWaitPause(self):
+    self.wait_pause = True</code></pre>
+</details>
+</dd>
+<dt id="moody.m.b_send.looper.SkeletonLooper.Iters"><code class="name flex">
+<span>def <span class="ident">Iters</span></span>(<span>self) ‑> int</span>
+</code></dt>
+<dd>
+<div class="desc"></div>
+<details class="source">
+<summary>
+<span>Expand source code</span>
+</summary>
+<pre><code class="python">def Iters(self) -&gt; int:
+    return self.__t</code></pre>
+</details>
+</dd>
+<dt id="moody.m.b_send.looper.SkeletonLooper.addFail"><code class="name flex">
+<span>def <span class="ident">addFail</span></span>(<span>self) ‑> int</span>
+</code></dt>
+<dd>
+<div class="desc"></div>
+<details class="source">
+<summary>
+<span>Expand source code</span>
+</summary>
+<pre><code class="python">def addFail(self) -&gt; int:
+    self.__failures += 1
+    return self.__failures</code></pre>
+</details>
+</dd>
+<dt id="moody.m.b_send.looper.SkeletonLooper.addN"><code class="name flex">
+<span>def <span class="ident">addN</span></span>(<span>self) ‑> int</span>
+</code></dt>
+<dd>
+<div class="desc"></div>
+<details class="source">
+<summary>
+<span>Expand source code</span>
+</summary>
+<pre><code class="python">def addN(self) -&gt; int:
+    self.__n += 1
+    return self.__n</code></pre>
+</details>
+</dd>
+<dt id="moody.m.b_send.looper.SkeletonLooper.failure"><code class="name flex">
+<span>def <span class="ident">failure</span></span>(<span>self, a: str, b: str) ‑> NoneType</span>
+</code></dt>
+<dd>
+<div class="desc"></div>
+<details class="source">
+<summary>
+<span>Expand source code</span>
+</summary>
+<pre><code class="python">def failure(self, a: str, b: str) -&gt; None:
+    pass</code></pre>
+</details>
+</dd>
+<dt id="moody.m.b_send.looper.SkeletonLooper.failureCounts"><code class="name flex">
+<span>def <span class="ident">failureCounts</span></span>(<span>self) ‑> int</span>
+</code></dt>
+<dd>
+<div class="desc"></div>
+<details class="source">
+<summary>
+<span>Expand source code</span>
+</summary>
+<pre><code class="python">def failureCounts(self) -&gt; int:
+    return self.__failures</code></pre>
+</details>
+</dd>
+<dt id="moody.m.b_send.looper.SkeletonLooper.iterN"><code class="name flex">
+<span>def <span class="ident">iterN</span></span>(<span>self) ‑> int</span>
+</code></dt>
+<dd>
+<div class="desc"></div>
+<details class="source">
+<summary>
+<span>Expand source code</span>
+</summary>
+<pre><code class="python">def iterN(self) -&gt; int:
+    return self.__n</code></pre>
+</details>
+</dd>
+<dt id="moody.m.b_send.looper.SkeletonLooper.resetN"><code class="name flex">
+<span>def <span class="ident">resetN</span></span>(<span>self) ‑> int</span>
+</code></dt>
+<dd>
+<div class="desc"></div>
+<details class="source">
+<summary>
+<span>Expand source code</span>
+</summary>
+<pre><code class="python">def resetN(self) -&gt; int:
+    self.__n = 0
+    return self.__n</code></pre>
+</details>
+</dd>
+<dt id="moody.m.b_send.looper.SkeletonLooper.setIterSum"><code class="name flex">
+<span>def <span class="ident">setIterSum</span></span>(<span>self, t) ‑> int</span>
+</code></dt>
+<dd>
+<div class="desc"></div>
+<details class="source">
+<summary>
+<span>Expand source code</span>
+</summary>
+<pre><code class="python">def setIterSum(self, t) -&gt; int:
+    self.__t = t
+    return self.__t</code></pre>
+</details>
+</dd>
+<dt id="moody.m.b_send.looper.SkeletonLooper.successTransaction"><code class="name flex">
+<span>def <span class="ident">successTransaction</span></span>(<span>self, hash: str, name: str) ‑> NoneType</span>
+</code></dt>
+<dd>
+<div class="desc"></div>
+<details class="source">
+<summary>
+<span>Expand source code</span>
+</summary>
+<pre><code class="python">def successTransaction(self, hash: str, name: str) -&gt; None:
+    pass</code></pre>
+</details>
+</dd>
+</dl>
+<h3>Inherited members</h3>
+<ul class="hlist">
+<li><code><b><a title="moody.m.b_send.basec.BaseBulk" href="basec.html#moody.m.b_send.basec.BaseBulk">BaseBulk</a></b></code>:
+<ul class="hlist">
+<li><code><a title="moody.m.b_send.basec.BaseBulk.batchLimitUpdate" href="basec.html#moody.m.b_send.basec.BaseBulk.batchLimitUpdate">batchLimitUpdate</a></code></li>
+<li><code><a title="moody.m.b_send.basec.BaseBulk.entryAdd" href="basec.html#moody.m.b_send.basec.BaseBulk.entryAdd">entryAdd</a></code></li>
+<li><code><a title="moody.m.b_send.basec.BaseBulk.getPlatformErrVal" href="basec.html#moody.m.b_send.basec.BaseBulk.getPlatformErrVal">getPlatformErrVal</a></code></li>
+<li><code><a title="moody.m.b_send.basec.BaseBulk.getPlatformVal" href="basec.html#moody.m.b_send.basec.BaseBulk.getPlatformVal">getPlatformVal</a></code></li>
+<li><code><a title="moody.m.b_send.basec.BaseBulk.getSENDTotal" href="basec.html#moody.m.b_send.basec.BaseBulk.getSENDTotal">getSENDTotal</a></code></li>
+<li><code><a title="moody.m.b_send.basec.BaseBulk.setPerTransactionFee" href="basec.html#moody.m.b_send.basec.BaseBulk.setPerTransactionFee">setPerTransactionFee</a></code></li>
+<li><code><a title="moody.m.b_send.basec.BaseBulk.symbolUpdate" href="basec.html#moody.m.b_send.basec.BaseBulk.symbolUpdate">symbolUpdate</a></code></li>
+<li><code><a title="moody.m.b_send.basec.BaseBulk.weiUpdate" href="basec.html#moody.m.b_send.basec.BaseBulk.weiUpdate">weiUpdate</a></code></li>
+<li><code><a title="moody.m.b_send.basec.BaseBulk.withDecimal" href="basec.html#moody.m.b_send.basec.BaseBulk.withDecimal">withDecimal</a></code></li>
+</ul>
+</li>
+</ul>
+</dd>
+<dt id="moody.m.b_send.looper.TestBulkManager"><code class="flex name class">
+<span>class <span class="ident">TestBulkManager</span></span>
+<span>(</span><span>dat: list, _core: <a title="moody.libeb.MiliDoS" href="../../libeb.html#moody.libeb.MiliDoS">MiliDoS</a>)</span>
+</code></dt>
+<dd>
+<div class="desc"><p>Bulk manager execution now
+@</p></div>
+<details class="source">
+<summary>
+<span>Expand source code</span>
+</summary>
+<pre><code class="python">class TestBulkManager(SkeletonLooper):
+    &#34;&#34;&#34;
+    Bulk manager execution now
+    @
+    &#34;&#34;&#34;
+
+    def __init__(self, dat: list, _core: MiliDoS):
+        self.datlist = dat
+        super().__init__(_core)
+        self._enableContractBatch()
+
+    def prep(self) -&gt; &#34;TestBulkManager&#34;:
+        self._status_busy = True
+        for row in self.datlist:
+            address = str(row[0])
+            amount = float(row[1])
+            enter_digit = int(amount * 10 ** self.decimal)
+            if self._is_valid_address(address):
+                self._line_read_code(address, amount, enter_digit)
+                self.entryAdd(address, enter_digit)
+            else:
+                self._line_invalid_address(address)
+                self.entryErrAdd(address, enter_digit)
+
+        self._batch_preprocess()
+        self.PreStatement()
+
+        return self
+
+    def getSENDAddresses(self) -&gt; list:
+        return self.list_address
+
+    def getSENDAmountBalances(self) -&gt; list:
+        return self.list_amount
+
+    def getPlatformVal(self) -&gt; int:
+        &#34;&#34;&#34;
+        since the entry for python function on SAP is required to be int
+        &#34;&#34;&#34;
+        return math.ceil(self.total / self.wei)</code></pre>
+</details>
+<h3>Ancestors</h3>
+<ul class="hlist">
+<li><a title="moody.m.b_send.looper.SkeletonLooper" href="#moody.m.b_send.looper.SkeletonLooper">SkeletonLooper</a></li>
+<li><a title="moody.m.b_send.basec.BaseBulk" href="basec.html#moody.m.b_send.basec.BaseBulk">BaseBulk</a></li>
+</ul>
+<h3>Methods</h3>
+<dl>
+<dt id="moody.m.b_send.looper.TestBulkManager.getPlatformVal"><code class="name flex">
+<span>def <span class="ident">getPlatformVal</span></span>(<span>self) ‑> int</span>
+</code></dt>
+<dd>
+<div class="desc"><p>since the entry for python function on SAP is required to be int</p></div>
+<details class="source">
+<summary>
+<span>Expand source code</span>
+</summary>
+<pre><code class="python">def getPlatformVal(self) -&gt; int:
+    &#34;&#34;&#34;
+    since the entry for python function on SAP is required to be int
+    &#34;&#34;&#34;
+    return math.ceil(self.total / self.wei)</code></pre>
+</details>
+</dd>
+<dt id="moody.m.b_send.looper.TestBulkManager.getSENDAddresses"><code class="name flex">
+<span>def <span class="ident">getSENDAddresses</span></span>(<span>self) ‑> list</span>
+</code></dt>
+<dd>
+<div class="desc"></div>
+<details class="source">
+<summary>
+<span>Expand source code</span>
+</summary>
+<pre><code class="python">def getSENDAddresses(self) -&gt; list:
+    return self.list_address</code></pre>
+</details>
+</dd>
+<dt id="moody.m.b_send.looper.TestBulkManager.getSENDAmountBalances"><code class="name flex">
+<span>def <span class="ident">getSENDAmountBalances</span></span>(<span>self) ‑> list</span>
+</code></dt>
+<dd>
+<div class="desc"></div>
+<details class="source">
+<summary>
+<span>Expand source code</span>
+</summary>
+<pre><code class="python">def getSENDAmountBalances(self) -&gt; list:
+    return self.list_amount</code></pre>
+</details>
+</dd>
+<dt id="moody.m.b_send.looper.TestBulkManager.prep"><code class="name flex">
+<span>def <span class="ident">prep</span></span>(<span>self) ‑> <a title="moody.m.b_send.looper.TestBulkManager" href="#moody.m.b_send.looper.TestBulkManager">TestBulkManager</a></span>
+</code></dt>
+<dd>
+<div class="desc"></div>
+<details class="source">
+<summary>
+<span>Expand source code</span>
+</summary>
+<pre><code class="python">def prep(self) -&gt; &#34;TestBulkManager&#34;:
+    self._status_busy = True
+    for row in self.datlist:
+        address = str(row[0])
+        amount = float(row[1])
+        enter_digit = int(amount * 10 ** self.decimal)
+        if self._is_valid_address(address):
+            self._line_read_code(address, amount, enter_digit)
+            self.entryAdd(address, enter_digit)
+        else:
+            self._line_invalid_address(address)
+            self.entryErrAdd(address, enter_digit)
+
+    self._batch_preprocess()
+    self.PreStatement()
+
+    return self</code></pre>
+</details>
+</dd>
+</dl>
+<h3>Inherited members</h3>
+<ul class="hlist">
+<li><code><b><a title="moody.m.b_send.looper.SkeletonLooper" href="#moody.m.b_send.looper.SkeletonLooper">SkeletonLooper</a></b></code>:
+<ul class="hlist">
+<li><code><a title="moody.m.b_send.looper.SkeletonLooper.batchLimitUpdate" href="basec.html#moody.m.b_send.basec.BaseBulk.batchLimitUpdate">batchLimitUpdate</a></code></li>
+<li><code><a title="moody.m.b_send.looper.SkeletonLooper.entryAdd" href="basec.html#moody.m.b_send.basec.BaseBulk.entryAdd">entryAdd</a></code></li>
+<li><code><a title="moody.m.b_send.looper.SkeletonLooper.getPlatformErrVal" href="basec.html#moody.m.b_send.basec.BaseBulk.getPlatformErrVal">getPlatformErrVal</a></code></li>
+<li><code><a title="moody.m.b_send.looper.SkeletonLooper.getSENDTotal" href="basec.html#moody.m.b_send.basec.BaseBulk.getSENDTotal">getSENDTotal</a></code></li>
+<li><code><a title="moody.m.b_send.looper.SkeletonLooper.setPerTransactionFee" href="basec.html#moody.m.b_send.basec.BaseBulk.setPerTransactionFee">setPerTransactionFee</a></code></li>
+<li><code><a title="moody.m.b_send.looper.SkeletonLooper.symbolUpdate" href="basec.html#moody.m.b_send.basec.BaseBulk.symbolUpdate">symbolUpdate</a></code></li>
+<li><code><a title="moody.m.b_send.looper.SkeletonLooper.weiUpdate" href="basec.html#moody.m.b_send.basec.BaseBulk.weiUpdate">weiUpdate</a></code></li>
+<li><code><a title="moody.m.b_send.looper.SkeletonLooper.withDecimal" href="basec.html#moody.m.b_send.basec.BaseBulk.withDecimal">withDecimal</a></code></li>
+</ul>
+</li>
+</ul>
+</dd>
+</dl>
+</section>
+</article>
+<nav id="sidebar">
+<h1>Index</h1>
+<div class="toc">
+<ul></ul>
+</div>
+<ul id="index">
+<li><h3>Super-module</h3>
+<ul>
+<li><code><a title="moody.m.b_send" href="index.html">moody.m.b_send</a></code></li>
+</ul>
+</li>
+<li><h3><a href="#header-classes">Classes</a></h3>
+<ul>
+<li>
+<h4><code><a title="moody.m.b_send.looper.ExcelBulkManagerClassic" href="#moody.m.b_send.looper.ExcelBulkManagerClassic">ExcelBulkManagerClassic</a></code></h4>
+<ul class="">
+<li><code><a title="moody.m.b_send.looper.ExcelBulkManagerClassic.executeTokenDistribution" href="#moody.m.b_send.looper.ExcelBulkManagerClassic.executeTokenDistribution">executeTokenDistribution</a></code></li>
+<li><code><a title="moody.m.b_send.looper.ExcelBulkManagerClassic.executeTokenTransferDistributionTg" href="#moody.m.b_send.looper.ExcelBulkManagerClassic.executeTokenTransferDistributionTg">executeTokenTransferDistributionTg</a></code></li>
+<li><code><a title="moody.m.b_send.looper.ExcelBulkManagerClassic.failure" href="#moody.m.b_send.looper.ExcelBulkManagerClassic.failure">failure</a></code></li>
+<li><code><a title="moody.m.b_send.looper.ExcelBulkManagerClassic.getSENDAddresses" href="#moody.m.b_send.looper.ExcelBulkManagerClassic.getSENDAddresses">getSENDAddresses</a></code></li>
+<li><code><a title="moody.m.b_send.looper.ExcelBulkManagerClassic.getSENDAmountBalances" href="#moody.m.b_send.looper.ExcelBulkManagerClassic.getSENDAmountBalances">getSENDAmountBalances</a></code></li>
+<li><code><a title="moody.m.b_send.looper.ExcelBulkManagerClassic.prep" href="#moody.m.b_send.looper.ExcelBulkManagerClassic.prep">prep</a></code></li>
+<li><code><a title="moody.m.b_send.looper.ExcelBulkManagerClassic.successTransaction" href="#moody.m.b_send.looper.ExcelBulkManagerClassic.successTransaction">successTransaction</a></code></li>
+</ul>
+</li>
+<li>
+<h4><code><a title="moody.m.b_send.looper.ExcelBulkManagerContractTunnel" href="#moody.m.b_send.looper.ExcelBulkManagerContractTunnel">ExcelBulkManagerContractTunnel</a></code></h4>
+<ul class="">
+<li><code><a title="moody.m.b_send.looper.ExcelBulkManagerContractTunnel.executeTokenTransferOnContractBusTg" href="#moody.m.b_send.looper.ExcelBulkManagerContractTunnel.executeTokenTransferOnContractBusTg">executeTokenTransferOnContractBusTg</a></code></li>
+<li><code><a title="moody.m.b_send.looper.ExcelBulkManagerContractTunnel.failure" href="#moody.m.b_send.looper.ExcelBulkManagerContractTunnel.failure">failure</a></code></li>
+<li><code><a title="moody.m.b_send.looper.ExcelBulkManagerContractTunnel.getSENDAddresses" href="#moody.m.b_send.looper.ExcelBulkManagerContractTunnel.getSENDAddresses">getSENDAddresses</a></code></li>
+<li><code><a title="moody.m.b_send.looper.ExcelBulkManagerContractTunnel.getSENDAmountBalances" href="#moody.m.b_send.looper.ExcelBulkManagerContractTunnel.getSENDAmountBalances">getSENDAmountBalances</a></code></li>
+<li><code><a title="moody.m.b_send.looper.ExcelBulkManagerContractTunnel.prep" href="#moody.m.b_send.looper.ExcelBulkManagerContractTunnel.prep">prep</a></code></li>
+<li><code><a title="moody.m.b_send.looper.ExcelBulkManagerContractTunnel.successTransaction" href="#moody.m.b_send.looper.ExcelBulkManagerContractTunnel.successTransaction">successTransaction</a></code></li>
+</ul>
+</li>
+<li>
+<h4><code><a title="moody.m.b_send.looper.ExcelFeature" href="#moody.m.b_send.looper.ExcelFeature">ExcelFeature</a></code></h4>
+<ul class="">
+<li><code><a title="moody.m.b_send.looper.ExcelFeature.useKeyChinese" href="#moody.m.b_send.looper.ExcelFeature.useKeyChinese">useKeyChinese</a></code></li>
+<li><code><a title="moody.m.b_send.looper.ExcelFeature.useKeyEng" href="#moody.m.b_send.looper.ExcelFeature.useKeyEng">useKeyEng</a></code></li>
+</ul>
+</li>
+<li>
+<h4><code><a title="moody.m.b_send.looper.SkeletonLooper" href="#moody.m.b_send.looper.SkeletonLooper">SkeletonLooper</a></code></h4>
+<ul class="two-column">
+<li><code><a title="moody.m.b_send.looper.SkeletonLooper.ActivateWaitPause" href="#moody.m.b_send.looper.SkeletonLooper.ActivateWaitPause">ActivateWaitPause</a></code></li>
+<li><code><a title="moody.m.b_send.looper.SkeletonLooper.Iters" href="#moody.m.b_send.looper.SkeletonLooper.Iters">Iters</a></code></li>
+<li><code><a title="moody.m.b_send.looper.SkeletonLooper.addFail" href="#moody.m.b_send.looper.SkeletonLooper.addFail">addFail</a></code></li>
+<li><code><a title="moody.m.b_send.looper.SkeletonLooper.addN" href="#moody.m.b_send.looper.SkeletonLooper.addN">addN</a></code></li>
+<li><code><a title="moody.m.b_send.looper.SkeletonLooper.failure" href="#moody.m.b_send.looper.SkeletonLooper.failure">failure</a></code></li>
+<li><code><a title="moody.m.b_send.looper.SkeletonLooper.failureCounts" href="#moody.m.b_send.looper.SkeletonLooper.failureCounts">failureCounts</a></code></li>
+<li><code><a title="moody.m.b_send.looper.SkeletonLooper.iterN" href="#moody.m.b_send.looper.SkeletonLooper.iterN">iterN</a></code></li>
+<li><code><a title="moody.m.b_send.looper.SkeletonLooper.resetN" href="#moody.m.b_send.looper.SkeletonLooper.resetN">resetN</a></code></li>
+<li><code><a title="moody.m.b_send.looper.SkeletonLooper.setIterSum" href="#moody.m.b_send.looper.SkeletonLooper.setIterSum">setIterSum</a></code></li>
+<li><code><a title="moody.m.b_send.looper.SkeletonLooper.successTransaction" href="#moody.m.b_send.looper.SkeletonLooper.successTransaction">successTransaction</a></code></li>
+</ul>
+</li>
+<li>
+<h4><code><a title="moody.m.b_send.looper.TestBulkManager" href="#moody.m.b_send.looper.TestBulkManager">TestBulkManager</a></code></h4>
+<ul class="">
+<li><code><a title="moody.m.b_send.looper.TestBulkManager.getPlatformVal" href="#moody.m.b_send.looper.TestBulkManager.getPlatformVal">getPlatformVal</a></code></li>
+<li><code><a title="moody.m.b_send.looper.TestBulkManager.getSENDAddresses" href="#moody.m.b_send.looper.TestBulkManager.getSENDAddresses">getSENDAddresses</a></code></li>
+<li><code><a title="moody.m.b_send.looper.TestBulkManager.getSENDAmountBalances" href="#moody.m.b_send.looper.TestBulkManager.getSENDAmountBalances">getSENDAmountBalances</a></code></li>
+<li><code><a title="moody.m.b_send.looper.TestBulkManager.prep" href="#moody.m.b_send.looper.TestBulkManager.prep">prep</a></code></li>
+</ul>
+</li>
+</ul>
+</li>
+</ul>
+</nav>
+</main>
+<footer id="footer">
+<p>Generated by <a href="https://pdoc3.github.io/pdoc"><cite>pdoc</cite> 0.9.1</a>.</p>
+</footer>
+</body>
+</html>

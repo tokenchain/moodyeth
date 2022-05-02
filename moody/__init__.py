@@ -112,9 +112,14 @@ class Evm:
     """
 
 
+class DefaultKeys:
+    k0 = "000000000000000000000000000000000000000000000000000000000000001e"
+
+
 __all__ = [
     '__version__',
     'Evm',
     'Config',
-    'Bolors'
+    'Bolors',
+    'DefaultKeys'
 ]

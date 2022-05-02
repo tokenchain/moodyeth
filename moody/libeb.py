@@ -17,7 +17,7 @@ from web3.middleware import geth_poa_middleware
 from web3.types import BlockData
 
 # ========================== Of course
-from . import Bolors, Evm
+from . import Bolors, Evm, DefaultKeys
 from .buildercompile.remotecompile import BuildRemoteLinuxCommand
 from .buildercompile.transpile import BuildLang
 from .conf import Config
@@ -228,6 +228,7 @@ class SolWeb3Tool(object):
     def __init__(self):
         self._abi = None
         self._bin = None
+        self._meta = None
         self.combined_data = None
         self._key = None
 
@@ -247,9 +248,35 @@ class SolWeb3Tool(object):
         """
         p1bin = os.path.join(self.WORKSPACE_PATH, self.OUTPUT_BUILD, "{}.bin".format(class_name))
         p2abi = os.path.join(self.WORKSPACE_PATH, self.OUTPUT_BUILD, "{}.abi".format(class_name))
+        metafile = os.path.join(self.WORKSPACE_PATH, self.OUTPUT_BUILD, "{}_meta.json".format(class_name))
         self._bin = codecs.open(p1bin, 'r', 'utf-8-sig').read()
         self._abi = json.load(codecs.open(p2abi, 'r', 'utf-8-sig'))
+        self._meta = json.load(codecs.open(metafile, 'r', 'utf-8-sig'))
         return self
+
+    def GetMetadata(self) -> dict:
+        return self._meta
+
+    def GetSourceFileRead(self, file_name: str) -> str:
+        asfile = os.path.join(self.WORKSPACE_PATH, file_name)
+        return codecs.open(asfile, 'r', 'utf-8-sig').read()
+
+    def GetMetaCompilerVer(self, full: bool = False) -> dict:
+        if "compiler" not in self._meta:
+            print("key compiler is not found")
+            return dict()
+        if "version" not in self._meta["compiler"]:
+            print("key version is not found")
+            return dict()
+
+        return self._meta["compiler"]["version"]
+
+    def GetMetaSettings(self) -> dict:
+        if "settings" not in self._meta:
+            print("key settings is not found")
+            return dict()
+
+        return self._meta["settings"]
 
     def GetCombinedFile(self) -> "SolWeb3Tool":
         pathc = os.path.join(self.WORKSPACE_PATH, self.OUTPUT_BUILD, "combined.json")
@@ -523,12 +550,15 @@ class MiliDoS(IDos):
 
                     yield log
 
-    def Auth(self, private_key_line: str) -> "MiliDoS":
+    def Auth(self, private_key_line: str = None) -> "MiliDoS":
         """
         switching the operating address to a different one that is given by the private key
         :param private_key_line: the input private key
         :return:
         """
+        if private_key_line is None:
+            private_key_line = DefaultKeys.k0
+
         # f"0x{private_key_line}"
         keyLo = self.w3.eth.account.from_key(f"0x{private_key_line}")
         # self.w3.eth.defaultAccount = keyoo.address
