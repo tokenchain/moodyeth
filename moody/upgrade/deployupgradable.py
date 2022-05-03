@@ -54,7 +54,8 @@ def deployProxyUniversial(
         deployer_key: str,
         class_name: str,
         admin_signer: str,
-        argsbytes: list
+        args: list,
+        args_initialization: list
 ):
     """
     followed the convention from https://docs.openzeppelin.com/upgrades-plugins/1.x/truffle-upgrades
@@ -71,11 +72,12 @@ def deployProxyUniversial(
     :param deployer_key:
     :param class_name:
     :param admin_signer:
-    :param argsbytes:
+    :param args: for the implementation contract
+    :param args_initialization: for initialization
     :return:
     """
     package_manifest = manifest(network, root_path, deployer_key)
-    deployProxy(package_manifest, class_name, admin_signer, argsbytes)
+    deployProxy(package_manifest, class_name, admin_signer, args, args_initialization)
 
 
 def checkForUpgradableContract(manifest: MiliDoS, class_name_contract: str) -> bool:
@@ -109,13 +111,15 @@ def deployCustomProxy(
         proxy_name: str,
         class_name: str,
         admin_signer: str,
-        argsbytes: list):
+        argsbytes: list,
+        args_initialization: list):
     """
     This used to serve the customized proxy that built by the third party or the non-standar proxy contracts defined by the users.
     :param package_manifest:
     :param class_name:
     :param admin_signer:
-    :param argsbytes:
+    :param argsbytes: for the implementation contract
+    :param args_initialization: for the implementation contract
     :return:
     """
     checkBreak(package_manifest, class_name)
@@ -141,7 +145,7 @@ def deployCustomProxy(
         rs = package_manifest.deploy(proxy_name, [
             logic_address,
             admin.contract_address,
-            argsbytes
+            args_initialization
         ])
 
         if not rs:
@@ -172,7 +176,9 @@ def deployProxy(
         package_manifest: MiliDoS,
         class_name: str,
         admin_signer: str,
-        argsbytes: list):
+        args_: list,
+        args_initialization_: list
+):
     """
     followed the convention from https://docs.openzeppelin.com/upgrades-plugins/1.x/truffle-upgrades
     This will automatically check that the Box contract is upgrade-safe, set up a proxy admin (if needed),
@@ -186,7 +192,8 @@ def deployProxy(
     :param package_manifest:
     :param class_name:
     :param admin_signer:
-    :param argsbytes:
+    :param args_: for the implementation contract
+    :param args_initialization_: for the implementation contract
     :return:
     """
 
@@ -194,7 +201,7 @@ def deployProxy(
     admin = implementingProxyAdmin(package_manifest)
 
     if not package_manifest.hasContractName(class_name):
-        rs = package_manifest.deploy(class_name, argsbytes)
+        rs = package_manifest.deploy(class_name, args_)
 
         if not rs:
             print("⛔️ failure in deployment..")
@@ -212,7 +219,7 @@ def deployProxy(
         rs = package_manifest.deployImple("TransparentUpgradeableProxy", [
             logic_address,
             admin.contract_address,
-            argsbytes
+            args_initialization_
         ])
         if not rs:
             print("⛔️ failure in deploying TransparentUpgradeableProxy")

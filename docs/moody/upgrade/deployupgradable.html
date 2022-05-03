@@ -82,7 +82,8 @@ def deployProxyUniversial(
         deployer_key: str,
         class_name: str,
         admin_signer: str,
-        argsbytes: list
+        args: list,
+        args_initialization: list
 ):
     &#34;&#34;&#34;
     followed the convention from https://docs.openzeppelin.com/upgrades-plugins/1.x/truffle-upgrades
@@ -99,11 +100,12 @@ def deployProxyUniversial(
     :param deployer_key:
     :param class_name:
     :param admin_signer:
-    :param argsbytes:
+    :param args: for the implementation contract
+    :param args_initialization: for initialization
     :return:
     &#34;&#34;&#34;
     package_manifest = manifest(network, root_path, deployer_key)
-    deployProxy(package_manifest, class_name, admin_signer, argsbytes)
+    deployProxy(package_manifest, class_name, admin_signer, args, args_initialization)
 
 
 def checkForUpgradableContract(manifest: MiliDoS, class_name_contract: str) -&gt; bool:
@@ -137,13 +139,15 @@ def deployCustomProxy(
         proxy_name: str,
         class_name: str,
         admin_signer: str,
-        argsbytes: list):
+        argsbytes: list,
+        args_initialization: list):
     &#34;&#34;&#34;
     This used to serve the customized proxy that built by the third party or the non-standar proxy contracts defined by the users.
     :param package_manifest:
     :param class_name:
     :param admin_signer:
-    :param argsbytes:
+    :param argsbytes: for the implementation contract
+    :param args_initialization: for the implementation contract
     :return:
     &#34;&#34;&#34;
     checkBreak(package_manifest, class_name)
@@ -169,7 +173,7 @@ def deployCustomProxy(
         rs = package_manifest.deploy(proxy_name, [
             logic_address,
             admin.contract_address,
-            argsbytes
+            args_initialization
         ])
 
         if not rs:
@@ -200,7 +204,9 @@ def deployProxy(
         package_manifest: MiliDoS,
         class_name: str,
         admin_signer: str,
-        argsbytes: list):
+        args_: list,
+        args_initialization_: list
+):
     &#34;&#34;&#34;
     followed the convention from https://docs.openzeppelin.com/upgrades-plugins/1.x/truffle-upgrades
     This will automatically check that the Box contract is upgrade-safe, set up a proxy admin (if needed),
@@ -214,7 +220,8 @@ def deployProxy(
     :param package_manifest:
     :param class_name:
     :param admin_signer:
-    :param argsbytes:
+    :param args_: for the implementation contract
+    :param args_initialization_: for the implementation contract
     :return:
     &#34;&#34;&#34;
 
@@ -222,7 +229,7 @@ def deployProxy(
     admin = implementingProxyAdmin(package_manifest)
 
     if not package_manifest.hasContractName(class_name):
-        rs = package_manifest.deploy(class_name, argsbytes)
+        rs = package_manifest.deploy(class_name, args_)
 
         if not rs:
             print(&#34;⛔️ failure in deployment..&#34;)
@@ -240,7 +247,7 @@ def deployProxy(
         rs = package_manifest.deployImple(&#34;TransparentUpgradeableProxy&#34;, [
             logic_address,
             admin.contract_address,
-            argsbytes
+            args_initialization_
         ])
         if not rs:
             print(&#34;⛔️ failure in deploying TransparentUpgradeableProxy&#34;)
@@ -351,14 +358,15 @@ def upgradeTo(package_manifest: MiliDoS, newVerClassName: str, args: any = None)
 </details>
 </dd>
 <dt id="moody.upgrade.deployupgradable.deployCustomProxy"><code class="name flex">
-<span>def <span class="ident">deployCustomProxy</span></span>(<span>package_manifest: <a title="moody.libeb.MiliDoS" href="../libeb.html#moody.libeb.MiliDoS">MiliDoS</a>, proxy_name: str, class_name: str, admin_signer: str, argsbytes: list)</span>
+<span>def <span class="ident">deployCustomProxy</span></span>(<span>package_manifest: <a title="moody.libeb.MiliDoS" href="../libeb.html#moody.libeb.MiliDoS">MiliDoS</a>, proxy_name: str, class_name: str, admin_signer: str, argsbytes: list, args_initialization: list)</span>
 </code></dt>
 <dd>
 <div class="desc"><p>This used to serve the customized proxy that built by the third party or the non-standar proxy contracts defined by the users.
 :param package_manifest:
 :param class_name:
 :param admin_signer:
-:param argsbytes:
+:param argsbytes: for the implementation contract
+:param args_initialization: for the implementation contract
 :return:</p></div>
 <details class="source">
 <summary>
@@ -369,13 +377,15 @@ def upgradeTo(package_manifest: MiliDoS, newVerClassName: str, args: any = None)
         proxy_name: str,
         class_name: str,
         admin_signer: str,
-        argsbytes: list):
+        argsbytes: list,
+        args_initialization: list):
     &#34;&#34;&#34;
     This used to serve the customized proxy that built by the third party or the non-standar proxy contracts defined by the users.
     :param package_manifest:
     :param class_name:
     :param admin_signer:
-    :param argsbytes:
+    :param argsbytes: for the implementation contract
+    :param args_initialization: for the implementation contract
     :return:
     &#34;&#34;&#34;
     checkBreak(package_manifest, class_name)
@@ -401,7 +411,7 @@ def upgradeTo(package_manifest: MiliDoS, newVerClassName: str, args: any = None)
         rs = package_manifest.deploy(proxy_name, [
             logic_address,
             admin.contract_address,
-            argsbytes
+            args_initialization
         ])
 
         if not rs:
@@ -429,7 +439,7 @@ def upgradeTo(package_manifest: MiliDoS, newVerClassName: str, args: any = None)
 </details>
 </dd>
 <dt id="moody.upgrade.deployupgradable.deployProxy"><code class="name flex">
-<span>def <span class="ident">deployProxy</span></span>(<span>package_manifest: <a title="moody.libeb.MiliDoS" href="../libeb.html#moody.libeb.MiliDoS">MiliDoS</a>, class_name: str, admin_signer: str, argsbytes: list)</span>
+<span>def <span class="ident">deployProxy</span></span>(<span>package_manifest: <a title="moody.libeb.MiliDoS" href="../libeb.html#moody.libeb.MiliDoS">MiliDoS</a>, class_name: str, admin_signer: str, args_: list, args_initialization_: list)</span>
 </code></dt>
 <dd>
 <div class="desc"><p>followed the convention from <a href="https://docs.openzeppelin.com/upgrades-plugins/1.x/truffle-upgrades">https://docs.openzeppelin.com/upgrades-plugins/1.x/truffle-upgrades</a>
@@ -442,7 +452,8 @@ existing Box contract and recompile it - the plugin will note it changed.</p>
 <p>:param package_manifest:
 :param class_name:
 :param admin_signer:
-:param argsbytes:
+:param args_: for the implementation contract
+:param args_initialization_: for the implementation contract
 :return:</p></div>
 <details class="source">
 <summary>
@@ -452,7 +463,9 @@ existing Box contract and recompile it - the plugin will note it changed.</p>
         package_manifest: MiliDoS,
         class_name: str,
         admin_signer: str,
-        argsbytes: list):
+        args_: list,
+        args_initialization_: list
+):
     &#34;&#34;&#34;
     followed the convention from https://docs.openzeppelin.com/upgrades-plugins/1.x/truffle-upgrades
     This will automatically check that the Box contract is upgrade-safe, set up a proxy admin (if needed),
@@ -466,7 +479,8 @@ existing Box contract and recompile it - the plugin will note it changed.</p>
     :param package_manifest:
     :param class_name:
     :param admin_signer:
-    :param argsbytes:
+    :param args_: for the implementation contract
+    :param args_initialization_: for the implementation contract
     :return:
     &#34;&#34;&#34;
 
@@ -474,7 +488,7 @@ existing Box contract and recompile it - the plugin will note it changed.</p>
     admin = implementingProxyAdmin(package_manifest)
 
     if not package_manifest.hasContractName(class_name):
-        rs = package_manifest.deploy(class_name, argsbytes)
+        rs = package_manifest.deploy(class_name, args_)
 
         if not rs:
             print(&#34;⛔️ failure in deployment..&#34;)
@@ -492,7 +506,7 @@ existing Box contract and recompile it - the plugin will note it changed.</p>
         rs = package_manifest.deployImple(&#34;TransparentUpgradeableProxy&#34;, [
             logic_address,
             admin.contract_address,
-            argsbytes
+            args_initialization_
         ])
         if not rs:
             print(&#34;⛔️ failure in deploying TransparentUpgradeableProxy&#34;)
@@ -514,7 +528,7 @@ existing Box contract and recompile it - the plugin will note it changed.</p>
 </details>
 </dd>
 <dt id="moody.upgrade.deployupgradable.deployProxyUniversial"><code class="name flex">
-<span>def <span class="ident">deployProxyUniversial</span></span>(<span>root_path: str, network: <a title="moody.Config" href="../index.html#moody.Config">Config</a>, deployer_key: str, class_name: str, admin_signer: str, argsbytes: list)</span>
+<span>def <span class="ident">deployProxyUniversial</span></span>(<span>root_path: str, network: <a title="moody.Config" href="../index.html#moody.Config">Config</a>, deployer_key: str, class_name: str, admin_signer: str, args: list, args_initialization: list)</span>
 </code></dt>
 <dd>
 <div class="desc"><p>followed the convention from <a href="https://docs.openzeppelin.com/upgrades-plugins/1.x/truffle-upgrades">https://docs.openzeppelin.com/upgrades-plugins/1.x/truffle-upgrades</a>
@@ -529,7 +543,8 @@ existing Box contract and recompile it - the plugin will note it changed.</p>
 :param deployer_key:
 :param class_name:
 :param admin_signer:
-:param argsbytes:
+:param args: for the implementation contract
+:param args_initialization: for initialization
 :return:</p></div>
 <details class="source">
 <summary>
@@ -541,7 +556,8 @@ existing Box contract and recompile it - the plugin will note it changed.</p>
         deployer_key: str,
         class_name: str,
         admin_signer: str,
-        argsbytes: list
+        args: list,
+        args_initialization: list
 ):
     &#34;&#34;&#34;
     followed the convention from https://docs.openzeppelin.com/upgrades-plugins/1.x/truffle-upgrades
@@ -558,11 +574,12 @@ existing Box contract and recompile it - the plugin will note it changed.</p>
     :param deployer_key:
     :param class_name:
     :param admin_signer:
-    :param argsbytes:
+    :param args: for the implementation contract
+    :param args_initialization: for initialization
     :return:
     &#34;&#34;&#34;
     package_manifest = manifest(network, root_path, deployer_key)
-    deployProxy(package_manifest, class_name, admin_signer, argsbytes)</code></pre>
+    deployProxy(package_manifest, class_name, admin_signer, args, args_initialization)</code></pre>
 </details>
 </dd>
 <dt id="moody.upgrade.deployupgradable.implementingProxyAdmin"><code class="name flex">
