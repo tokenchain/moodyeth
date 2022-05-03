@@ -17,7 +17,7 @@ from web3.middleware import geth_poa_middleware
 from web3.types import BlockData
 
 # ========================== Of course
-from . import Bolors, Evm, DefaultKeys
+from . import Bolors, Evm, DefaultKeys, root_base_path
 from .buildercompile.remotecompile import BuildRemoteLinuxCommand
 from .buildercompile.transpile import BuildLang
 from .conf import Config
@@ -355,12 +355,14 @@ class MiliDoS(IDos):
         self._contract_dict = dict()
         self._sol_list = list()
         # publicly accessible
-        self.base_path = ""
+        self.project_workspace_root = ""
         self.accountAddr = None
         self.pathfinder = None
         self.artifact_manager = None
         self._sol_link = None
         self.is_deploy = False
+        self.is_internal = False
+        self.deployed_address = False
         self.last_class = ""
         self.list_type = "list_address"
         self.network_cfg = _nodeCfg
@@ -420,7 +422,8 @@ class MiliDoS(IDos):
         pass
 
     def setWorkspace(self, path: str, readio: bool = True) -> "MiliDoS":
-        self.base_path = path
+        self.project_workspace_root = path
+        self.artifact_manager = SolWeb3Tool()
         self.pathfinder = Paths(path).setDefaultPath().Network(self.network_cfg.network_name)
         if readio:
             self.ready_io(True)
@@ -550,6 +553,20 @@ class MiliDoS(IDos):
 
                     yield log
 
+    def AuthByMemo(self, phrase: str = None) -> "MiliDoS":
+        keyLo = self.w3.eth.account.from_mnemonic(phrase)
+        # self.w3.eth.defaultAccount = keyoo.address
+        self.w3.eth.account = keyLo
+        # self.w3.eth.get_transaction_count
+        # self.w3.eth.accounts[0] = keyLo.address
+        # self.w3.eth.defaultAccount(f"0x{keyLo.key}")
+        is_address = self.w3.isAddress(keyLo.address)
+        # self.w3.isChecksumAddress(keyLo.address)
+        self.accountAddr = keyLo.address
+        print(f"🔫 You are now using {keyLo.address} and it is a {'valid key' if is_address else 'invalid key'}")
+
+        return self
+
     def Auth(self, private_key_line: str = None) -> "MiliDoS":
         """
         switching the operating address to a different one that is given by the private key
@@ -581,7 +598,7 @@ class MiliDoS(IDos):
         """
         # estimate_gas
         solc_artifact = SolWeb3Tool()
-        solc_artifact.setBasePath(self.base_path)
+        solc_artifact.setBasePath(self.project_workspace_root)
         solc_artifact = solc_artifact.GetCodeClassFromBuild(class_name)
         nr = self.w3.eth.contract(abi=solc_artifact.abi, bytecode=solc_artifact.bin)
         gas_est_amount = nr.constructor().estimateGas()
@@ -666,6 +683,84 @@ class MiliDoS(IDos):
             print(f"⚠️ The deployment is failed because there is no valid address found from {class_name}. Please check for internal errors from deployment hash from {jsonfile}")
             raise InvalidAddress
 
+    def provide_artifact_extends(self, class_name: str) -> SolWeb3Tool:
+        """
+        Following the class name of the contract
+        :param class_name:
+        :return:
+        """
+        if not self.artifact_manager:
+            print("❌ Root path is not setup. please setup the workspace first.")
+            exit(2)
+
+        sol = self.artifact_manager
+        sol.setBasePath(self.project_workspace_root)
+        sol.setBuildNameSpace("build")
+        sol = sol.GetCodeClassFromBuild(class_name)
+        self.artifact_manager = sol
+        return sol
+
+    def provide_artifact_implemented(self, class_name: str) -> SolWeb3Tool:
+        """
+        Use the internal available class names. Please see the internal class name list
+        :param class_name:
+        :return:
+        """
+        if not self.artifact_manager:
+            print("❌ Root path is not setup. please setup the workspace first.")
+            exit(2)
+
+        sol = self.artifact_manager
+        sol.setBasePath(root_base_path)
+        sol.setBuildNameSpace("artifacts")
+        sol = sol.GetCodeClassFromBuild(class_name)
+        self.artifact_manager = sol
+        return sol
+
+    def deployImple(self, class_name: str, params: list = [], gas_price: int = 0, gas_limit: int = 0) -> bool:
+        """
+        Deployment of implemented abi and code
+        :param class_name:
+        :param params:
+        :param gas_price:
+        :param gas_limit:
+        :return:
+        """
+        contract_nv = None
+        try:
+            solc_artifact = self.provide_artifact_implemented(class_name)
+            bin = BinOp(solc_artifact.bin, class_name)
+            if bin.checkBinForUndeployLib() is True:
+                bin.setDebug(True)
+                # try to find the needed libraries in address..
+                bin.anaylze(self)
+                contract_nv = self.w3.eth.contract(abi=solc_artifact.abi, bytecode=bin.GetKnifedBin())
+            else:
+                contract_nv = self.w3.eth.contract(abi=solc_artifact.abi, bytecode=bin.GetRawBin())
+
+        except FileNotFoundError:
+            print("💢 bin or abi file is not found.")
+            exit(3)
+        except FoundUndeployedLibraries:
+            exit(4)
+        except ContractLogicError as e:
+            print(f"💢 Contract error {e}")
+            exit(5)
+        gasprice = self.gasPrice if gas_price == 0 else gas_price
+        gas = self.gas if gas_limit == 0 else gas_limit
+        if len(params) > 0:
+            _transaction = contract_nv.constructor(*params).buildTransaction({
+                "gasPrice": gasprice,
+                "gas": gas
+            })
+        else:
+            _transaction = contract_nv.constructor().buildTransaction({
+                "gasPrice": gasprice,
+                "gas": gas
+            })
+        self.artifact_manager.setBasePath(self.project_workspace_root)
+        return self._endingdeployment(_transaction, class_name)
+
     def deploy(self, class_name: str, params: list = [], gas_price: int = 0, gas_limit: int = 0) -> bool:
         """
         This is using the faster way to deploy files by using the specific abi and bin files.
@@ -678,11 +773,8 @@ class MiliDoS(IDos):
         :return:
         """
         contract_nv = None
-        solc_artifact = None
         try:
-            solc_artifact = SolWeb3Tool()
-            solc_artifact.setBasePath(self.base_path)
-            solc_artifact = solc_artifact.GetCodeClassFromBuild(class_name)
+            solc_artifact = self.provide_artifact_extends(class_name)
             bin = BinOp(solc_artifact.bin, class_name)
             if bin.checkBinForUndeployLib() is True:
                 bin.setDebug(True)
@@ -694,27 +786,29 @@ class MiliDoS(IDos):
 
         except FileNotFoundError:
             print("💢 bin or abi file is not found.")
-            exit(0)
+            exit(3)
         except FoundUndeployedLibraries:
-            exit(0)
+            exit(4)
         except ContractLogicError as e:
             print(f"💢 Contract error {e}")
-            exit(0)
+            exit(5)
 
+        gasprice = self.gasPrice if gas_price == 0 else gas_price
+        gas = self.gas if gas_limit == 0 else gas_limit
+        if len(params) > 0:
+            _transaction = contract_nv.constructor(*params).buildTransaction({
+                "gasPrice": gasprice,
+                "gas": gas
+            })
+        else:
+            _transaction = contract_nv.constructor().buildTransaction({
+                "gasPrice": gasprice,
+                "gas": gas
+            })
+        return self._endingdeployment(_transaction, class_name)
+
+    def _endingdeployment(self, _transaction: any, class_name: str) -> bool:
         try:
-            gasprice = self.gasPrice if gas_price == 0 else gas_price
-            gas = self.gas if gas_limit == 0 else gas_limit
-            if len(params) > 0:
-                _transaction = contract_nv.constructor(*params).buildTransaction({
-                    "gasPrice": gasprice,
-                    "gas": gas
-                })
-            else:
-                _transaction = contract_nv.constructor().buildTransaction({
-                    "gasPrice": gasprice,
-                    "gas": gas
-                })
-
             _transaction['nonce'] = self.w3.eth.getTransactionCount(self.accountAddr)
             _transaction['to'] = None
             # _transaction['gas'] = self.gas if gas_limit == 0 else gas_limit
@@ -736,15 +830,16 @@ class MiliDoS(IDos):
             self._checkErrorForTxReceipt(tx_receipt, class_name, Paths.showCurrentDeployedClass(class_name))
             fresh_address = tx_receipt.contractAddress
             self._contract_dict[class_name] = fresh_address
+            self.deployed_address = fresh_address
 
             self._contract_dict["kv_{}".format(class_name)] = dict(
-                owner=self.accountAddr,
+                by=self.accountAddr,
             )
 
             print("📦 Address saved to ✅ {} -> {}".format(fresh_address, class_name))
             print(f"🔍 You can check with the explorer for more detail: {Bolors.WARNING} {self.network_cfg.block_explorer}{Bolors.RESET}")
-            self.artifact_manager = solc_artifact
-            solc_artifact.StoreTxResult(tx_receipt, self.pathfinder.classObject(class_name))
+
+            self.artifact_manager.StoreTxResult(tx_receipt, self.pathfinder.classObject(class_name))
             self.complete_deployment()
             return True
         except InvalidAddress:

@@ -1,4 +1,5 @@
 # Token = namedtuple('Token', ['address', 'name', 'code_hash'], defaults=(None,) * 3)
+import os
 import sys
 from dataclasses import dataclass
 
@@ -116,10 +117,13 @@ class DefaultKeys:
     k0 = "000000000000000000000000000000000000000000000000000000000000001e"
 
 
+root_base_path = os.path.join(os.path.dirname(__file__))
+
 __all__ = [
     '__version__',
     'Evm',
     'Config',
     'Bolors',
-    'DefaultKeys'
+    'DefaultKeys',
+    'root_base_path'
 ]

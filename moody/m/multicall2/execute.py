@@ -7,6 +7,9 @@ from ...libeb import MiliDoS
 
 
 class MultiCallerContract(MultiCallerV1Contract):
+    """
+    Need some tests, help is needed
+    """
     def __init__(self, moon: MiliDoS, address: str):
         super().__init__(moon, address)
 

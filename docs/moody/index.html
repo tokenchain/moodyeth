@@ -27,6 +27,7 @@
 <span>Expand source code</span>
 </summary>
 <pre><code class="python"># Token = namedtuple(&#39;Token&#39;, [&#39;address&#39;, &#39;name&#39;, &#39;code_hash&#39;], defaults=(None,) * 3)
+import os
 import sys
 from dataclasses import dataclass
 
@@ -144,12 +145,15 @@ class DefaultKeys:
     k0 = &#34;000000000000000000000000000000000000000000000000000000000000001e&#34;
 
 
+root_base_path = os.path.join(os.path.dirname(__file__))
+
 __all__ = [
     &#39;__version__&#39;,
     &#39;Evm&#39;,
     &#39;Config&#39;,
     &#39;Bolors&#39;,
-    &#39;DefaultKeys&#39;
+    &#39;DefaultKeys&#39;,
+    &#39;root_base_path&#39;
 ]</code></pre>
 </details>
 </section>
@@ -192,7 +196,7 @@ __all__ = [
 <dd>
 <div class="desc"><p>Base wrapper class for accessing ethereum smart contracts.</p></div>
 </dd>
-<dt><code class="name"><a title="moody.upgrades" href="upgrades/index.html">moody.upgrades</a></code></dt>
+<dt><code class="name"><a title="moody.upgrade" href="upgrade/index.html">moody.upgrade</a></code></dt>
 <dd>
 <div class="desc"><p>Generated wrapper for Timelock6h Solidity contract.</p></div>
 </dd>
@@ -473,7 +477,7 @@ All gas sent by default for external calls, previously a certain amount had to b
 <li><code><a title="moody.libeb" href="libeb.html">moody.libeb</a></code></li>
 <li><code><a title="moody.m" href="m/index.html">moody.m</a></code></li>
 <li><code><a title="moody.paths" href="paths.html">moody.paths</a></code></li>
-<li><code><a title="moody.upgrades" href="upgrades/index.html">moody.upgrades</a></code></li>
+<li><code><a title="moody.upgrade" href="upgrade/index.html">moody.upgrade</a></code></li>
 </ul>
 </li>
 <li><h3><a href="#header-classes">Classes</a></h3>

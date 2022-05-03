@@ -12,7 +12,7 @@ class TimeLockerMs:
     def appendAction(self, address_contract: str, method):
         # contract = Tc20(address_contract).CallDebug(False).CallContractFee(10000000)
         # contract.add_minter("sokcpokspdockpokd")
-        ## get_function_by_signature
+        # get_function_by_signature
         # signature =
         # data =
         # value

@@ -4,7 +4,7 @@
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1, minimum-scale=1" />
 <meta name="generator" content="pdoc 0.9.1" />
-<title>moody.upgrades.Token API documentation</title>
+<title>moody.upgrade.Token API documentation</title>
 <meta name="description" content="" />
 <link rel="preload stylesheet" as="style" href="https://cdnjs.cloudflare.com/ajax/libs/10up-sanitize.css/11.0.1/sanitize.min.css" integrity="sha256-PK9q560IAAa6WVRRh76LtCaI8pjTJ2z11v0miyNNjrs=" crossorigin>
 <link rel="preload stylesheet" as="style" href="https://cdnjs.cloudflare.com/ajax/libs/10up-sanitize.css/11.0.1/typography.min.css" integrity="sha256-7l/o7C8jubJiy74VsKTidCy1yBkRtiUGbVkYBylBqUg=" crossorigin>
@@ -19,7 +19,7 @@
 <main>
 <article id="content">
 <header>
-<h1 class="title">Module <code>moody.upgrades.Token</code></h1>
+<h1 class="title">Module <code>moody.upgrade.Token</code></h1>
 </header>
 <section id="section-intro">
 <details class="source">
@@ -100,7 +100,7 @@ class TokenActor(Token):
 <section>
 <h2 class="section-title" id="header-classes">Classes</h2>
 <dl>
-<dt id="moody.upgrades.Token.TokenActor"><code class="flex name class">
+<dt id="moody.upgrade.Token.TokenActor"><code class="flex name class">
 <span>class <span class="ident">TokenActor</span></span>
 <span>(</span><span>_from: <a title="moody.libeb.MiliDoS" href="../libeb.html#moody.libeb.MiliDoS">MiliDoS</a>)</span>
 </code></dt>
@@ -175,42 +175,42 @@ class TokenActor(Token):
 </ul>
 <h3>Class variables</h3>
 <dl>
-<dt id="moody.upgrades.Token.TokenActor.address"><code class="name">var <span class="ident">address</span> : str</code></dt>
+<dt id="moody.upgrade.Token.TokenActor.address"><code class="name">var <span class="ident">address</span> : str</code></dt>
 <dd>
 <div class="desc"></div>
 </dd>
-<dt id="moody.upgrades.Token.TokenActor.balance"><code class="name">var <span class="ident">balance</span> : dict</code></dt>
+<dt id="moody.upgrade.Token.TokenActor.balance"><code class="name">var <span class="ident">balance</span> : dict</code></dt>
 <dd>
 <div class="desc"></div>
 </dd>
-<dt id="moody.upgrades.Token.TokenActor.code_hash"><code class="name">var <span class="ident">code_hash</span> : str</code></dt>
+<dt id="moody.upgrade.Token.TokenActor.code_hash"><code class="name">var <span class="ident">code_hash</span> : str</code></dt>
 <dd>
 <div class="desc"></div>
 </dd>
-<dt id="moody.upgrades.Token.TokenActor.decimal"><code class="name">var <span class="ident">decimal</span> : int</code></dt>
+<dt id="moody.upgrade.Token.TokenActor.decimal"><code class="name">var <span class="ident">decimal</span> : int</code></dt>
 <dd>
 <div class="desc"></div>
 </dd>
-<dt id="moody.upgrades.Token.TokenActor.name"><code class="name">var <span class="ident">name</span> : str</code></dt>
+<dt id="moody.upgrade.Token.TokenActor.name"><code class="name">var <span class="ident">name</span> : str</code></dt>
 <dd>
 <div class="desc"></div>
 </dd>
-<dt id="moody.upgrades.Token.TokenActor.spender"><code class="name">var <span class="ident">spender</span> : dict</code></dt>
+<dt id="moody.upgrade.Token.TokenActor.spender"><code class="name">var <span class="ident">spender</span> : dict</code></dt>
 <dd>
 <div class="desc"></div>
 </dd>
-<dt id="moody.upgrades.Token.TokenActor.token_contract"><code class="name">var <span class="ident">token_contract</span> : str</code></dt>
+<dt id="moody.upgrade.Token.TokenActor.token_contract"><code class="name">var <span class="ident">token_contract</span> : str</code></dt>
 <dd>
 <div class="desc"></div>
 </dd>
-<dt id="moody.upgrades.Token.TokenActor.total_supply"><code class="name">var <span class="ident">total_supply</span> : int</code></dt>
+<dt id="moody.upgrade.Token.TokenActor.total_supply"><code class="name">var <span class="ident">total_supply</span> : int</code></dt>
 <dd>
 <div class="desc"></div>
 </dd>
 </dl>
 <h3>Instance variables</h3>
 <dl>
-<dt id="moody.upgrades.Token.TokenActor.TokenAddress"><code class="name">var <span class="ident">TokenAddress</span> : str</code></dt>
+<dt id="moody.upgrade.Token.TokenActor.TokenAddress"><code class="name">var <span class="ident">TokenAddress</span> : str</code></dt>
 <dd>
 <div class="desc"></div>
 <details class="source">
@@ -232,7 +232,7 @@ def TokenAddress(self) -&gt; str:
 </dl>
 <h3>Methods</h3>
 <dl>
-<dt id="moody.upgrades.Token.TokenActor.addMinter"><code class="name flex">
+<dt id="moody.upgrade.Token.TokenActor.addMinter"><code class="name flex">
 <span>def <span class="ident">addMinter</span></span>(<span>self, who: str) ‑> NoneType</span>
 </code></dt>
 <dd>
@@ -245,7 +245,7 @@ def TokenAddress(self) -&gt; str:
     self._token.add_minter(who)</code></pre>
 </details>
 </dd>
-<dt id="moody.upgrades.Token.TokenActor.allowance"><code class="name flex">
+<dt id="moody.upgrade.Token.TokenActor.allowance"><code class="name flex">
 <span>def <span class="ident">allowance</span></span>(<span>self, owner: str, spender: str) ‑> int</span>
 </code></dt>
 <dd>
@@ -258,7 +258,7 @@ def TokenAddress(self) -&gt; str:
     return self._token.allowance(owner, spender)</code></pre>
 </details>
 </dd>
-<dt id="moody.upgrades.Token.TokenActor.approve"><code class="name flex">
+<dt id="moody.upgrade.Token.TokenActor.approve"><code class="name flex">
 <span>def <span class="ident">approve</span></span>(<span>self, whom_spender: str, amount: int) ‑> bool</span>
 </code></dt>
 <dd>
@@ -271,7 +271,7 @@ def TokenAddress(self) -&gt; str:
     return self._token.approve(whom_spender, amount)</code></pre>
 </details>
 </dd>
-<dt id="moody.upgrades.Token.TokenActor.balanceCheck"><code class="name flex">
+<dt id="moody.upgrade.Token.TokenActor.balanceCheck"><code class="name flex">
 <span>def <span class="ident">balanceCheck</span></span>(<span>self, whom: str) ‑> int</span>
 </code></dt>
 <dd>
@@ -284,8 +284,8 @@ def TokenAddress(self) -&gt; str:
     return self._token.balance_of(whom)</code></pre>
 </details>
 </dd>
-<dt id="moody.upgrades.Token.TokenActor.conf"><code class="name flex">
-<span>def <span class="ident">conf</span></span>(<span>self, tokenNameOrAddress: str = None) ‑> <a title="moody.upgrades.Token.TokenActor" href="#moody.upgrades.Token.TokenActor">TokenActor</a></span>
+<dt id="moody.upgrade.Token.TokenActor.conf"><code class="name flex">
+<span>def <span class="ident">conf</span></span>(<span>self, tokenNameOrAddress: str = None) ‑> <a title="moody.upgrade.Token.TokenActor" href="#moody.upgrade.Token.TokenActor">TokenActor</a></span>
 </code></dt>
 <dd>
 <div class="desc"></div>
@@ -309,7 +309,7 @@ def TokenAddress(self) -&gt; str:
     return self</code></pre>
 </details>
 </dd>
-<dt id="moody.upgrades.Token.TokenActor.issueCoin"><code class="name flex">
+<dt id="moody.upgrade.Token.TokenActor.issueCoin"><code class="name flex">
 <span>def <span class="ident">issueCoin</span></span>(<span>self, benefit: str, count: int) ‑> NoneType</span>
 </code></dt>
 <dd>
@@ -322,7 +322,7 @@ def TokenAddress(self) -&gt; str:
     self._token.mint(benefit, count)</code></pre>
 </details>
 </dd>
-<dt id="moody.upgrades.Token.TokenActor.issueCoinWithBase"><code class="name flex">
+<dt id="moody.upgrade.Token.TokenActor.issueCoinWithBase"><code class="name flex">
 <span>def <span class="ident">issueCoinWithBase</span></span>(<span>self, benefit: str, one: int) ‑> NoneType</span>
 </code></dt>
 <dd>
@@ -335,7 +335,7 @@ def TokenAddress(self) -&gt; str:
     self._token.mint(benefit, one * self.engine.one)</code></pre>
 </details>
 </dd>
-<dt id="moody.upgrades.Token.TokenActor.removeMinter"><code class="name flex">
+<dt id="moody.upgrade.Token.TokenActor.removeMinter"><code class="name flex">
 <span>def <span class="ident">removeMinter</span></span>(<span>self, whom: str) ‑> NoneType</span>
 </code></dt>
 <dd>
@@ -348,7 +348,7 @@ def TokenAddress(self) -&gt; str:
     self._token.remove_minter(whom)</code></pre>
 </details>
 </dd>
-<dt id="moody.upgrades.Token.TokenActor.transfer"><code class="name flex">
+<dt id="moody.upgrade.Token.TokenActor.transfer"><code class="name flex">
 <span>def <span class="ident">transfer</span></span>(<span>self, owner: str, amount: int) ‑> bool</span>
 </code></dt>
 <dd>
@@ -374,32 +374,32 @@ def TokenAddress(self) -&gt; str:
 <ul id="index">
 <li><h3>Super-module</h3>
 <ul>
-<li><code><a title="moody.upgrades" href="index.html">moody.upgrades</a></code></li>
+<li><code><a title="moody.upgrade" href="index.html">moody.upgrade</a></code></li>
 </ul>
 </li>
 <li><h3><a href="#header-classes">Classes</a></h3>
 <ul>
 <li>
-<h4><code><a title="moody.upgrades.Token.TokenActor" href="#moody.upgrades.Token.TokenActor">TokenActor</a></code></h4>
+<h4><code><a title="moody.upgrade.Token.TokenActor" href="#moody.upgrade.Token.TokenActor">TokenActor</a></code></h4>
 <ul class="two-column">
-<li><code><a title="moody.upgrades.Token.TokenActor.TokenAddress" href="#moody.upgrades.Token.TokenActor.TokenAddress">TokenAddress</a></code></li>
-<li><code><a title="moody.upgrades.Token.TokenActor.addMinter" href="#moody.upgrades.Token.TokenActor.addMinter">addMinter</a></code></li>
-<li><code><a title="moody.upgrades.Token.TokenActor.address" href="#moody.upgrades.Token.TokenActor.address">address</a></code></li>
-<li><code><a title="moody.upgrades.Token.TokenActor.allowance" href="#moody.upgrades.Token.TokenActor.allowance">allowance</a></code></li>
-<li><code><a title="moody.upgrades.Token.TokenActor.approve" href="#moody.upgrades.Token.TokenActor.approve">approve</a></code></li>
-<li><code><a title="moody.upgrades.Token.TokenActor.balance" href="#moody.upgrades.Token.TokenActor.balance">balance</a></code></li>
-<li><code><a title="moody.upgrades.Token.TokenActor.balanceCheck" href="#moody.upgrades.Token.TokenActor.balanceCheck">balanceCheck</a></code></li>
-<li><code><a title="moody.upgrades.Token.TokenActor.code_hash" href="#moody.upgrades.Token.TokenActor.code_hash">code_hash</a></code></li>
-<li><code><a title="moody.upgrades.Token.TokenActor.conf" href="#moody.upgrades.Token.TokenActor.conf">conf</a></code></li>
-<li><code><a title="moody.upgrades.Token.TokenActor.decimal" href="#moody.upgrades.Token.TokenActor.decimal">decimal</a></code></li>
-<li><code><a title="moody.upgrades.Token.TokenActor.issueCoin" href="#moody.upgrades.Token.TokenActor.issueCoin">issueCoin</a></code></li>
-<li><code><a title="moody.upgrades.Token.TokenActor.issueCoinWithBase" href="#moody.upgrades.Token.TokenActor.issueCoinWithBase">issueCoinWithBase</a></code></li>
-<li><code><a title="moody.upgrades.Token.TokenActor.name" href="#moody.upgrades.Token.TokenActor.name">name</a></code></li>
-<li><code><a title="moody.upgrades.Token.TokenActor.removeMinter" href="#moody.upgrades.Token.TokenActor.removeMinter">removeMinter</a></code></li>
-<li><code><a title="moody.upgrades.Token.TokenActor.spender" href="#moody.upgrades.Token.TokenActor.spender">spender</a></code></li>
-<li><code><a title="moody.upgrades.Token.TokenActor.token_contract" href="#moody.upgrades.Token.TokenActor.token_contract">token_contract</a></code></li>
-<li><code><a title="moody.upgrades.Token.TokenActor.total_supply" href="#moody.upgrades.Token.TokenActor.total_supply">total_supply</a></code></li>
-<li><code><a title="moody.upgrades.Token.TokenActor.transfer" href="#moody.upgrades.Token.TokenActor.transfer">transfer</a></code></li>
+<li><code><a title="moody.upgrade.Token.TokenActor.TokenAddress" href="#moody.upgrade.Token.TokenActor.TokenAddress">TokenAddress</a></code></li>
+<li><code><a title="moody.upgrade.Token.TokenActor.addMinter" href="#moody.upgrade.Token.TokenActor.addMinter">addMinter</a></code></li>
+<li><code><a title="moody.upgrade.Token.TokenActor.address" href="#moody.upgrade.Token.TokenActor.address">address</a></code></li>
+<li><code><a title="moody.upgrade.Token.TokenActor.allowance" href="#moody.upgrade.Token.TokenActor.allowance">allowance</a></code></li>
+<li><code><a title="moody.upgrade.Token.TokenActor.approve" href="#moody.upgrade.Token.TokenActor.approve">approve</a></code></li>
+<li><code><a title="moody.upgrade.Token.TokenActor.balance" href="#moody.upgrade.Token.TokenActor.balance">balance</a></code></li>
+<li><code><a title="moody.upgrade.Token.TokenActor.balanceCheck" href="#moody.upgrade.Token.TokenActor.balanceCheck">balanceCheck</a></code></li>
+<li><code><a title="moody.upgrade.Token.TokenActor.code_hash" href="#moody.upgrade.Token.TokenActor.code_hash">code_hash</a></code></li>
+<li><code><a title="moody.upgrade.Token.TokenActor.conf" href="#moody.upgrade.Token.TokenActor.conf">conf</a></code></li>
+<li><code><a title="moody.upgrade.Token.TokenActor.decimal" href="#moody.upgrade.Token.TokenActor.decimal">decimal</a></code></li>
+<li><code><a title="moody.upgrade.Token.TokenActor.issueCoin" href="#moody.upgrade.Token.TokenActor.issueCoin">issueCoin</a></code></li>
+<li><code><a title="moody.upgrade.Token.TokenActor.issueCoinWithBase" href="#moody.upgrade.Token.TokenActor.issueCoinWithBase">issueCoinWithBase</a></code></li>
+<li><code><a title="moody.upgrade.Token.TokenActor.name" href="#moody.upgrade.Token.TokenActor.name">name</a></code></li>
+<li><code><a title="moody.upgrade.Token.TokenActor.removeMinter" href="#moody.upgrade.Token.TokenActor.removeMinter">removeMinter</a></code></li>
+<li><code><a title="moody.upgrade.Token.TokenActor.spender" href="#moody.upgrade.Token.TokenActor.spender">spender</a></code></li>
+<li><code><a title="moody.upgrade.Token.TokenActor.token_contract" href="#moody.upgrade.Token.TokenActor.token_contract">token_contract</a></code></li>
+<li><code><a title="moody.upgrade.Token.TokenActor.total_supply" href="#moody.upgrade.Token.TokenActor.total_supply">total_supply</a></code></li>
+<li><code><a title="moody.upgrade.Token.TokenActor.transfer" href="#moody.upgrade.Token.TokenActor.transfer">transfer</a></code></li>
 </ul>
 </li>
 </ul>

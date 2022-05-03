@@ -83,7 +83,7 @@ ITEM_TRANSPILE_PYTHON = &#34;&#34;&#34;
 if [[ ! -f {outputfolder} ]]; then
     mkdir -p {outputfolder}
 fi
-echo &#34;==&gt; 🚸 compile abi to python: {target_abi} / {outputfolder}&#34;
+echo &#34;==&gt; 🚸 compile abi to python: {target_abi} -&gt; {outputfolder}&#34;
 abi-gen-uni --abibins {target_abi} --out &#34;{outputfolder}&#34; \
     --partials &#34;{BUILDPATH}/factoryabi/PythonEthernum/partials/*.handlebars&#34; \
     --template &#34;{BUILDPATH}/factoryabi/PythonEthernum/contract.handlebars&#34; \
@@ -92,15 +92,17 @@ echo &#34;==&gt; generate abi to python --&gt; 🧊&#34;
 &#34;&#34;&#34;
 
 ITEM_TRANSPILE_TS = &#34;&#34;&#34;
-echo &#34;==&gt; 🚸 compile abi to typescript&#34;
-if [[ ! -f {outputfolder} ]]; then
+echo &#34;==&gt; 🚸 compile abi to typescript: {target_abi} -&gt; {outputfolder}&#34;
+if [[ ! -d {outputfolder} ]]; then
     mkdir -p {outputfolder}
+    if [ $? -ne 0 ] ; then
+        echo &#34;❌ creating directory failed.&#34;
+    fi
 fi
 
-#if [ $? -ne 0 ] ; then
 
-if [[ ! -f {outputfolder} ]]; then
-    echo &#34;❌ File system error&#34;
+if [[ ! -d {outputfolder} ]]; then
+    echo &#34;❌ The directory is not exist.&#34;
     exit 1;
 fi
 

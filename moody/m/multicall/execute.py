@@ -7,6 +7,9 @@ from eth_utils import to_checksum_address
 
 
 class MultiCallerV1Contract:
+    """
+    Need some tests, help is needed
+    """
     def __init__(self, moon: MiliDoS, address: str):
         self._moon = moon
         self._address = address

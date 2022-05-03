@@ -282,9 +282,11 @@ class ContractBase:
 <li><a title="moody.m.multicall2.Multicall2" href="multicall2/index.html#moody.m.multicall2.Multicall2">Multicall2</a></li>
 <li><a title="moody.m.oracle.Oracle" href="oracle/index.html#moody.m.oracle.Oracle">Oracle</a></li>
 <li><a title="moody.m.pharaohs.pharaohs" href="pharaohs/index.html#moody.m.pharaohs.pharaohs">pharaohs</a></li>
+<li><a title="moody.m.proxy_admin.ProxyAdmin" href="proxy_admin/index.html#moody.m.proxy_admin.ProxyAdmin">ProxyAdmin</a></li>
 <li><a title="moody.m.tc20.Tc20" href="tc20/index.html#moody.m.tc20.Tc20">Tc20</a></li>
 <li><a title="moody.m.tether_token2.TetherToken2" href="tether_token2/index.html#moody.m.tether_token2.TetherToken2">TetherToken2</a></li>
-<li><a title="moody.upgrades.Timelock6h" href="../upgrades/index.html#moody.upgrades.Timelock6h">Timelock6h</a></li>
+<li><a title="moody.m.transparent_upgradeable_proxy.TransparentUpgradeableProxy" href="transparent_upgradeable_proxy/index.html#moody.m.transparent_upgradeable_proxy.TransparentUpgradeableProxy">TransparentUpgradeableProxy</a></li>
+<li><a title="moody.upgrade.Timelock6h" href="../upgrade/index.html#moody.upgrade.Timelock6h">Timelock6h</a></li>
 </ul>
 <h3>Instance variables</h3>
 <dl>
@@ -710,6 +712,14 @@ def fromAbi(self) -&gt; any:
 <li><a title="moody.m.pharaohs.TotalSupplyMethod" href="pharaohs/index.html#moody.m.pharaohs.TotalSupplyMethod">TotalSupplyMethod</a></li>
 <li><a title="moody.m.pharaohs.TransferFromMethod" href="pharaohs/index.html#moody.m.pharaohs.TransferFromMethod">TransferFromMethod</a></li>
 <li><a title="moody.m.pharaohs.TransferMethod" href="pharaohs/index.html#moody.m.pharaohs.TransferMethod">TransferMethod</a></li>
+<li><a title="moody.m.proxy_admin.ChangeProxyAdminMethod" href="proxy_admin/index.html#moody.m.proxy_admin.ChangeProxyAdminMethod">ChangeProxyAdminMethod</a></li>
+<li><a title="moody.m.proxy_admin.GetProxyAdminMethod" href="proxy_admin/index.html#moody.m.proxy_admin.GetProxyAdminMethod">GetProxyAdminMethod</a></li>
+<li><a title="moody.m.proxy_admin.GetProxyImplementationMethod" href="proxy_admin/index.html#moody.m.proxy_admin.GetProxyImplementationMethod">GetProxyImplementationMethod</a></li>
+<li><a title="moody.m.proxy_admin.OwnerMethod" href="proxy_admin/index.html#moody.m.proxy_admin.OwnerMethod">OwnerMethod</a></li>
+<li><a title="moody.m.proxy_admin.RenounceOwnershipMethod" href="proxy_admin/index.html#moody.m.proxy_admin.RenounceOwnershipMethod">RenounceOwnershipMethod</a></li>
+<li><a title="moody.m.proxy_admin.TransferOwnershipMethod" href="proxy_admin/index.html#moody.m.proxy_admin.TransferOwnershipMethod">TransferOwnershipMethod</a></li>
+<li><a title="moody.m.proxy_admin.UpgradeAndCallMethod" href="proxy_admin/index.html#moody.m.proxy_admin.UpgradeAndCallMethod">UpgradeAndCallMethod</a></li>
+<li><a title="moody.m.proxy_admin.UpgradeMethod" href="proxy_admin/index.html#moody.m.proxy_admin.UpgradeMethod">UpgradeMethod</a></li>
 <li><a title="moody.m.tc20.AddMinterMethod" href="tc20/index.html#moody.m.tc20.AddMinterMethod">AddMinterMethod</a></li>
 <li><a title="moody.m.tc20.AllowanceMethod" href="tc20/index.html#moody.m.tc20.AllowanceMethod">AllowanceMethod</a></li>
 <li><a title="moody.m.tc20.ApproveMethod" href="tc20/index.html#moody.m.tc20.ApproveMethod">ApproveMethod</a></li>
@@ -750,19 +760,24 @@ def fromAbi(self) -&gt; any:
 <li><a title="moody.m.tether_token2.TotalSupplyMethod" href="tether_token2/index.html#moody.m.tether_token2.TotalSupplyMethod">TotalSupplyMethod</a></li>
 <li><a title="moody.m.tether_token2.TransferFromMethod" href="tether_token2/index.html#moody.m.tether_token2.TransferFromMethod">TransferFromMethod</a></li>
 <li><a title="moody.m.tether_token2.TransferMethod" href="tether_token2/index.html#moody.m.tether_token2.TransferMethod">TransferMethod</a></li>
-<li><a title="moody.upgrades.AcceptAdminMethod" href="../upgrades/index.html#moody.upgrades.AcceptAdminMethod">AcceptAdminMethod</a></li>
-<li><a title="moody.upgrades.AdminMethod" href="../upgrades/index.html#moody.upgrades.AdminMethod">AdminMethod</a></li>
-<li><a title="moody.upgrades.CancelTransactionMethod" href="../upgrades/index.html#moody.upgrades.CancelTransactionMethod">CancelTransactionMethod</a></li>
-<li><a title="moody.upgrades.DelayMethod" href="../upgrades/index.html#moody.upgrades.DelayMethod">DelayMethod</a></li>
-<li><a title="moody.upgrades.ExecuteTransactionMethod" href="../upgrades/index.html#moody.upgrades.ExecuteTransactionMethod">ExecuteTransactionMethod</a></li>
-<li><a title="moody.upgrades.GracePeriodMethod" href="../upgrades/index.html#moody.upgrades.GracePeriodMethod">GracePeriodMethod</a></li>
-<li><a title="moody.upgrades.MaximumDelayMethod" href="../upgrades/index.html#moody.upgrades.MaximumDelayMethod">MaximumDelayMethod</a></li>
-<li><a title="moody.upgrades.MinimumDelayMethod" href="../upgrades/index.html#moody.upgrades.MinimumDelayMethod">MinimumDelayMethod</a></li>
-<li><a title="moody.upgrades.PendingAdminMethod" href="../upgrades/index.html#moody.upgrades.PendingAdminMethod">PendingAdminMethod</a></li>
-<li><a title="moody.upgrades.QueueTransactionMethod" href="../upgrades/index.html#moody.upgrades.QueueTransactionMethod">QueueTransactionMethod</a></li>
-<li><a title="moody.upgrades.QueuedTransactionsMethod" href="../upgrades/index.html#moody.upgrades.QueuedTransactionsMethod">QueuedTransactionsMethod</a></li>
-<li><a title="moody.upgrades.SetDelayMethod" href="../upgrades/index.html#moody.upgrades.SetDelayMethod">SetDelayMethod</a></li>
-<li><a title="moody.upgrades.SetPendingAdminMethod" href="../upgrades/index.html#moody.upgrades.SetPendingAdminMethod">SetPendingAdminMethod</a></li>
+<li><a title="moody.m.transparent_upgradeable_proxy.AdminMethod" href="transparent_upgradeable_proxy/index.html#moody.m.transparent_upgradeable_proxy.AdminMethod">AdminMethod</a></li>
+<li><a title="moody.m.transparent_upgradeable_proxy.ChangeAdminMethod" href="transparent_upgradeable_proxy/index.html#moody.m.transparent_upgradeable_proxy.ChangeAdminMethod">ChangeAdminMethod</a></li>
+<li><a title="moody.m.transparent_upgradeable_proxy.ImplementationMethod" href="transparent_upgradeable_proxy/index.html#moody.m.transparent_upgradeable_proxy.ImplementationMethod">ImplementationMethod</a></li>
+<li><a title="moody.m.transparent_upgradeable_proxy.UpgradeToAndCallMethod" href="transparent_upgradeable_proxy/index.html#moody.m.transparent_upgradeable_proxy.UpgradeToAndCallMethod">UpgradeToAndCallMethod</a></li>
+<li><a title="moody.m.transparent_upgradeable_proxy.UpgradeToMethod" href="transparent_upgradeable_proxy/index.html#moody.m.transparent_upgradeable_proxy.UpgradeToMethod">UpgradeToMethod</a></li>
+<li><a title="moody.upgrade.AcceptAdminMethod" href="../upgrade/index.html#moody.upgrade.AcceptAdminMethod">AcceptAdminMethod</a></li>
+<li><a title="moody.upgrade.AdminMethod" href="../upgrade/index.html#moody.upgrade.AdminMethod">AdminMethod</a></li>
+<li><a title="moody.upgrade.CancelTransactionMethod" href="../upgrade/index.html#moody.upgrade.CancelTransactionMethod">CancelTransactionMethod</a></li>
+<li><a title="moody.upgrade.DelayMethod" href="../upgrade/index.html#moody.upgrade.DelayMethod">DelayMethod</a></li>
+<li><a title="moody.upgrade.ExecuteTransactionMethod" href="../upgrade/index.html#moody.upgrade.ExecuteTransactionMethod">ExecuteTransactionMethod</a></li>
+<li><a title="moody.upgrade.GracePeriodMethod" href="../upgrade/index.html#moody.upgrade.GracePeriodMethod">GracePeriodMethod</a></li>
+<li><a title="moody.upgrade.MaximumDelayMethod" href="../upgrade/index.html#moody.upgrade.MaximumDelayMethod">MaximumDelayMethod</a></li>
+<li><a title="moody.upgrade.MinimumDelayMethod" href="../upgrade/index.html#moody.upgrade.MinimumDelayMethod">MinimumDelayMethod</a></li>
+<li><a title="moody.upgrade.PendingAdminMethod" href="../upgrade/index.html#moody.upgrade.PendingAdminMethod">PendingAdminMethod</a></li>
+<li><a title="moody.upgrade.QueueTransactionMethod" href="../upgrade/index.html#moody.upgrade.QueueTransactionMethod">QueueTransactionMethod</a></li>
+<li><a title="moody.upgrade.QueuedTransactionsMethod" href="../upgrade/index.html#moody.upgrade.QueuedTransactionsMethod">QueuedTransactionsMethod</a></li>
+<li><a title="moody.upgrade.SetDelayMethod" href="../upgrade/index.html#moody.upgrade.SetDelayMethod">SetDelayMethod</a></li>
+<li><a title="moody.upgrade.SetPendingAdminMethod" href="../upgrade/index.html#moody.upgrade.SetPendingAdminMethod">SetPendingAdminMethod</a></li>
 </ul>
 <h3>Static methods</h3>
 <dl>
@@ -865,8 +880,10 @@ def validate_and_checksum_address(address: str):
 <li><a title="moody.m.multicall2.SignatureGenerator" href="multicall2/index.html#moody.m.multicall2.SignatureGenerator">SignatureGenerator</a></li>
 <li><a title="moody.m.oracle.SignatureGenerator" href="oracle/index.html#moody.m.oracle.SignatureGenerator">SignatureGenerator</a></li>
 <li><a title="moody.m.pharaohs.SignatureGenerator" href="pharaohs/index.html#moody.m.pharaohs.SignatureGenerator">SignatureGenerator</a></li>
+<li><a title="moody.m.proxy_admin.SignatureGenerator" href="proxy_admin/index.html#moody.m.proxy_admin.SignatureGenerator">SignatureGenerator</a></li>
 <li><a title="moody.m.tc20.SignatureGenerator" href="tc20/index.html#moody.m.tc20.SignatureGenerator">SignatureGenerator</a></li>
 <li><a title="moody.m.tether_token2.SignatureGenerator" href="tether_token2/index.html#moody.m.tether_token2.SignatureGenerator">SignatureGenerator</a></li>
+<li><a title="moody.m.transparent_upgradeable_proxy.SignatureGenerator" href="transparent_upgradeable_proxy/index.html#moody.m.transparent_upgradeable_proxy.SignatureGenerator">SignatureGenerator</a></li>
 </ul>
 <h3>Methods</h3>
 <dl>
@@ -938,9 +955,11 @@ def validate_and_checksum_address(address: str):
 <li><a title="moody.m.multicall2.Multicall2Validator" href="multicall2/index.html#moody.m.multicall2.Multicall2Validator">Multicall2Validator</a></li>
 <li><a title="moody.m.oracle.OracleValidator" href="oracle/index.html#moody.m.oracle.OracleValidator">OracleValidator</a></li>
 <li><a title="moody.m.pharaohs.pharaohsValidator" href="pharaohs/index.html#moody.m.pharaohs.pharaohsValidator">pharaohsValidator</a></li>
+<li><a title="moody.m.proxy_admin.ProxyAdminValidator" href="proxy_admin/index.html#moody.m.proxy_admin.ProxyAdminValidator">ProxyAdminValidator</a></li>
 <li><a title="moody.m.tc20.Tc20Validator" href="tc20/index.html#moody.m.tc20.Tc20Validator">Tc20Validator</a></li>
 <li><a title="moody.m.tether_token2.TetherToken2Validator" href="tether_token2/index.html#moody.m.tether_token2.TetherToken2Validator">TetherToken2Validator</a></li>
-<li><a title="moody.upgrades.Timelock6hValidator" href="../upgrades/index.html#moody.upgrades.Timelock6hValidator">Timelock6hValidator</a></li>
+<li><a title="moody.m.transparent_upgradeable_proxy.TransparentUpgradeableProxyValidator" href="transparent_upgradeable_proxy/index.html#moody.m.transparent_upgradeable_proxy.TransparentUpgradeableProxyValidator">TransparentUpgradeableProxyValidator</a></li>
+<li><a title="moody.upgrade.Timelock6hValidator" href="../upgrade/index.html#moody.upgrade.Timelock6hValidator">Timelock6hValidator</a></li>
 </ul>
 <h3>Methods</h3>
 <dl>
