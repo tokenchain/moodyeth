@@ -82,8 +82,8 @@ def deployProxyUniversial(
         deployer_key: str,
         class_name: str,
         admin_signer: str,
-        args: list,
-        args_initialization: list
+        args: list = None,
+        args_initialization: list = None
 ):
     &#34;&#34;&#34;
     followed the convention from https://docs.openzeppelin.com/upgrades-plugins/1.x/truffle-upgrades
@@ -139,8 +139,8 @@ def deployCustomProxy(
         proxy_name: str,
         class_name: str,
         admin_signer: str,
-        argsbytes: list,
-        args_initialization: list):
+        argsbytes: list = None,
+        args_initialization: list = None):
     &#34;&#34;&#34;
     This used to serve the customized proxy that built by the third party or the non-standar proxy contracts defined by the users.
     :param package_manifest:
@@ -204,8 +204,8 @@ def deployProxy(
         package_manifest: MiliDoS,
         class_name: str,
         admin_signer: str,
-        args_: list,
-        args_initialization_: list
+        args_: list = None,
+        args_initialization_: list = None
 ):
     &#34;&#34;&#34;
     followed the convention from https://docs.openzeppelin.com/upgrades-plugins/1.x/truffle-upgrades
@@ -358,7 +358,7 @@ def upgradeTo(package_manifest: MiliDoS, newVerClassName: str, args: any = None)
 </details>
 </dd>
 <dt id="moody.upgrade.deployupgradable.deployCustomProxy"><code class="name flex">
-<span>def <span class="ident">deployCustomProxy</span></span>(<span>package_manifest: <a title="moody.libeb.MiliDoS" href="../libeb.html#moody.libeb.MiliDoS">MiliDoS</a>, proxy_name: str, class_name: str, admin_signer: str, argsbytes: list, args_initialization: list)</span>
+<span>def <span class="ident">deployCustomProxy</span></span>(<span>package_manifest: <a title="moody.libeb.MiliDoS" href="../libeb.html#moody.libeb.MiliDoS">MiliDoS</a>, proxy_name: str, class_name: str, admin_signer: str, argsbytes: list = None, args_initialization: list = None)</span>
 </code></dt>
 <dd>
 <div class="desc"><p>This used to serve the customized proxy that built by the third party or the non-standar proxy contracts defined by the users.
@@ -377,8 +377,8 @@ def upgradeTo(package_manifest: MiliDoS, newVerClassName: str, args: any = None)
         proxy_name: str,
         class_name: str,
         admin_signer: str,
-        argsbytes: list,
-        args_initialization: list):
+        argsbytes: list = None,
+        args_initialization: list = None):
     &#34;&#34;&#34;
     This used to serve the customized proxy that built by the third party or the non-standar proxy contracts defined by the users.
     :param package_manifest:
@@ -439,7 +439,7 @@ def upgradeTo(package_manifest: MiliDoS, newVerClassName: str, args: any = None)
 </details>
 </dd>
 <dt id="moody.upgrade.deployupgradable.deployProxy"><code class="name flex">
-<span>def <span class="ident">deployProxy</span></span>(<span>package_manifest: <a title="moody.libeb.MiliDoS" href="../libeb.html#moody.libeb.MiliDoS">MiliDoS</a>, class_name: str, admin_signer: str, args_: list, args_initialization_: list)</span>
+<span>def <span class="ident">deployProxy</span></span>(<span>package_manifest: <a title="moody.libeb.MiliDoS" href="../libeb.html#moody.libeb.MiliDoS">MiliDoS</a>, class_name: str, admin_signer: str, args_: list = None, args_initialization_: list = None)</span>
 </code></dt>
 <dd>
 <div class="desc"><p>followed the convention from <a href="https://docs.openzeppelin.com/upgrades-plugins/1.x/truffle-upgrades">https://docs.openzeppelin.com/upgrades-plugins/1.x/truffle-upgrades</a>
@@ -463,8 +463,8 @@ existing Box contract and recompile it - the plugin will note it changed.</p>
         package_manifest: MiliDoS,
         class_name: str,
         admin_signer: str,
-        args_: list,
-        args_initialization_: list
+        args_: list = None,
+        args_initialization_: list = None
 ):
     &#34;&#34;&#34;
     followed the convention from https://docs.openzeppelin.com/upgrades-plugins/1.x/truffle-upgrades
@@ -528,7 +528,7 @@ existing Box contract and recompile it - the plugin will note it changed.</p>
 </details>
 </dd>
 <dt id="moody.upgrade.deployupgradable.deployProxyUniversial"><code class="name flex">
-<span>def <span class="ident">deployProxyUniversial</span></span>(<span>root_path: str, network: <a title="moody.Config" href="../index.html#moody.Config">Config</a>, deployer_key: str, class_name: str, admin_signer: str, args: list, args_initialization: list)</span>
+<span>def <span class="ident">deployProxyUniversial</span></span>(<span>root_path: str, network: <a title="moody.Config" href="../index.html#moody.Config">Config</a>, deployer_key: str, class_name: str, admin_signer: str, args: list = None, args_initialization: list = None)</span>
 </code></dt>
 <dd>
 <div class="desc"><p>followed the convention from <a href="https://docs.openzeppelin.com/upgrades-plugins/1.x/truffle-upgrades">https://docs.openzeppelin.com/upgrades-plugins/1.x/truffle-upgrades</a>
@@ -556,8 +556,8 @@ existing Box contract and recompile it - the plugin will note it changed.</p>
         deployer_key: str,
         class_name: str,
         admin_signer: str,
-        args: list,
-        args_initialization: list
+        args: list = None,
+        args_initialization: list = None
 ):
     &#34;&#34;&#34;
     followed the convention from https://docs.openzeppelin.com/upgrades-plugins/1.x/truffle-upgrades

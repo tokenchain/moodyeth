@@ -54,8 +54,8 @@ def deployProxyUniversial(
         deployer_key: str,
         class_name: str,
         admin_signer: str,
-        args: list,
-        args_initialization: list
+        args: list = None,
+        args_initialization: list = None
 ):
     """
     followed the convention from https://docs.openzeppelin.com/upgrades-plugins/1.x/truffle-upgrades
@@ -111,8 +111,8 @@ def deployCustomProxy(
         proxy_name: str,
         class_name: str,
         admin_signer: str,
-        argsbytes: list,
-        args_initialization: list):
+        argsbytes: list = None,
+        args_initialization: list = None):
     """
     This used to serve the customized proxy that built by the third party or the non-standar proxy contracts defined by the users.
     :param package_manifest:
@@ -176,8 +176,8 @@ def deployProxy(
         package_manifest: MiliDoS,
         class_name: str,
         admin_signer: str,
-        args_: list,
-        args_initialization_: list
+        args_: list = None,
+        args_initialization_: list = None
 ):
     """
     followed the convention from https://docs.openzeppelin.com/upgrades-plugins/1.x/truffle-upgrades
