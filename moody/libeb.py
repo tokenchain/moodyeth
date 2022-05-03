@@ -831,11 +831,8 @@ class MiliDoS(IDos):
             fresh_address = tx_receipt.contractAddress
             self._contract_dict[class_name] = fresh_address
             self.deployed_address = fresh_address
-
-            self._contract_dict["kv_{}".format(class_name)] = dict(
-                by=self.accountAddr,
-            )
-
+            self.setTargetClass(class_name)
+            self.setKV("by", self.accountAddr)
             print("📦 Address saved to ✅ {} -> {}".format(fresh_address, class_name))
             print(f"🔍 You can check with the explorer for more detail: {Bolors.WARNING} {self.network_cfg.block_explorer}{Bolors.RESET}")
 
@@ -901,10 +898,8 @@ class MiliDoS(IDos):
         return self
 
     def setKV(self, key: str, value: any) -> "MiliDoS":
-
         if self.__kv_label not in self._contract_dict:
             self._contract_dict[self.__kv_label] = dict()
-
         self._contract_dict[self.__kv_label][key] = value
         return self
 

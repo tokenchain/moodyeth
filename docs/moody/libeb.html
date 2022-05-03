@@ -859,11 +859,8 @@ class MiliDoS(IDos):
             fresh_address = tx_receipt.contractAddress
             self._contract_dict[class_name] = fresh_address
             self.deployed_address = fresh_address
-
-            self._contract_dict[&#34;kv_{}&#34;.format(class_name)] = dict(
-                by=self.accountAddr,
-            )
-
+            self.setTargetClass(class_name)
+            self.setKV(&#34;by&#34;, self.accountAddr)
             print(&#34;📦 Address saved to ✅ {} -&gt; {}&#34;.format(fresh_address, class_name))
             print(f&#34;🔍 You can check with the explorer for more detail: {Bolors.WARNING} {self.network_cfg.block_explorer}{Bolors.RESET}&#34;)
 
@@ -929,10 +926,8 @@ class MiliDoS(IDos):
         return self
 
     def setKV(self, key: str, value: any) -&gt; &#34;MiliDoS&#34;:
-
         if self.__kv_label not in self._contract_dict:
             self._contract_dict[self.__kv_label] = dict()
-
         self._contract_dict[self.__kv_label][key] = value
         return self
 
@@ -2070,11 +2065,8 @@ The center hub of the progress source code is in here</p></div>
             fresh_address = tx_receipt.contractAddress
             self._contract_dict[class_name] = fresh_address
             self.deployed_address = fresh_address
-
-            self._contract_dict[&#34;kv_{}&#34;.format(class_name)] = dict(
-                by=self.accountAddr,
-            )
-
+            self.setTargetClass(class_name)
+            self.setKV(&#34;by&#34;, self.accountAddr)
             print(&#34;📦 Address saved to ✅ {} -&gt; {}&#34;.format(fresh_address, class_name))
             print(f&#34;🔍 You can check with the explorer for more detail: {Bolors.WARNING} {self.network_cfg.block_explorer}{Bolors.RESET}&#34;)
 
@@ -2140,10 +2132,8 @@ The center hub of the progress source code is in here</p></div>
         return self
 
     def setKV(self, key: str, value: any) -&gt; &#34;MiliDoS&#34;:
-
         if self.__kv_label not in self._contract_dict:
             self._contract_dict[self.__kv_label] = dict()
-
         self._contract_dict[self.__kv_label][key] = value
         return self
 
@@ -3309,10 +3299,8 @@ if this valuable is None then there will not be any copy files to the destinatio
 <span>Expand source code</span>
 </summary>
 <pre><code class="python">def setKV(self, key: str, value: any) -&gt; &#34;MiliDoS&#34;:
-
     if self.__kv_label not in self._contract_dict:
         self._contract_dict[self.__kv_label] = dict()
-
     self._contract_dict[self.__kv_label][key] = value
     return self</code></pre>
 </details>

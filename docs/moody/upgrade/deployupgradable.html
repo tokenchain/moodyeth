@@ -28,11 +28,24 @@
 </summary>
 <pre><code class="python"># !/usr/bin/env python
 # coding: utf-8
-# from web3.auto import w3
+# got some idea for this implementations? read here: https://medium.com/coinmonks/upgradeable-proxy-contract-from-scratch-3e5f7ad0b741
 from datetime import datetime
+
+from eth_utils import to_checksum_address
+from web3.contract import Contract
+
 from moody.libeb import MiliDoS
 from moody import Config
 from moody.m.proxy_admin import ProxyAdmin
+
+
+def getInfo(manifest: MiliDoS, address: str, abi: str) -&gt; Contract:
+    return manifest.w3.eth.contract(address=address, abi=abi)
+
+
+def getData(manifest: MiliDoS, address: str, abi: str, method: str, params: any) -&gt; bytes:
+    hex = getInfo(manifest, to_checksum_address(address), abi).encodeABI(fn_name=method, args=params)
+    return hex
 
 
 def manifest(network: Config, root_path: str, k: str, override: list = []) -&gt; MiliDoS:
@@ -118,7 +131,7 @@ def checkForUpgradableContract(manifest: MiliDoS, class_name_contract: str) -&gt
     manifest.provide_artifact_extends(class_name_contract)
     contract_abi = manifest.artifact_manager.abi
     for h in contract_abi:
-        if &#34;name&#34; in h and h[&#34;name&#34;] is &#34;initialize&#34;:
+        if &#34;name&#34; in h and h[&#34;name&#34;] == &#34;initialize&#34;:
             return True
     return False
 
@@ -168,10 +181,69 @@ def deployCustomProxy(
         print(&#34;⛔️ address is not deployed yet&#34;)
         return
 
+    delegatecall_data = getData(
+        manifest=package_manifest,
+        address=logic_address,
+        abi=package_manifest.artifact_manager.abi,
+        method=&#34;initialize&#34;,
+        params=args_initialization)
+
+    print(f&#34;call_data for initialization: {delegatecall_data}&#34;)
+
     if not package_manifest.hasContractName(proxy_name):
         # todo: not every custom contracts will follow this.
         rs = package_manifest.deploy(proxy_name, [
             logic_address,
+            admin.contract_address,
+            delegatecall_data
+        ])
+
+        if not rs:
+            print(&#34;⛔️ There is an error from deploying the upgradable-proxy contract&#34;)
+            print(&#34;⛔️ failure in deploying custom proxy..&#34;)
+            exit(5)
+
+        proxy_address = package_manifest.deployed_address
+    else:
+        proxy_address = package_manifest.getAddr(proxy_name)
+
+    if not package_manifest.deployed_address:
+        print(&#34;⛔️ address is not deployed yet&#34;)
+        return
+
+    print(f&#34;Finally the proxy address is established: {proxy_address}&#34;)
+
+    administrator = admin.get_proxy_admin(proxy_address)
+    if administrator != &#34;&#34;:
+        print(f&#34;Already got the admin from {administrator} and the signer is {admin_signer}&#34;)
+    else:
+        print(f&#34;Set new signer to {admin_signer}&#34;)
+        admin.change_proxy_admin(proxy_address, admin_signer)
+    print(&#34;🈶 All done ===&#34;)
+
+
+def deployCustomProxyForImplementedAddress(
+        package_manifest: MiliDoS,
+        proxy_name: str,
+        imple_address: str,
+        admin_signer: str,
+        args_initialization: list = None
+):
+    admin = implementingProxyAdmin(package_manifest)
+
+    delegatecall_data = getData(
+        manifest=package_manifest,
+        address=imple_address,
+        abi=package_manifest.artifact_manager.abi,
+        method=&#34;initialize&#34;,
+        params=args_initialization)
+
+    print(f&#34;call_data for initialization: {delegatecall_data}&#34;)
+
+    if not package_manifest.hasContractName(proxy_name):
+        # todo: not every custom contracts will follow this.
+        rs = package_manifest.deploy(proxy_name, [
+            imple_address,
             admin.contract_address,
             args_initialization
         ])
@@ -197,6 +269,53 @@ def deployCustomProxy(
     else:
         print(f&#34;Set new signer to {admin_signer}&#34;)
         admin.change_proxy_admin(proxy_address, admin_signer)
+    print(&#34;🈶 All done ===&#34;)
+
+
+def deployProxyForImplementedAddress(
+        package_manifest: MiliDoS,
+        imple_address: str,
+        admin_signer: str
+):
+    &#34;&#34;&#34;
+    For the more complicated projects where the implementation contract needs to be customized deployed first
+    and then come back for this proxy wrapper. And this is more desirable to use.
+    :param package_manifest:
+    :param imple_address:
+    :param admin_signer:
+    :param args_initialization_: Ethereum transactions contain a field called data. This field is optional and must be empty when sending ethers, but, when interacting with a contract, it must contain something. It contains call data, which is information required to call a specific contract function.
+    :return:
+    &#34;&#34;&#34;
+    admin = implementingProxyAdmin(package_manifest)
+    print(f&#34;proxy admin address is {admin.contract_address}&#34;)
+    print(f&#34;proxy implementation address is {imple_address}&#34;)
+
+    if not package_manifest.hasContractName(&#34;TransparentUpgradeableProxy&#34;):
+        rs = package_manifest.deployImple(&#34;TransparentUpgradeableProxy&#34;, [
+            imple_address,
+            admin.contract_address,
+            &#34;&#34;
+        ])
+        if not rs:
+            print(&#34;⛔️ failure in deploying TransparentUpgradeableProxy&#34;)
+            exit(5)
+
+        package_manifest.setKV(&#34;proxy_admin&#34;, admin.contract_address)
+        package_manifest.setKV(&#34;implementation&#34;, imple_address)
+        package_manifest.setKV(&#34;version&#34;, 1)
+        package_manifest.complete_deployment()
+        proxy_address = package_manifest.deployed_address
+    else:
+        proxy_address = package_manifest.getAddr(&#34;TransparentUpgradeableProxy&#34;)
+    administrator = admin.get_proxy_admin(proxy_address)
+
+    if administrator != &#34;&#34;:
+        print(f&#34;Already got the admin from {administrator} and the signer is {admin_signer}&#34;)
+
+    else:
+        print(f&#34;Set new signer to {admin_signer}&#34;)
+        admin.change_proxy_admin(proxy_address, admin_signer)
+
     print(&#34;🈶 All done ===&#34;)
 
 
@@ -242,6 +361,18 @@ def deployProxy(
     if not package_manifest.deployed_address:
         print(&#34;⛔️ address is not deployed yet&#34;)
         return
+
+    if args_initialization_ is not None:
+        delegatecall_data = getData(
+            manifest=package_manifest,
+            address=logic_address,
+            abi=package_manifest.artifact_manager.abi,
+            method=&#34;initialize&#34;,
+            params=args_initialization_)
+
+        print(f&#34;call_data for initialization: {delegatecall_data}&#34;)
+    else:
+        args_initialization_ = &#34;&#34;
 
     if not package_manifest.hasContractName(&#34;TransparentUpgradeableProxy&#34;):
         rs = package_manifest.deployImple(&#34;TransparentUpgradeableProxy&#34;, [
@@ -352,7 +483,7 @@ def upgradeTo(package_manifest: MiliDoS, newVerClassName: str, args: any = None)
     manifest.provide_artifact_extends(class_name_contract)
     contract_abi = manifest.artifact_manager.abi
     for h in contract_abi:
-        if &#34;name&#34; in h and h[&#34;name&#34;] is &#34;initialize&#34;:
+        if &#34;name&#34; in h and h[&#34;name&#34;] == &#34;initialize&#34;:
             return True
     return False</code></pre>
 </details>
@@ -406,10 +537,78 @@ def upgradeTo(package_manifest: MiliDoS, newVerClassName: str, args: any = None)
         print(&#34;⛔️ address is not deployed yet&#34;)
         return
 
+    delegatecall_data = getData(
+        manifest=package_manifest,
+        address=logic_address,
+        abi=package_manifest.artifact_manager.abi,
+        method=&#34;initialize&#34;,
+        params=args_initialization)
+
+    print(f&#34;call_data for initialization: {delegatecall_data}&#34;)
+
     if not package_manifest.hasContractName(proxy_name):
         # todo: not every custom contracts will follow this.
         rs = package_manifest.deploy(proxy_name, [
             logic_address,
+            admin.contract_address,
+            delegatecall_data
+        ])
+
+        if not rs:
+            print(&#34;⛔️ There is an error from deploying the upgradable-proxy contract&#34;)
+            print(&#34;⛔️ failure in deploying custom proxy..&#34;)
+            exit(5)
+
+        proxy_address = package_manifest.deployed_address
+    else:
+        proxy_address = package_manifest.getAddr(proxy_name)
+
+    if not package_manifest.deployed_address:
+        print(&#34;⛔️ address is not deployed yet&#34;)
+        return
+
+    print(f&#34;Finally the proxy address is established: {proxy_address}&#34;)
+
+    administrator = admin.get_proxy_admin(proxy_address)
+    if administrator != &#34;&#34;:
+        print(f&#34;Already got the admin from {administrator} and the signer is {admin_signer}&#34;)
+    else:
+        print(f&#34;Set new signer to {admin_signer}&#34;)
+        admin.change_proxy_admin(proxy_address, admin_signer)
+    print(&#34;🈶 All done ===&#34;)</code></pre>
+</details>
+</dd>
+<dt id="moody.upgrade.deployupgradable.deployCustomProxyForImplementedAddress"><code class="name flex">
+<span>def <span class="ident">deployCustomProxyForImplementedAddress</span></span>(<span>package_manifest: <a title="moody.libeb.MiliDoS" href="../libeb.html#moody.libeb.MiliDoS">MiliDoS</a>, proxy_name: str, imple_address: str, admin_signer: str, args_initialization: list = None)</span>
+</code></dt>
+<dd>
+<div class="desc"></div>
+<details class="source">
+<summary>
+<span>Expand source code</span>
+</summary>
+<pre><code class="python">def deployCustomProxyForImplementedAddress(
+        package_manifest: MiliDoS,
+        proxy_name: str,
+        imple_address: str,
+        admin_signer: str,
+        args_initialization: list = None
+):
+    admin = implementingProxyAdmin(package_manifest)
+
+    delegatecall_data = getData(
+        manifest=package_manifest,
+        address=imple_address,
+        abi=package_manifest.artifact_manager.abi,
+        method=&#34;initialize&#34;,
+        params=args_initialization)
+
+    print(f&#34;call_data for initialization: {delegatecall_data}&#34;)
+
+    if not package_manifest.hasContractName(proxy_name):
+        # todo: not every custom contracts will follow this.
+        rs = package_manifest.deploy(proxy_name, [
+            imple_address,
             admin.contract_address,
             args_initialization
         ])
@@ -502,6 +701,18 @@ existing Box contract and recompile it - the plugin will note it changed.</p>
         print(&#34;⛔️ address is not deployed yet&#34;)
         return
 
+    if args_initialization_ is not None:
+        delegatecall_data = getData(
+            manifest=package_manifest,
+            address=logic_address,
+            abi=package_manifest.artifact_manager.abi,
+            method=&#34;initialize&#34;,
+            params=args_initialization_)
+
+        print(f&#34;call_data for initialization: {delegatecall_data}&#34;)
+    else:
+        args_initialization_ = &#34;&#34;
+
     if not package_manifest.hasContractName(&#34;TransparentUpgradeableProxy&#34;):
         rs = package_manifest.deployImple(&#34;TransparentUpgradeableProxy&#34;, [
             logic_address,
@@ -512,6 +723,68 @@ existing Box contract and recompile it - the plugin will note it changed.</p>
             print(&#34;⛔️ failure in deploying TransparentUpgradeableProxy&#34;)
             exit(5)
 
+        proxy_address = package_manifest.deployed_address
+    else:
+        proxy_address = package_manifest.getAddr(&#34;TransparentUpgradeableProxy&#34;)
+    administrator = admin.get_proxy_admin(proxy_address)
+
+    if administrator != &#34;&#34;:
+        print(f&#34;Already got the admin from {administrator} and the signer is {admin_signer}&#34;)
+
+    else:
+        print(f&#34;Set new signer to {admin_signer}&#34;)
+        admin.change_proxy_admin(proxy_address, admin_signer)
+
+    print(&#34;🈶 All done ===&#34;)</code></pre>
+</details>
+</dd>
+<dt id="moody.upgrade.deployupgradable.deployProxyForImplementedAddress"><code class="name flex">
+<span>def <span class="ident">deployProxyForImplementedAddress</span></span>(<span>package_manifest: <a title="moody.libeb.MiliDoS" href="../libeb.html#moody.libeb.MiliDoS">MiliDoS</a>, imple_address: str, admin_signer: str)</span>
+</code></dt>
+<dd>
+<div class="desc"><p>For the more complicated projects where the implementation contract needs to be customized deployed first
+and then come back for this proxy wrapper. And this is more desirable to use.
+:param package_manifest:
+:param imple_address:
+:param admin_signer:
+:param args_initialization_: Ethereum transactions contain a field called data. This field is optional and must be empty when sending ethers, but, when interacting with a contract, it must contain something. It contains call data, which is information required to call a specific contract function.
+:return:</p></div>
+<details class="source">
+<summary>
+<span>Expand source code</span>
+</summary>
+<pre><code class="python">def deployProxyForImplementedAddress(
+        package_manifest: MiliDoS,
+        imple_address: str,
+        admin_signer: str
+):
+    &#34;&#34;&#34;
+    For the more complicated projects where the implementation contract needs to be customized deployed first
+    and then come back for this proxy wrapper. And this is more desirable to use.
+    :param package_manifest:
+    :param imple_address:
+    :param admin_signer:
+    :param args_initialization_: Ethereum transactions contain a field called data. This field is optional and must be empty when sending ethers, but, when interacting with a contract, it must contain something. It contains call data, which is information required to call a specific contract function.
+    :return:
+    &#34;&#34;&#34;
+    admin = implementingProxyAdmin(package_manifest)
+    print(f&#34;proxy admin address is {admin.contract_address}&#34;)
+    print(f&#34;proxy implementation address is {imple_address}&#34;)
+
+    if not package_manifest.hasContractName(&#34;TransparentUpgradeableProxy&#34;):
+        rs = package_manifest.deployImple(&#34;TransparentUpgradeableProxy&#34;, [
+            imple_address,
+            admin.contract_address,
+            &#34;&#34;
+        ])
+        if not rs:
+            print(&#34;⛔️ failure in deploying TransparentUpgradeableProxy&#34;)
+            exit(5)
+
+        package_manifest.setKV(&#34;proxy_admin&#34;, admin.contract_address)
+        package_manifest.setKV(&#34;implementation&#34;, imple_address)
+        package_manifest.setKV(&#34;version&#34;, 1)
+        package_manifest.complete_deployment()
         proxy_address = package_manifest.deployed_address
     else:
         proxy_address = package_manifest.getAddr(&#34;TransparentUpgradeableProxy&#34;)
@@ -580,6 +853,33 @@ existing Box contract and recompile it - the plugin will note it changed.</p>
     &#34;&#34;&#34;
     package_manifest = manifest(network, root_path, deployer_key)
     deployProxy(package_manifest, class_name, admin_signer, args, args_initialization)</code></pre>
+</details>
+</dd>
+<dt id="moody.upgrade.deployupgradable.getData"><code class="name flex">
+<span>def <span class="ident">getData</span></span>(<span>manifest: <a title="moody.libeb.MiliDoS" href="../libeb.html#moody.libeb.MiliDoS">MiliDoS</a>, address: str, abi: str, method: str, params: <built-in function any>) ‑> bytes</span>
+</code></dt>
+<dd>
+<div class="desc"></div>
+<details class="source">
+<summary>
+<span>Expand source code</span>
+</summary>
+<pre><code class="python">def getData(manifest: MiliDoS, address: str, abi: str, method: str, params: any) -&gt; bytes:
+    hex = getInfo(manifest, to_checksum_address(address), abi).encodeABI(fn_name=method, args=params)
+    return hex</code></pre>
+</details>
+</dd>
+<dt id="moody.upgrade.deployupgradable.getInfo"><code class="name flex">
+<span>def <span class="ident">getInfo</span></span>(<span>manifest: <a title="moody.libeb.MiliDoS" href="../libeb.html#moody.libeb.MiliDoS">MiliDoS</a>, address: str, abi: str) ‑> web3.contract.Contract</span>
+</code></dt>
+<dd>
+<div class="desc"></div>
+<details class="source">
+<summary>
+<span>Expand source code</span>
+</summary>
+<pre><code class="python">def getInfo(manifest: MiliDoS, address: str, abi: str) -&gt; Contract:
+    return manifest.w3.eth.contract(address=address, abi=abi)</code></pre>
 </details>
 </dd>
 <dt id="moody.upgrade.deployupgradable.implementingProxyAdmin"><code class="name flex">
@@ -710,8 +1010,12 @@ existing Box contract and recompile it - the plugin will note it changed.</p>
 <li><code><a title="moody.upgrade.deployupgradable.checkBreak" href="#moody.upgrade.deployupgradable.checkBreak">checkBreak</a></code></li>
 <li><code><a title="moody.upgrade.deployupgradable.checkForUpgradableContract" href="#moody.upgrade.deployupgradable.checkForUpgradableContract">checkForUpgradableContract</a></code></li>
 <li><code><a title="moody.upgrade.deployupgradable.deployCustomProxy" href="#moody.upgrade.deployupgradable.deployCustomProxy">deployCustomProxy</a></code></li>
+<li><code><a title="moody.upgrade.deployupgradable.deployCustomProxyForImplementedAddress" href="#moody.upgrade.deployupgradable.deployCustomProxyForImplementedAddress">deployCustomProxyForImplementedAddress</a></code></li>
 <li><code><a title="moody.upgrade.deployupgradable.deployProxy" href="#moody.upgrade.deployupgradable.deployProxy">deployProxy</a></code></li>
+<li><code><a title="moody.upgrade.deployupgradable.deployProxyForImplementedAddress" href="#moody.upgrade.deployupgradable.deployProxyForImplementedAddress">deployProxyForImplementedAddress</a></code></li>
 <li><code><a title="moody.upgrade.deployupgradable.deployProxyUniversial" href="#moody.upgrade.deployupgradable.deployProxyUniversial">deployProxyUniversial</a></code></li>
+<li><code><a title="moody.upgrade.deployupgradable.getData" href="#moody.upgrade.deployupgradable.getData">getData</a></code></li>
+<li><code><a title="moody.upgrade.deployupgradable.getInfo" href="#moody.upgrade.deployupgradable.getInfo">getInfo</a></code></li>
 <li><code><a title="moody.upgrade.deployupgradable.implementingProxyAdmin" href="#moody.upgrade.deployupgradable.implementingProxyAdmin">implementingProxyAdmin</a></code></li>
 <li><code><a title="moody.upgrade.deployupgradable.manifest" href="#moody.upgrade.deployupgradable.manifest">manifest</a></code></li>
 <li><code><a title="moody.upgrade.deployupgradable.upgradeTo" href="#moody.upgrade.deployupgradable.upgradeTo">upgradeTo</a></code></li>

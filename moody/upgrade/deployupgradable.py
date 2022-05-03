@@ -1,10 +1,23 @@
 # !/usr/bin/env python
 # coding: utf-8
-# from web3.auto import w3
+# got some idea for this implementations? read here: https://medium.com/coinmonks/upgradeable-proxy-contract-from-scratch-3e5f7ad0b741
 from datetime import datetime
+
+from eth_utils import to_checksum_address
+from web3.contract import Contract
+
 from moody.libeb import MiliDoS
 from moody import Config
 from moody.m.proxy_admin import ProxyAdmin
+
+
+def getInfo(manifest: MiliDoS, address: str, abi: str) -> Contract:
+    return manifest.w3.eth.contract(address=address, abi=abi)
+
+
+def getData(manifest: MiliDoS, address: str, abi: str, method: str, params: any) -> bytes:
+    hex = getInfo(manifest, to_checksum_address(address), abi).encodeABI(fn_name=method, args=params)
+    return hex
 
 
 def manifest(network: Config, root_path: str, k: str, override: list = []) -> MiliDoS:
@@ -90,7 +103,7 @@ def checkForUpgradableContract(manifest: MiliDoS, class_name_contract: str) -> b
     manifest.provide_artifact_extends(class_name_contract)
     contract_abi = manifest.artifact_manager.abi
     for h in contract_abi:
-        if "name" in h and h["name"] is "initialize":
+        if "name" in h and h["name"] == "initialize":
             return True
     return False
 
@@ -140,10 +153,69 @@ def deployCustomProxy(
         print("⛔️ address is not deployed yet")
         return
 
+    delegatecall_data = getData(
+        manifest=package_manifest,
+        address=logic_address,
+        abi=package_manifest.artifact_manager.abi,
+        method="initialize",
+        params=args_initialization)
+
+    print(f"call_data for initialization: {delegatecall_data}")
+
     if not package_manifest.hasContractName(proxy_name):
         # todo: not every custom contracts will follow this.
         rs = package_manifest.deploy(proxy_name, [
             logic_address,
+            admin.contract_address,
+            delegatecall_data
+        ])
+
+        if not rs:
+            print("⛔️ There is an error from deploying the upgradable-proxy contract")
+            print("⛔️ failure in deploying custom proxy..")
+            exit(5)
+
+        proxy_address = package_manifest.deployed_address
+    else:
+        proxy_address = package_manifest.getAddr(proxy_name)
+
+    if not package_manifest.deployed_address:
+        print("⛔️ address is not deployed yet")
+        return
+
+    print(f"Finally the proxy address is established: {proxy_address}")
+
+    administrator = admin.get_proxy_admin(proxy_address)
+    if administrator != "":
+        print(f"Already got the admin from {administrator} and the signer is {admin_signer}")
+    else:
+        print(f"Set new signer to {admin_signer}")
+        admin.change_proxy_admin(proxy_address, admin_signer)
+    print("🈶 All done ===")
+
+
+def deployCustomProxyForImplementedAddress(
+        package_manifest: MiliDoS,
+        proxy_name: str,
+        imple_address: str,
+        admin_signer: str,
+        args_initialization: list = None
+):
+    admin = implementingProxyAdmin(package_manifest)
+
+    delegatecall_data = getData(
+        manifest=package_manifest,
+        address=imple_address,
+        abi=package_manifest.artifact_manager.abi,
+        method="initialize",
+        params=args_initialization)
+
+    print(f"call_data for initialization: {delegatecall_data}")
+
+    if not package_manifest.hasContractName(proxy_name):
+        # todo: not every custom contracts will follow this.
+        rs = package_manifest.deploy(proxy_name, [
+            imple_address,
             admin.contract_address,
             args_initialization
         ])
@@ -169,6 +241,53 @@ def deployCustomProxy(
     else:
         print(f"Set new signer to {admin_signer}")
         admin.change_proxy_admin(proxy_address, admin_signer)
+    print("🈶 All done ===")
+
+
+def deployProxyForImplementedAddress(
+        package_manifest: MiliDoS,
+        imple_address: str,
+        admin_signer: str
+):
+    """
+    For the more complicated projects where the implementation contract needs to be customized deployed first
+    and then come back for this proxy wrapper. And this is more desirable to use.
+    :param package_manifest:
+    :param imple_address:
+    :param admin_signer:
+    :param args_initialization_: Ethereum transactions contain a field called data. This field is optional and must be empty when sending ethers, but, when interacting with a contract, it must contain something. It contains call data, which is information required to call a specific contract function.
+    :return:
+    """
+    admin = implementingProxyAdmin(package_manifest)
+    print(f"proxy admin address is {admin.contract_address}")
+    print(f"proxy implementation address is {imple_address}")
+
+    if not package_manifest.hasContractName("TransparentUpgradeableProxy"):
+        rs = package_manifest.deployImple("TransparentUpgradeableProxy", [
+            imple_address,
+            admin.contract_address,
+            ""
+        ])
+        if not rs:
+            print("⛔️ failure in deploying TransparentUpgradeableProxy")
+            exit(5)
+
+        package_manifest.setKV("proxy_admin", admin.contract_address)
+        package_manifest.setKV("implementation", imple_address)
+        package_manifest.setKV("version", 1)
+        package_manifest.complete_deployment()
+        proxy_address = package_manifest.deployed_address
+    else:
+        proxy_address = package_manifest.getAddr("TransparentUpgradeableProxy")
+    administrator = admin.get_proxy_admin(proxy_address)
+
+    if administrator != "":
+        print(f"Already got the admin from {administrator} and the signer is {admin_signer}")
+
+    else:
+        print(f"Set new signer to {admin_signer}")
+        admin.change_proxy_admin(proxy_address, admin_signer)
+
     print("🈶 All done ===")
 
 
@@ -214,6 +333,18 @@ def deployProxy(
     if not package_manifest.deployed_address:
         print("⛔️ address is not deployed yet")
         return
+
+    if args_initialization_ is not None:
+        delegatecall_data = getData(
+            manifest=package_manifest,
+            address=logic_address,
+            abi=package_manifest.artifact_manager.abi,
+            method="initialize",
+            params=args_initialization_)
+
+        print(f"call_data for initialization: {delegatecall_data}")
+    else:
+        args_initialization_ = ""
 
     if not package_manifest.hasContractName("TransparentUpgradeableProxy"):
         rs = package_manifest.deployImple("TransparentUpgradeableProxy", [

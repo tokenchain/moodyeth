@@ -111,6 +111,7 @@ class ContractTool(MiliDoS):
     """
     This is the batch function to transfer native coins
     """
+
     def DistributeCoins(self, from_account_index: int, loops: int, exclude: list, gas: int, price: int) -> None:
         ind = 0
         # self.AuthIndex(from_account_index)
@@ -123,9 +124,11 @@ class ContractTool(MiliDoS):
                 continue
             self.TransferRefer(ind, 0.1, gas, price)
             ind += 1
+
     """
     The function used for transfer the native coin
     """
+
     def Transfer(self, address_receive: str, amount: float, gas_limit: int = 0, gas_price: int = 0) -> str:
         tx = {
             'to': address_receive,
@@ -148,3 +151,11 @@ class ContractTool(MiliDoS):
 
     def TransferRefer(self, w_index: int, amount: float, gas_limit: int = 0, gas_price: int = 0) -> str:
         return self.Transfer(self.referrer(w_index), amount, gas_limit, gas_price)
+
+
+def implementContract(manifest: MiliDoS, class_name: str, args: list = []) -> str:
+    if manifest.hasContractName(class_name) is False:
+        manifest.deploy(class_name, args)
+        return manifest.deployed_address
+    else:
+        return manifest.getAddr(class_name)
