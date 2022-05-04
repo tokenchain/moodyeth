@@ -85,6 +85,16 @@ class Key:
     network: str
 
 
+@dataclass
+class MetaSetting:
+    optimization_runs: int
+    optimization_enabled: bool
+    evm: str
+    linkLib: dict
+    solidity_ver_full: str
+    solidity_ver: str
+
+
 class Bolors:
     OK = &#39;\033[92m&#39;  # GREEN
     WARNING = &#39;\033[93m&#39;  # YELLOW

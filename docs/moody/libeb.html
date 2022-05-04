@@ -34,6 +34,8 @@ import time
 from threading import Lock
 from typing import List, Tuple, Optional
 
+import re
+
 # ========================== Of course
 from hexbytes import HexBytes
 from web3 import Web3, HTTPProvider
@@ -45,7 +47,7 @@ from web3.middleware import geth_poa_middleware
 from web3.types import BlockData
 
 # ========================== Of course
-from . import Bolors, Evm, DefaultKeys, root_base_path
+from . import Bolors, Evm, DefaultKeys, root_base_path, MetaSetting
 from .buildercompile.remotecompile import BuildRemoteLinuxCommand
 from .buildercompile.transpile import BuildLang
 from .conf import Config
@@ -149,9 +151,10 @@ def toDict(dictToParse):
     return parsedDict
 
 
-import re
-
+# binops
 regex1 = r&#34;\/\/*.*&#34;
+# solidity version cutter
+regex2 = r&#34;^(\d+\.)?(\d+\.)?(\*|\d+)&#34;
 
 
 class IDos:
@@ -282,29 +285,67 @@ class SolWeb3Tool(object):
         self._meta = json.load(codecs.open(metafile, &#39;r&#39;, &#39;utf-8-sig&#39;))
         return self
 
+    def LoadInternalMeta(self, class_name: str) -&gt; &#34;SolWeb3Tool&#34;:
+        metafile = os.path.join(root_base_path, self.OUTPUT_BUILD, &#34;{}_meta.json&#34;.format(class_name))
+        self._meta = json.load(codecs.open(metafile, &#39;r&#39;, &#39;utf-8-sig&#39;))
+        return self
+
     def GetMetadata(self) -&gt; dict:
         return self._meta
 
     def GetSourceFileRead(self, file_name: str) -&gt; str:
         asfile = os.path.join(self.WORKSPACE_PATH, file_name)
-        return codecs.open(asfile, &#39;r&#39;, &#39;utf-8-sig&#39;).read()
+        return self.ReadAsStr(asfile)
 
-    def GetMetaCompilerVer(self, full: bool = False) -&gt; dict:
+    def ReadAsStr(self, file_name: str) -&gt; str:
+        return codecs.open(file_name, &#39;r&#39;, &#39;utf-8-sig&#39;).read()
+
+    def ReadAsStrAndEscape(self, file_name: str) -&gt; str:
+        loaded = self.ReadAsStr(file_name)
+        return re.escape(loaded)
+
+    def GetMetaCompilerVer(self, full: bool = False) -&gt; str:
         if &#34;compiler&#34; not in self._meta:
             print(&#34;key compiler is not found&#34;)
-            return dict()
+            return &#34;&#34;
         if &#34;version&#34; not in self._meta[&#34;compiler&#34;]:
             print(&#34;key version is not found&#34;)
-            return dict()
+            return &#34;&#34;
 
-        return self._meta[&#34;compiler&#34;][&#34;version&#34;]
+        version_text = self._meta[&#34;compiler&#34;][&#34;version&#34;]
+        matches = re.search(regex2, version_text)
 
-    def GetMetaSettings(self) -&gt; dict:
+        if full is True:
+            return version_text.replace(&#39;.Emscripten.clang&#39;, &#39;&#39;)
+        else:
+            return matches.group()
+
+    def GetMetaSettings(self) -&gt; any:
+
         if &#34;settings&#34; not in self._meta:
             print(&#34;key settings is not found&#34;)
-            return dict()
+            return False
+        if &#34;evmVersion&#34; not in self._meta[&#34;settings&#34;]:
+            print(&#34;key version is not found&#34;)
+            return False
+        if &#34;libraries&#34; not in self._meta[&#34;settings&#34;]:
+            print(&#34;key version is not found&#34;)
+            return False
 
-        return self._meta[&#34;settings&#34;]
+        if &#34;optimizer&#34; not in self._meta[&#34;settings&#34;]:
+            print(&#34;key version is not found&#34;)
+            return False
+
+        meta = MetaSetting(
+            evm=self._meta[&#34;settings&#34;][&#34;evmVersion&#34;],
+            solidity_ver=self.GetMetaCompilerVer(False),
+            solidity_ver_full=self.GetMetaCompilerVer(True),
+            linkLib=self._meta[&#34;settings&#34;][&#34;libraries&#34;],
+            optimization_runs=self._meta[&#34;settings&#34;][&#34;optimizer&#34;][&#34;runs&#34;],
+            optimization_enabled=self._meta[&#34;settings&#34;][&#34;optimizer&#34;][&#34;enabled&#34;]
+        )
+
+        return meta
 
     def GetCombinedFile(self) -&gt; &#34;SolWeb3Tool&#34;:
         pathc = os.path.join(self.WORKSPACE_PATH, self.OUTPUT_BUILD, &#34;combined.json&#34;)
@@ -3439,29 +3480,67 @@ This is the artifact manager as we know it</p></div>
         self._meta = json.load(codecs.open(metafile, &#39;r&#39;, &#39;utf-8-sig&#39;))
         return self
 
+    def LoadInternalMeta(self, class_name: str) -&gt; &#34;SolWeb3Tool&#34;:
+        metafile = os.path.join(root_base_path, self.OUTPUT_BUILD, &#34;{}_meta.json&#34;.format(class_name))
+        self._meta = json.load(codecs.open(metafile, &#39;r&#39;, &#39;utf-8-sig&#39;))
+        return self
+
     def GetMetadata(self) -&gt; dict:
         return self._meta
 
     def GetSourceFileRead(self, file_name: str) -&gt; str:
         asfile = os.path.join(self.WORKSPACE_PATH, file_name)
-        return codecs.open(asfile, &#39;r&#39;, &#39;utf-8-sig&#39;).read()
+        return self.ReadAsStr(asfile)
 
-    def GetMetaCompilerVer(self, full: bool = False) -&gt; dict:
+    def ReadAsStr(self, file_name: str) -&gt; str:
+        return codecs.open(file_name, &#39;r&#39;, &#39;utf-8-sig&#39;).read()
+
+    def ReadAsStrAndEscape(self, file_name: str) -&gt; str:
+        loaded = self.ReadAsStr(file_name)
+        return re.escape(loaded)
+
+    def GetMetaCompilerVer(self, full: bool = False) -&gt; str:
         if &#34;compiler&#34; not in self._meta:
             print(&#34;key compiler is not found&#34;)
-            return dict()
+            return &#34;&#34;
         if &#34;version&#34; not in self._meta[&#34;compiler&#34;]:
             print(&#34;key version is not found&#34;)
-            return dict()
+            return &#34;&#34;
 
-        return self._meta[&#34;compiler&#34;][&#34;version&#34;]
+        version_text = self._meta[&#34;compiler&#34;][&#34;version&#34;]
+        matches = re.search(regex2, version_text)
 
-    def GetMetaSettings(self) -&gt; dict:
+        if full is True:
+            return version_text.replace(&#39;.Emscripten.clang&#39;, &#39;&#39;)
+        else:
+            return matches.group()
+
+    def GetMetaSettings(self) -&gt; any:
+
         if &#34;settings&#34; not in self._meta:
             print(&#34;key settings is not found&#34;)
-            return dict()
+            return False
+        if &#34;evmVersion&#34; not in self._meta[&#34;settings&#34;]:
+            print(&#34;key version is not found&#34;)
+            return False
+        if &#34;libraries&#34; not in self._meta[&#34;settings&#34;]:
+            print(&#34;key version is not found&#34;)
+            return False
 
-        return self._meta[&#34;settings&#34;]
+        if &#34;optimizer&#34; not in self._meta[&#34;settings&#34;]:
+            print(&#34;key version is not found&#34;)
+            return False
+
+        meta = MetaSetting(
+            evm=self._meta[&#34;settings&#34;][&#34;evmVersion&#34;],
+            solidity_ver=self.GetMetaCompilerVer(False),
+            solidity_ver_full=self.GetMetaCompilerVer(True),
+            linkLib=self._meta[&#34;settings&#34;][&#34;libraries&#34;],
+            optimization_runs=self._meta[&#34;settings&#34;][&#34;optimizer&#34;][&#34;runs&#34;],
+            optimization_enabled=self._meta[&#34;settings&#34;][&#34;optimizer&#34;][&#34;enabled&#34;]
+        )
+
+        return meta
 
     def GetCombinedFile(self) -&gt; &#34;SolWeb3Tool&#34;:
         pathc = os.path.join(self.WORKSPACE_PATH, self.OUTPUT_BUILD, &#34;combined.json&#34;)
@@ -3707,7 +3786,7 @@ from combined.json
 </details>
 </dd>
 <dt id="moody.libeb.SolWeb3Tool.GetMetaCompilerVer"><code class="name flex">
-<span>def <span class="ident">GetMetaCompilerVer</span></span>(<span>self, full: bool = False) ‑> dict</span>
+<span>def <span class="ident">GetMetaCompilerVer</span></span>(<span>self, full: bool = False) ‑> str</span>
 </code></dt>
 <dd>
 <div class="desc"></div>
@@ -3715,19 +3794,25 @@ from combined.json
 <summary>
 <span>Expand source code</span>
 </summary>
-<pre><code class="python">def GetMetaCompilerVer(self, full: bool = False) -&gt; dict:
+<pre><code class="python">def GetMetaCompilerVer(self, full: bool = False) -&gt; str:
     if &#34;compiler&#34; not in self._meta:
         print(&#34;key compiler is not found&#34;)
-        return dict()
+        return &#34;&#34;
     if &#34;version&#34; not in self._meta[&#34;compiler&#34;]:
         print(&#34;key version is not found&#34;)
-        return dict()
+        return &#34;&#34;
 
-    return self._meta[&#34;compiler&#34;][&#34;version&#34;]</code></pre>
+    version_text = self._meta[&#34;compiler&#34;][&#34;version&#34;]
+    matches = re.search(regex2, version_text)
+
+    if full is True:
+        return version_text.replace(&#39;.Emscripten.clang&#39;, &#39;&#39;)
+    else:
+        return matches.group()</code></pre>
 </details>
 </dd>
 <dt id="moody.libeb.SolWeb3Tool.GetMetaSettings"><code class="name flex">
-<span>def <span class="ident">GetMetaSettings</span></span>(<span>self) ‑> dict</span>
+<span>def <span class="ident">GetMetaSettings</span></span>(<span>self) ‑> <built-in function any></span>
 </code></dt>
 <dd>
 <div class="desc"></div>
@@ -3735,12 +3820,32 @@ from combined.json
 <summary>
 <span>Expand source code</span>
 </summary>
-<pre><code class="python">def GetMetaSettings(self) -&gt; dict:
+<pre><code class="python">def GetMetaSettings(self) -&gt; any:
+
     if &#34;settings&#34; not in self._meta:
         print(&#34;key settings is not found&#34;)
-        return dict()
+        return False
+    if &#34;evmVersion&#34; not in self._meta[&#34;settings&#34;]:
+        print(&#34;key version is not found&#34;)
+        return False
+    if &#34;libraries&#34; not in self._meta[&#34;settings&#34;]:
+        print(&#34;key version is not found&#34;)
+        return False
 
-    return self._meta[&#34;settings&#34;]</code></pre>
+    if &#34;optimizer&#34; not in self._meta[&#34;settings&#34;]:
+        print(&#34;key version is not found&#34;)
+        return False
+
+    meta = MetaSetting(
+        evm=self._meta[&#34;settings&#34;][&#34;evmVersion&#34;],
+        solidity_ver=self.GetMetaCompilerVer(False),
+        solidity_ver_full=self.GetMetaCompilerVer(True),
+        linkLib=self._meta[&#34;settings&#34;][&#34;libraries&#34;],
+        optimization_runs=self._meta[&#34;settings&#34;][&#34;optimizer&#34;][&#34;runs&#34;],
+        optimization_enabled=self._meta[&#34;settings&#34;][&#34;optimizer&#34;][&#34;enabled&#34;]
+    )
+
+    return meta</code></pre>
 </details>
 </dd>
 <dt id="moody.libeb.SolWeb3Tool.GetMetadata"><code class="name flex">
@@ -3767,7 +3872,49 @@ from combined.json
 </summary>
 <pre><code class="python">def GetSourceFileRead(self, file_name: str) -&gt; str:
     asfile = os.path.join(self.WORKSPACE_PATH, file_name)
-    return codecs.open(asfile, &#39;r&#39;, &#39;utf-8-sig&#39;).read()</code></pre>
+    return self.ReadAsStr(asfile)</code></pre>
+</details>
+</dd>
+<dt id="moody.libeb.SolWeb3Tool.LoadInternalMeta"><code class="name flex">
+<span>def <span class="ident">LoadInternalMeta</span></span>(<span>self, class_name: str) ‑> <a title="moody.libeb.SolWeb3Tool" href="#moody.libeb.SolWeb3Tool">SolWeb3Tool</a></span>
+</code></dt>
+<dd>
+<div class="desc"></div>
+<details class="source">
+<summary>
+<span>Expand source code</span>
+</summary>
+<pre><code class="python">def LoadInternalMeta(self, class_name: str) -&gt; &#34;SolWeb3Tool&#34;:
+    metafile = os.path.join(root_base_path, self.OUTPUT_BUILD, &#34;{}_meta.json&#34;.format(class_name))
+    self._meta = json.load(codecs.open(metafile, &#39;r&#39;, &#39;utf-8-sig&#39;))
+    return self</code></pre>
+</details>
+</dd>
+<dt id="moody.libeb.SolWeb3Tool.ReadAsStr"><code class="name flex">
+<span>def <span class="ident">ReadAsStr</span></span>(<span>self, file_name: str) ‑> str</span>
+</code></dt>
+<dd>
+<div class="desc"></div>
+<details class="source">
+<summary>
+<span>Expand source code</span>
+</summary>
+<pre><code class="python">def ReadAsStr(self, file_name: str) -&gt; str:
+    return codecs.open(file_name, &#39;r&#39;, &#39;utf-8-sig&#39;).read()</code></pre>
+</details>
+</dd>
+<dt id="moody.libeb.SolWeb3Tool.ReadAsStrAndEscape"><code class="name flex">
+<span>def <span class="ident">ReadAsStrAndEscape</span></span>(<span>self, file_name: str) ‑> str</span>
+</code></dt>
+<dd>
+<div class="desc"></div>
+<details class="source">
+<summary>
+<span>Expand source code</span>
+</summary>
+<pre><code class="python">def ReadAsStrAndEscape(self, file_name: str) -&gt; str:
+    loaded = self.ReadAsStr(file_name)
+    return re.escape(loaded)</code></pre>
 </details>
 </dd>
 <dt id="moody.libeb.SolWeb3Tool.StoreTxResult"><code class="name flex">
@@ -3963,7 +4110,10 @@ from combined.json
 <li><code><a title="moody.libeb.SolWeb3Tool.GetMetaSettings" href="#moody.libeb.SolWeb3Tool.GetMetaSettings">GetMetaSettings</a></code></li>
 <li><code><a title="moody.libeb.SolWeb3Tool.GetMetadata" href="#moody.libeb.SolWeb3Tool.GetMetadata">GetMetadata</a></code></li>
 <li><code><a title="moody.libeb.SolWeb3Tool.GetSourceFileRead" href="#moody.libeb.SolWeb3Tool.GetSourceFileRead">GetSourceFileRead</a></code></li>
+<li><code><a title="moody.libeb.SolWeb3Tool.LoadInternalMeta" href="#moody.libeb.SolWeb3Tool.LoadInternalMeta">LoadInternalMeta</a></code></li>
 <li><code><a title="moody.libeb.SolWeb3Tool.OUTPUT_BUILD" href="#moody.libeb.SolWeb3Tool.OUTPUT_BUILD">OUTPUT_BUILD</a></code></li>
+<li><code><a title="moody.libeb.SolWeb3Tool.ReadAsStr" href="#moody.libeb.SolWeb3Tool.ReadAsStr">ReadAsStr</a></code></li>
+<li><code><a title="moody.libeb.SolWeb3Tool.ReadAsStrAndEscape" href="#moody.libeb.SolWeb3Tool.ReadAsStrAndEscape">ReadAsStrAndEscape</a></code></li>
 <li><code><a title="moody.libeb.SolWeb3Tool.StoreTxResult" href="#moody.libeb.SolWeb3Tool.StoreTxResult">StoreTxResult</a></code></li>
 <li><code><a title="moody.libeb.SolWeb3Tool.WORKSPACE_PATH" href="#moody.libeb.SolWeb3Tool.WORKSPACE_PATH">WORKSPACE_PATH</a></code></li>
 <li><code><a title="moody.libeb.SolWeb3Tool.abi" href="#moody.libeb.SolWeb3Tool.abi">abi</a></code></li>

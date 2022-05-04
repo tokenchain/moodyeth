@@ -6,6 +6,8 @@ import time
 from threading import Lock
 from typing import List, Tuple, Optional
 
+import re
+
 # ========================== Of course
 from hexbytes import HexBytes
 from web3 import Web3, HTTPProvider
@@ -17,7 +19,7 @@ from web3.middleware import geth_poa_middleware
 from web3.types import BlockData
 
 # ========================== Of course
-from . import Bolors, Evm, DefaultKeys, root_base_path
+from . import Bolors, Evm, DefaultKeys, root_base_path, MetaSetting
 from .buildercompile.remotecompile import BuildRemoteLinuxCommand
 from .buildercompile.transpile import BuildLang
 from .conf import Config
@@ -121,9 +123,10 @@ def toDict(dictToParse):
     return parsedDict
 
 
-import re
-
+# binops
 regex1 = r"\/\/*.*"
+# solidity version cutter
+regex2 = r"^(\d+\.)?(\d+\.)?(\*|\d+)"
 
 
 class IDos:
@@ -254,29 +257,67 @@ class SolWeb3Tool(object):
         self._meta = json.load(codecs.open(metafile, 'r', 'utf-8-sig'))
         return self
 
+    def LoadInternalMeta(self, class_name: str) -> "SolWeb3Tool":
+        metafile = os.path.join(root_base_path, self.OUTPUT_BUILD, "{}_meta.json".format(class_name))
+        self._meta = json.load(codecs.open(metafile, 'r', 'utf-8-sig'))
+        return self
+
     def GetMetadata(self) -> dict:
         return self._meta
 
     def GetSourceFileRead(self, file_name: str) -> str:
         asfile = os.path.join(self.WORKSPACE_PATH, file_name)
-        return codecs.open(asfile, 'r', 'utf-8-sig').read()
+        return self.ReadAsStr(asfile)
 
-    def GetMetaCompilerVer(self, full: bool = False) -> dict:
+    def ReadAsStr(self, file_name: str) -> str:
+        return codecs.open(file_name, 'r', 'utf-8-sig').read()
+
+    def ReadAsStrAndEscape(self, file_name: str) -> str:
+        loaded = self.ReadAsStr(file_name)
+        return re.escape(loaded)
+
+    def GetMetaCompilerVer(self, full: bool = False) -> str:
         if "compiler" not in self._meta:
             print("key compiler is not found")
-            return dict()
+            return ""
         if "version" not in self._meta["compiler"]:
             print("key version is not found")
-            return dict()
+            return ""
 
-        return self._meta["compiler"]["version"]
+        version_text = self._meta["compiler"]["version"]
+        matches = re.search(regex2, version_text)
 
-    def GetMetaSettings(self) -> dict:
+        if full is True:
+            return version_text.replace('.Emscripten.clang', '')
+        else:
+            return matches.group()
+
+    def GetMetaSettings(self) -> any:
+
         if "settings" not in self._meta:
             print("key settings is not found")
-            return dict()
+            return False
+        if "evmVersion" not in self._meta["settings"]:
+            print("key version is not found")
+            return False
+        if "libraries" not in self._meta["settings"]:
+            print("key version is not found")
+            return False
 
-        return self._meta["settings"]
+        if "optimizer" not in self._meta["settings"]:
+            print("key version is not found")
+            return False
+
+        meta = MetaSetting(
+            evm=self._meta["settings"]["evmVersion"],
+            solidity_ver=self.GetMetaCompilerVer(False),
+            solidity_ver_full=self.GetMetaCompilerVer(True),
+            linkLib=self._meta["settings"]["libraries"],
+            optimization_runs=self._meta["settings"]["optimizer"]["runs"],
+            optimization_enabled=self._meta["settings"]["optimizer"]["enabled"]
+        )
+
+        return meta
 
     def GetCombinedFile(self) -> "SolWeb3Tool":
         pathc = os.path.join(self.WORKSPACE_PATH, self.OUTPUT_BUILD, "combined.json")

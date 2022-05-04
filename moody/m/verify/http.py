@@ -5,12 +5,7 @@
 # Licensed under the MIT License.
 # See License.txt in the project root for license information.
 # --------------------------------------------------------------------
-
-
 """
-    tronpytool.providers.http
-    ======================
-
     Class for configuring http providers
 
     :copyright: © 2018 by the iEXBase.
@@ -18,9 +13,6 @@
 """
 import logging
 from collections import namedtuple
-from sys import platform
-from urllib.parse import urlparse
-
 from eth_utils import to_dict, to_text
 from requests import Session
 from requests.exceptions import (
@@ -86,30 +78,10 @@ def is_valid_provider(provider) -> bool:
 class HttpProvider(BaseProvider):
     """A Connection object to make HTTP requests to a particular node."""
 
-    def __init__(self, node_url, request_kwargs=None):
-        """Initializes a :class:`~tronpytool.providers.http.HttpProvider`
-        instance.
-
-         Args:
-            node_url (str):  Url of the node to connect to.
-            request_kwargs (dict): Optional params to send with each request.
-
-        """
-
-        self.node_url = node_url.rstrip('/')
-        uri = urlparse(node_url)
-        # This condition checks the node that will connect
-        # to work with methods.
-        if uri.scheme not in HTTP_SCHEMES:
-            raise NotImplementedError(
-                'TronAPI does not know how to connect to scheme %r in %r' % (
-                    uri.scheme,
-                    self.node_url,
-                )
-            )
-
+    def __init__(self, request_kwargs=None):
         self._request_kwargs = request_kwargs or {}
         self.session = Session()
+
 
     @to_dict
     def get_request_kwargs(self):
@@ -147,28 +119,6 @@ class HttpProvider(BaseProvider):
 
         return response.data
 
-    def based_request(self, path, json=None, params=None, method=None):
-        """Performs an HTTP request with the given parameters.
-
-           Args:
-               path (str): API endpoint path (e.g.: ``'/transactions'``).
-               json (dict): JSON data to send along with the request.
-               params (dict): Dictionary of URL (query) parameters.
-               method (str): HTTP method (e.g.: ``'GET'``).
-
-        """
-        try:
-            response = self._request(
-                method=method,
-                url=self.node_url + path if path else self.node_url,
-                json=json,
-                params=params,
-                **self.get_request_kwargs(),
-            )
-        except TrxConnectionError as err:
-            raise err
-
-        return response.data
 
     def is_connected(self) -> bool:
         """Connection check

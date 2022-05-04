@@ -26,30 +26,111 @@
 <summary>
 <span>Expand source code</span>
 </summary>
-<pre><code class="python">from moody.libeb import MiliDoS, SolWeb3Tool
+<pre><code class="python">import os
+from subprocess import CalledProcessError
+
+from moody.libeb import MiliDoS, SolWeb3Tool
 from moody import Config
+from .solfla import SolflatlinerWrapper
 from ..verify.http import HttpProvider
 
 
-def bySource(network: Config, rootpath: str, sourceClassName: str, filename: str):
+def verifyInternalSource(
+        network: Config,
+        rootpath: str,
+        sourceClassName: str,
+        original_source_file_entry: str,
+):
+    &#34;&#34;&#34;
+    we will enable this by the network
+    :param network:
+    :param rootpath:
+    :param sourceClassName:
+    :param original_source_file_entry:
+    :return:
+    &#34;&#34;&#34;
+    maker = SolflatlinerWrapper(rootpath)
+
+    meta = MiliDoS(network).withPOA()
+    meta.setWorkspace(rootpath).Auth()
+
+    if meta.hasContractName(sourceClassName) is False:
+        print(f&#34;There is no contract for {sourceClassName} found.&#34;)
+        exit(2)
+
+    solcf = SolWeb3Tool()
+    solcf.setBasePath(rootpath)
+    solcf.setBuildNameSpace(&#34;artifacts&#34;)
+    solcf.LoadInternalMeta(sourceClassName)
+    print(f&#34;open root path is {rootpath}&#34;)
+    input_source = os.path.join(rootpath, original_source_file_entry)
+    try:
+        maker.make_flaten_tmp_file(input_source, solcf.GetMetaCompilerVer(False))
+    except CalledProcessError:
+        print(&#34;Error from calling the verification from merging source file&#34;)
+
+    if maker.proccess_result is False:
+        print(f&#34;Failed to make the merge source file from {input_source}&#34;)
+        exit(44)
+
+    _sendVerifyRequest(
+        explorer_base_uri=network.block_explorer,
+        contractAddress=meta.getAddr(sourceClassName),
+        solidity_ver=solcf.GetMetaSettings().solidity_ver,
+        mergedSource=solcf.ReadAsStrAndEscape(maker.output_file),
+        optimizationUsed=solcf.GetMetaSettings().optimization_enabled,
+        optimzationRuns=solcf.GetMetaSettings().optimization_runs,
+        encodedConstructorArgs=[],
+        contractName=sourceClassName
+    )
+
+
+# source code pasting not sure how to do it
+# https://github.com/eth-brownie/brownie/blob/ce603c59b5e4cd46de0782e969214af3e796a7d7/brownie/project/ethpm.py#L92
+
+def verifyBySource(
+        network: Config,
+        rootpath: str,
+        sourceClassName: str,
+        original_source_file_entry: str
+):
+    &#34;&#34;&#34;
+    sol flatliner wrapper
+    :param network:
+    :param rootpath:
+    :param sourceClassName:
+    :param original_source_file_entry:
+    :return:
+    &#34;&#34;&#34;
+    maker = SolflatlinerWrapper(rootpath)
     meta = MiliDoS(network).withPOA()
     meta.setWorkspace(rootpath).Auth()
     if meta.hasContractName(sourceClassName) is False:
         print(f&#34;There is no contract for {sourceClassName} found.&#34;)
         exit(2)
 
-    solc_artifact = SolWeb3Tool()
-    solc_artifact.setBasePath(rootpath)
-    solc_artifact = solc_artifact.GetCodeClassFromBuild(sourceClassName)
+    solcf = SolWeb3Tool()
+    solcf.setBasePath(rootpath)
+    solcf.GetCodeClassFromBuild(sourceClassName)
+    input_source = os.path.join(rootpath, original_source_file_entry)
+    try:
+        maker.make_flaten_tmp_file(input_source, solcf.GetMetaCompilerVer(False))
+    except CalledProcessError:
+        print(&#34;Error from calling the verification from merging source file&#34;)
+
+    if maker.proccess_result is False:
+        print(f&#34;Failed to make the merge source file from {input_source}&#34;)
+        exit(44)
 
     _sendVerifyRequest(
         explorer_base_uri=network.block_explorer,
         contractAddress=meta.getAddr(sourceClassName),
-        solidity_ver=solc_artifact.GetMetaCompilerVer(),
-        mergedSource=solc_artifact.GetSourceFileRead(f&#34;vault/{filename}.sol&#34;),
-        optimizationUsed=True,
-        optimzationRuns=10000,
-        encodedConstructorArgs=[]
+        solidity_ver=solcf.GetMetaSettings().solidity_ver_full,
+        mergedSource=solcf.ReadAsStrAndEscape(maker.output_file),
+        optimizationUsed=solcf.GetMetaSettings().optimization_enabled,
+        optimzationRuns=solcf.GetMetaSettings().optimization_runs,
+        encodedConstructorArgs=[],
+        contractName=sourceClassName
     )
 
 
@@ -67,8 +148,8 @@ def _sendVerifyRequest(explorer_base_uri: str,
 
     # todo: maybe there are links for the lib
 
-    o = HttpProvider(&#34;&#34;)
-    result = o.request(verifyapi, dict(
+    o = HttpProvider()
+    pre = dict(
         addressHash=contractAddress,
         contractSourceCode=mergedSource,
         name=contractName,
@@ -76,8 +157,9 @@ def _sendVerifyRequest(explorer_base_uri: str,
         optimization=optimizationUsed,
         optimizationRuns=optimzationRuns,
         constructorArguments=encodedConstructorArgs
-    ))
-
+    )
+    print(pre)
+    result = o.request(verifyapi, json=pre, method=&#34;POST&#34;)
     print(result)</code></pre>
 </details>
 </section>
@@ -88,34 +170,127 @@ def _sendVerifyRequest(explorer_base_uri: str,
 <section>
 <h2 class="section-title" id="header-functions">Functions</h2>
 <dl>
-<dt id="moody.m.verify.verify.bySource"><code class="name flex">
-<span>def <span class="ident">bySource</span></span>(<span>network: <a title="moody.Config" href="../../index.html#moody.Config">Config</a>, rootpath: str, sourceClassName: str, filename: str)</span>
+<dt id="moody.m.verify.verify.verifyBySource"><code class="name flex">
+<span>def <span class="ident">verifyBySource</span></span>(<span>network: <a title="moody.Config" href="../../index.html#moody.Config">Config</a>, rootpath: str, sourceClassName: str, original_source_file_entry: str)</span>
 </code></dt>
 <dd>
-<div class="desc"></div>
+<div class="desc"><p>sol flatliner wrapper
+:param network:
+:param rootpath:
+:param sourceClassName:
+:param original_source_file_entry:
+:return:</p></div>
 <details class="source">
 <summary>
 <span>Expand source code</span>
 </summary>
-<pre><code class="python">def bySource(network: Config, rootpath: str, sourceClassName: str, filename: str):
+<pre><code class="python">def verifyBySource(
+        network: Config,
+        rootpath: str,
+        sourceClassName: str,
+        original_source_file_entry: str
+):
+    &#34;&#34;&#34;
+    sol flatliner wrapper
+    :param network:
+    :param rootpath:
+    :param sourceClassName:
+    :param original_source_file_entry:
+    :return:
+    &#34;&#34;&#34;
+    maker = SolflatlinerWrapper(rootpath)
     meta = MiliDoS(network).withPOA()
     meta.setWorkspace(rootpath).Auth()
     if meta.hasContractName(sourceClassName) is False:
         print(f&#34;There is no contract for {sourceClassName} found.&#34;)
         exit(2)
 
-    solc_artifact = SolWeb3Tool()
-    solc_artifact.setBasePath(rootpath)
-    solc_artifact = solc_artifact.GetCodeClassFromBuild(sourceClassName)
+    solcf = SolWeb3Tool()
+    solcf.setBasePath(rootpath)
+    solcf.GetCodeClassFromBuild(sourceClassName)
+    input_source = os.path.join(rootpath, original_source_file_entry)
+    try:
+        maker.make_flaten_tmp_file(input_source, solcf.GetMetaCompilerVer(False))
+    except CalledProcessError:
+        print(&#34;Error from calling the verification from merging source file&#34;)
+
+    if maker.proccess_result is False:
+        print(f&#34;Failed to make the merge source file from {input_source}&#34;)
+        exit(44)
 
     _sendVerifyRequest(
         explorer_base_uri=network.block_explorer,
         contractAddress=meta.getAddr(sourceClassName),
-        solidity_ver=solc_artifact.GetMetaCompilerVer(),
-        mergedSource=solc_artifact.GetSourceFileRead(f&#34;vault/{filename}.sol&#34;),
-        optimizationUsed=True,
-        optimzationRuns=10000,
-        encodedConstructorArgs=[]
+        solidity_ver=solcf.GetMetaSettings().solidity_ver_full,
+        mergedSource=solcf.ReadAsStrAndEscape(maker.output_file),
+        optimizationUsed=solcf.GetMetaSettings().optimization_enabled,
+        optimzationRuns=solcf.GetMetaSettings().optimization_runs,
+        encodedConstructorArgs=[],
+        contractName=sourceClassName
+    )</code></pre>
+</details>
+</dd>
+<dt id="moody.m.verify.verify.verifyInternalSource"><code class="name flex">
+<span>def <span class="ident">verifyInternalSource</span></span>(<span>network: <a title="moody.Config" href="../../index.html#moody.Config">Config</a>, rootpath: str, sourceClassName: str, original_source_file_entry: str)</span>
+</code></dt>
+<dd>
+<div class="desc"><p>we will enable this by the network
+:param network:
+:param rootpath:
+:param sourceClassName:
+:param original_source_file_entry:
+:return:</p></div>
+<details class="source">
+<summary>
+<span>Expand source code</span>
+</summary>
+<pre><code class="python">def verifyInternalSource(
+        network: Config,
+        rootpath: str,
+        sourceClassName: str,
+        original_source_file_entry: str,
+):
+    &#34;&#34;&#34;
+    we will enable this by the network
+    :param network:
+    :param rootpath:
+    :param sourceClassName:
+    :param original_source_file_entry:
+    :return:
+    &#34;&#34;&#34;
+    maker = SolflatlinerWrapper(rootpath)
+
+    meta = MiliDoS(network).withPOA()
+    meta.setWorkspace(rootpath).Auth()
+
+    if meta.hasContractName(sourceClassName) is False:
+        print(f&#34;There is no contract for {sourceClassName} found.&#34;)
+        exit(2)
+
+    solcf = SolWeb3Tool()
+    solcf.setBasePath(rootpath)
+    solcf.setBuildNameSpace(&#34;artifacts&#34;)
+    solcf.LoadInternalMeta(sourceClassName)
+    print(f&#34;open root path is {rootpath}&#34;)
+    input_source = os.path.join(rootpath, original_source_file_entry)
+    try:
+        maker.make_flaten_tmp_file(input_source, solcf.GetMetaCompilerVer(False))
+    except CalledProcessError:
+        print(&#34;Error from calling the verification from merging source file&#34;)
+
+    if maker.proccess_result is False:
+        print(f&#34;Failed to make the merge source file from {input_source}&#34;)
+        exit(44)
+
+    _sendVerifyRequest(
+        explorer_base_uri=network.block_explorer,
+        contractAddress=meta.getAddr(sourceClassName),
+        solidity_ver=solcf.GetMetaSettings().solidity_ver,
+        mergedSource=solcf.ReadAsStrAndEscape(maker.output_file),
+        optimizationUsed=solcf.GetMetaSettings().optimization_enabled,
+        optimzationRuns=solcf.GetMetaSettings().optimization_runs,
+        encodedConstructorArgs=[],
+        contractName=sourceClassName
     )</code></pre>
 </details>
 </dd>
@@ -137,7 +312,8 @@ def _sendVerifyRequest(explorer_base_uri: str,
 </li>
 <li><h3><a href="#header-functions">Functions</a></h3>
 <ul class="">
-<li><code><a title="moody.m.verify.verify.bySource" href="#moody.m.verify.verify.bySource">bySource</a></code></li>
+<li><code><a title="moody.m.verify.verify.verifyBySource" href="#moody.m.verify.verify.verifyBySource">verifyBySource</a></code></li>
+<li><code><a title="moody.m.verify.verify.verifyInternalSource" href="#moody.m.verify.verify.verifyInternalSource">verifyInternalSource</a></code></li>
 </ul>
 </li>
 </ul>
