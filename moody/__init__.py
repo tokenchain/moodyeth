@@ -35,12 +35,12 @@ class Config:
     chain_id: int
     symbol: str
     block_explorer: str
-    bridge: str = "",
-    faucet: str = "",
-    gas: int = 6000000,
+    bridge: str = ""
+    faucet: str = ""
+    gas: int = 6000000
     gasPrice: int = 1059100000
     one: int = 1000000000000000000
-    wait_time: int = 6,
+    wait_time: int = 6
     # Oracle from Chainlink
     # https://docs.chain.link/docs/vrf-contracts/
     link_token: str = None,
