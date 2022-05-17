@@ -82,7 +82,6 @@ class HttpProvider(BaseProvider):
         self._request_kwargs = request_kwargs or {}
         self.session = Session()
 
-
     @to_dict
     def get_request_kwargs(self):
         """Header settings
@@ -118,7 +117,6 @@ class HttpProvider(BaseProvider):
             raise err
 
         return response.data
-
 
     def is_connected(self) -> bool:
         """Connection check

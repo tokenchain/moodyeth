@@ -113,7 +113,6 @@ class HttpProvider(BaseProvider):
         self._request_kwargs = request_kwargs or {}
         self.session = Session()
 
-
     @to_dict
     def get_request_kwargs(self):
         &#34;&#34;&#34;Header settings
@@ -149,7 +148,6 @@ class HttpProvider(BaseProvider):
             raise err
 
         return response.data
-
 
     def is_connected(self) -&gt; bool:
         &#34;&#34;&#34;Connection check
@@ -300,7 +298,10 @@ class HttpProvider(BaseProvider):
 <span>def <span class="ident">format_user_agent</span></span>(<span>name=None)</span>
 </code></dt>
 <dd>
-<div class="desc"><div class="admonition versionadded">
+<div class="desc"><p>Construct a User-Agent suitable for use in client code.
+This will identify use by the provided <code>name</code> (which should be on the
+format <code>dist_name/version</code>), TronAPI version and Python version.</p>
+<div class="admonition versionadded">
 <p class="admonition-title">Added in version:&ensp;1.1</p>
 </div></div>
 <details class="source">
@@ -355,7 +356,6 @@ def status_page(self):
         self._request_kwargs = request_kwargs or {}
         self.session = Session()
 
-
     @to_dict
     def get_request_kwargs(self):
         &#34;&#34;&#34;Header settings
@@ -391,7 +391,6 @@ def status_page(self):
             raise err
 
         return response.data
-
 
     def is_connected(self) -&gt; bool:
         &#34;&#34;&#34;Connection check

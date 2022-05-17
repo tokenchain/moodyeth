@@ -33,10 +33,27 @@ def moveTsFiles(p: Paths, pathName: str) -> str:
     )
 
 
+def abiPath_v1(p: Paths, pathName: str) -> str:
+    return f"{p.BUILDPATH}/build/{os.path.basename(pathName).replace('.sol', '')}.abi"
+
+
+def abiPath_v2(p: Paths, pathName: str) -> str:
+    file_name = os.path.basename(pathName)
+    return f"{p.BUILDPATH}/build/{file_name}/{file_name.replace('.sol', '')}.abi"
+
+
 def buildCmdPy(p: Paths, pathName: str) -> str:
     return ITEM_TRANSPILE_PYTHON.format(
         outputfolder=f"{p.BUILDPATH}/codec/gen_py",
-        target_abi=f"{p.BUILDPATH}/build/{os.path.basename(pathName).replace('.sol', '')}.abi",
+        target_abi=abiPath_v1(p, pathName),
+        BUILDPATH=p.BUILDPATH
+    )
+
+
+def buildCmdPy2(p: Paths, pathName: str) -> str:
+    return ITEM_TRANSPILE_PYTHON.format(
+        outputfolder=f"{p.BUILDPATH}/codec/gen_py",
+        target_abi=abiPath_v2(p, pathName),
         BUILDPATH=p.BUILDPATH
     )
 
@@ -44,7 +61,15 @@ def buildCmdPy(p: Paths, pathName: str) -> str:
 def buildCmdTs(p: Paths, pathName: str) -> str:
     return ITEM_TRANSPILE_TS.format(
         outputfolder=f"{p.BUILDPATH}/codec/gen_ts",
-        target_abi=f"{p.BUILDPATH}/build/{os.path.basename(pathName).replace('.sol', '')}.abi",
+        target_abi=abiPath_v1(p, pathName),
+        BUILDPATH=p.BUILDPATH
+    )
+
+
+def buildCmdTs2(p: Paths, pathName: str) -> str:
+    return ITEM_TRANSPILE_TS.format(
+        outputfolder=f"{p.BUILDPATH}/codec/gen_ts",
+        target_abi=abiPath_v2(p, pathName),
         BUILDPATH=p.BUILDPATH
     )
 
@@ -54,7 +79,18 @@ def buildCmdGo(p: Paths, pathName: str) -> str:
     class_name = filter_file_name(based_name).replace('.sol', '')
     return ITEM_TRANSPILE_GO.format(
         outputfolder=f"{p.BUILDPATH}/codec/gen_go",
-        target_abi=f"{p.BUILDPATH}/build/{based_name.replace('.sol', '')}.abi",
+        target_abi=abiPath_v1(p, pathName),
+        BUILDPATH=p.BUILDPATH,
+        classname=class_name
+    )
+
+
+def buildCmdGo2(p: Paths, pathName: str) -> str:
+    based_name = os.path.basename(pathName)
+    class_name = filter_file_name(based_name).replace('.sol', '')
+    return ITEM_TRANSPILE_GO.format(
+        outputfolder=f"{p.BUILDPATH}/codec/gen_go",
+        target_abi=abiPath_v2(p, pathName),
         BUILDPATH=p.BUILDPATH,
         classname=class_name
     )
@@ -92,6 +128,27 @@ def BuildLang(p: Paths, list_class_names: list) -> None:
         k.append(buildCmdPy(p, v))
         k.append(buildCmdTs(p, v))
         k.append(buildCmdGo(p, v))
+        if p.WEB_DAPP_SRC is not None:
+            k.append(moveTsFiles(p, v))
+    # ==================================================
+    with open(p.workspaceFilename("localpile"), 'w') as f:
+        f.write(wrapContentTranspile(p, k))
+        f.close()
+
+
+def BuildLangForge(p: Paths, list_class_names: list) -> None:
+    """
+
+    :param p: path in string
+    :param list_class_names: the class name
+    :return:
+    """
+    k = list()
+    # ==================================================
+    for v in list_class_names:
+        k.append(buildCmdPy2(p, v))
+        k.append(buildCmdTs2(p, v))
+        k.append(buildCmdGo2(p, v))
         if p.WEB_DAPP_SRC is not None:
             k.append(moveTsFiles(p, v))
     # ==================================================

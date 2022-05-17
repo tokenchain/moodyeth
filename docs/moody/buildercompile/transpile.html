@@ -61,10 +61,27 @@ def moveTsFiles(p: Paths, pathName: str) -&gt; str:
     )
 
 
+def abiPath_v1(p: Paths, pathName: str) -&gt; str:
+    return f&#34;{p.BUILDPATH}/build/{os.path.basename(pathName).replace(&#39;.sol&#39;, &#39;&#39;)}.abi&#34;
+
+
+def abiPath_v2(p: Paths, pathName: str) -&gt; str:
+    file_name = os.path.basename(pathName)
+    return f&#34;{p.BUILDPATH}/build/{file_name}/{file_name.replace(&#39;.sol&#39;, &#39;&#39;)}.abi&#34;
+
+
 def buildCmdPy(p: Paths, pathName: str) -&gt; str:
     return ITEM_TRANSPILE_PYTHON.format(
         outputfolder=f&#34;{p.BUILDPATH}/codec/gen_py&#34;,
-        target_abi=f&#34;{p.BUILDPATH}/build/{os.path.basename(pathName).replace(&#39;.sol&#39;, &#39;&#39;)}.abi&#34;,
+        target_abi=abiPath_v1(p, pathName),
+        BUILDPATH=p.BUILDPATH
+    )
+
+
+def buildCmdPy2(p: Paths, pathName: str) -&gt; str:
+    return ITEM_TRANSPILE_PYTHON.format(
+        outputfolder=f&#34;{p.BUILDPATH}/codec/gen_py&#34;,
+        target_abi=abiPath_v2(p, pathName),
         BUILDPATH=p.BUILDPATH
     )
 
@@ -72,7 +89,15 @@ def buildCmdPy(p: Paths, pathName: str) -&gt; str:
 def buildCmdTs(p: Paths, pathName: str) -&gt; str:
     return ITEM_TRANSPILE_TS.format(
         outputfolder=f&#34;{p.BUILDPATH}/codec/gen_ts&#34;,
-        target_abi=f&#34;{p.BUILDPATH}/build/{os.path.basename(pathName).replace(&#39;.sol&#39;, &#39;&#39;)}.abi&#34;,
+        target_abi=abiPath_v1(p, pathName),
+        BUILDPATH=p.BUILDPATH
+    )
+
+
+def buildCmdTs2(p: Paths, pathName: str) -&gt; str:
+    return ITEM_TRANSPILE_TS.format(
+        outputfolder=f&#34;{p.BUILDPATH}/codec/gen_ts&#34;,
+        target_abi=abiPath_v2(p, pathName),
         BUILDPATH=p.BUILDPATH
     )
 
@@ -82,7 +107,18 @@ def buildCmdGo(p: Paths, pathName: str) -&gt; str:
     class_name = filter_file_name(based_name).replace(&#39;.sol&#39;, &#39;&#39;)
     return ITEM_TRANSPILE_GO.format(
         outputfolder=f&#34;{p.BUILDPATH}/codec/gen_go&#34;,
-        target_abi=f&#34;{p.BUILDPATH}/build/{based_name.replace(&#39;.sol&#39;, &#39;&#39;)}.abi&#34;,
+        target_abi=abiPath_v1(p, pathName),
+        BUILDPATH=p.BUILDPATH,
+        classname=class_name
+    )
+
+
+def buildCmdGo2(p: Paths, pathName: str) -&gt; str:
+    based_name = os.path.basename(pathName)
+    class_name = filter_file_name(based_name).replace(&#39;.sol&#39;, &#39;&#39;)
+    return ITEM_TRANSPILE_GO.format(
+        outputfolder=f&#34;{p.BUILDPATH}/codec/gen_go&#34;,
+        target_abi=abiPath_v2(p, pathName),
         BUILDPATH=p.BUILDPATH,
         classname=class_name
     )
@@ -120,6 +156,27 @@ def BuildLang(p: Paths, list_class_names: list) -&gt; None:
         k.append(buildCmdPy(p, v))
         k.append(buildCmdTs(p, v))
         k.append(buildCmdGo(p, v))
+        if p.WEB_DAPP_SRC is not None:
+            k.append(moveTsFiles(p, v))
+    # ==================================================
+    with open(p.workspaceFilename(&#34;localpile&#34;), &#39;w&#39;) as f:
+        f.write(wrapContentTranspile(p, k))
+        f.close()
+
+
+def BuildLangForge(p: Paths, list_class_names: list) -&gt; None:
+    &#34;&#34;&#34;
+
+    :param p: path in string
+    :param list_class_names: the class name
+    :return:
+    &#34;&#34;&#34;
+    k = list()
+    # ==================================================
+    for v in list_class_names:
+        k.append(buildCmdPy2(p, v))
+        k.append(buildCmdTs2(p, v))
+        k.append(buildCmdGo2(p, v))
         if p.WEB_DAPP_SRC is not None:
             k.append(moveTsFiles(p, v))
     # ==================================================
@@ -167,6 +224,65 @@ def BuildLang(p: Paths, list_class_names: list) -&gt; None:
         f.close()</code></pre>
 </details>
 </dd>
+<dt id="moody.buildercompile.transpile.BuildLangForge"><code class="name flex">
+<span>def <span class="ident">BuildLangForge</span></span>(<span>p: <a title="moody.paths.Paths" href="../paths.html#moody.paths.Paths">Paths</a>, list_class_names: list) ‑> NoneType</span>
+</code></dt>
+<dd>
+<div class="desc"><p>:param p: path in string
+:param list_class_names: the class name
+:return:</p></div>
+<details class="source">
+<summary>
+<span>Expand source code</span>
+</summary>
+<pre><code class="python">def BuildLangForge(p: Paths, list_class_names: list) -&gt; None:
+    &#34;&#34;&#34;
+
+    :param p: path in string
+    :param list_class_names: the class name
+    :return:
+    &#34;&#34;&#34;
+    k = list()
+    # ==================================================
+    for v in list_class_names:
+        k.append(buildCmdPy2(p, v))
+        k.append(buildCmdTs2(p, v))
+        k.append(buildCmdGo2(p, v))
+        if p.WEB_DAPP_SRC is not None:
+            k.append(moveTsFiles(p, v))
+    # ==================================================
+    with open(p.workspaceFilename(&#34;localpile&#34;), &#39;w&#39;) as f:
+        f.write(wrapContentTranspile(p, k))
+        f.close()</code></pre>
+</details>
+</dd>
+<dt id="moody.buildercompile.transpile.abiPath_v1"><code class="name flex">
+<span>def <span class="ident">abiPath_v1</span></span>(<span>p: <a title="moody.paths.Paths" href="../paths.html#moody.paths.Paths">Paths</a>, pathName: str) ‑> str</span>
+</code></dt>
+<dd>
+<div class="desc"></div>
+<details class="source">
+<summary>
+<span>Expand source code</span>
+</summary>
+<pre><code class="python">def abiPath_v1(p: Paths, pathName: str) -&gt; str:
+    return f&#34;{p.BUILDPATH}/build/{os.path.basename(pathName).replace(&#39;.sol&#39;, &#39;&#39;)}.abi&#34;</code></pre>
+</details>
+</dd>
+<dt id="moody.buildercompile.transpile.abiPath_v2"><code class="name flex">
+<span>def <span class="ident">abiPath_v2</span></span>(<span>p: <a title="moody.paths.Paths" href="../paths.html#moody.paths.Paths">Paths</a>, pathName: str) ‑> str</span>
+</code></dt>
+<dd>
+<div class="desc"></div>
+<details class="source">
+<summary>
+<span>Expand source code</span>
+</summary>
+<pre><code class="python">def abiPath_v2(p: Paths, pathName: str) -&gt; str:
+    file_name = os.path.basename(pathName)
+    return f&#34;{p.BUILDPATH}/build/{file_name}/{file_name.replace(&#39;.sol&#39;, &#39;&#39;)}.abi&#34;</code></pre>
+</details>
+</dd>
 <dt id="moody.buildercompile.transpile.buildCmdGo"><code class="name flex">
 <span>def <span class="ident">buildCmdGo</span></span>(<span>p: <a title="moody.paths.Paths" href="../paths.html#moody.paths.Paths">Paths</a>, pathName: str) ‑> str</span>
 </code></dt>
@@ -181,7 +297,27 @@ def BuildLang(p: Paths, list_class_names: list) -&gt; None:
     class_name = filter_file_name(based_name).replace(&#39;.sol&#39;, &#39;&#39;)
     return ITEM_TRANSPILE_GO.format(
         outputfolder=f&#34;{p.BUILDPATH}/codec/gen_go&#34;,
-        target_abi=f&#34;{p.BUILDPATH}/build/{based_name.replace(&#39;.sol&#39;, &#39;&#39;)}.abi&#34;,
+        target_abi=abiPath_v1(p, pathName),
+        BUILDPATH=p.BUILDPATH,
+        classname=class_name
+    )</code></pre>
+</details>
+</dd>
+<dt id="moody.buildercompile.transpile.buildCmdGo2"><code class="name flex">
+<span>def <span class="ident">buildCmdGo2</span></span>(<span>p: <a title="moody.paths.Paths" href="../paths.html#moody.paths.Paths">Paths</a>, pathName: str) ‑> str</span>
+</code></dt>
+<dd>
+<div class="desc"></div>
+<details class="source">
+<summary>
+<span>Expand source code</span>
+</summary>
+<pre><code class="python">def buildCmdGo2(p: Paths, pathName: str) -&gt; str:
+    based_name = os.path.basename(pathName)
+    class_name = filter_file_name(based_name).replace(&#39;.sol&#39;, &#39;&#39;)
+    return ITEM_TRANSPILE_GO.format(
+        outputfolder=f&#34;{p.BUILDPATH}/codec/gen_go&#34;,
+        target_abi=abiPath_v2(p, pathName),
         BUILDPATH=p.BUILDPATH,
         classname=class_name
     )</code></pre>
@@ -199,7 +335,24 @@ def BuildLang(p: Paths, list_class_names: list) -&gt; None:
 <pre><code class="python">def buildCmdPy(p: Paths, pathName: str) -&gt; str:
     return ITEM_TRANSPILE_PYTHON.format(
         outputfolder=f&#34;{p.BUILDPATH}/codec/gen_py&#34;,
-        target_abi=f&#34;{p.BUILDPATH}/build/{os.path.basename(pathName).replace(&#39;.sol&#39;, &#39;&#39;)}.abi&#34;,
+        target_abi=abiPath_v1(p, pathName),
+        BUILDPATH=p.BUILDPATH
+    )</code></pre>
+</details>
+</dd>
+<dt id="moody.buildercompile.transpile.buildCmdPy2"><code class="name flex">
+<span>def <span class="ident">buildCmdPy2</span></span>(<span>p: <a title="moody.paths.Paths" href="../paths.html#moody.paths.Paths">Paths</a>, pathName: str) ‑> str</span>
+</code></dt>
+<dd>
+<div class="desc"></div>
+<details class="source">
+<summary>
+<span>Expand source code</span>
+</summary>
+<pre><code class="python">def buildCmdPy2(p: Paths, pathName: str) -&gt; str:
+    return ITEM_TRANSPILE_PYTHON.format(
+        outputfolder=f&#34;{p.BUILDPATH}/codec/gen_py&#34;,
+        target_abi=abiPath_v2(p, pathName),
         BUILDPATH=p.BUILDPATH
     )</code></pre>
 </details>
@@ -216,7 +369,24 @@ def BuildLang(p: Paths, list_class_names: list) -&gt; None:
 <pre><code class="python">def buildCmdTs(p: Paths, pathName: str) -&gt; str:
     return ITEM_TRANSPILE_TS.format(
         outputfolder=f&#34;{p.BUILDPATH}/codec/gen_ts&#34;,
-        target_abi=f&#34;{p.BUILDPATH}/build/{os.path.basename(pathName).replace(&#39;.sol&#39;, &#39;&#39;)}.abi&#34;,
+        target_abi=abiPath_v1(p, pathName),
+        BUILDPATH=p.BUILDPATH
+    )</code></pre>
+</details>
+</dd>
+<dt id="moody.buildercompile.transpile.buildCmdTs2"><code class="name flex">
+<span>def <span class="ident">buildCmdTs2</span></span>(<span>p: <a title="moody.paths.Paths" href="../paths.html#moody.paths.Paths">Paths</a>, pathName: str) ‑> str</span>
+</code></dt>
+<dd>
+<div class="desc"></div>
+<details class="source">
+<summary>
+<span>Expand source code</span>
+</summary>
+<pre><code class="python">def buildCmdTs2(p: Paths, pathName: str) -&gt; str:
+    return ITEM_TRANSPILE_TS.format(
+        outputfolder=f&#34;{p.BUILDPATH}/codec/gen_ts&#34;,
+        target_abi=abiPath_v2(p, pathName),
         BUILDPATH=p.BUILDPATH
     )</code></pre>
 </details>
@@ -324,9 +494,15 @@ def BuildLang(p: Paths, list_class_names: list) -&gt; None:
 <li><h3><a href="#header-functions">Functions</a></h3>
 <ul class="">
 <li><code><a title="moody.buildercompile.transpile.BuildLang" href="#moody.buildercompile.transpile.BuildLang">BuildLang</a></code></li>
+<li><code><a title="moody.buildercompile.transpile.BuildLangForge" href="#moody.buildercompile.transpile.BuildLangForge">BuildLangForge</a></code></li>
+<li><code><a title="moody.buildercompile.transpile.abiPath_v1" href="#moody.buildercompile.transpile.abiPath_v1">abiPath_v1</a></code></li>
+<li><code><a title="moody.buildercompile.transpile.abiPath_v2" href="#moody.buildercompile.transpile.abiPath_v2">abiPath_v2</a></code></li>
 <li><code><a title="moody.buildercompile.transpile.buildCmdGo" href="#moody.buildercompile.transpile.buildCmdGo">buildCmdGo</a></code></li>
+<li><code><a title="moody.buildercompile.transpile.buildCmdGo2" href="#moody.buildercompile.transpile.buildCmdGo2">buildCmdGo2</a></code></li>
 <li><code><a title="moody.buildercompile.transpile.buildCmdPy" href="#moody.buildercompile.transpile.buildCmdPy">buildCmdPy</a></code></li>
+<li><code><a title="moody.buildercompile.transpile.buildCmdPy2" href="#moody.buildercompile.transpile.buildCmdPy2">buildCmdPy2</a></code></li>
 <li><code><a title="moody.buildercompile.transpile.buildCmdTs" href="#moody.buildercompile.transpile.buildCmdTs">buildCmdTs</a></code></li>
+<li><code><a title="moody.buildercompile.transpile.buildCmdTs2" href="#moody.buildercompile.transpile.buildCmdTs2">buildCmdTs2</a></code></li>
 <li><code><a title="moody.buildercompile.transpile.filter_file_name" href="#moody.buildercompile.transpile.filter_file_name">filter_file_name</a></code></li>
 <li><code><a title="moody.buildercompile.transpile.moveTsFiles" href="#moody.buildercompile.transpile.moveTsFiles">moveTsFiles</a></code></li>
 <li><code><a title="moody.buildercompile.transpile.snake" href="#moody.buildercompile.transpile.snake">snake</a></code></li>

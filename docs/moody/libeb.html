@@ -49,7 +49,7 @@ from web3.types import BlockData
 # ========================== Of course
 from . import Bolors, Evm, DefaultKeys, root_base_path, MetaSetting
 from .buildercompile.remotecompile import BuildRemoteLinuxCommand
-from .buildercompile.transpile import BuildLang
+from .buildercompile.transpile import BuildLang, filter_file_name, BuildLangForge
 from .conf import Config
 from .exceptions import FoundUndeployedLibraries
 from .paths import Paths
@@ -271,6 +271,34 @@ class SolWeb3Tool(object):
         self.WORKSPACE_PATH = path
         return self
 
+    def SplitForgeBuild(self, class_name: str) -&gt; &#34;SolWeb3Tool&#34;:
+        uncutjson = dict()
+        combinedjson = os.path.join(self.WORKSPACE_PATH, self.OUTPUT_BUILD, &#34;{}.sol&#34;.format(class_name), &#34;{}.json&#34;.format(class_name))
+        try:
+            uncutjson = json.load(codecs.open(combinedjson, &#39;r&#39;, &#39;utf-8-sig&#39;))
+        except FileNotFoundError:
+            print(&#34;Some of the files from the build in forge is not found&#34;)
+            exit(3)
+        abifile = os.path.join(self.WORKSPACE_PATH, self.OUTPUT_BUILD, &#34;{}.sol&#34;.format(class_name), &#34;{}.abi&#34;.format(class_name))
+        binfile = os.path.join(self.WORKSPACE_PATH, self.OUTPUT_BUILD, &#34;{}.sol&#34;.format(class_name), &#34;{}.bin&#34;.format(class_name))
+
+        if &#34;abi&#34; in uncutjson:
+            predum = uncutjson[&#34;abi&#34;]
+            writeFile(json.dumps(predum, ensure_ascii=False), abifile)
+
+        if &#34;deployedBytecode&#34; in uncutjson:
+            pr = uncutjson[&#34;deployedBytecode&#34;]
+            if &#34;object&#34; in pr:
+                pr2 = pr[&#34;object&#34;]
+                pr2 = pr2.replace(&#34;0x&#34;, &#34;&#34;)
+                writeFile(pr2, binfile)
+            if &#34;linkReferences&#34; in pr:
+                links = pr[&#34;linkReferences&#34;]
+                for a in links:
+                    print(&#34;found link&#34;)
+
+        return self
+
     def GetCodeClassFromBuild(self, class_name: str) -&gt; &#34;SolWeb3Tool&#34;:
         &#34;&#34;&#34;
         get the independent files and content from the file system
@@ -280,9 +308,13 @@ class SolWeb3Tool(object):
         p1bin = os.path.join(self.WORKSPACE_PATH, self.OUTPUT_BUILD, &#34;{}.bin&#34;.format(class_name))
         p2abi = os.path.join(self.WORKSPACE_PATH, self.OUTPUT_BUILD, &#34;{}.abi&#34;.format(class_name))
         metafile = os.path.join(self.WORKSPACE_PATH, self.OUTPUT_BUILD, &#34;{}_meta.json&#34;.format(class_name))
-        self._bin = codecs.open(p1bin, &#39;r&#39;, &#39;utf-8-sig&#39;).read()
-        self._abi = json.load(codecs.open(p2abi, &#39;r&#39;, &#39;utf-8-sig&#39;))
-        self._meta = json.load(codecs.open(metafile, &#39;r&#39;, &#39;utf-8-sig&#39;))
+        try:
+            self._bin = codecs.open(p1bin, &#39;r&#39;, &#39;utf-8-sig&#39;).read()
+            self._abi = json.load(codecs.open(p2abi, &#39;r&#39;, &#39;utf-8-sig&#39;))
+            self._meta = json.load(codecs.open(metafile, &#39;r&#39;, &#39;utf-8-sig&#39;))
+        except FileNotFoundError:
+            print(&#34;Some of the files from the build is not found&#34;)
+            exit(3)
         return self
 
     def LoadInternalMeta(self, class_name: str) -&gt; &#34;SolWeb3Tool&#34;:
@@ -431,6 +463,7 @@ class MiliDoS(IDos):
         self._sol_link = None
         self.is_deploy = False
         self.is_internal = False
+        self.is_forge = False
         self.deployed_address = False
         self.last_class = &#34;&#34;
         self.list_type = &#34;list_address&#34;
@@ -533,6 +566,17 @@ class MiliDoS(IDos):
         BuildRemoteLinuxCommand(self.pathfinder, self._optimizations, self._sol_list, self._sol_link)
         return self
 
+    def useForge(self) -&gt; &#34;MiliDoS&#34;:
+        # ==================================================
+        if self._sol_list is not None:
+            for v in self._sol_list:
+                based_name = os.path.basename(v)
+                class_name = based_name.replace(&#34;.sol&#34;, &#34;&#34;)
+                # class_name_process = filter_file_name(based_name).replace(&#39;.sol&#39;, &#39;&#39;)
+                self.artifact_manager.SplitForgeBuild(class_name)
+            self.is_forge = True
+        return self
+
     def localTranspile(self, dapp_ts_folder: str = None) -&gt; &#34;MiliDoS&#34;:
         &#34;&#34;&#34;
         :param dapp_ts_folder: the destination is follow by this path {dapp_ts_folder}/src/api/abi/xxx.ts
@@ -540,7 +584,10 @@ class MiliDoS(IDos):
         :return: instance of moody
         &#34;&#34;&#34;
         self.pathfinder.updateTargetDappFolder(dapp_ts_folder)
-        BuildLang(self.pathfinder, self._sol_list)
+        if self.is_forge:
+            BuildLangForge(self.pathfinder, self._sol_list)
+        else:
+            BuildLang(self.pathfinder, self._sol_list)
         return self
 
     def get_block(self, block_identifier, full_transactions: bool = False):
@@ -1637,6 +1684,7 @@ The center hub of the progress source code is in here</p></div>
         self._sol_link = None
         self.is_deploy = False
         self.is_internal = False
+        self.is_forge = False
         self.deployed_address = False
         self.last_class = &#34;&#34;
         self.list_type = &#34;list_address&#34;
@@ -1739,6 +1787,17 @@ The center hub of the progress source code is in here</p></div>
         BuildRemoteLinuxCommand(self.pathfinder, self._optimizations, self._sol_list, self._sol_link)
         return self
 
+    def useForge(self) -&gt; &#34;MiliDoS&#34;:
+        # ==================================================
+        if self._sol_list is not None:
+            for v in self._sol_list:
+                based_name = os.path.basename(v)
+                class_name = based_name.replace(&#34;.sol&#34;, &#34;&#34;)
+                # class_name_process = filter_file_name(based_name).replace(&#39;.sol&#39;, &#39;&#39;)
+                self.artifact_manager.SplitForgeBuild(class_name)
+            self.is_forge = True
+        return self
+
     def localTranspile(self, dapp_ts_folder: str = None) -&gt; &#34;MiliDoS&#34;:
         &#34;&#34;&#34;
         :param dapp_ts_folder: the destination is follow by this path {dapp_ts_folder}/src/api/abi/xxx.ts
@@ -1746,7 +1805,10 @@ The center hub of the progress source code is in here</p></div>
         :return: instance of moody
         &#34;&#34;&#34;
         self.pathfinder.updateTargetDappFolder(dapp_ts_folder)
-        BuildLang(self.pathfinder, self._sol_list)
+        if self.is_forge:
+            BuildLangForge(self.pathfinder, self._sol_list)
+        else:
+            BuildLang(self.pathfinder, self._sol_list)
         return self
 
     def get_block(self, block_identifier, full_transactions: bool = False):
@@ -3084,7 +3146,10 @@ if this valuable is None then there will not be any copy files to the destinatio
     :return: instance of moody
     &#34;&#34;&#34;
     self.pathfinder.updateTargetDappFolder(dapp_ts_folder)
-    BuildLang(self.pathfinder, self._sol_list)
+    if self.is_forge:
+        BuildLangForge(self.pathfinder, self._sol_list)
+    else:
+        BuildLang(self.pathfinder, self._sol_list)
     return self</code></pre>
 </details>
 </dd>
@@ -3406,6 +3471,27 @@ if this valuable is None then there will not be any copy files to the destinatio
     return self</code></pre>
 </details>
 </dd>
+<dt id="moody.libeb.MiliDoS.useForge"><code class="name flex">
+<span>def <span class="ident">useForge</span></span>(<span>self) ‑> <a title="moody.libeb.MiliDoS" href="#moody.libeb.MiliDoS">MiliDoS</a></span>
+</code></dt>
+<dd>
+<div class="desc"></div>
+<details class="source">
+<summary>
+<span>Expand source code</span>
+</summary>
+<pre><code class="python">def useForge(self) -&gt; &#34;MiliDoS&#34;:
+    # ==================================================
+    if self._sol_list is not None:
+        for v in self._sol_list:
+            based_name = os.path.basename(v)
+            class_name = based_name.replace(&#34;.sol&#34;, &#34;&#34;)
+            # class_name_process = filter_file_name(based_name).replace(&#39;.sol&#39;, &#39;&#39;)
+            self.artifact_manager.SplitForgeBuild(class_name)
+        self.is_forge = True
+    return self</code></pre>
+</details>
+</dd>
 <dt id="moody.libeb.MiliDoS.withPOA"><code class="name flex">
 <span>def <span class="ident">withPOA</span></span>(<span>self) ‑> <a title="moody.libeb.MiliDoS" href="#moody.libeb.MiliDoS">MiliDoS</a></span>
 </code></dt>
@@ -3466,6 +3552,34 @@ This is the artifact manager as we know it</p></div>
         self.WORKSPACE_PATH = path
         return self
 
+    def SplitForgeBuild(self, class_name: str) -&gt; &#34;SolWeb3Tool&#34;:
+        uncutjson = dict()
+        combinedjson = os.path.join(self.WORKSPACE_PATH, self.OUTPUT_BUILD, &#34;{}.sol&#34;.format(class_name), &#34;{}.json&#34;.format(class_name))
+        try:
+            uncutjson = json.load(codecs.open(combinedjson, &#39;r&#39;, &#39;utf-8-sig&#39;))
+        except FileNotFoundError:
+            print(&#34;Some of the files from the build in forge is not found&#34;)
+            exit(3)
+        abifile = os.path.join(self.WORKSPACE_PATH, self.OUTPUT_BUILD, &#34;{}.sol&#34;.format(class_name), &#34;{}.abi&#34;.format(class_name))
+        binfile = os.path.join(self.WORKSPACE_PATH, self.OUTPUT_BUILD, &#34;{}.sol&#34;.format(class_name), &#34;{}.bin&#34;.format(class_name))
+
+        if &#34;abi&#34; in uncutjson:
+            predum = uncutjson[&#34;abi&#34;]
+            writeFile(json.dumps(predum, ensure_ascii=False), abifile)
+
+        if &#34;deployedBytecode&#34; in uncutjson:
+            pr = uncutjson[&#34;deployedBytecode&#34;]
+            if &#34;object&#34; in pr:
+                pr2 = pr[&#34;object&#34;]
+                pr2 = pr2.replace(&#34;0x&#34;, &#34;&#34;)
+                writeFile(pr2, binfile)
+            if &#34;linkReferences&#34; in pr:
+                links = pr[&#34;linkReferences&#34;]
+                for a in links:
+                    print(&#34;found link&#34;)
+
+        return self
+
     def GetCodeClassFromBuild(self, class_name: str) -&gt; &#34;SolWeb3Tool&#34;:
         &#34;&#34;&#34;
         get the independent files and content from the file system
@@ -3475,9 +3589,13 @@ This is the artifact manager as we know it</p></div>
         p1bin = os.path.join(self.WORKSPACE_PATH, self.OUTPUT_BUILD, &#34;{}.bin&#34;.format(class_name))
         p2abi = os.path.join(self.WORKSPACE_PATH, self.OUTPUT_BUILD, &#34;{}.abi&#34;.format(class_name))
         metafile = os.path.join(self.WORKSPACE_PATH, self.OUTPUT_BUILD, &#34;{}_meta.json&#34;.format(class_name))
-        self._bin = codecs.open(p1bin, &#39;r&#39;, &#39;utf-8-sig&#39;).read()
-        self._abi = json.load(codecs.open(p2abi, &#39;r&#39;, &#39;utf-8-sig&#39;))
-        self._meta = json.load(codecs.open(metafile, &#39;r&#39;, &#39;utf-8-sig&#39;))
+        try:
+            self._bin = codecs.open(p1bin, &#39;r&#39;, &#39;utf-8-sig&#39;).read()
+            self._abi = json.load(codecs.open(p2abi, &#39;r&#39;, &#39;utf-8-sig&#39;))
+            self._meta = json.load(codecs.open(metafile, &#39;r&#39;, &#39;utf-8-sig&#39;))
+        except FileNotFoundError:
+            print(&#34;Some of the files from the build is not found&#34;)
+            exit(3)
         return self
 
     def LoadInternalMeta(self, class_name: str) -&gt; &#34;SolWeb3Tool&#34;:
@@ -3738,9 +3856,13 @@ get the code and abi from combined.json
     p1bin = os.path.join(self.WORKSPACE_PATH, self.OUTPUT_BUILD, &#34;{}.bin&#34;.format(class_name))
     p2abi = os.path.join(self.WORKSPACE_PATH, self.OUTPUT_BUILD, &#34;{}.abi&#34;.format(class_name))
     metafile = os.path.join(self.WORKSPACE_PATH, self.OUTPUT_BUILD, &#34;{}_meta.json&#34;.format(class_name))
-    self._bin = codecs.open(p1bin, &#39;r&#39;, &#39;utf-8-sig&#39;).read()
-    self._abi = json.load(codecs.open(p2abi, &#39;r&#39;, &#39;utf-8-sig&#39;))
-    self._meta = json.load(codecs.open(metafile, &#39;r&#39;, &#39;utf-8-sig&#39;))
+    try:
+        self._bin = codecs.open(p1bin, &#39;r&#39;, &#39;utf-8-sig&#39;).read()
+        self._abi = json.load(codecs.open(p2abi, &#39;r&#39;, &#39;utf-8-sig&#39;))
+        self._meta = json.load(codecs.open(metafile, &#39;r&#39;, &#39;utf-8-sig&#39;))
+    except FileNotFoundError:
+        print(&#34;Some of the files from the build is not found&#34;)
+        exit(3)
     return self</code></pre>
 </details>
 </dd>
@@ -3915,6 +4037,44 @@ from combined.json
 <pre><code class="python">def ReadAsStrAndEscape(self, file_name: str) -&gt; str:
     loaded = self.ReadAsStr(file_name)
     return re.escape(loaded)</code></pre>
+</details>
+</dd>
+<dt id="moody.libeb.SolWeb3Tool.SplitForgeBuild"><code class="name flex">
+<span>def <span class="ident">SplitForgeBuild</span></span>(<span>self, class_name: str) ‑> <a title="moody.libeb.SolWeb3Tool" href="#moody.libeb.SolWeb3Tool">SolWeb3Tool</a></span>
+</code></dt>
+<dd>
+<div class="desc"></div>
+<details class="source">
+<summary>
+<span>Expand source code</span>
+</summary>
+<pre><code class="python">def SplitForgeBuild(self, class_name: str) -&gt; &#34;SolWeb3Tool&#34;:
+    uncutjson = dict()
+    combinedjson = os.path.join(self.WORKSPACE_PATH, self.OUTPUT_BUILD, &#34;{}.sol&#34;.format(class_name), &#34;{}.json&#34;.format(class_name))
+    try:
+        uncutjson = json.load(codecs.open(combinedjson, &#39;r&#39;, &#39;utf-8-sig&#39;))
+    except FileNotFoundError:
+        print(&#34;Some of the files from the build in forge is not found&#34;)
+        exit(3)
+    abifile = os.path.join(self.WORKSPACE_PATH, self.OUTPUT_BUILD, &#34;{}.sol&#34;.format(class_name), &#34;{}.abi&#34;.format(class_name))
+    binfile = os.path.join(self.WORKSPACE_PATH, self.OUTPUT_BUILD, &#34;{}.sol&#34;.format(class_name), &#34;{}.bin&#34;.format(class_name))
+
+    if &#34;abi&#34; in uncutjson:
+        predum = uncutjson[&#34;abi&#34;]
+        writeFile(json.dumps(predum, ensure_ascii=False), abifile)
+
+    if &#34;deployedBytecode&#34; in uncutjson:
+        pr = uncutjson[&#34;deployedBytecode&#34;]
+        if &#34;object&#34; in pr:
+            pr2 = pr[&#34;object&#34;]
+            pr2 = pr2.replace(&#34;0x&#34;, &#34;&#34;)
+            writeFile(pr2, binfile)
+        if &#34;linkReferences&#34; in pr:
+            links = pr[&#34;linkReferences&#34;]
+            for a in links:
+                print(&#34;found link&#34;)
+
+    return self</code></pre>
 </details>
 </dd>
 <dt id="moody.libeb.SolWeb3Tool.StoreTxResult"><code class="name flex">
@@ -4094,6 +4254,7 @@ from combined.json
 <li><code><a title="moody.libeb.MiliDoS.setTargetClass" href="#moody.libeb.MiliDoS.setTargetClass">setTargetClass</a></code></li>
 <li><code><a title="moody.libeb.MiliDoS.setTargetListName" href="#moody.libeb.MiliDoS.setTargetListName">setTargetListName</a></code></li>
 <li><code><a title="moody.libeb.MiliDoS.setWorkspace" href="#moody.libeb.MiliDoS.setWorkspace">setWorkspace</a></code></li>
+<li><code><a title="moody.libeb.MiliDoS.useForge" href="#moody.libeb.MiliDoS.useForge">useForge</a></code></li>
 <li><code><a title="moody.libeb.MiliDoS.waitSec" href="#moody.libeb.MiliDoS.waitSec">waitSec</a></code></li>
 <li><code><a title="moody.libeb.MiliDoS.withPOA" href="#moody.libeb.MiliDoS.withPOA">withPOA</a></code></li>
 </ul>
@@ -4114,6 +4275,7 @@ from combined.json
 <li><code><a title="moody.libeb.SolWeb3Tool.OUTPUT_BUILD" href="#moody.libeb.SolWeb3Tool.OUTPUT_BUILD">OUTPUT_BUILD</a></code></li>
 <li><code><a title="moody.libeb.SolWeb3Tool.ReadAsStr" href="#moody.libeb.SolWeb3Tool.ReadAsStr">ReadAsStr</a></code></li>
 <li><code><a title="moody.libeb.SolWeb3Tool.ReadAsStrAndEscape" href="#moody.libeb.SolWeb3Tool.ReadAsStrAndEscape">ReadAsStrAndEscape</a></code></li>
+<li><code><a title="moody.libeb.SolWeb3Tool.SplitForgeBuild" href="#moody.libeb.SolWeb3Tool.SplitForgeBuild">SplitForgeBuild</a></code></li>
 <li><code><a title="moody.libeb.SolWeb3Tool.StoreTxResult" href="#moody.libeb.SolWeb3Tool.StoreTxResult">StoreTxResult</a></code></li>
 <li><code><a title="moody.libeb.SolWeb3Tool.WORKSPACE_PATH" href="#moody.libeb.SolWeb3Tool.WORKSPACE_PATH">WORKSPACE_PATH</a></code></li>
 <li><code><a title="moody.libeb.SolWeb3Tool.abi" href="#moody.libeb.SolWeb3Tool.abi">abi</a></code></li>

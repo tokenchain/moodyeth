@@ -21,7 +21,7 @@ from web3.types import BlockData
 # ========================== Of course
 from . import Bolors, Evm, DefaultKeys, root_base_path, MetaSetting
 from .buildercompile.remotecompile import BuildRemoteLinuxCommand
-from .buildercompile.transpile import BuildLang
+from .buildercompile.transpile import BuildLang, filter_file_name, BuildLangForge
 from .conf import Config
 from .exceptions import FoundUndeployedLibraries
 from .paths import Paths
@@ -243,6 +243,34 @@ class SolWeb3Tool(object):
         self.WORKSPACE_PATH = path
         return self
 
+    def SplitForgeBuild(self, class_name: str) -> "SolWeb3Tool":
+        uncutjson = dict()
+        combinedjson = os.path.join(self.WORKSPACE_PATH, self.OUTPUT_BUILD, "{}.sol".format(class_name), "{}.json".format(class_name))
+        try:
+            uncutjson = json.load(codecs.open(combinedjson, 'r', 'utf-8-sig'))
+        except FileNotFoundError:
+            print("Some of the files from the build in forge is not found")
+            exit(3)
+        abifile = os.path.join(self.WORKSPACE_PATH, self.OUTPUT_BUILD, "{}.sol".format(class_name), "{}.abi".format(class_name))
+        binfile = os.path.join(self.WORKSPACE_PATH, self.OUTPUT_BUILD, "{}.sol".format(class_name), "{}.bin".format(class_name))
+
+        if "abi" in uncutjson:
+            predum = uncutjson["abi"]
+            writeFile(json.dumps(predum, ensure_ascii=False), abifile)
+
+        if "deployedBytecode" in uncutjson:
+            pr = uncutjson["deployedBytecode"]
+            if "object" in pr:
+                pr2 = pr["object"]
+                pr2 = pr2.replace("0x", "")
+                writeFile(pr2, binfile)
+            if "linkReferences" in pr:
+                links = pr["linkReferences"]
+                for a in links:
+                    print("found link")
+
+        return self
+
     def GetCodeClassFromBuild(self, class_name: str) -> "SolWeb3Tool":
         """
         get the independent files and content from the file system
@@ -252,9 +280,13 @@ class SolWeb3Tool(object):
         p1bin = os.path.join(self.WORKSPACE_PATH, self.OUTPUT_BUILD, "{}.bin".format(class_name))
         p2abi = os.path.join(self.WORKSPACE_PATH, self.OUTPUT_BUILD, "{}.abi".format(class_name))
         metafile = os.path.join(self.WORKSPACE_PATH, self.OUTPUT_BUILD, "{}_meta.json".format(class_name))
-        self._bin = codecs.open(p1bin, 'r', 'utf-8-sig').read()
-        self._abi = json.load(codecs.open(p2abi, 'r', 'utf-8-sig'))
-        self._meta = json.load(codecs.open(metafile, 'r', 'utf-8-sig'))
+        try:
+            self._bin = codecs.open(p1bin, 'r', 'utf-8-sig').read()
+            self._abi = json.load(codecs.open(p2abi, 'r', 'utf-8-sig'))
+            self._meta = json.load(codecs.open(metafile, 'r', 'utf-8-sig'))
+        except FileNotFoundError:
+            print("Some of the files from the build is not found")
+            exit(3)
         return self
 
     def LoadInternalMeta(self, class_name: str) -> "SolWeb3Tool":
@@ -403,6 +435,7 @@ class MiliDoS(IDos):
         self._sol_link = None
         self.is_deploy = False
         self.is_internal = False
+        self.is_forge = False
         self.deployed_address = False
         self.last_class = ""
         self.list_type = "list_address"
@@ -505,6 +538,17 @@ class MiliDoS(IDos):
         BuildRemoteLinuxCommand(self.pathfinder, self._optimizations, self._sol_list, self._sol_link)
         return self
 
+    def useForge(self) -> "MiliDoS":
+        # ==================================================
+        if self._sol_list is not None:
+            for v in self._sol_list:
+                based_name = os.path.basename(v)
+                class_name = based_name.replace(".sol", "")
+                # class_name_process = filter_file_name(based_name).replace('.sol', '')
+                self.artifact_manager.SplitForgeBuild(class_name)
+            self.is_forge = True
+        return self
+
     def localTranspile(self, dapp_ts_folder: str = None) -> "MiliDoS":
         """
         :param dapp_ts_folder: the destination is follow by this path {dapp_ts_folder}/src/api/abi/xxx.ts
@@ -512,7 +556,10 @@ class MiliDoS(IDos):
         :return: instance of moody
         """
         self.pathfinder.updateTargetDappFolder(dapp_ts_folder)
-        BuildLang(self.pathfinder, self._sol_list)
+        if self.is_forge:
+            BuildLangForge(self.pathfinder, self._sol_list)
+        else:
+            BuildLang(self.pathfinder, self._sol_list)
         return self
 
     def get_block(self, block_identifier, full_transactions: bool = False):
