@@ -11,6 +11,7 @@ import re
 # ========================== Of course
 from hexbytes import HexBytes
 from web3 import Web3, HTTPProvider
+from web3._utils.module import attach_modules
 from web3.contract import Contract as Web3Contract
 from web3.datastructures import AttributeDict
 from web3.exceptions import TransactionNotFound, ContractLogicError, InvalidAddress, TimeExhausted
@@ -24,6 +25,7 @@ from .buildercompile.remotecompile import BuildRemoteLinuxCommand
 from .buildercompile.transpile import BuildLang, filter_file_name, BuildLangForge
 from .conf import Config
 from .exceptions import FoundUndeployedLibraries
+from .flashbots import construct_flashbots_middleware, flashbot
 from .paths import Paths
 
 
@@ -453,11 +455,17 @@ class MiliDoS(IDos):
         self.is_deploy = False
         self.is_internal = False
         self.is_forge = False
+        self.is_flashbot_prc = False
         self.deployed_address = False
         self.last_class = ""
         self.list_type = "list_address"
         self.network_cfg = _nodeCfg
+
         self.w3 = web3_provider(_nodeCfg.rpc_url)
+
+        if "flastbot" in _nodeCfg.rpc_url:
+            self.is_flashbot_prc = True
+
         self._optimizations = 200
         result = self.w3.isConnected()
         if not result:
@@ -473,6 +481,10 @@ class MiliDoS(IDos):
         :return:
         """
         self.w3.middleware_onion.inject(geth_poa_middleware, layer=0)
+        return self
+
+    def withFlastBot(self) -> "MiliDoS":
+
         return self
 
     def isAddress(self, address: str) -> bool:
@@ -692,6 +704,8 @@ class MiliDoS(IDos):
         # self.w3.isChecksumAddress(keyLo.address)
         self.accountAddr = keyLo.address
         print(f"🔫 You are now using {keyLo.address} and it is a {'valid key' if is_address else 'invalid key'}")
+        if self.is_flashbot_prc:
+            flashbot(self.w3, keyLo, self.network_cfg.rpc_url)
 
         return self
 

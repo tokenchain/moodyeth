@@ -27,6 +27,42 @@ def Ethereum() -> Config:
     )
 
 
+def EthereumFL() -> Config:
+    return Config(
+        network_name="EthereumMainnet",
+        rpc_url="https://rpc.flashbots.net",
+        chain_id=1,
+        symbol="ETH",
+        block_explorer="https://flashbots-explorer.marto.lol/",
+        link_token="0x514910771AF9Ca656af840dff83E8264EcF986CA",
+        link_vrf_coordinator="0xf0d54349aDdcf704F77AE15b96510dEA15cb7952",
+        link_keyhash="0xAA77729D3466CA35AE8D28B3BBAC7CC36A5031EFDC430821C02BC31A238AF445"
+    )
+
+
+def GoerliTestnetFL() -> Config:
+    return Config(
+        network_name="GoerliTestnet",
+        rpc_url="https://rpc-goerli.flashbots.net",
+        chain_id=5,
+        symbol="ETH",
+        block_explorer="https://flashbots-explorer.marto.lol/",
+        link_token="0x514910771AF9Ca656af840dff83E8264EcF986CA",
+        link_vrf_coordinator="0xf0d54349aDdcf704F77AE15b96510dEA15cb7952",
+        link_keyhash="0xAA77729D3466CA35AE8D28B3BBAC7CC36A5031EFDC430821C02BC31A238AF445"
+    )
+
+
+def GoerliTestnet() -> Config:
+    return Config(
+        network_name="GoerliTestnet",
+        rpc_url="https://goerli.infura.io/v3/9aa3d95b3bc440fa88ea12eaa4456161",
+        chain_id=5,
+        symbol="ETH",
+        block_explorer="https://goerli.etherscan.io"
+    )
+
+
 def BSCMain() -> Config:
     return Config(
         network_name="BinanceMainnet",
@@ -86,16 +122,6 @@ def RopstenTestnet() -> Config:
         chain_id=3,
         symbol="RETH",
         block_explorer="https://ropsten.etherscan.io/"
-    )
-
-
-def GoerliTestnet() -> Config:
-    return Config(
-        network_name="GoerliTestnet",
-        rpc_url="https://goerli.infura.io/v3/9aa3d95b3bc440fa88ea12eaa4456161",
-        chain_id=5,
-        symbol="ETH",
-        block_explorer="https://goerli.etherscan.io"
     )
 
 

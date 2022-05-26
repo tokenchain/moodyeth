@@ -51,6 +51,9 @@ It is a all-in-one package with zero setup and configurations that works for mul
 - golang module compile support
 - python module compile support
 - typescript module compile support
+- forge foundry support
+- flashbots support
+
 
 ### Examples:
 
@@ -174,6 +177,117 @@ r.setWorkspace(ROOT).setOptimizationRuns(5000).setEvm(Evm.ISTANBUL).setClassSolN
 
 
 ```
+
+
+###Working with forge
+
+Now try to compile your solidity files you can execute it with
+```bash
+#!/usr/bin/env bash
+
+
+
+
+# LOCAL MACHINE ONLY the default path
+BUILDPATH=$HOME/path/to/myproject
+BUILD_DIR=$BUILDPATH/build
+FACTORY=$HOME/path/to/factoryabi
+CONTRACTS_LOCAL="$BUILDPATH/deploy_results"
+
+
+mactools() {
+  # -----------------------------------------------
+  if ! command -v cnpm &>/dev/null; then
+    echo "cnpm could not be found"
+    npm i -g cnpm
+  fi
+  # -----------------------------------------------
+  if ! command -v rsync &>/dev/null; then
+    echo "rsync could not be found"
+    brew install rsync
+  fi
+  # -----------------------------------------------
+  if ! command -v abi-gen-uni &>/dev/null; then
+    echo "abi-gen-uni could not be found. please check the official source from: https://www.npmjs.com/package/easy-abi-gen"
+    cnpm i -g easy-abi-gen
+  fi
+  # -----------------------------------------------
+  if ! command -v abigen &>/dev/null; then
+    echo "golang abigen could not be found"
+    exit
+  fi
+  #NVM_VERSION=$(echo "$(node -v)" | grep -o -E '[0-9]{2}.')
+  local NVM_VERSION=$(echo "$(node -v)" | cut -d. -f1)
+  echo "==> 🈯️ all modules needed are completed."
+  # -----------------------------------------------
+  if [[ ${NVM_VERSION} == "v12" ]]; then
+    echo "node version is on the right version : v12"
+  else
+    echo "please use the below command to switch to the right version of node"
+    echo "nvm use 12"
+    exit
+  fi
+  # -----------------------------------------------
+}
+
+continueonforge(){
+  build_gen_forge
+  cp -R $FACTORY $BUILDPATH/factoryabi 2>/dev/null
+  sh localpile
+  rm localpile
+  rm -rf $BUILDPATH/factoryabi
+  echo "==> 🛃 local transpile process completed."
+  bash flatliner.sh
+}
+
+
+build_gen_forge(){
+  local _c=$(
+    cat <<EOF
+
+# !/usr/bin/env python
+# coding: utf-8
+
+from moody.libeb import MiliDoS
+from moody import conf, Evm
+
+NETWORK = conf.EthereumMainnet()
+
+SOLV = "0.6.12"
+r = MiliDoS(NETWORK)
+CONTRACT_LIST = [
+   "vault/univ2/UniswapV2ERC20.sol",
+   "vault/univ2/UniswapV2Factory.sol",
+   "vault/univ2/UniswapV2Pair.sol",
+   "vault/univ2/UniswapV2Router02.sol"
+]
+
+r.setWorkspace("$BUILDPATH").setClassSolNames(CONTRACT_LIST).useForge().localTranspile()
+
+EOF
+  )
+  cd $BUILDPATH
+  python3 -c "$_c"
+}
+
+
+mactools
+forge build --contracts vault --out build --optimizer-runs 100000 --force
+continueonforge
+
+
+
+```
+
+
+
+
+
+
+
+
+
+
 
 Documentation is ready [here](https://htmlpreview.github.io/?https://github.com/tokenchain/moodyeth/blob/main/docs/moody/index.html)
 
