@@ -705,9 +705,9 @@ class MiliDoS(IDos):
         solc_artifact = SolWeb3Tool()
         solc_artifact.setBasePath(self.project_workspace_root)
         if self.is_forge:
-            solc_artifact = solc_artifact.GetCodeClassFromBuild(class_name)
-        else:
             solc_artifact = solc_artifact.GetCodeClassFromForgeBuild(class_name)
+        else:
+            solc_artifact = solc_artifact.GetCodeClassFromBuild(class_name)
         nr = self.w3.eth.contract(abi=solc_artifact.abi, bytecode=solc_artifact.bin)
         gas_est_amount = nr.constructor().estimateGas()
         price = self.w3.eth.generate_gas_price()
@@ -806,9 +806,9 @@ class MiliDoS(IDos):
         sol.setBuildNameSpace("build")
 
         if self.is_forge:
-            sol = sol.GetCodeClassFromBuild(class_name)
-        else:
             sol = sol.GetCodeClassFromForgeBuild(class_name)
+        else:
+            sol = sol.GetCodeClassFromBuild(class_name)
 
         self.artifact_manager = sol
         return sol
@@ -827,8 +827,6 @@ class MiliDoS(IDos):
         sol.setBasePath(root_base_path)
         sol.setBuildNameSpace("artifacts")
         sol = sol.GetCodeClassFromBuild(class_name)
-
-
         self.artifact_manager = sol
         return sol
 
