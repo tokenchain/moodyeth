@@ -7,6 +7,9 @@ from .flashbots import TxParams
 
 class TxBuilder:
     def __init__(self, flashEnabled_w3: Web3):
+        """
+        :param flashEnabled_w3: flashbot enabled Web3 module
+        """
         if "flashbots" not in flashEnabled_w3:
             print(f"{Bolors.FAIL}Error there is no flashbot interface loaded. {Bolors.RESET}")
             exit(3)
@@ -24,9 +27,10 @@ class TxBuilder:
     def OverrideGasConfig(self, gas: int, gas_price: int, max_price: int) -> "TxBuilder":
         """
         the override the configuration for the gas amount and the gas price
-        :param gas: int
-        :param gas_price: int
-        :return: NONE
+        :param gas:
+        :param gas_price:
+        :param max_price:
+        :return:
         """
         self.gas = gas
         self.gasPrice = gas_price
@@ -46,6 +50,14 @@ class TxBuilder:
     # NOTE: nonce is required for signed txns
 
     def append(self, tx: TxParams) -> "TxBuilder":
+        """
+        bundle two EIP-1559 (type 2) transactions, pre-sign one of them
+        NOTE: chainId is necessary for all EIP-1559 txns
+        NOTE: nonce is required for signed txns
+
+        :param tx: the standard transaction parameters
+        :return:
+        """
         tx["type"] = self.type
         tx["chainId"] = self.chainID
         tx["maxFeePerGas"] = self.gasMaxPrice
