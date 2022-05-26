@@ -271,6 +271,23 @@ class SolWeb3Tool(object):
 
         return self
 
+    def GetCodeClassFromForgeBuild(self, class_name: str) -> "SolWeb3Tool":
+        """
+        get the independent files and content from the file system
+        :param class_name:
+        :return:
+        """
+        p2abi = os.path.join(self.WORKSPACE_PATH, self.OUTPUT_BUILD, "{}.sol".format(class_name), "{}.abi".format(class_name))
+        p1bin = os.path.join(self.WORKSPACE_PATH, self.OUTPUT_BUILD, "{}.sol".format(class_name), "{}.bin".format(class_name))
+        try:
+            self._bin = codecs.open(p1bin, 'r', 'utf-8-sig').read()
+            self._abi = json.load(codecs.open(p2abi, 'r', 'utf-8-sig'))
+
+        except FileNotFoundError:
+            print("The artifacts files are not found from forge builds")
+            exit(3)
+        return self
+
     def GetCodeClassFromBuild(self, class_name: str) -> "SolWeb3Tool":
         """
         get the independent files and content from the file system
@@ -285,7 +302,7 @@ class SolWeb3Tool(object):
             self._abi = json.load(codecs.open(p2abi, 'r', 'utf-8-sig'))
             self._meta = json.load(codecs.open(metafile, 'r', 'utf-8-sig'))
         except FileNotFoundError:
-            print("Some of the files from the build is not found")
+            print("The artifacts files are not found from solc builds")
             exit(3)
         return self
 
@@ -546,7 +563,7 @@ class MiliDoS(IDos):
                 class_name = based_name.replace(".sol", "")
                 # class_name_process = filter_file_name(based_name).replace('.sol', '')
                 self.artifact_manager.SplitForgeBuild(class_name)
-            self.is_forge = True
+        self.is_forge = True
         return self
 
     def localTranspile(self, dapp_ts_folder: str = None) -> "MiliDoS":
@@ -687,7 +704,10 @@ class MiliDoS(IDos):
         # estimate_gas
         solc_artifact = SolWeb3Tool()
         solc_artifact.setBasePath(self.project_workspace_root)
-        solc_artifact = solc_artifact.GetCodeClassFromBuild(class_name)
+        if self.is_forge:
+            solc_artifact = solc_artifact.GetCodeClassFromBuild(class_name)
+        else:
+            solc_artifact = solc_artifact.GetCodeClassFromForgeBuild(class_name)
         nr = self.w3.eth.contract(abi=solc_artifact.abi, bytecode=solc_artifact.bin)
         gas_est_amount = nr.constructor().estimateGas()
         price = self.w3.eth.generate_gas_price()
@@ -784,7 +804,12 @@ class MiliDoS(IDos):
         sol = self.artifact_manager
         sol.setBasePath(self.project_workspace_root)
         sol.setBuildNameSpace("build")
-        sol = sol.GetCodeClassFromBuild(class_name)
+
+        if self.is_forge:
+            sol = sol.GetCodeClassFromBuild(class_name)
+        else:
+            sol = sol.GetCodeClassFromForgeBuild(class_name)
+
         self.artifact_manager = sol
         return sol
 
@@ -802,6 +827,8 @@ class MiliDoS(IDos):
         sol.setBasePath(root_base_path)
         sol.setBuildNameSpace("artifacts")
         sol = sol.GetCodeClassFromBuild(class_name)
+
+
         self.artifact_manager = sol
         return sol
 

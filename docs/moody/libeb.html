@@ -299,6 +299,23 @@ class SolWeb3Tool(object):
 
         return self
 
+    def GetCodeClassFromForgeBuild(self, class_name: str) -&gt; &#34;SolWeb3Tool&#34;:
+        &#34;&#34;&#34;
+        get the independent files and content from the file system
+        :param class_name:
+        :return:
+        &#34;&#34;&#34;
+        p2abi = os.path.join(self.WORKSPACE_PATH, self.OUTPUT_BUILD, &#34;{}.sol&#34;.format(class_name), &#34;{}.abi&#34;.format(class_name))
+        p1bin = os.path.join(self.WORKSPACE_PATH, self.OUTPUT_BUILD, &#34;{}.sol&#34;.format(class_name), &#34;{}.bin&#34;.format(class_name))
+        try:
+            self._bin = codecs.open(p1bin, &#39;r&#39;, &#39;utf-8-sig&#39;).read()
+            self._abi = json.load(codecs.open(p2abi, &#39;r&#39;, &#39;utf-8-sig&#39;))
+
+        except FileNotFoundError:
+            print(&#34;The artifacts files are not found from forge builds&#34;)
+            exit(3)
+        return self
+
     def GetCodeClassFromBuild(self, class_name: str) -&gt; &#34;SolWeb3Tool&#34;:
         &#34;&#34;&#34;
         get the independent files and content from the file system
@@ -313,7 +330,7 @@ class SolWeb3Tool(object):
             self._abi = json.load(codecs.open(p2abi, &#39;r&#39;, &#39;utf-8-sig&#39;))
             self._meta = json.load(codecs.open(metafile, &#39;r&#39;, &#39;utf-8-sig&#39;))
         except FileNotFoundError:
-            print(&#34;Some of the files from the build is not found&#34;)
+            print(&#34;The artifacts files are not found from solc builds&#34;)
             exit(3)
         return self
 
@@ -574,7 +591,7 @@ class MiliDoS(IDos):
                 class_name = based_name.replace(&#34;.sol&#34;, &#34;&#34;)
                 # class_name_process = filter_file_name(based_name).replace(&#39;.sol&#39;, &#39;&#39;)
                 self.artifact_manager.SplitForgeBuild(class_name)
-            self.is_forge = True
+        self.is_forge = True
         return self
 
     def localTranspile(self, dapp_ts_folder: str = None) -&gt; &#34;MiliDoS&#34;:
@@ -715,7 +732,10 @@ class MiliDoS(IDos):
         # estimate_gas
         solc_artifact = SolWeb3Tool()
         solc_artifact.setBasePath(self.project_workspace_root)
-        solc_artifact = solc_artifact.GetCodeClassFromBuild(class_name)
+        if self.is_forge:
+            solc_artifact = solc_artifact.GetCodeClassFromBuild(class_name)
+        else:
+            solc_artifact = solc_artifact.GetCodeClassFromForgeBuild(class_name)
         nr = self.w3.eth.contract(abi=solc_artifact.abi, bytecode=solc_artifact.bin)
         gas_est_amount = nr.constructor().estimateGas()
         price = self.w3.eth.generate_gas_price()
@@ -812,7 +832,12 @@ class MiliDoS(IDos):
         sol = self.artifact_manager
         sol.setBasePath(self.project_workspace_root)
         sol.setBuildNameSpace(&#34;build&#34;)
-        sol = sol.GetCodeClassFromBuild(class_name)
+
+        if self.is_forge:
+            sol = sol.GetCodeClassFromBuild(class_name)
+        else:
+            sol = sol.GetCodeClassFromForgeBuild(class_name)
+
         self.artifact_manager = sol
         return sol
 
@@ -830,6 +855,8 @@ class MiliDoS(IDos):
         sol.setBasePath(root_base_path)
         sol.setBuildNameSpace(&#34;artifacts&#34;)
         sol = sol.GetCodeClassFromBuild(class_name)
+
+
         self.artifact_manager = sol
         return sol
 
@@ -1795,7 +1822,7 @@ The center hub of the progress source code is in here</p></div>
                 class_name = based_name.replace(&#34;.sol&#34;, &#34;&#34;)
                 # class_name_process = filter_file_name(based_name).replace(&#39;.sol&#39;, &#39;&#39;)
                 self.artifact_manager.SplitForgeBuild(class_name)
-            self.is_forge = True
+        self.is_forge = True
         return self
 
     def localTranspile(self, dapp_ts_folder: str = None) -&gt; &#34;MiliDoS&#34;:
@@ -1936,7 +1963,10 @@ The center hub of the progress source code is in here</p></div>
         # estimate_gas
         solc_artifact = SolWeb3Tool()
         solc_artifact.setBasePath(self.project_workspace_root)
-        solc_artifact = solc_artifact.GetCodeClassFromBuild(class_name)
+        if self.is_forge:
+            solc_artifact = solc_artifact.GetCodeClassFromBuild(class_name)
+        else:
+            solc_artifact = solc_artifact.GetCodeClassFromForgeBuild(class_name)
         nr = self.w3.eth.contract(abi=solc_artifact.abi, bytecode=solc_artifact.bin)
         gas_est_amount = nr.constructor().estimateGas()
         price = self.w3.eth.generate_gas_price()
@@ -2033,7 +2063,12 @@ The center hub of the progress source code is in here</p></div>
         sol = self.artifact_manager
         sol.setBasePath(self.project_workspace_root)
         sol.setBuildNameSpace(&#34;build&#34;)
-        sol = sol.GetCodeClassFromBuild(class_name)
+
+        if self.is_forge:
+            sol = sol.GetCodeClassFromBuild(class_name)
+        else:
+            sol = sol.GetCodeClassFromForgeBuild(class_name)
+
         self.artifact_manager = sol
         return sol
 
@@ -2051,6 +2086,8 @@ The center hub of the progress source code is in here</p></div>
         sol.setBasePath(root_base_path)
         sol.setBuildNameSpace(&#34;artifacts&#34;)
         sol = sol.GetCodeClassFromBuild(class_name)
+
+
         self.artifact_manager = sol
         return sol
 
@@ -2857,7 +2894,10 @@ valuables for gas price and gas limit
     # estimate_gas
     solc_artifact = SolWeb3Tool()
     solc_artifact.setBasePath(self.project_workspace_root)
-    solc_artifact = solc_artifact.GetCodeClassFromBuild(class_name)
+    if self.is_forge:
+        solc_artifact = solc_artifact.GetCodeClassFromBuild(class_name)
+    else:
+        solc_artifact = solc_artifact.GetCodeClassFromForgeBuild(class_name)
     nr = self.w3.eth.contract(abi=solc_artifact.abi, bytecode=solc_artifact.bin)
     gas_est_amount = nr.constructor().estimateGas()
     price = self.w3.eth.generate_gas_price()
@@ -3190,7 +3230,12 @@ if this valuable is None then there will not be any copy files to the destinatio
     sol = self.artifact_manager
     sol.setBasePath(self.project_workspace_root)
     sol.setBuildNameSpace(&#34;build&#34;)
-    sol = sol.GetCodeClassFromBuild(class_name)
+
+    if self.is_forge:
+        sol = sol.GetCodeClassFromBuild(class_name)
+    else:
+        sol = sol.GetCodeClassFromForgeBuild(class_name)
+
     self.artifact_manager = sol
     return sol</code></pre>
 </details>
@@ -3220,6 +3265,8 @@ if this valuable is None then there will not be any copy files to the destinatio
     sol.setBasePath(root_base_path)
     sol.setBuildNameSpace(&#34;artifacts&#34;)
     sol = sol.GetCodeClassFromBuild(class_name)
+
+
     self.artifact_manager = sol
     return sol</code></pre>
 </details>
@@ -3488,7 +3535,7 @@ if this valuable is None then there will not be any copy files to the destinatio
             class_name = based_name.replace(&#34;.sol&#34;, &#34;&#34;)
             # class_name_process = filter_file_name(based_name).replace(&#39;.sol&#39;, &#39;&#39;)
             self.artifact_manager.SplitForgeBuild(class_name)
-        self.is_forge = True
+    self.is_forge = True
     return self</code></pre>
 </details>
 </dd>
@@ -3580,6 +3627,23 @@ This is the artifact manager as we know it</p></div>
 
         return self
 
+    def GetCodeClassFromForgeBuild(self, class_name: str) -&gt; &#34;SolWeb3Tool&#34;:
+        &#34;&#34;&#34;
+        get the independent files and content from the file system
+        :param class_name:
+        :return:
+        &#34;&#34;&#34;
+        p2abi = os.path.join(self.WORKSPACE_PATH, self.OUTPUT_BUILD, &#34;{}.sol&#34;.format(class_name), &#34;{}.abi&#34;.format(class_name))
+        p1bin = os.path.join(self.WORKSPACE_PATH, self.OUTPUT_BUILD, &#34;{}.sol&#34;.format(class_name), &#34;{}.bin&#34;.format(class_name))
+        try:
+            self._bin = codecs.open(p1bin, &#39;r&#39;, &#39;utf-8-sig&#39;).read()
+            self._abi = json.load(codecs.open(p2abi, &#39;r&#39;, &#39;utf-8-sig&#39;))
+
+        except FileNotFoundError:
+            print(&#34;The artifacts files are not found from forge builds&#34;)
+            exit(3)
+        return self
+
     def GetCodeClassFromBuild(self, class_name: str) -&gt; &#34;SolWeb3Tool&#34;:
         &#34;&#34;&#34;
         get the independent files and content from the file system
@@ -3594,7 +3658,7 @@ This is the artifact manager as we know it</p></div>
             self._abi = json.load(codecs.open(p2abi, &#39;r&#39;, &#39;utf-8-sig&#39;))
             self._meta = json.load(codecs.open(metafile, &#39;r&#39;, &#39;utf-8-sig&#39;))
         except FileNotFoundError:
-            print(&#34;Some of the files from the build is not found&#34;)
+            print(&#34;The artifacts files are not found from solc builds&#34;)
             exit(3)
         return self
 
@@ -3861,7 +3925,36 @@ get the code and abi from combined.json
         self._abi = json.load(codecs.open(p2abi, &#39;r&#39;, &#39;utf-8-sig&#39;))
         self._meta = json.load(codecs.open(metafile, &#39;r&#39;, &#39;utf-8-sig&#39;))
     except FileNotFoundError:
-        print(&#34;Some of the files from the build is not found&#34;)
+        print(&#34;The artifacts files are not found from solc builds&#34;)
+        exit(3)
+    return self</code></pre>
+</details>
+</dd>
+<dt id="moody.libeb.SolWeb3Tool.GetCodeClassFromForgeBuild"><code class="name flex">
+<span>def <span class="ident">GetCodeClassFromForgeBuild</span></span>(<span>self, class_name: str) ‑> <a title="moody.libeb.SolWeb3Tool" href="#moody.libeb.SolWeb3Tool">SolWeb3Tool</a></span>
+</code></dt>
+<dd>
+<div class="desc"><p>get the independent files and content from the file system
+:param class_name:
+:return:</p></div>
+<details class="source">
+<summary>
+<span>Expand source code</span>
+</summary>
+<pre><code class="python">def GetCodeClassFromForgeBuild(self, class_name: str) -&gt; &#34;SolWeb3Tool&#34;:
+    &#34;&#34;&#34;
+    get the independent files and content from the file system
+    :param class_name:
+    :return:
+    &#34;&#34;&#34;
+    p2abi = os.path.join(self.WORKSPACE_PATH, self.OUTPUT_BUILD, &#34;{}.sol&#34;.format(class_name), &#34;{}.abi&#34;.format(class_name))
+    p1bin = os.path.join(self.WORKSPACE_PATH, self.OUTPUT_BUILD, &#34;{}.sol&#34;.format(class_name), &#34;{}.bin&#34;.format(class_name))
+    try:
+        self._bin = codecs.open(p1bin, &#39;r&#39;, &#39;utf-8-sig&#39;).read()
+        self._abi = json.load(codecs.open(p2abi, &#39;r&#39;, &#39;utf-8-sig&#39;))
+
+    except FileNotFoundError:
+        print(&#34;The artifacts files are not found from forge builds&#34;)
         exit(3)
     return self</code></pre>
 </details>
@@ -4265,6 +4358,7 @@ from combined.json
 <li><code><a title="moody.libeb.SolWeb3Tool.CompileBash" href="#moody.libeb.SolWeb3Tool.CompileBash">CompileBash</a></code></li>
 <li><code><a title="moody.libeb.SolWeb3Tool.GetCode" href="#moody.libeb.SolWeb3Tool.GetCode">GetCode</a></code></li>
 <li><code><a title="moody.libeb.SolWeb3Tool.GetCodeClassFromBuild" href="#moody.libeb.SolWeb3Tool.GetCodeClassFromBuild">GetCodeClassFromBuild</a></code></li>
+<li><code><a title="moody.libeb.SolWeb3Tool.GetCodeClassFromForgeBuild" href="#moody.libeb.SolWeb3Tool.GetCodeClassFromForgeBuild">GetCodeClassFromForgeBuild</a></code></li>
 <li><code><a title="moody.libeb.SolWeb3Tool.GetCodeTag" href="#moody.libeb.SolWeb3Tool.GetCodeTag">GetCodeTag</a></code></li>
 <li><code><a title="moody.libeb.SolWeb3Tool.GetCombinedFile" href="#moody.libeb.SolWeb3Tool.GetCombinedFile">GetCombinedFile</a></code></li>
 <li><code><a title="moody.libeb.SolWeb3Tool.GetMetaCompilerVer" href="#moody.libeb.SolWeb3Tool.GetMetaCompilerVer">GetMetaCompilerVer</a></code></li>
