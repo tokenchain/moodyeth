@@ -260,8 +260,8 @@ class SolWeb3Tool(object):
             predum = uncutjson["abi"]
             writeFile(json.dumps(predum, ensure_ascii=False), abifile)
 
-        if "deployedBytecode" in uncutjson:
-            pr = uncutjson["deployedBytecode"]
+        if "bytecode" in uncutjson:
+            pr = uncutjson["bytecode"]
             if "object" in pr:
                 pr2 = pr["object"]
                 pr2 = pr2.replace("0x", "")
