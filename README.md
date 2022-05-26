@@ -179,9 +179,10 @@ r.setWorkspace(ROOT).setOptimizationRuns(5000).setEvm(Evm.ISTANBUL).setClassSolN
 ```
 
 
-###Working with forge
+### Working with forge
 
-Now try to compile your solidity files you can execute it with
+Now try to compile your solidity files you can execute it with the follow example
+
 ```bash
 #!/usr/bin/env bash
 
