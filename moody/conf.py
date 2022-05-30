@@ -217,6 +217,16 @@ def RSCMainnet() -> Config:
     )
 
 
+def OasisMainnet() -> Config:
+    return Config(
+        network_name="OasisChain",
+        rpc_url="https://rpc1.oasischain.io",
+        chain_id=1023,
+        symbol="OAC",
+        block_explorer="https://scan.oasischain.io/"
+    )
+
+
 def AvalancheFujiTestnet() -> Config:
     return Config(
         network_name="AvalancheTestnet",

@@ -4,7 +4,6 @@ from hexbytes import HexBytes
 from typing import TypedDict, List, Union
 from web3.types import TxParams, _Hash32
 
-
 # unsigned transaction
 FlashbotsBundleTx = TypedDict(
     "FlashbotsBundleTx",
@@ -53,7 +52,6 @@ FlashbotsOpts = TypedDict(
     "FlashbotsOpts",
     {"minTimestamp": int, "maxTimestamp": int, "revertingTxHashes": List[str]},
 )
-
 
 # Type missing from eth_account, not really a part of flashbots web3 per sé
 SignTx = TypedDict(
