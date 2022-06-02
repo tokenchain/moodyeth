@@ -221,7 +221,7 @@ def OasisMainnet() -> Config:
     return Config(
         network_name="OasisChain",
         rpc_url="https://rpc1.oasischain.io",
-        chain_id=1023,
+        chain_id=26863,
         symbol="OAC",
         block_explorer="https://scan.oasischain.io/"
     )
