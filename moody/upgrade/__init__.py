@@ -887,7 +887,8 @@ class SignatureGenerator:
 
 # pylint: disable=too-many-public-methods,too-many-instance-attributes
 class Timelock6h(ContractBase):
-    """Wrapper class for Timelock6h Solidity contract.
+    """
+    Wrapper class for Timelock6h Solidity contract.
 
     All method parameters of type `bytes`:code: should be encoded as UTF-8,
     which can be accomplished via `str.encode("utf_8")`:code:.
@@ -963,7 +964,11 @@ class Timelock6h(ContractBase):
             contract_address: str,
             validator: Timelock6hValidator = None,
     ):
-        """Get an instance of wrapper for smart contract.
+        """
+
+         :param core_lib:
+         :param contract_address:
+         :param validator:
         """
         # pylint: disable=too-many-statements
         super().__init__()

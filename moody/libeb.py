@@ -251,7 +251,9 @@ class SolWeb3Tool(object):
         try:
             uncutjson = json.load(codecs.open(combinedjson, 'r', 'utf-8-sig'))
         except FileNotFoundError:
-            print("Some of the files from the build in forge is not found")
+
+            print(f"{Bolors.FAIL}Some of the files from the build in forge is not found. {Bolors.RESET}")
+
             exit(3)
         abifile = os.path.join(self.WORKSPACE_PATH, self.OUTPUT_BUILD, "{}.sol".format(class_name), "{}.abi".format(class_name))
         binfile = os.path.join(self.WORKSPACE_PATH, self.OUTPUT_BUILD, "{}.sol".format(class_name), "{}.bin".format(class_name))
@@ -286,7 +288,9 @@ class SolWeb3Tool(object):
             self._abi = json.load(codecs.open(p2abi, 'r', 'utf-8-sig'))
 
         except FileNotFoundError:
-            print("The artifacts files are not found from forge builds")
+
+            print(f"{Bolors.FAIL}The artifacts files are not found from forge builds. {Bolors.RESET}")
+
             exit(3)
         return self
 
@@ -304,7 +308,9 @@ class SolWeb3Tool(object):
             self._abi = json.load(codecs.open(p2abi, 'r', 'utf-8-sig'))
             self._meta = json.load(codecs.open(metafile, 'r', 'utf-8-sig'))
         except FileNotFoundError:
-            print("The artifacts files are not found from solc builds")
+
+            print(f"{Bolors.FAIL}The artifacts files are not found from solc builds. {Bolors.RESET}")
+
             exit(3)
         return self
 
@@ -560,7 +566,8 @@ class MiliDoS(IDos):
         :return:
         """
         if ver == "":
-            print("there is no solidity version specified")
+            print(f"{Bolors.FAIL}no solidity version specified{Bolors.RESET}")
+
             exit(0)
         self.pathfinder.setSolVersion(ver)
         self.pathfinder.setEvm(self.EVM_VERSION)
@@ -812,7 +819,7 @@ class MiliDoS(IDos):
         :return:
         """
         if not self.artifact_manager:
-            print("❌ Root path is not setup. please setup the workspace first.")
+            print(f"{Bolors.FAIL}❌ Root path is not setup. please setup the workspace first.{Bolors.RESET}")
             exit(2)
 
         sol = self.artifact_manager
@@ -834,7 +841,7 @@ class MiliDoS(IDos):
         :return:
         """
         if not self.artifact_manager:
-            print("❌ Root path is not setup. please setup the workspace first.")
+            print(f"{Bolors.FAIL}❌ Root path is not setup. please setup the workspace first.{Bolors.RESET}")
             exit(2)
 
         sol = self.artifact_manager
@@ -866,7 +873,7 @@ class MiliDoS(IDos):
                 contract_nv = self.w3.eth.contract(abi=solc_artifact.abi, bytecode=bin.GetRawBin())
 
         except FileNotFoundError:
-            print("💢 bin or abi file is not found.")
+            print(f"{Bolors.FAIL}💢 bin or abi file is not found.{Bolors.RESET}")
             exit(3)
         except FoundUndeployedLibraries:
             exit(4)
@@ -912,7 +919,7 @@ class MiliDoS(IDos):
                 contract_nv = self.w3.eth.contract(abi=solc_artifact.abi, bytecode=bin.GetRawBin())
 
         except FileNotFoundError:
-            print("💢 bin or abi file is not found.")
+            print(f"{Bolors.FAIL}💢 bin or abi file is not found.{Bolors.RESET}")
             exit(3)
         except FoundUndeployedLibraries:
             exit(4)
@@ -995,6 +1002,12 @@ class MiliDoS(IDos):
         """example: TT67rPNwgmpeimvHUMVzFfKsjL9GZ1wGw8"""
         return self._contract_dict.get(keyname)
 
+    def replaceAddr(self, class_name: str, new_address: str):
+        if self.hasContractName(class_name):
+            self._contract_dict[class_name] = new_address
+        else:
+            print(f"{Bolors.FAIL}Cannot replace the address because the class name is not found. {Bolors.RESET}")
+
     def getAllAddress(self) -> dict:
         return self._contract_dict
 
@@ -1022,12 +1035,6 @@ class MiliDoS(IDos):
 
     def setTargetListName(self, listname: str) -> "MiliDoS":
         self.list_type = listname
-        return self
-
-    def setKV(self, key: str, value: any) -> "MiliDoS":
-        if self.__kv_label not in self._contract_dict:
-            self._contract_dict[self.__kv_label] = dict()
-        self._contract_dict[self.__kv_label][key] = value
         return self
 
     def hasAddressInList(self, address: str) -> bool:
@@ -1108,6 +1115,12 @@ class MiliDoS(IDos):
             return self._contract_dict[self.__kv_label][key]
 
         return ""
+
+    def setKV(self, key: str, value: any) -> "MiliDoS":
+        if self.__kv_label not in self._contract_dict:
+            self._contract_dict[self.__kv_label] = dict()
+        self._contract_dict[self.__kv_label][key] = value
+        return self
 
     def complete_deployment(self) -> None:
         """store up the deployed contrcat addresses to the local file storage"""

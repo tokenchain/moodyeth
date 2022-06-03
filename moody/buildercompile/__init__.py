@@ -24,6 +24,21 @@ exit
 
 """
 
+RECLOC = """
+#!/bin/bash
+
+cd {TARGET_LOC}
+echo "🍜 changed permission to root"
+SOLC_VERSION={SOLVER} solc --version
+
+echo "and then the compiler version should be... "
+
+{LISTP}
+
+
+exit
+"""
+
 TRANS_LOCAL = """#!/bin/bash
 # -----------------------------------------------
 {PRE_HEAD}

@@ -10,6 +10,15 @@ if sys.version_info < (3, 5):
 
 __version__ = pkg_resources.get_distribution("moodyeth").version
 
+__pdoc__ = {
+    "moody.flashbots.types.FlashbotsBundleTx": False,
+    "moody.flashbots.types.FlashbotsBundleRawTx": False,
+    "moody.flashbots.types.FlashbotsBundleDictTx": False,
+    "moody.flashbots.types.FlashbotsOpts": False,
+    "moody.flashbots.types.SignTx": False,
+    "moody.flashbots.types.SignedTxAndHash": False,
+}
+
 
 # __all__ = [
 #    '__version__',

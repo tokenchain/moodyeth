@@ -108,7 +108,7 @@ def checkForUpgradableContract(manifest: MiliDoS, class_name_contract: str) -> b
     return False
 
 
-def checkBreak(manifest: MiliDoS, name: str):
+def check_initialize(manifest: MiliDoS, name: str):
     """
     the manifest is not milidos
     :param manifest:
@@ -116,7 +116,23 @@ def checkBreak(manifest: MiliDoS, name: str):
     :return:
     """
     if not checkForUpgradableContract(manifest, name):
-        print(f"⛔️ Sorry, {name} is not an upgradable contract. Please double check it.")
+        print(f"⛔️ Sorry, {name} is not an initializable contract. Please double check it.")
+        exit(106)
+
+
+def check_proxy_standard(package_manifest: MiliDoS, class_name_contract: str):
+    """
+    check if the proxy address has all the previous information
+    :param manifest:
+    :param class_name_contract:
+    :return:
+    """
+    package_manifest.setTargetClass(class_name_contract)
+    bool_a = package_manifest.hasField("proxy_admin")
+    bool_b = package_manifest.hasField("implementation")
+    if not bool_a or not bool_b:
+        print(f"⛔️ Sorry, the {class_name_contract} does not have enough information to tell that is a upgradable contract.")
+        exit(103)
 
 
 def deployCustomProxy(
@@ -135,7 +151,7 @@ def deployCustomProxy(
     :param args_initialization: for the implementation contract
     :return:
     """
-    checkBreak(package_manifest, class_name)
+    check_initialize(package_manifest, class_name)
     admin = implementingProxyAdmin(package_manifest)
 
     if not package_manifest.hasContractName(class_name):
@@ -246,37 +262,48 @@ def deployCustomProxyForImplementedAddress(
 
 def deployProxyForImplementedAddress(
         package_manifest: MiliDoS,
-        imple_address: str,
-        admin_signer: str
+        implementation_class_name: str,
+        admin_signer: str,
 ):
     """
     For the more complicated projects where the implementation contract needs to be customized deployed first
     and then come back for this proxy wrapper. And this is more desirable to use.
+
+    1. please deploy the implementation contract first the (logical contract)
+    2. using this function call will wrap the TransparentUpgradeableProxy into the logical contract
+
     :param package_manifest:
     :param imple_address:
     :param admin_signer:
     :param args_initialization_: Ethereum transactions contain a field called data. This field is optional and must be empty when sending ethers, but, when interacting with a contract, it must contain something. It contains call data, which is information required to call a specific contract function.
     :return:
     """
+    proxyClassName = "TransparentUpgradeableProxy"
     admin = implementingProxyAdmin(package_manifest)
+    imple_address = package_manifest.getAddr(implementation_class_name)
     print(f"proxy admin address is {admin.contract_address}")
     print(f"proxy implementation address is {imple_address}")
 
-    if not package_manifest.hasContractName("TransparentUpgradeableProxy"):
-        rs = package_manifest.deployImple("TransparentUpgradeableProxy", [
+    if not package_manifest.hasContractName(proxyClassName):
+        rs = package_manifest.deployImple(proxyClassName, [
             imple_address,
             admin.contract_address,
             ""
         ])
         if not rs:
-            print("⛔️ failure in deploying TransparentUpgradeableProxy")
+            print(f"⛔️ failure in deploying {proxyClassName}")
             exit(5)
+        proxy_address = package_manifest.deployed_address
 
+        # proxy_address = package_manifest.getAddr(proxyClassName)
+
+        package_manifest.replaceAddr(implementation_class_name, proxy_address)
+        package_manifest.setTargetClass(implementation_class_name)
         package_manifest.setKV("proxy_admin", admin.contract_address)
         package_manifest.setKV("implementation", imple_address)
         package_manifest.setKV("version", 1)
         package_manifest.complete_deployment()
-        proxy_address = package_manifest.deployed_address
+
     else:
         proxy_address = package_manifest.getAddr("TransparentUpgradeableProxy")
     administrator = admin.get_proxy_admin(proxy_address)
@@ -316,7 +343,7 @@ def deployProxy(
     :return:
     """
 
-    checkBreak(package_manifest, class_name)
+    check_initialize(package_manifest, class_name)
     admin = implementingProxyAdmin(package_manifest)
 
     if not package_manifest.hasContractName(class_name):
@@ -371,33 +398,52 @@ def deployProxy(
     print("🈶 All done ===")
 
 
-def upgradeTo(package_manifest: MiliDoS, newVerClassName: str, args: any = None):
-    if not package_manifest.hasContractName("ProxyAdmin"):
-        print("⛔️ Sorry, the proxy admin is not found. Please initialize deployProxy or having the proxyadmin in the json file.")
-        exit(6)
+def upgradeTo(package_manifest: MiliDoS, newVerClassName: str, fromClassName: str, args: any = None):
+    """
+    to make the upgrade
+    1. deploy the new implementation contract
+    2. check the old proxy contract
+    3. perform an upgrade
+    :param package_manifest:
+    :param newVerClassName:
+    :param fromClassName:
+    :param args:
+    :return:
+    """
+    if not package_manifest.hasContractName(newVerClassName):
+        print(f"⛔️ Sorry, the {newVerClassName} is not found.")
+        exit(101)
 
-    if not package_manifest.hasContractName("TransparentUpgradeableProxy"):
-        print("⛔️ Sorry, the proxy contract is not found. Please initialize deployProxy or having the proxyadmin in the json file.")
-        exit(7)
-    checkBreak(package_manifest, newVerClassName)
-    proxy_address = package_manifest.getAddr("TransparentUpgradeableProxy")
-    proxyadmin_address = package_manifest.getAddr("ProxyAdmin")
-    admin = ProxyAdmin(package_manifest, proxyadmin_address)
+    if not package_manifest.hasContractName(fromClassName):
+        print(f"⛔️ Sorry, the {fromClassName} is not found. Are you sure that you have deployed this contract?")
+        exit(102)
+
+    check_proxy_standard(package_manifest, fromClassName)
+    check_initialize(package_manifest, newVerClassName)
+
+    proxy_address = package_manifest.getAddr(fromClassName)
+    new_imple_address = package_manifest.getAddr(newVerClassName)
+    proxy_admin_address = package_manifest.getString("proxy_admin")
+    proxy_imple_address = package_manifest.getString("implementation")
+    admin = ProxyAdmin(package_manifest, proxy_admin_address)
     admin.CallAutoConf(package_manifest).CallDebug(True)
     current_ver_implementation = admin.get_proxy_implementation(proxy_address)
     print(f"Found current implementation address {current_ver_implementation}")
-    # todo: check if this contract is the upgradable standard
-    print(f"Deploy new implementation for {newVerClassName}")
-    rs = package_manifest.deploy(newVerClassName)
-    if not rs:
-        print("⛔️ failure in deploying implementation")
-        exit(5)
-
-    new_imple_address = package_manifest.deployed_address
+    print(f"Found current implementation address from record {proxy_imple_address}, and it should match.")
     print(f"🈶 Now the new implementation is {new_imple_address} and now it will perform an upgrade to this. Please make sure all the parameters or arguements are correct")
+
+    def success(tx: str, name: str):
+        package_manifest.setKV("implementation", new_imple_address)
+        package_manifest.setKV("version", package_manifest.getVal("version") + 1)
+        print(f"🈶 All done :: {tx}")
+
+    def f(name: str, message: str):
+        print("⛔️ failure in deploying implementation")
+
+    admin.EnforceTxReceipt(True)
+    admin.onSuccssCallback(success)
+    admin.onFailCallback(f)
     if args is None:
         admin.upgrade(proxy_address, new_imple_address)
     else:
         admin.upgrade_and_call(proxy_address, new_imple_address, args)
-
-    print("🈶 All done ===")

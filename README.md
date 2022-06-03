@@ -53,6 +53,8 @@ It is a all-in-one package with zero setup and configurations that works for mul
 - typescript module compile support
 - forge foundry support
 - flashbots support
+- implementation of contract upgradings
+- upgrade contracts for 3 different ways
 
 
 ### Examples:

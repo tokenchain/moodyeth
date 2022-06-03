@@ -28,6 +28,7 @@ class Signatures:
 
 class Validator:
     """Base class for validating inputs to methods."""
+    address = ""
 
     def __init__(
             self,
@@ -35,7 +36,7 @@ class Validator:
             contract_address: str,
     ):
         """Initialize the instance."""
-        pass
+        self.address = contract_address
 
     def assert_valid(
             self, method_name: str, parameter_name: str, argument_value: Any
@@ -125,6 +126,31 @@ class ContractMethod:
     def _on_fail(self, name: str, message: str) -> None:
         if self.callback_onfail is not None:
             self.callback_onfail(name, message)
+
+
+"""
+https://ethereum.stackexchange.com/questions/65037/web3py-encode-method-call-parameters
+
+def getInfo(abi, address):
+    api = w3.eth.contract(address=address, abi=abi)
+    return api
+
+
+def contractFunction(address, param1, param2):
+    abi = 
+            json abi code   
+          
+    return getInfo(abi, address).functions.contractFunction(param1, param2)
+
+
+def get_data_ex() -> str:
+    return str(contractFunction(contract, param1, param2).selector)
+    + param1.rjust(64, '0')
+    + param2.rjust(64, '0')
+    
+There contract is first 4 symbols of hash contract function with parameter, and other symbols is symbols, appended to 64 symbols with 0
+    
+"""
 
 
 class ContractBase:
