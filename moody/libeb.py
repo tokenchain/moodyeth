@@ -1050,6 +1050,19 @@ class MiliDoS(IDos):
         self.last_class = classname
         return self
 
+    def addTargetClass(self, class_name: str, new_addr: str):
+        if self.hasContractName(class_name):
+            print(f"{Bolors.FAIL}Cannot replace the address because the class name is not found. {Bolors.RESET}")
+            exit(9)
+        else:
+            self._contract_dict[class_name] = new_addr
+
+    def addOrReplaceTargetClass(self, class_name: str, new_addr: str):
+        if self.hasContractName(class_name):
+            self.replaceAddr(class_name, new_addr)
+        else:
+            self._contract_dict[class_name] = new_addr
+
     def setTargetListName(self, listname: str) -> "MiliDoS":
         self.list_type = listname
         return self

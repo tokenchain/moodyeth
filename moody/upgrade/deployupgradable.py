@@ -306,7 +306,6 @@ def deployProxyForImplementedAddress(
         package_manifest.setKV("implementation", imple_address)
         package_manifest.setKV("version", 1)
 
-        package_manifest.removeTarget("ProxyAdmin")
         package_manifest.removeTarget("TransparentUpgradeableProxy")
 
         package_manifest.complete_deployment()
