@@ -1120,8 +1120,14 @@ class MiliDoS(IDos):
             return True
 
     def removeTarget(self, name: str) -> bool:
+        self.setTargetClass(name)
+        
         if self.hasContractName(name):
-            del self._contract_dict[self.__kv_label]
+            del self._contract_dict[name]
+
+            if self.hasContractName(self.__kv_label):
+                del self._contract_dict[self.__kv_label]
+
             return True
         else:
             return False
