@@ -192,7 +192,7 @@ class ExcelBulkManagerContractTunnel(ExcelFeature):
             return
 
         if not self._is_valid_address(coin_address):
-            self._line_error(errorNotify, f"⚠️ ERC20 is not valid {coin_address}")
+            self._line_error(errorNotify, f"⚠️ This is not a valid address for ERC20: {coin_address}")
             return
 
         for batch in self._batch:

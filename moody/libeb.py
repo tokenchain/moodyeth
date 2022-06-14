@@ -50,7 +50,8 @@ def extract_tx_by_address(address, block: BlockData) -> list:
     return [tx for tx in block.transactions if tx.to and address.lower() == tx.to.lower()]
 
 
-def event_log(tx_hash: str, events: List[str], provider: Web3, contract: Web3Contract) -> Tuple[str, Optional[AttributeDict]]:
+def event_log(tx_hash: str, events: List[str], provider: Web3, contract: Web3Contract) -> Tuple[
+    str, Optional[AttributeDict]]:
     """
     Extracts logs of @event from tx_hash if present
     :param tx_hash:
@@ -167,7 +168,8 @@ class BinOp:
         matches = re.finditer(regex1, self.bin_raw, re.MULTILINE)
         found = False
         for matchNum, match in enumerate(matches, start=1):
-            print("Library {matchNum} is found at {start}-{end}: {match}".format(matchNum=matchNum, start=match.start(), end=match.end(), match=match.group()))
+            print("Library {matchNum} is found at {start}-{end}: {match}".format(matchNum=matchNum, start=match.start(),
+                                                                                 end=match.end(), match=match.group()))
             k, v = self.fromLine(match.group())
             self.bin_undeploy_lib[k] = v
             found = True
@@ -191,10 +193,12 @@ class BinOp:
                 if databank.isAddress(databank.getAddr(class_name)):
                     self._knifeBinClass(class_name, self._placehd(instruction_line), databank.getAddr(class_name))
                 else:
-                    print("🧊 The found library address is not valid - {}, {}".format(class_name, databank.getAddr(class_name)))
+                    print("🧊 The found library address is not valid - {}, {}".format(class_name,
+                                                                                      databank.getAddr(class_name)))
                     raise FoundUndeployedLibraries
             else:
-                print("⚠️ Unfound library Error- {}, please make sure you have this library deployed.".format(class_name))
+                print(
+                    "⚠️ Unfound library Error- {}, please make sure you have this library deployed.".format(class_name))
                 raise FoundUndeployedLibraries
 
         self.bin_knifed = self.bin_knifed.splitlines(True)[0]
@@ -247,7 +251,8 @@ class SolWeb3Tool(object):
 
     def SplitForgeBuild(self, class_name: str) -> "SolWeb3Tool":
         uncutjson = dict()
-        combinedjson = os.path.join(self.WORKSPACE_PATH, self.OUTPUT_BUILD, "{}.sol".format(class_name), "{}.json".format(class_name))
+        combinedjson = os.path.join(self.WORKSPACE_PATH, self.OUTPUT_BUILD, "{}.sol".format(class_name),
+                                    "{}.json".format(class_name))
         try:
             uncutjson = json.load(codecs.open(combinedjson, 'r', 'utf-8-sig'))
         except FileNotFoundError:
@@ -255,8 +260,10 @@ class SolWeb3Tool(object):
             print(f"{Bolors.FAIL}Some of the files from the build in forge is not found. {Bolors.RESET}")
 
             exit(3)
-        abifile = os.path.join(self.WORKSPACE_PATH, self.OUTPUT_BUILD, "{}.sol".format(class_name), "{}.abi".format(class_name))
-        binfile = os.path.join(self.WORKSPACE_PATH, self.OUTPUT_BUILD, "{}.sol".format(class_name), "{}.bin".format(class_name))
+        abifile = os.path.join(self.WORKSPACE_PATH, self.OUTPUT_BUILD, "{}.sol".format(class_name),
+                               "{}.abi".format(class_name))
+        binfile = os.path.join(self.WORKSPACE_PATH, self.OUTPUT_BUILD, "{}.sol".format(class_name),
+                               "{}.bin".format(class_name))
 
         if "abi" in uncutjson:
             predum = uncutjson["abi"]
@@ -281,8 +288,10 @@ class SolWeb3Tool(object):
         :param class_name:
         :return:
         """
-        p2abi = os.path.join(self.WORKSPACE_PATH, self.OUTPUT_BUILD, "{}.sol".format(class_name), "{}.abi".format(class_name))
-        p1bin = os.path.join(self.WORKSPACE_PATH, self.OUTPUT_BUILD, "{}.sol".format(class_name), "{}.bin".format(class_name))
+        p2abi = os.path.join(self.WORKSPACE_PATH, self.OUTPUT_BUILD, "{}.sol".format(class_name),
+                             "{}.abi".format(class_name))
+        p1bin = os.path.join(self.WORKSPACE_PATH, self.OUTPUT_BUILD, "{}.sol".format(class_name),
+                             "{}.bin".format(class_name))
         try:
             self._bin = codecs.open(p1bin, 'r', 'utf-8-sig').read()
             self._abi = json.load(codecs.open(p2abi, 'r', 'utf-8-sig'))
@@ -475,11 +484,13 @@ class MiliDoS(IDos):
         self._optimizations = 200
         result = self.w3.isConnected()
         if not result:
-            print(f"try to connect {self.network_cfg.network_name}  {Bolors.WARNING} {self.network_cfg.rpc_url}: {result} {Bolors.RESET}")
+            print(
+                f"try to connect {self.network_cfg.network_name}  {Bolors.WARNING} {self.network_cfg.rpc_url}: {result} {Bolors.RESET}")
             exit(0)
             return
         else:
-            print(f"You are now connected to {Bolors.OK} {self.network_cfg.network_name} {self.network_cfg.rpc_url} {Bolors.RESET}")
+            print(
+                f"You are now connected to {Bolors.OK} {self.network_cfg.network_name} {self.network_cfg.rpc_url} {Bolors.RESET}")
 
     def withPOA(self) -> "MiliDoS":
         """
@@ -637,7 +648,8 @@ class MiliDoS(IDos):
         signed_txn = self.w3.eth.account.sign_transaction(tx, private_key)
         return self.w3.eth.sendRawTransaction(signed_txn.rawTransaction)
 
-    def contract_event_in_range(self, contract, event_name: str, from_block: int = 0, to_block: Optional[int] = None) -> None:
+    def contract_event_in_range(self, contract, event_name: str, from_block: int = 0,
+                                to_block: Optional[int] = None) -> None:
         """
         scans the blockchain, and yields blocks that has contract tx with the provided event
         Note: Be cautions with the range provided, as the logic creates query for each block which could be a bottleneck.
@@ -661,7 +673,8 @@ class MiliDoS(IDos):
                     if not contract_transactions:
                         continue
                     for tx in contract_transactions:
-                        _, log = event_log(tx_hash=tx.hash, events=[event_name], provider=self.w3, contract=contract.tracked_contract)
+                        _, log = event_log(tx_hash=tx.hash, events=[event_name], provider=self.w3,
+                                           contract=contract.tracked_contract)
                         if log is None:
                             continue
                         yield log
@@ -670,7 +683,8 @@ class MiliDoS(IDos):
                 event_filter = event.createFilter(fromBlock=from_block, toBlock=to_block)
 
                 for tx in event_filter.get_new_entries():
-                    _, log = event_log(tx_hash=tx.hash, events=[event_name], provider=self.w3, contract=contract.tracked_contract)
+                    _, log = event_log(tx_hash=tx.hash, events=[event_name], provider=self.w3,
+                                       contract=contract.tracked_contract)
 
                     if log is None:
                         continue
@@ -803,13 +817,15 @@ class MiliDoS(IDos):
             raise InvalidAddress
 
         if "transactionHash" not in receipt:
-            print(f"⚠️ The deployment is failed because there is no valid address found from {class_name}. Please check for internal errors from deployment has {receipt.transactionHash}")
+            print(
+                f"⚠️ The deployment is failed because there is no valid address found from {class_name}. Please check for internal errors from deployment has {receipt.transactionHash}")
             raise InvalidAddress
 
         hash = str(receipt.transactionHash)
         preaddress = str(receipt.contractAddress)
         if self.isAddress(preaddress) is False:
-            print(f"⚠️ The deployment is failed because there is no valid address found from {class_name}. Please check for internal errors from deployment hash from {jsonfile}")
+            print(
+                f"⚠️ The deployment is failed because there is no valid address found from {class_name}. Please check for internal errors from deployment hash from {jsonfile}")
             raise InvalidAddress
 
     def provide_artifact_extends(self, class_name: str) -> SolWeb3Tool:
@@ -968,7 +984,8 @@ class MiliDoS(IDos):
             self.setTargetClass(class_name)
             self.setKV("by", self.accountAddr)
             print("📦 Address saved to ✅ {} -> {}".format(fresh_address, class_name))
-            print(f"🔍 You can check with the explorer for more detail: {Bolors.WARNING} {self.network_cfg.block_explorer}{Bolors.RESET}")
+            print(
+                f"🔍 You can check with the explorer for more detail: {Bolors.WARNING} {self.network_cfg.block_explorer}{Bolors.RESET}")
 
             self.artifact_manager.StoreTxResult(tx_receipt, self.pathfinder.classObject(class_name))
             self.complete_deployment()
@@ -1088,6 +1105,13 @@ class MiliDoS(IDos):
             return False
         else:
             return True
+
+    def removeTarget(self, name: str) -> bool:
+        if self.hasContractName(name):
+            del self._contract_dict[self.__kv_label]
+            return True
+        else:
+            return False
 
     def hasContractName(self, name: str) -> bool:
         return name in self._contract_dict

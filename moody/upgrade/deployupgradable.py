@@ -54,6 +54,8 @@ def implementingProxyAdmin(package_manifest: MiliDoS) -> ProxyAdmin:
         proxyadmin_address = package_manifest.deployed_address
     else:
         proxyadmin_address = package_manifest.getAddr("ProxyAdmin")
+        print(
+            f"⛔️ cannot deploy ProxyAdmin since another one is existed. Please take care of that. {proxyadmin_address}")
 
     admin = ProxyAdmin(package_manifest, proxyadmin_address)
     admin.CallAutoConf(package_manifest).CallDebug(True)
@@ -131,7 +133,8 @@ def check_proxy_standard(package_manifest: MiliDoS, class_name_contract: str):
     bool_a = package_manifest.hasField("proxy_admin")
     bool_b = package_manifest.hasField("implementation")
     if not bool_a or not bool_b:
-        print(f"⛔️ Sorry, the {class_name_contract} does not have enough information to tell that is a upgradable contract.")
+        print(
+            f"⛔️ Sorry, the {class_name_contract} does not have enough information to tell that is a upgradable contract.")
         exit(103)
 
 
@@ -302,10 +305,17 @@ def deployProxyForImplementedAddress(
         package_manifest.setKV("proxy_admin", admin.contract_address)
         package_manifest.setKV("implementation", imple_address)
         package_manifest.setKV("version", 1)
+
+        package_manifest.removeTarget("ProxyAdmin")
+        package_manifest.removeTarget("TransparentUpgradeableProxy")
+
         package_manifest.complete_deployment()
 
     else:
         proxy_address = package_manifest.getAddr("TransparentUpgradeableProxy")
+        print(f"⛔️ cannot deploy proxy since another one is existed. Please take care of that. {proxy_address}")
+        exit(17)
+
     administrator = admin.get_proxy_admin(proxy_address)
 
     if administrator != "":
@@ -386,6 +396,7 @@ def deployProxy(
         proxy_address = package_manifest.deployed_address
     else:
         proxy_address = package_manifest.getAddr("TransparentUpgradeableProxy")
+
     administrator = admin.get_proxy_admin(proxy_address)
 
     if administrator != "":
@@ -430,7 +441,8 @@ def upgradeTo(package_manifest: MiliDoS, newVerClassName: str, fromClassName: st
     current_ver_implementation = admin.get_proxy_implementation(proxy_address)
     print(f"Found current implementation address {current_ver_implementation}")
     print(f"Found current implementation address from record {proxy_imple_address}, and it should match.")
-    print(f"🈶 Now the new implementation is {new_imple_address} and now it will perform an upgrade to this. Please make sure all the parameters or arguements are correct")
+    print(
+        f"🈶 Now the new implementation is {new_imple_address} and now it will perform an upgrade to this. Please make sure all the parameters or arguements are correct")
 
     def success(tx: str, name: str):
         package_manifest.setKV("implementation", new_imple_address)
