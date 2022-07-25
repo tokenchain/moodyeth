@@ -81,6 +81,11 @@ def event_log(tx_hash: str, events: List[str], provider: Web3, contract: Web3Con
     return '', None
 
 
+def message_exit(msg: str, code: int):
+    print(f"{Bolors.FAIL}{msg}{Bolors.RESET}")
+    exit(code)
+
+
 def normalize_address(address: str):
     """Converts address to address acceptable by web3"""
     return Web3.toChecksumAddress(address.lower())
@@ -140,6 +145,9 @@ class IDos:
         pass
 
     def isAddress(self, add: str) -> bool:
+        pass
+
+    def switchNetowrk(self, _node_config: Config) -> bool:
         pass
 
 
@@ -256,10 +264,8 @@ class SolWeb3Tool(object):
         try:
             uncutjson = json.load(codecs.open(combinedjson, 'r', 'utf-8-sig'))
         except FileNotFoundError:
+            message_exit("Some of the files from the build in forge is not found.", 3)
 
-            print(f"{Bolors.FAIL}Some of the files from the build in forge is not found. {Bolors.RESET}")
-
-            exit(3)
         abifile = os.path.join(self.WORKSPACE_PATH, self.OUTPUT_BUILD, "{}.sol".format(class_name),
                                "{}.abi".format(class_name))
         binfile = os.path.join(self.WORKSPACE_PATH, self.OUTPUT_BUILD, "{}.sol".format(class_name),
@@ -297,10 +303,8 @@ class SolWeb3Tool(object):
             self._abi = json.load(codecs.open(p2abi, 'r', 'utf-8-sig'))
 
         except FileNotFoundError:
+            message_exit("The artifacts files are not found from forge builds.", 3)
 
-            print(f"{Bolors.FAIL}The artifacts files are not found from forge builds. {Bolors.RESET}")
-
-            exit(3)
         return self
 
     def GetCodeClassFromBuild(self, class_name: str) -> "SolWeb3Tool":
@@ -317,10 +321,8 @@ class SolWeb3Tool(object):
             self._abi = json.load(codecs.open(p2abi, 'r', 'utf-8-sig'))
             self._meta = json.load(codecs.open(metafile, 'r', 'utf-8-sig'))
         except FileNotFoundError:
+            message_exit("The artifacts files are not found from solc builds.", 3)
 
-            print(f"{Bolors.FAIL}The artifacts files are not found from solc builds. {Bolors.RESET}")
-
-            exit(3)
         return self
 
     def LoadInternalMeta(self, class_name: str) -> "SolWeb3Tool":
@@ -457,7 +459,7 @@ class MiliDoS(IDos):
 
     EVM_VERSION = Evm.BERLIN
 
-    def __init__(self, _nodeCfg: Config):
+    def __init__(self, node: Config):
         # the hidden list
         self._contract_dict = dict()
         self._sol_list = list()
@@ -474,23 +476,33 @@ class MiliDoS(IDos):
         self.deployed_address = False
         self.last_class = ""
         self.list_type = "list_address"
-        self.network_cfg = _nodeCfg
+        ok = self.switchNetowrk(node)
+        if not ok:
+            exit(88)
 
-        self.w3 = web3_provider(_nodeCfg.rpc_url)
-
-        if "flastbot" in _nodeCfg.rpc_url:
-            self.is_flashbot_prc = True
-
-        self._optimizations = 200
+    def switchNetowrk(self, _node_config: Config) -> bool:
+        self.network_cfg = _node_config
+        self.configUrl(_node_config.rpc_url)
         result = self.w3.isConnected()
         if not result:
             print(
                 f"try to connect {self.network_cfg.network_name}  {Bolors.WARNING} {self.network_cfg.rpc_url}: {result} {Bolors.RESET}")
-            exit(0)
-            return
+            return False
         else:
             print(
                 f"You are now connected to {Bolors.OK} {self.network_cfg.network_name} {self.network_cfg.rpc_url} {Bolors.RESET}")
+            return True
+
+    def configUrl(self, url: str) -> None:
+        """
+        The url can be anything including http, https, ws, ipc, rpc
+        :param url: any connection endpoint
+        :return:
+        """
+        self.w3 = web3_provider(url)
+
+        if "flastbot" in url:
+            self.is_flashbot_prc = True
 
     def withPOA(self) -> "MiliDoS":
         """
@@ -531,6 +543,9 @@ class MiliDoS(IDos):
 
     def SetupContract(self):
         pass
+
+    def GetNode(self) -> Config:
+        return self.network_cfg
 
     def after_deployment_initialize_settings(self):
         """
@@ -835,8 +850,7 @@ class MiliDoS(IDos):
         :return:
         """
         if not self.artifact_manager:
-            print(f"{Bolors.FAIL}❌ Root path is not setup. please setup the workspace first.{Bolors.RESET}")
-            exit(2)
+            message_exit("❌ Root path is not setup. please setup the workspace first.", 2)
 
         sol = self.artifact_manager
         sol.setBasePath(self.project_workspace_root)
@@ -857,8 +871,8 @@ class MiliDoS(IDos):
         :return:
         """
         if not self.artifact_manager:
-            print(f"{Bolors.FAIL}❌ Root path is not setup. please setup the workspace first.{Bolors.RESET}")
-            exit(2)
+            message_exit("❌ Root path is not setup. please setup the workspace first for the artifact implementation.",
+                         2)
 
         sol = self.artifact_manager
         sol.setBasePath(root_base_path)
@@ -889,13 +903,14 @@ class MiliDoS(IDos):
                 contract_nv = self.w3.eth.contract(abi=solc_artifact.abi, bytecode=bin.GetRawBin())
 
         except FileNotFoundError:
-            print(f"{Bolors.FAIL}💢 bin or abi file is not found.{Bolors.RESET}")
-            exit(3)
+            message_exit("💢 bin or abi file is not found.", 3)
+
         except FoundUndeployedLibraries:
-            exit(4)
+            message_exit("💢 Found undeployed libraries.", 4)
+
         except ContractLogicError as e:
-            print(f"💢 Contract error {e}")
-            exit(5)
+            message_exit(f"💢 Contract error {e}", 5)
+
         gasprice = self.gasPrice if gas_price == 0 else gas_price
         gas = self.gas if gas_limit == 0 else gas_limit
         if len(params) > 0:
@@ -935,13 +950,12 @@ class MiliDoS(IDos):
                 contract_nv = self.w3.eth.contract(abi=solc_artifact.abi, bytecode=bin.GetRawBin())
 
         except FileNotFoundError:
-            print(f"{Bolors.FAIL}💢 bin or abi file is not found.{Bolors.RESET}")
-            exit(3)
+            message_exit("💢 bin or abi file is not found.", 4)
+
         except FoundUndeployedLibraries:
             exit(4)
         except ContractLogicError as e:
-            print(f"💢 Contract error {e}")
-            exit(5)
+            message_exit("💢 Contract error.", 5)
 
         gasprice = self.gasPrice if gas_price == 0 else gas_price
         gas = self.gas if gas_limit == 0 else gas_limit
@@ -1052,8 +1066,8 @@ class MiliDoS(IDos):
 
     def addTargetClass(self, class_name: str, new_addr: str):
         if self.hasContractName(class_name):
-            print(f"{Bolors.FAIL}Cannot replace the address because the class name is not found. {Bolors.RESET}")
-            exit(9)
+            message_exit("💢 Cannot replace the address because the class name is not found.", 9)
+
         else:
             self._contract_dict[class_name] = new_addr
 
@@ -1121,7 +1135,7 @@ class MiliDoS(IDos):
 
     def removeTarget(self, name: str) -> bool:
         self.setTargetClass(name)
-        
+
         if self.hasContractName(name):
             del self._contract_dict[name]
 

@@ -6,6 +6,9 @@ from eth_account import Account
 
 from . import Config, Bolors
 from .libeb import MiliDoS
+import requests
+import urllib3
+import random
 
 
 class ContractTool(MiliDoS):
@@ -159,3 +162,60 @@ def implementContract(manifest: MiliDoS, class_name: str, args: list = []) -> st
         return manifest.deployed_address
     else:
         return manifest.getAddr(class_name)
+
+
+class Service:
+    _worker: MiliDoS
+    _t_now: str
+    _rpcs: list
+
+    def __init__(self, worker: MiliDoS, rpc_list: list = []):
+        self._rpcs = rpc_list
+        self._worker = worker
+        self._t_now = str(datetime.now())
+
+    @property
+    def time_now(self) -> str:
+        return self._t_now
+
+    def update_timestamp(self):
+        self._t_now = str(datetime.now())
+
+    def define_classes(self):
+        pass
+
+    def scheduled_loop_operations(self):
+        pass
+
+    def run_loop_low_ball(self):
+        self.update_timestamp()
+        while True:
+            self.update_timestamp()
+            self.scheduled_loop_operations()
+
+    def switch_node(self):
+        original_cfg = self._worker.GetNode()
+        original_cfg.rpc_url = random.choice(self._rpcs)
+        while self._worker.switchNetowrk(original_cfg) is False:
+            self.update_timestamp()
+            print(f"{self._t_now} Retried a new node and it is failed again.")
+            original_cfg.rpc_url = random.choice(self._rpcs)
+
+    def run_looper_service(self):
+        self.update_timestamp()
+        while True:
+            try:
+                self.update_timestamp()
+                self.scheduled_loop_operations()
+            except urllib3.exceptions.MaxRetryError:
+                self.update_timestamp()
+                print(f"{self._t_now} MaxRetryError, try with new RPC")
+                self.switch_node()
+            except urllib3.exceptions.NewConnectionError:
+                self.update_timestamp()
+                print(f"{self._t_now} NewConnectionError, try with new RPC")
+                self.switch_node()
+            except requests.exceptions.ConnectionError:
+                self.update_timestamp()
+                print(f"{self._t_now} ConnectionError, try with new RPC")
+                self.switch_node()
