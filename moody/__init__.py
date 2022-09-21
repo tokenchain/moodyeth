@@ -52,7 +52,7 @@ class Config:
     wait_time: int = 6
     # Oracle from Chainlink
     # https://docs.chain.link/docs/vrf-contracts/
-    link_token: str = None,
+    link_token: str = None
     link_vrf_coordinator: str = None
     link_keyhash: str = None
 

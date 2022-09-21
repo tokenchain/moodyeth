@@ -264,7 +264,7 @@ class SolWeb3Tool(object):
         try:
             uncutjson = json.load(codecs.open(combinedjson, 'r', 'utf-8-sig'))
         except FileNotFoundError:
-            message_exit("Some of the files from the build in forge is not found.", 3)
+            message_exit("Some of the files from the build json file in forge is not found.", 3)
 
         abifile = os.path.join(self.WORKSPACE_PATH, self.OUTPUT_BUILD, "{}.sol".format(class_name),
                                "{}.abi".format(class_name))

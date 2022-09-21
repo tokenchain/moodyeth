@@ -184,6 +184,16 @@ def XDaiMainnet() -> Config:
     )
 
 
+def KnotMainnet() -> Config:
+    return Config(
+        network_name="Knot",
+        rpc_url="http://119.13.88.28:8545",
+        chain_id=1891,
+        symbol="KNOT",
+        block_explorer="http://119.13.88.28/"
+    )
+
+
 def OKChainMainnet() -> Config:
     return Config(
         network_name="OKExChainMainnet",
