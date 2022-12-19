@@ -1,111 +1,55 @@
-.idea
 
-# Byte-compiled / optimized / DLL files
-__pycache__/
-*.py[cod]
-*$py.class
 
-# C extensions
-*.so
+/.idea/
+/www/upload/
+/www/asset/
+/var/cache/
+/var/log/
+!/var/log/index.html
+/node_modules
 
-# Distribution / packaging
-.Python
-build/
-develop-eggs/
-dist/
-downloads/
-eggs/
-.eggs/
-lib/
-lib64/
-parts/
-sdist/
-var/
-wheels/
-*.egg-info/
-.installed.cfg
-*.egg
-MANIFEST
+/usr/theme/*
+!/usr/theme/default/
+!/usr/theme/pi/
+/usr/theme/guil
 
-# PyInstaller
-#  Usually these files are written by a python script from a template
-#  before PyInstaller builds the exe, so as to inject date/other infos into it.
-*.manifest
-*.spec
+/*.php
+/www/sitmap.xml
+/www/apple-app-site-association
 
-# Installer logs
-pip-log.txt
-pip-delete-this-directory.txt
+/var/config/custom/*.*
 
-# Unit test / coverage reports
-htmlcov/
-.tox/
-.coverage
-.coverage.*
-.cache
-nosetests.xml
-coverage.xml
-*.cover
-.hypothesis/
-.pytest_cache/
 
-# Translations
-*.mo
-*.pot
+/usr/module/*
+!/usr/module/article
+!/usr/module/comment
+!/usr/module/demo
+!/usr/module/message
+!/usr/module/saml
+!/usr/module/search
+!/usr/module/sitemap
+!/usr/module/page
+!/usr/module/system
+!/usr/module/tag
+!/usr/module/user
+!/usr/module/widget
+!/usr/module/uclient
 
-# Django stuff:
-*.log
-local_settings.py
-db.sqlite3
 
-# Flask stuff:
-instance/
-.webassets-cache
+var/config/module.meta.php
+www/robots-https.txt
+www/robots.txt
+www/sitemap.xml
+www/pi.txt
 
-# Scrapy stuff:
-.scrapy
+usr/custom/module/portfolio/
+www/git.php
+www/assets.php
+assets.php
+git.php
+/.htaccess
+/.htpasswd
 
-# Sphinx documentation
-docs/_build/
+/usr/custom/module/user/config/form.register.php
 
-# PyBuilder
-target/
 
-# Jupyter Notebook
-.ipynb_checkpoints
-
-# pyenv
-.python-version
-
-# celery beat schedule file
-celerybeat-schedule
-
-# SageMath parsed files
-*.sage.py
-
-# Environments
-.env
-.venv
-env/
-venv/
-ENV/
-env.bak/
-venv.bak/
-
-# Spyder project settings
-.spyderproject
-.spyproject
-
-# Rope project settings
-.ropeproject
-
-# mkdocs documentation
-/site
-
-# mypy
-.mypy_cache/
-
-/examples/project_test/
-/html/
-/examples/codec/*
-/examples/deploy_results
