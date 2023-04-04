@@ -21,7 +21,7 @@ from web3.types import BlockData
 
 # ========================== Of course
 from . import Bolors, Evm, DefaultKeys, root_base_path, MetaSetting
-from .buildercompile.remotecompile import BuildRemoteLinuxCommand
+from .buildercompile.remotecompile import BuildRemoteLinuxCommand, BuildForgeLinuxBuildCommand
 from .buildercompile.transpile import BuildLang, filter_file_name, BuildLangForge
 from .conf import Config
 from .exceptions import FoundUndeployedLibraries
@@ -250,26 +250,90 @@ class SolWeb3Tool(object):
         self._key = None
 
     def setBuildNameSpace(self, path: str) -> "SolWeb3Tool":
+        """
+        the direction path is found in here
+        :param path:
+        :return:
+        """
         self.OUTPUT_BUILD = path
         return self
 
     def setBasePath(self, path: str) -> "SolWeb3Tool":
+        """
+        the path for the base direction
+        :param path:
+        :return:
+        """
         self.WORKSPACE_PATH = path
         return self
 
+    def _justrun(self, cmd_name: str):
+        """
+        the command name is not found in here.
+        :param cmd_name:
+        :return:
+        """
+        exec_path = f"{self.WORKSPACE_PATH}/{cmd_name}"
+
+        if os.path.isfile(exec_path):
+            subprocess.run(["cd", self.WORKSPACE_PATH])
+            list_files = subprocess.run(["sh", cmd_name])
+            print("The run bash code ->: %d" % list_files.returncode)
+        else:
+            print("The execution file is not found.")
+
+    def RunTranspile(self) -> "SolWeb3Tool":
+        """This is the remote command to execute the localpile bash file
+        using remote compile method to compile the sol files
+        all works will be done with the remote server or using the docker"""
+        self._justrun("localpile")
+        return self
+
+    def ForgeGen(self) -> "SolWeb3Tool":
+        """This is the remote command to execute the buildforgebin bash file
+        using remote compile method to compile the sol files
+        all works will be done with the remote server or using the docker"""
+        self._justrun("buildforgebin")
+        return self
+
+    def BuildRemote(self) -> "SolWeb3Tool":
+        """This is the remote command to execute the solc_remote bash file
+        using remote compile method to compile the sol files
+        all works will be done with the remote server or using the docker"""
+        self._justrun("solc_remote")
+        return self
+
     def SplitForgeBuild(self, class_name: str) -> "SolWeb3Tool":
+        """
+        to process the build files for the solidity
+        :param class_name:
+        :return:
+        """
         uncutjson = dict()
-        combinedjson = os.path.join(self.WORKSPACE_PATH, self.OUTPUT_BUILD, "{}.sol".format(class_name),
-                                    "{}.json".format(class_name))
+        combinedjson = os.path.join(
+            self.WORKSPACE_PATH,
+            self.OUTPUT_BUILD,
+            f"{class_name}.sol",
+            f"{class_name}.json")
         try:
             uncutjson = json.load(codecs.open(combinedjson, 'r', 'utf-8-sig'))
         except FileNotFoundError:
-            message_exit("Some of the files from the build json file in forge is not found.", 3)
+            message_exit(f"The build json file in forge are not found for class {class_name}", 3)
 
-        abifile = os.path.join(self.WORKSPACE_PATH, self.OUTPUT_BUILD, "{}.sol".format(class_name),
-                               "{}.abi".format(class_name))
-        binfile = os.path.join(self.WORKSPACE_PATH, self.OUTPUT_BUILD, "{}.sol".format(class_name),
-                               "{}.bin".format(class_name))
+        abifile = os.path.join(
+            self.WORKSPACE_PATH,
+            self.OUTPUT_BUILD,
+            f"{class_name}.sol",
+            f"{class_name}.abi"
+
+        )
+
+        binfile = os.path.join(
+            self.WORKSPACE_PATH,
+            self.OUTPUT_BUILD,
+            f"{class_name}.sol",
+            f"{class_name}.bin"
+        )
 
         if "abi" in uncutjson:
             predum = uncutjson["abi"]
@@ -294,16 +358,21 @@ class SolWeb3Tool(object):
         :param class_name:
         :return:
         """
-        p2abi = os.path.join(self.WORKSPACE_PATH, self.OUTPUT_BUILD, "{}.sol".format(class_name),
-                             "{}.abi".format(class_name))
-        p1bin = os.path.join(self.WORKSPACE_PATH, self.OUTPUT_BUILD, "{}.sol".format(class_name),
-                             "{}.bin".format(class_name))
+        p2abi = os.path.join(self.WORKSPACE_PATH,
+                             self.OUTPUT_BUILD,
+                             f"{class_name}.sol",
+                             f"{class_name}.abi")
+
+        p1bin = os.path.join(self.WORKSPACE_PATH,
+                             self.OUTPUT_BUILD,
+                             f"{class_name}.sol",
+                             f"{class_name}.bin")
         try:
             self._bin = codecs.open(p1bin, 'r', 'utf-8-sig').read()
             self._abi = json.load(codecs.open(p2abi, 'r', 'utf-8-sig'))
 
         except FileNotFoundError:
-            message_exit("The artifacts files are not found from forge builds.", 3)
+            message_exit(f"The artifacts files are not found from forge builds. {class_name}", 3)
 
         return self
 
@@ -419,15 +488,6 @@ class SolWeb3Tool(object):
         """
         return self.GetCodeTag(self.byClassName(path, classname))
 
-    def CompileBash(self) -> None:
-        """
-        This is the remote command to execute the solc_remote bash file
-        using remote compile method to compile the sol files
-        all works will be done with the remote server or using the docker
-        """
-        list_files = subprocess.run(["{}/solc_remote".format(self.WORKSPACE_PATH)])
-        print("The exit code was: %d" % list_files.returncode)
-
     @property
     def abi(self) -> str:
         return self._abi
@@ -534,12 +594,35 @@ class MiliDoS(IDos):
         """
         self.is_deploy = False
         self.artifact_manager = SolWeb3Tool()
+        self.pathfinder = Paths(workspace)
         if history is False:
-            self.pathfinder = Paths(workspace).setDefaultPath().Network(self.network_cfg.network_name)
+            self.pathfinder.setDefaultPath()
         else:
-            self.pathfinder = Paths(workspace).SetUseHistory(history).Network(self.network_cfg.network_name)
+            self.pathfinder.SetUseHistory(history)
+        self.pathfinder.Network(self.network_cfg.network_name)
+        self.ready_io(True)
+
+    def brew(self, workspace: str, factory: str, history: any = False) -> "MiliDoS":
+        """
+        brew solidity piplines and flow
+        :param workspace:
+        :param factory:
+        :param history:
+        :return:
+        """
+        self.is_deploy = False
+        self.artifact_manager = SolWeb3Tool()
+        self.artifact_manager.setBasePath(workspace)
+        self.pathfinder = Paths(workspace)
+        if history is False:
+            self.pathfinder.setDefaultPath()
+        else:
+            self.pathfinder.SetUseHistory(history)
+        self.pathfinder.Network(self.network_cfg.network_name)
+        self.pathfinder.setFactory(factory)
 
         self.ready_io(True)
+        return self
 
     def SetupContract(self):
         pass
@@ -601,6 +684,13 @@ class MiliDoS(IDos):
         return self
 
     def useForge(self) -> "MiliDoS":
+        """
+        use the forge
+        :return:
+        """
+        self.is_forge = True
+        BuildForgeLinuxBuildCommand(self.pathfinder)
+        self.artifact_manager.ForgeGen()
         # ==================================================
         if self._sol_list is not None:
             for v in self._sol_list:
@@ -608,7 +698,7 @@ class MiliDoS(IDos):
                 class_name = based_name.replace(".sol", "")
                 # class_name_process = filter_file_name(based_name).replace('.sol', '')
                 self.artifact_manager.SplitForgeBuild(class_name)
-        self.is_forge = True
+
         return self
 
     def localTranspile(self, dapp_ts_folder: str = None) -> "MiliDoS":
@@ -622,6 +712,8 @@ class MiliDoS(IDos):
             BuildLangForge(self.pathfinder, self._sol_list)
         else:
             BuildLang(self.pathfinder, self._sol_list)
+
+        self.artifact_manager.RunTranspile()
         return self
 
     def get_block(self, block_identifier, full_transactions: bool = False):

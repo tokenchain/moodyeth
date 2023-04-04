@@ -34,8 +34,17 @@ class Paths:
     SOLC_VER = "0.5.15"
     SOLCPATH = "/root/contracts/vault"
     EVM_VERSION = Evm.ISTANBUL
+    # the workspace
     BUILDPATH = ""
+    # the source code including all the transpile factory codes
+    FACTORY_PATH = ""
+    # forge use only
+    SOURCE_PATH = "vault"
+    # forge use only
+    FORGE_BUILD = "build"
+    # addition application to deliver
     WEB_DAPP_SRC = None
+    # sub fix
     SUB_FIX = ""
 
     def __init__(self, root_path_as_workspace):
@@ -61,6 +70,10 @@ class Paths:
 
     def updateTargetDappFolder(self, folderName: str) -> "Paths":
         self.WEB_DAPP_SRC = folderName
+        return self
+
+    def setFactory(self, fac: str) -> "Paths":
+        self.FACTORY_PATH = fac
         return self
 
     def setSolVersion(self, version: str) -> "Paths":
@@ -91,7 +104,8 @@ class Paths:
 
     @property
     def __deploymentPath(self) -> str:
-        return os.path.join(self.___current_deployment_path, self.DEPLOYMENT_FILE_NAME.format(self.___network_name, self.subFix))
+        return os.path.join(self.___current_deployment_path,
+                            self.DEPLOYMENT_FILE_NAME.format(self.___network_name, self.subFix))
 
     @property
     def SaveDeployConfig(self) -> str:

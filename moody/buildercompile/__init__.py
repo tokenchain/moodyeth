@@ -39,6 +39,18 @@ echo "and then the compiler version should be... "
 exit
 """
 
+FORGE_BUILD = """#!/bin/bash
+
+if ! command -v forge &>/dev/null; then
+    echo "forge in command is not install. Please visit: https://github.com/foundry-rs/foundry"
+    curl -L https://foundry.paradigm.xyz | bash
+    exit;
+fi
+echo "generating compiled files into {BUILD} from {SRC} on forge runs"
+forge build --contracts {SRC} --out {BUILD} --optimizer-runs {RUNS} --force
+
+"""
+
 TRANS_LOCAL = """#!/bin/bash
 # -----------------------------------------------
 {PRE_HEAD}
@@ -103,25 +115,19 @@ echo "==> generate abi to typescript --> 🧊"
 """
 
 ITEM_TRANSPILE_GO = """
-
 echo "==> 🚸 compile abi to golang"
-if [[ ! -f {outputfolder}/{classname} ]]; then
-    mkdir -p {outputfolder}/{classname}
+
+if [[ ! -f {outputfolder} ]]; then
+    mkdir -p {outputfolder}
 fi
 
-abigen --abi {target_abi} --pkg {classname} --type {classname} --out {outputfolder}/{classname}/init.go
+abigen --abi "{target_abi}" --pkg {classname} --out "{outputfolder}/init.go"
 
-echo "==> generate abi to golang --> 🧊"
+echo "==> generate abi to golang --> 🚸✅🧊"
+
 """
 
 PRE_HEAD = """
-
-# . ./{path_definitions}
-
-if [[ ! -d factoryabi ]]; then
-  echo "The factory abi module is not found"
-  exit 1;
-fi
 
 if ! command -v abi-gen-uni &>/dev/null; then
     echo "abi-gen-uni could not be found"
@@ -132,10 +138,24 @@ if ! command -v abigen &>/dev/null; then
     echo "abigen could not be found, please go check out: https://geth.ethereum.org/downloads/"
     exit 1;
 fi
+
+
+cp -R {FACTORY} {BUILDPATH}/factoryabi 2>/dev/null
+
+if [[ ! -d factoryabi ]]; then
+  echo "The factory abi module is not found"
+  exit 1;
+fi
+
 """
-SUB_FOOTER= """
 
-#rm localpile
-#rm -rf factoryabi
+SUB_FOOTER = """
 
+echo "Building the forge bin"
+
+rm buildforgebin
+rm localpile
+rm -rf factoryabi
+
+echo "Cleaned up the useless codebase"
 """

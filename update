@@ -73,15 +73,17 @@ pub_ver() {
   # echo "ready and install it again.."
   # sudo pip3 install --proxy 127.0.0.1:1087 moodyeth==$VERSION
 }
-
 git_update() {
+  local gitcheck=$(git diff --shortstat)
   git add .
-  #git remote add origin https://gitee.com/jjhoc/moodyeth.git
-  git commit -m "auto patched"
-  #git remote add origin https://gitee.com/jjhoc/b-explorer-settings.git
-  git push
+  echo "Please enter your commit message:"
+  # shellcheck disable=SC2162
+  read name
+  git commit -m "♻️ $name $gitcheck"
+  git push origin
+  git push github
+  echo "♻️ You can open ${GIT_LOC} or git clone ${GIT_LOC}.git to copy to the local"
 }
-
 serv_doc(){
   ran -r docs/moody -p 8080
 }

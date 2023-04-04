@@ -2,7 +2,8 @@ import os
 import re
 
 from ..paths import Paths
-from . import ITEM_CP_LOCAL, ITEM_TRANSPILE_GO, TRANS_LOCAL, ITEM_TRANSPILE_PYTHON, ITEM_TRANSPILE_TS, PRE_HEAD, SUB_FOOTER
+from . import ITEM_CP_LOCAL, ITEM_TRANSPILE_GO, TRANS_LOCAL, ITEM_TRANSPILE_PYTHON, ITEM_TRANSPILE_TS, PRE_HEAD, \
+    SUB_FOOTER
 
 REG = r"(.+?)([A-Z])"
 
@@ -89,7 +90,7 @@ def buildCmdGo2(p: Paths, pathName: str) -> str:
     based_name = os.path.basename(pathName)
     class_name = filter_file_name(based_name).replace('.sol', '')
     return ITEM_TRANSPILE_GO.format(
-        outputfolder=f"{p.BUILDPATH}/codec/gen_go",
+        outputfolder=f"{p.BUILDPATH}/codec/gen_go/{class_name}",
         target_abi=abiPath_v2(p, pathName),
         BUILDPATH=p.BUILDPATH,
         classname=class_name
@@ -103,17 +104,22 @@ def wrapContentTranspile(tar: Paths, compile_list: list) -> str:
     :param compile_list: the list in compile
     :return:
     """
-    head_section = PRE_HEAD.format(path_definitions=tar.LOCAL_BASH_INCLUDE)
     contract_list_content = "\n".join(compile_list)
     return TRANS_LOCAL.format(
         TARGET_LOC=tar.TARGET_LOC,
         COMPRESSED_NAME=tar.COMPRESSED_NAME,
         SOLVER=tar.SOLC_VER,
         LISTP=contract_list_content,
-        PRE_HEAD=head_section,
+        PRE_HEAD=wrapHeadTranspile(tar),
         FOOTER=SUB_FOOTER
     )
 
+
+def wrapHeadTranspile(p: Paths) -> str:
+    return PRE_HEAD.format(
+        FACTORY=p.FACTORY_PATH,
+        BUILDPATH=p.BUILDPATH
+    )
 
 def BuildLang(p: Paths, list_class_names: list) -> None:
     """
@@ -149,8 +155,15 @@ def BuildLangForge(p: Paths, list_class_names: list) -> None:
         k.append(buildCmdPy2(p, v))
         k.append(buildCmdTs2(p, v))
         k.append(buildCmdGo2(p, v))
+
+        # ==================================================
+
         if p.WEB_DAPP_SRC is not None:
-            k.append(moveTsFiles(p, v))
+            if os.path.isdir(p.WEB_DAPP_SRC):
+                k.append(moveTsFiles(p, v))
+            else:
+                print(f"app path for implementation {p.WEB_DAPP_SRC} is not exist. file move is stopped.")
+
     # ==================================================
     with open(p.workspaceFilename("localpile"), 'w') as f:
         f.write(wrapContentTranspile(p, k))

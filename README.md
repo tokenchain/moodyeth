@@ -285,9 +285,40 @@ continueonforge
 
 
 
+#### Code compile
+
+The new build codebase all in the one take. In order to use this feature, the required package will need to be installed to the system. Otherwise the error message will show.
+
+- factoryabi (source transpiler for ts and python)
+- forge (solidity compiler)
+- abigen (golang transpile generator)
+- abi-gen-uni (transpiler consumer)
+
+If you are all set, then you are ready to run the following code for example:
 
 
+```
+# !/usr/bin/env python
+# coding: utf-8
+import os
+from moody.libeb import MiliDoS
+from moody import Evm, conf
+from key import ROOT
 
+SOLV = "0.8.12"
+C811 = [
+    "vault/token/RaceToken.sol",
+]
+network = conf.EthereumFL()
+r = MiliDoS(network)
+
+ROOT = '/.../Documents/b95/devmoody'
+FACTORY = '$HOME/Documents/piplines/factoryabi'
+r.brew(ROOT, FACTORY).setClassSolNames(C811).setEvm(Evm.ISTANBUL)
+r.useForge().localTranspile()
+
+
+```
 
 
 

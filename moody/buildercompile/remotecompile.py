@@ -1,5 +1,5 @@
 from moody.paths import Paths
-from . import REC, ITEM, ITEMLINK
+from . import REC, ITEM, ITEMLINK, FORGE_BUILD
 
 
 def compileItem1(tar: Paths, k0: str, optimzations: int) -> str:
@@ -49,6 +49,20 @@ def wrapContent(tar: Paths, compile_list: list) -> str:
         COMPRESSED_NAME=tar.COMPRESSED_NAME,
         SOLVER=tar.SOLC_VER,
     )
+
+
+def wrapForgeCompile(tar: Paths) -> str:
+    return FORGE_BUILD.format(
+        SRC=tar.SOURCE_PATH,
+        BUILD=tar.FORGE_BUILD,
+        RUNS=100000
+    )
+
+
+def BuildForgeLinuxBuildCommand(p: Paths) -> None:
+    with open(p.workspaceFilename("buildforgebin"), 'w') as f:
+        f.write(wrapForgeCompile(p))
+        f.close()
 
 
 def BuildRemoteLinuxCommand(p: Paths, optimize: int, list_files: list = None, linked: dict = None) -> None:
